@@ -60,6 +60,7 @@ body {
   font-weight: 400;
   color: #555;
 }
+
 .section-login {
   padding: 5.6rem 0;
 }
@@ -136,6 +137,7 @@ body {
   border-radius: 6rem;
   font-size: 2rem;
   color: white;
+  cursor: pointer;
 }
 
 .input-icon {
