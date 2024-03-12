@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="../css/login.css" />
 
@@ -28,6 +34,10 @@
           <div class="heading">
             <h1 class="heading-primary">Welcome!</h1>
           </div>
+          <div class="error-message">
+            <ion-icon class="error-icon" name="close-circle-outline"></ion-icon>
+            <p class="text-err">Email ou mot de passe incorrect</p>
+          </div>
           <div class="input-groupe">
             <input
               type="email"
@@ -51,8 +61,8 @@
             </a>
           </div>
           <button class="login-btn" type="submit">Log In</button>
-          <div class="link-forgotpassword">
-            <a href="#">Forgot password?</a>
+          <div class="forgotpassword">
+            <a class="link-forgotpassword" href="#">Mot de passe oublier?</a>
           </div>
         </div>
         <div class="img-box">
