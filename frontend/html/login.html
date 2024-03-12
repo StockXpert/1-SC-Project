@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/login.css" />
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <title>Login page</title>
+  </head>
+  <body>
+    <section class="section-login">
+      <div class="login">
+        <div class="login-cart">
+          <img
+            src="../img/logo.png"
+            class="logo"
+            alt="logo of the organisation"
+          />
+          <div class="heading">
+            <h1 class="heading-primary">Welcome!</h1>
+          </div>
+          <div class="input-groupe">
+            <input
+              type="email"
+              class="input"
+              id="email"
+              placeholder="Votre email"
+              required
+            />
+            <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+          </div>
+          <div class="input-groupe">
+            <input
+              type="password"
+              class="input"
+              id="password"
+              placeholder="Votre mot de passe"
+              required
+            />
+            <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+          </div>
+          <button class="login-btn" type="submit">Log In</button>
+          <div class="link-forgotpassword">
+            <a href="#">Forgot password?</a>
+          </div>
+        </div>
+        <div class="img-box">
+          <img
+            src="../img/login img.jpg"
+            class="login-img"
+            alt="illustration of login page"
+          />
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
