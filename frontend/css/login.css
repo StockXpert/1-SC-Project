@@ -201,6 +201,6 @@ a.password-icon:active {
   color: red;
 }
 
-.unshow {
+.hidden {
   display: none;
 }

@@ -1,20 +1,9 @@
 const loginForm = document.querySelector(".login-cart");
 const errorMessage = document.querySelector(".error-message");
 const password = document.getElementById("password");
-const passwordIcon = document.querySelector(".password-icon");
 const email = document.getElementById("email");
 
-passwordIcon.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (password.type === "password") {
-    password.type = "text";
-  } else {
-    password.type = "password";
-  }
-  passwordIcon.querySelectorAll(".input-icon").forEach((icon) => {
-    icon.classList.toggle("unshow");
-  });
-});
+
 
 function login() {
   console.log(email.value, password.value);
