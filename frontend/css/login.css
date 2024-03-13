@@ -200,3 +200,7 @@ a.password-icon:active {
   line-height: 2.4rem;
   color: red;
 }
+
+.unshow {
+  display: none;
+}
