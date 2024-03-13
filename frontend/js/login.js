@@ -2,8 +2,8 @@ const loginForm = document.querySelector(".login-cart");
 const errorMessage = document.querySelector(".error-message");
 const password = document.getElementById("password");
 const email = document.getElementById("email");
-
-
+const spinner = document.querySelector(".spinner-container");
+const btns = document.querySelector(".btns-container");
 
 function login() {
   console.log(email.value, password.value);
@@ -15,7 +15,7 @@ function login() {
   //FAKE LOGIN
   if (email.value === "a@a.a" && password.value === "pw") {
     // Authentication successful
-    console.log("Login ");
+    console.log("successful login ");
     // GO to another page
   } else {
     // show error message
@@ -31,8 +31,15 @@ function eraseError() {
 email.addEventListener("input", eraseError);
 password.addEventListener("input", eraseError);
 
+function handelSpinner() {
+  spinner.classList.toggle("hidden");
+  btns.classList.toggle("hidden");
+}
+
 // Main Event
 loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  handelSpinner();
+  setTimeout(handelSpinner, 4000);
   login();
 });
