@@ -7,3 +7,7 @@ router.delete('/deleteProduct',authMiddleware,NomenclatureController.deleteProdu
 router.put('/updateProduct',authMiddleware,NomenclatureController.updateProduct);
 router.post('/addArticle',authMiddleware,NomenclatureController.addArticle);
 router.delete('/deleteArticle',authMiddleware,NomenclatureController.deleteArticle);
+router.post('/addFournisseur',authMiddleware,NomenclatureController.addFournisseur);
+router.delete('/deleteFournisseur',authMiddleware,NomenclatureController.deleteFournisseur);
+router.get('/showFournisseurs',authMiddleware,NomenclatureController.showFournisseurs);
+router.get('/showProducts',authMiddleware,NomenclatureController.showProducts);

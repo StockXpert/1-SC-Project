@@ -285,5 +285,118 @@ function deleteProductFromC(productId)
         });
       });
 }
+function insertFournisseur(raisonSocial,adresse,tel,fax,numRegistre,rib,rip,nif,nis)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = 'insert into fournisseur (raison_social,adresse,tel,fax,num_registre,rib,rip,nif,nis) values (?,?,?,?,?,?,?,?,?)';
+    const values = [raisonSocial,adresse,tel,fax,numRegistre,rib,rip,nif,nis];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function deleteFournisseur(raisonSocial)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = 'delete from fournisseur where raison_social=?';
+    const values = [raisonSocial];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function getFournisseurs()
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = 'select raison_social,adresse,tel,fax,num_registre,rib,rip,nif,nis from fournisseur';
+    
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function getProducts()
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = 'select designation,quantite,description from produit ';
+    
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 module.exports={getChapterId,addArticle,addProduct,getArticleId,getProductId,addArticleProduct,
-                deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC}
+                deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
+                insertFournisseur,deleteFournisseur,getFournisseurs,getProducts}
