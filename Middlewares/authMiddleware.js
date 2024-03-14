@@ -19,6 +19,7 @@ try {
  req.role=decoded.role;
  path=req.path;
  console.log({path})
+ console.log({role:req.role})
  switch (path) {
     case '/register':if(req.role!="Admin")
                           return res.status(401).json({ error: 'Access denied' });
@@ -43,14 +44,42 @@ try {
     case '/responsable':if(req.role!="Admin")
                         return res.status(401).json({ error: 'Access denied' });
     case '/showStructure':if(req.role!="Admin")
-                          return res.status(401).json({ error: 'Access denied' });                                                                           
-                                                                                                    
-    default:
-        break;
+                          return res.status(401).json({ error: 'Access denied' });             
     case '/ficheBesoins':if(req.role!="Magasinier")
                            return res.status(401).json({error:'Access denied'});
                            break;
-
+    case '/addProduct':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/deleteProduct':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/addArticle':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/deleteArticle':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/addFournisseur':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/deleteFournisseur':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/showFournisseurs':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/showProducts':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/showArticles':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;
+    case '/showChapters':if(req.role!="Service achat")
+                           return res.status(401).json({error:'Access denied'});
+                           break;                       
+    default:
+                            break;                           
  }
  next();
  } catch (error) {

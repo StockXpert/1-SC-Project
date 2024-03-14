@@ -1,10 +1,10 @@
 const NomenclatureModel=require("../Models/NomenclatureModel");
-function addArticle(chapitre,designation)
+function addArticle(chapitre,designation,numArt)
 {
    return new Promise((resolve,reject)=>
    {
       NomenclatureModel.getChapterId(chapitre).then((chapitreId)=>{
-       NomenclatureModel.addArticle(chapitreId,designation).then(()=>{
+       NomenclatureModel.addArticle(numArt,chapitreId,designation).then(()=>{
         resolve("article added");
        }).catch(()=>{
         reject("internal error");
