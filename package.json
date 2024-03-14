@@ -2,10 +2,10 @@
   "name": "nodejs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "backend/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -e .html,.css,.js,.env,.json index.js"
+    "start": "nodemon -e .html,.css,.js,.env,.json backend/index.js"
   },
   "keywords": [],
   "author": "",
