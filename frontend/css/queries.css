@@ -1,0 +1,49 @@
+/* 86 prsq jai pris a partir de 1350 et jai div par 16 prsq c en em et pas px pour laptops*/
+@media (max-width: 84em) {
+  .login {
+    max-width: 95rem;
+    height: 60rem;
+  }
+  .login-cart {
+    width: 38rem;
+    height: 53rem;
+    margin-left: 8rem;
+  }
+  .login-img {
+    width: 100%;
+  }
+  .input-groupe .input {
+    width: 28rem;
+    height: 4.8rem;
+    font-size: 1.8rem;
+  }
+  .login-btn {
+    width: 34rem;
+    height: 5.4rem;
+  }
+  .error-message {
+    width: 33rem;
+    height: 6rem;
+  }
+  .forgotpassword {
+    margin-top: 0.6rem;
+    padding-left: 1.2rem;
+  }
+  .error-icon {
+    margin-left: 1rem;
+  }
+  .text-err {
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 2.4rem;
+    color: red;
+  }
+  .logo {
+    width: 28rem;
+    margin-bottom: 2rem;
+  }
+  .input-groupe .input::placeholder {
+    font-size: 1.6rem;
+    font-weight: 400;
+  }
+}
