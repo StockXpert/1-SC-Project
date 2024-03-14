@@ -1,9 +1,9 @@
 const mysql=require('mysql');
 const connectionConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'magasin'
+  host: 'sql11.freemysqlhosting.net',
+  user: 'sql11691251',
+  password: 'QjdjqXx86J',
+  database: 'sql11691251'
 };
 function insertUser(email,role, password) {
   return new Promise((resolve, reject) => {
