@@ -4,6 +4,19 @@ const password = document.getElementById("password");
 const email = document.getElementById("email");
 const spinner = document.querySelector(".spinner-container");
 const btns = document.querySelector(".btns-container");
+const passwordIcon = document.querySelector(".password-icon");
+
+passwordIcon.addEventListener("click", function (e) {
+  e.preventDefault();
+  if (password.type === "password") {
+    password.type = "text";
+  } else {
+    password.type = "password";
+  }
+  passwordIcon.querySelectorAll(".input-icon").forEach((child) => {
+    child.classList.toggle("hidden");
+  });
+});
 
 function login() {
   console.log(email.value, password.value);
