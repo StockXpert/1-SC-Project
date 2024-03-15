@@ -5,6 +5,8 @@ const email = document.getElementById("email");
 const spinner = document.querySelector(".spinner-container");
 const btns = document.querySelector(".btns-container");
 const passwordIcon = document.querySelector(".password-icon");
+email.value = "Amrane@esi-sba.dz";
+password.value = "Amrane2024";
 
 passwordIcon.addEventListener("click", function (e) {
   e.preventDefault();
@@ -18,25 +20,49 @@ passwordIcon.addEventListener("click", function (e) {
   });
 });
 
-function login() {
+async function login() {
   console.log(email.value, password.value);
 
   // Validation if needed
 
   //TODO: Send the email and password to the server for authentication
-
-  //FAKE LOGIN
-  if (email.value === "a@a.a" && password.value === "pw") {
-    // Authentication successful
-    console.log("successful login ");
-    // GO to another page
-  } else {
-    // show error message
-    errorMessage.style.display = "flex";
-    email.value = "";
-    password.value = "";
+  try {
+    const res = await fetch("http://localhost:3000/Users/login", {
+      method: "POST",
+      headers: {
+        "content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value,
+      }),
+    });
+    const data = await res.json();
+    console.log(data);
+    if (data.response === "success of login") {
+      console.log("Login successful");
+      console.log("JWT token:", data.jwt);
+      // Store the JWT
+      //redirect the user
+    } else {
+      if (res.status === 404) {
+        if (data.response === "not existing account") {
+          console.error("Account does not exist");
+        } else if (data.response === "Password error") {
+          console.error("Incorrect password");
+        } else {
+          console.error("Unknown error:", data.response);
+        }
+      } else if (res.status === 500) {
+        console.error("Internal server error");
+      }
+    }
+  } catch (err) {
+    console.error(`ERROR ${err}`);
   }
 }
+
 // When we restart wrinting in email or password the error message get erased
 function eraseError() {
   errorMessage.style.display = "none";
@@ -50,9 +76,9 @@ function handelSpinner() {
 }
 
 // Main Event
-loginForm.addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   handelSpinner();
-  setTimeout(handelSpinner, 4000);
-  login();
+  await login();
+  handelSpinner();
 });
