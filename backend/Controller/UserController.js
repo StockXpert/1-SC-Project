@@ -11,10 +11,15 @@ const transporter = nodeMailer.createTransport({
   },
 });
 const passwordReset = {};
-require("dotenv").config();
+try {
+  require('dotenv').config();
+} catch (error) {
+  console.error('Erreur lors du chargement du fichier .env:', error);
+}
 async function login(req, res) {
   const { email, password } = req.body;
   const SecretKey = process.env.KEY;
+  console.log({SecretKey})
   userService
     .verifyUser(email)
     .then((response) => {

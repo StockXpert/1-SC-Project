@@ -5,7 +5,7 @@
   "main": "backend/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -e .html,.css,.js,.env,.json backend/index.js"
+    "start": "cross-env KEY=f5121dd43c17bb2b8b5c0814b9d5f57cff337c7903d90d06d856c7615b89da4b nodemon -e .html,.css,.js,.env,.json backend/index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
