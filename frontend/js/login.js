@@ -7,8 +7,8 @@ const spinner = document.querySelector('.spinner-container');
 const btns = document.querySelector('.btns-container');
 const passwordIcon = document.querySelector('.password-icon');
 paragraphElement.className = 'text-err';
-email.value = 'Amrane@esi-sba.dz';
-password.value = 'Amrane2024';
+// email.value = 'Amrane@esi-sba.dz';
+// password.value = 'Amrane2024';
 
 passwordIcon.addEventListener('click', function (e) {
   e.preventDefault();
