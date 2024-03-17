@@ -21,7 +21,11 @@ passwordIcon.addEventListener('click', function (e) {
     child.classList.toggle('hidden');
   });
 });
-
+/**
+ *
+ * @param {* 'show': to display error message or 'hide' (by default): to hide the error message} action
+ * @param {* error message by dafault is Email ou mot de passe incorrect.} message
+ */
 function handelErrorMessage(
   action = 'hide',
   message = 'Email ou mot de passe incorrect.'
@@ -69,7 +73,7 @@ async function login() {
           handelErrorMessage('show');
         } else {
           console.error('Unknown error:', data.response);
-          handelErrorMessage('show', `${res.status} ERROR: ${'Unknown error'}`);
+          handelErrorMessage('show', `${res.status} ERROR: ${res.statusText}`);
         }
       } else if (res.status === 500) {
         console.error('Internal server error');
