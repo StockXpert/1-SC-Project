@@ -1,0 +1,243 @@
+/*
+--- 01 TYPOGRAPHY SYSTEM
+
+- Font sizes (px)
+10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
+
+- Font weights
+Default: 400
+Medium: 500
+Semi-bold: 600
+Bold: 700
+
+- Line heights
+Default: 1
+Small: 1.05
+Medium: 1.2
+Paragraph default: 1.6
+
+- Letter spacing
+-0.5px
+0.75px
+
+--- 02 COLORS
+
+- Primary: #477CE2;
+- Tints:
+ #4B4B4B
+
+background: linear-gradient(90deg, rgba(71, 124, 226, 0.9) 0%, rgba(154, 185, 244, 0.9) 100%);
+
+
+--- 06 BORDER-RADIUS
+
+Default: 9px
+Medium: 11px
+
+--- 07 WHITESPACE
+
+- Spacing system (px)
+2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
+*/
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(
+    90deg,
+    rgba(71, 124, 226, 0.9) 0%,
+    rgba(154, 185, 244, 0.9) 100%
+  );
+  line-height: 1;
+  font-weight: 400;
+  color: #555;
+}
+
+.section-login {
+  padding: 5.6rem 0;
+}
+.login {
+  max-width: 130rem;
+  height: 80rem;
+  margin: 0 auto;
+  display: grid; /* grid*/
+  grid-template-columns: 1fr 1fr;
+  background-color: white;
+  align-items: center;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+}
+
+/*------!illustration img!------- */
+
+.login-img {
+  width: 100%;
+}
+
+/* ----- ! login cart !-------- */
+.login-cart {
+  width: 48rem;
+  height: 58rem;
+  display: flex;
+  gap: 1rem;
+  margin-left: 11rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4.2rem 2.8rem;
+  border: 2px solid #477ce2;
+  border-radius: 3rem;
+}
+
+/*------------ logo img ------------ */
+.logo {
+  margin-bottom: 3.2rem;
+}
+
+/*--------- Welcome msg ---------*/
+
+.heading {
+  align-items: center;
+  justify-content: center;
+}
+.heading-primary {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: black;
+  margin-bottom: 1.2rem;
+}
+
+/*------------ Inputs -------------- */
+.input-groupe {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 0.2rem solid #4b4b4b;
+  border-radius: 1.5rem;
+  margin-bottom: 2.8rem;
+}
+
+.input-groupe .input {
+  width: 35rem;
+  height: 6.1rem;
+  padding: 2rem;
+  border: 0;
+  outline: none;
+  font-size: 2rem;
+  line-height: 2.4rem;
+}
+
+.input-icon {
+  margin-right: 2rem;
+  font-size: 3.2rem;
+}
+
+/* --------- login btn ---------- */
+.login-btn {
+  width: 40rem;
+  height: 5.2rem;
+  background-color: #477ce2;
+  border: 2px solid #477ce2;
+  border-radius: 6rem;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* --------- forgot mpd link-------- */
+.forgotpassword {
+  margin-top: 0.6rem;
+  padding-left: 1.2rem;
+}
+a.link-forgotpassword:link,
+a.link-forgotpassword:visited {
+  color: #4b4b4b;
+  font-size: 1.4rem;
+  font-weight: 600;
+  /* text-decoration: none; */
+}
+a.link-forgotpassword:hover,
+a.link-forgotpassword:active {
+  color: #477ce2;
+  font-size: 1.4rem;
+  text-decoration: none;
+}
+
+a.password-icon:link,
+a.password-icon:visited {
+  color: #4b4b4b;
+}
+
+a.password-icon:hover,
+a.password-icon:active {
+  color: #477ce2;
+}
+
+/* ---- Err MSG --------- */
+
+.error-message {
+  width: 40rem;
+  height: 6.1rem;
+  /* display: none; put it flex si tu veux afficher err email ou mdp luxe */
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  outline: 0.2rem solid red;
+  border-radius: 1.5rem;
+  margin-bottom: 2.4rem;
+  transition: all 0.3s ease-in-out;
+}
+.error-icon {
+  font-size: 3.2rem;
+  color: red;
+  margin-left: 1.2rem;
+}
+
+.text-err {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 2.4rem;
+  color: red;
+}
+
+/*class for red border (err) optional*/
+.red-border {
+  outline: 0.2rem solid red;
+}
+.red-icons {
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Spinner */
+.spinner-container {
+  margin-top: 2rem;
+}
+.spinner {
+  width: 11.2px;
+  height: 11.2px;
+  border-radius: 11.2px;
+  box-shadow: 28px 0px 0 0 rgba(71, 124, 226, 0.2),
+    22.7px 16.5px 0 0 rgba(71, 124, 226, 0.4),
+    8.68px 26.6px 0 0 rgba(71, 124, 226, 0.6),
+    -8.68px 26.6px 0 0 rgba(71, 124, 226, 0.8), -22.7px 16.5px 0 0 #477ce2;
+  animation: spinner-b87k6z 0.8s infinite linear;
+}
+
+@keyframes spinner-b87k6z {
+  to {
+    transform: rotate(360deg);
+  }
+}

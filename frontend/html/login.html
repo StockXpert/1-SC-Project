@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/login.css" />
+    <link rel="stylesheet" href="../css/queries.css" />
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <title>Login page</title>
+  </head>
+  <body>
+    <section class="section-login">
+      <div class="login">
+        <form class="login-cart">
+          <img
+            src="../img/logo.png"
+            class="logo"
+            alt="logo of the organisation"
+          />
+          <div class="heading">
+            <h1 class="heading-primary">Bienvenue !</h1>
+          </div>
+          <div class="login-container">
+            <div class="error-message hidden">
+              <ion-icon
+                class="error-icon"
+                name="close-circle-outline"
+              ></ion-icon>
+              <!-- <p class="text-err">Email ou mot de passe incorrect</p> -->
+            </div>
+            <div class="input-groupe">
+              <input
+                type="email"
+                class="input"
+                id="email"
+                placeholder="Votre email"
+                required
+              />
+              <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+            </div>
+            <div class="input-groupe">
+              <input
+                type="password"
+                class="input"
+                id="password"
+                placeholder="Votre mot de passe"
+                required
+              />
+              <a class="password-icon" href="#">
+                <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                <ion-icon
+                  class="input-icon hidden"
+                  name="eye-off-outline"
+                ></ion-icon>
+              </a>
+            </div>
+          </div>
+          <div class="spinner-container hidden">
+            <div class="spinner"></div>
+          </div>
+          <div class="btns-container">
+            <button class="login-btn" type="submit">Se connecter</button>
+            <div class="forgotpassword">
+              <a class="link-forgotpassword" href="../html/forgotpassword.html"
+                >Mot de passe oublié ?</a
+              >
+            </div>
+          </div>
+        </form>
+
+        <div class="img-box">
+          <img
+            src="../img/login img.jpg"
+            class="login-img"
+            alt="illustration of login page"
+          />
+        </div>
+      </div>
+    </section>
+    <script src="../js/login.js"></script>
+  </body>
+</html>
