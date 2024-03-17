@@ -187,7 +187,8 @@ a.password-icon:active {
 .error-message {
   width: 40rem;
   height: 6.1rem;
-  display: none; /* put it flex si tu veux afficher err email ou mdp luxe*/
+  /* display: none; put it flex si tu veux afficher err email ou mdp luxe */
+  display: flex;
   align-items: center;
   gap: 1.2rem;
   outline: 0.2rem solid red;

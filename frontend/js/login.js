@@ -1,10 +1,12 @@
 const loginForm = document.querySelector('.login-cart');
 const errorMessage = document.querySelector('.error-message');
+const paragraphElement = document.createElement('p');
 const password = document.getElementById('password');
 const email = document.getElementById('email');
 const spinner = document.querySelector('.spinner-container');
 const btns = document.querySelector('.btns-container');
 const passwordIcon = document.querySelector('.password-icon');
+paragraphElement.className = 'text-err';
 email.value = 'Amrane@esi-sba.dz';
 password.value = 'Amrane2024';
 
@@ -20,12 +22,23 @@ passwordIcon.addEventListener('click', function (e) {
   });
 });
 
+function handelErrorMessage(
+  action = 'hide',
+  message = 'Email ou mot de passe incorrect.'
+) {
+  if (action === 'show') {
+    paragraphElement.textContent = message;
+    errorMessage.appendChild(paragraphElement);
+    errorMessage.classList.remove('hidden');
+  } else if ((action = 'hide')) errorMessage.classList.add('hidden');
+}
+
 async function login() {
   console.log(email.value, password.value);
 
   // Validation if needed
 
-  //TODO: Send the email and password to the server for authentication
+  // Send the email and password to the server for authentication
   try {
     const res = await fetch('http://localhost:3000/Users/login', {
       method: 'POST',
@@ -40,22 +53,27 @@ async function login() {
     });
     const data = await res.json();
     console.log(data);
-    if (data.response === 'success of login') {
+    if (data.response === 'succuss of login') {
       console.log('Login successful');
-      console.log('JWT token:', data.jwt);
       // Store the JWT
+      localStorage.setItem('JWT', data.jwt);
       //redirect the user
+      window.location.href = '../html/foo.html';
     } else {
       if (res.status === 404) {
         if (data.response === 'not existing account') {
           console.error('Account does not exist');
+          handelErrorMessage('show');
         } else if (data.response === 'Password error') {
           console.error('Incorrect password');
+          handelErrorMessage('show');
         } else {
           console.error('Unknown error:', data.response);
+          handelErrorMessage('show', `${res.status} ERROR: ${'Unknown error'}`);
         }
       } else if (res.status === 500) {
         console.error('Internal server error');
+        handelErrorMessage('show', `${res.status} ERROR: ${res.statusText}`);
       }
     }
   } catch (err) {
@@ -64,11 +82,8 @@ async function login() {
 }
 
 // When we restart wrinting in email or password the error message get erased
-function eraseError() {
-  errorMessage.style.display = 'none';
-}
-email.addEventListener('input', eraseError);
-password.addEventListener('input', eraseError);
+email.addEventListener('input', handelErrorMessage);
+password.addEventListener('input', handelErrorMessage);
 
 function handelSpinner() {
   spinner.classList.toggle('hidden');
