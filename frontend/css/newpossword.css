@@ -21,7 +21,7 @@ body {
   padding: 15rem 0;
 }
 
-.forgotpassword-cart {
+.newpossword-cart {
   max-width: 42rem;
   height: 48rem;
   margin: 0 auto;
@@ -50,24 +50,24 @@ body {
   line-height: 1.2;
   color: black;
 }
-.forgotpassword-text {
+.newpossword-text {
   padding: 0 3rem;
   text-align: center;
 }
 
-.forgotpassword-text p {
+.newpossword-text p {
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.2;
 }
-.forgotpassword-input {
+.newpossword-input {
   display: flex;
   align-items: center;
   justify-content: center;
   outline: 0.2rem solid #4b4b4b;
   border-radius: 1.5rem;
 }
-.forgotpassword-input input {
+.newpossword-input input {
   width: 27rem;
   height: 1.8rem;
   padding: 2rem;
