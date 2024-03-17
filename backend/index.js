@@ -5,7 +5,11 @@ const UserRoute=require("./routes/Users");
 const EntreeRoute=require("./routes/Entrees");
 const NomenclatureRoute=require("./routes/Nomenclatures");
 const cors=require("cors");
-app.use(cors());
+const corsOptions = {
+    credentials: true,
+    origin: ['http://localhost:3000', 'http://localhost:80'] // Whitelist the domains you want to allow
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/Users", UserRoute);
 app.use("/Entrees", EntreeRoute);
