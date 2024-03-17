@@ -38,7 +38,7 @@ function handelErrorMessage(
 }
 
 async function login() {
-  console.log(email.value, password.value);
+  // console.log(email.value, password.value);
 
   // Validation if needed
 
