@@ -63,21 +63,22 @@ body {
 .newpossword-input {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   outline: 0.2rem solid #4b4b4b;
   border-radius: 1.5rem;
+  padding: 0.6rem 0.6rem;
 }
 .newpossword-input input {
   width: 27rem;
   height: 1.8rem;
-  padding: 2rem;
+  margin-left: 0.8rem;
   border: 0;
   outline: none;
   font-size: 1.6rem;
   line-height: 2.4rem;
 }
 .input-icon {
-  margin-right: 2rem;
+  margin-right: 0.8rem;
   font-size: 3.2rem;
 }
 a.password-icon:link,
@@ -88,9 +89,6 @@ a.password-icon:visited {
 a.password-icon:hover,
 a.password-icon:active {
   color: #477ce2;
-}
-.hidden {
-  display: none;
 }
 
 /* --------- forgotpassword btn ---------- */
@@ -104,4 +102,37 @@ a.password-icon:active {
   font-size: 1.6rem;
   color: white;
   cursor: pointer;
+}
+
+/*error input*/
+.newpossword-error {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.8rem;
+  padding: 0.6rem 0.6rem;
+  outline: 0.2rem solid red;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+.newpossword-error input {
+  border: 0;
+  outline: none;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  margin-left: 2rem;
+}
+.text-err {
+  font-size: 1.6rem;
+  color: red;
+}
+.icon-error {
+  color: red;
+}
+.input-icon-error {
+  font-size: 3.2rem;
+}
+
+.hidden {
+  display: none;
 }
