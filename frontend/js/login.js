@@ -77,7 +77,7 @@ async function login() {
       }
     }
   } catch (err) {
-    console.error(`ERROR ${err}`);
+    handelErrorMessage('show', `Le serveur est indisponible!!`);
   }
 }
 
