@@ -2,7 +2,6 @@ const form = document.querySelector('.forgotpassword-cart');
 const spinner = document.querySelector('.spinner-container');
 const btn = document.querySelector('.forgotpassword-btn');
 const email = document.getElementById('email');
-email.value = 'ms.senhadji@esi-sba.dz';
 
 function handelSpinner() {
   spinner.classList.toggle('hidden');
@@ -23,12 +22,12 @@ form.addEventListener('submit', async e => {
     console.log(res);
     if (!res.ok) throw new Error('Some shit is wrong');
     if (res.status === 200)
-      console.log(
-        'Un e-mail de réinitialisation de mot de passe a été envoyé.'
-      );
+      window.location.href = `../html/newpassword.html?email=${encodeURIComponent(
+        email.value
+      )}`;
     else console.log("Erreur lors de l'envoi du courriel.");
   } catch (err) {
-    console.log(err);
+    console.error(err);
   } finally {
     handelSpinner();
   }
