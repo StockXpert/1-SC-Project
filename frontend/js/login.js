@@ -12,6 +12,8 @@ paragraphElement.className = 'text-err';
 
 passwordIcon.addEventListener('click', function (e) {
   e.preventDefault();
+  if (!password.value) return;
+
   if (password.type === 'password') {
     password.type = 'text';
   } else {
@@ -21,7 +23,11 @@ passwordIcon.addEventListener('click', function (e) {
     child.classList.toggle('hidden');
   });
 });
-
+/**
+ *
+ * @param {* 'show': to display error message or 'hide' (by default): to hide the error message} action
+ * @param {* error message by dafault is Email ou mot de passe incorrect.} message
+ */
 function handelErrorMessage(
   action = 'hide',
   message = 'Email ou mot de passe incorrect.'
@@ -34,7 +40,7 @@ function handelErrorMessage(
 }
 
 async function login() {
-  console.log(email.value, password.value);
+  // console.log(email.value, password.value);
 
   // Validation if needed
 
@@ -69,7 +75,7 @@ async function login() {
           handelErrorMessage('show');
         } else {
           console.error('Unknown error:', data.response);
-          handelErrorMessage('show', `${res.status} ERROR: ${'Unknown error'}`);
+          handelErrorMessage('show', `${res.status} ERROR: ${res.statusText}`);
         }
       } else if (res.status === 500) {
         console.error('Internal server error');
@@ -77,7 +83,7 @@ async function login() {
       }
     }
   } catch (err) {
-    console.error(`ERROR ${err}`);
+    handelErrorMessage('show', `Le serveur est indisponible!!`);
   }
 }
 

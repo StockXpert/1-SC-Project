@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashbord</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/dashbord.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- sidebar sectionnnn -->
+      <aside>
+        <div class="toggle">
+          <div class="logo">
+            <img
+              src="../img/logo.png"
+              alt="image du logo de lentreprise codexpert"
+            />
+          </div>
+          <div class="close" id="close-btn">
+            <span class="material-icons-sharp"> close </span>
+          </div>
+        </div>
+        <div class="sidebar">
+          <a href="">
+            <span class="material-icons-sharp"> dashboard </span>
+            <h3>Dashboard</h3>
+          </a>
+          <a href="" class="active">
+            <span class="material-icons-sharp"> person_outline</span>
+            <h3>Utilisateurs</h3>
+          </a>
+          <a href="">
+            <span class="material-icons-sharp"> groups </span>
+            <h3>Consommateurs</h3>
+          </a>
+          <a href="">
+            <span class="material-icons-sharp"> school </span>
+            <h3>Structures</h3>
+          </a>
+          <a href="">
+            <span class="material-icons-sharp"> query_stats </span>
+            <h3>Statistiques</h3>
+          </a>
+          <a href="">
+            <span class="material-icons-sharp"> work </span>
+            <h3>Rôles</h3>
+          </a>
+          <a href="">
+            <span class="material-icons-sharp"> manage_accounts </span>
+            <h3>Permissions</h3>
+          </a>
+
+          <a href="">
+            <span class="material-icons-sharp"> app_registration </span>
+            <h3>Modification</h3>
+          </a>
+
+          <a href="">
+            <span class="material-icons-sharp"> history </span>
+            <h3>Archive</h3>
+          </a>
+
+          <a href="">
+            <span class="material-icons-sharp"> logout </span>
+            <h3>Se deconnecter</h3>
+          </a>
+        </div>
+      </aside>
+      <!-- fin of sidebar -->
+
+      <!-- debut de main content -->
+      <main></main>
+      <!-- fin du main content -->
+
+      <!-- debut de section pour user en haut a droite -->
+      <div class="right-section">
+        <div class="nav">
+          <button id="menu-btn">
+            <span class="material-icons-sharp"> menu </span>
+          </button>
+          <div class="profile">
+            <div class="info">
+              <p>BAGHDADLI <b>Abdelhadi</b></p>
+              <small class="text-muted">Administrateur</small>
+            </div>
+            <div class="profile-photo">
+              <img src="../img/use-img.jpeg" alt="photo du user" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fint de section pour user en haut a droite -->
+    </div>
+    <script src="dashbord.js"></script>
+  </body>
+</html>
