@@ -41,7 +41,11 @@ async function login(req, res) {
               );
               res
                 .status(200)
-                .json({ response: 'succuss of login', jwt: token });
+                .json({
+                  response: 'succuss of login',
+                  jwt: token,
+                  role: response.role,
+                });
             } else res.status(404).json({ response: 'Password error' });
           })
           .catch(error => {

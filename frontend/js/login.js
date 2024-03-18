@@ -62,7 +62,8 @@ async function login() {
       // Store the JWT
       localStorage.setItem('JWT', data.jwt);
       //redirect the user
-      window.location.href = '../html/foo.html';
+      if (data.role === 'Admin') window.location.href = '../html/dashbord.html';
+      else window.location.href = '../html/foo.html';
     } else {
       if (res.status === 404) {
         if (data.response === 'not existing account') {
