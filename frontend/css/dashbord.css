@@ -531,7 +531,7 @@ table tbody tr:last-child td {
   display: flex;
   align-items: center;
   padding: 0.6rem;
-  gap: 2rem;
+  gap: 2.4rem;
 }
 .dropbtn-text {
   display: flex;
@@ -540,7 +540,6 @@ table tbody tr:last-child td {
   align-items: center;
 }
 .dropbtn {
-  width: 10rem;
   height: 1.8rem;
   display: flex;
   align-items: center;
