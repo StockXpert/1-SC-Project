@@ -480,6 +480,11 @@ table tbody tr:last-child td {
   background-color: #4b4b4b;
   border: none;
 }
+.details-btn {
+  background-color: transparent;
+  color: #4b4b4b;
+  cursor: pointer;
+}
 .colomn-tags {
   font-size: 1.2rem;
   font-weight: 600;
@@ -501,6 +506,7 @@ table tbody tr:last-child td {
 }
 .info-icon {
   font-size: 2.1rem;
+  color: #4b4b4b;
 }
 
 .active-status {
