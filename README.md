@@ -21,14 +21,14 @@ body
     "response": "not existing account"(status 404) or response: "Password error"(status 404) 
     or "response": "Internal server error" status(500)
 }
-#forgot password
+# forgot password
 localhost:3000/Users/forgotPassword
-#input
+## input
 body
 {
    "email":
 }
-#output
+## output
 success case:
 'Un e-mail de réinitialisation de mot de passe a été envoyé.'
 echec case:
@@ -36,16 +36,16 @@ body
 {
     "response": "Internal server error" status(500)
 }
-#change password (case of forgot)
+# change password (case of forgot)
 localhost:3000/Users/changePasswordMail
-#input
+## input
 body
 {
    "email",
    "code", 
    "newPassword"
 }
-#output
+## output
 in case of success
 body
 {
@@ -56,9 +56,9 @@ body
 {
     "response":'internal error' or 'code invalid'
 }
-#change password (case of the user is connected)
+# change password (case of the user is connected)
 localhost:3000/Users/changePasswordAuth
-#input
+## input
 header
 {
     "Authorization":jwt
@@ -67,7 +67,7 @@ body
 {
     "newPassword"
 }
-#output
+## output
 in case of success
 body
 {
@@ -78,9 +78,9 @@ body
 {
     "response":'internal error' or 'code invalid'
 }
-#register (admin only)
+# register (admin only)
 localhost:3000/Users/register
-#input
+## input
 header
 {
     "Authorization":jwt
@@ -112,7 +112,7 @@ body
     role,
     password
 }
-#output
+## output
 in case of success
 body
 {
@@ -123,9 +123,9 @@ body
 {
     "response":'internal error'
 }
-#show user (show the authentificated user)
+# show user (show the authentificated user)
 localhost:3000/Users/showUser
-#input
+## input
 header
 {
     "Authorization":jwt
@@ -134,7 +134,7 @@ body
 {
     
 }
-#output
+## output
 in case of success
 body
 {
@@ -145,9 +145,9 @@ body
 {
     "response":'internal error'
 }
-#show user (show the authentificated user)
+# show user (show the authentificated user)
 localhost:3000/Users/showUser
-#input
+## input
 header
 {
     "Authorization":jwt
@@ -156,7 +156,7 @@ body
 {
     
 }
-#output
+## output
 in case of success
 body
 {
