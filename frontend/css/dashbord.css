@@ -312,17 +312,18 @@ aside .sidebar a:hover span {
 .add-users {
   display: flex;
   justify-content: center;
-  width: 8rem;
-  height: 2.5rem;
-
   background-color: var(--color-primary);
   border-radius: 25px;
 }
 .add-users-btn {
+  width: 8rem;
+  height: 2.5rem;
   font-size: 1rem;
   font-weight: 700;
   color: white;
   background-color: var(--color-primary);
+  cursor: pointer;
+  border-radius: 25px;
 }
 
 .heading-table {
@@ -347,6 +348,7 @@ aside .sidebar a:hover span {
   border: 1px solid #929292;
   box-shadow: 1px 1px 1px 0px #00000066;
   border-radius: 20px;
+  cursor: pointer;
 }
 .btn-edit {
   color: black;
@@ -550,6 +552,7 @@ table tbody tr:last-child td {
   background-color: white;
   box-shadow: 1px 1px 1px 0px #00000066;
   border: 1px solid #e4e4e4;
+  cursor: pointer;
 }
 .dropbtn p {
   font-size: 0.9rem;
