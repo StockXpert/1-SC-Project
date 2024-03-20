@@ -248,11 +248,129 @@ aside .sidebar a:hover span {
   /* gap: 1rem; */
 }
 .main-table {
-  display: grid;
-  grid-template-rows: 1fr 10fr;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 .users-table {
-  border-radius: 2rem;
+  /* border-radius: 2rem;
   box-shadow: 0px 10px 10px 10px #00000040;
-  border: 1px solid;
+  border: 1px solid; */
+}
+
+.line-style {
+  border: 0.8px solid #4b4b4b;
+  border-radius: 2px;
+}
+
+.main-table {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.users-searchbar {
+  background-color: white;
+  box-shadow: 0px 2px 10px 0px #00000080;
+  border-radius: 20px;
+  /* padding-bottom: 4rem; */
+}
+.container-searchbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0.6rem;
+}
+.searchbar {
+  width: 30rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 0.2rem 0.2rem;
+  border-radius: 25px;
+  outline: 1px solid #e4e4e4;
+  box-shadow: 1px 1px 1px 0px #00000066;
+}
+.searchbar span {
+  padding: 0.4rem 0.4rem;
+  color: #9a9a9a;
+}
+.searchbar-text {
+  font-size: 1.1rem;
+  padding: 0.4rem 0.4rem;
+  border-radius: 25px;
+}
+.searchbar-text::placeholder {
+  color: #9a9a9a;
+}
+.add-users {
+  display: flex;
+  justify-content: center;
+  width: 8rem;
+  height: 2.5rem;
+
+  background-color: var(--color-primary);
+  border-radius: 25px;
+}
+.add-users-btn {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  background-color: var(--color-primary);
+}
+
+.heading-table {
+  display: flex;
+  flex-direction: column;
+}
+.container-heading-table {
+  display: flex;
+  justify-content: space-between;
+}
+.heading-table-btns {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.heading-table-btn {
+  width: 8rem;
+  height: 2.5rem;
+  font-weight: 700;
+  padding: 0.4rem 0.4rem;
+  font-size: 1rem;
+  border: 1px solid #929292;
+  box-shadow: 1px 1px 1px 0px #00000066;
+  border-radius: 20px;
+}
+.btn-edit {
+  color: black;
+  background-color: white;
+}
+.btn-delete {
+  color: white;
+  background: #e24747;
+}
+.heading-table-text {
+  display: flex;
+  gap: 1rem;
+}
+.table-text {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 3rem;
+  color: #4b4b4b;
+}
+.number-users {
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 3rem;
+  color: #4b4b4b;
+}
+.line-style-table {
+  border: 1px solid #949494;
 }

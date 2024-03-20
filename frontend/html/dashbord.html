@@ -75,6 +75,7 @@
 
       <!-- debut de main content -->
       <main class="main-container">
+        <!-- photo de profile + nom et role -->
         <div class="right-section">
           <div class="nav">
             <button id="menu-btn">
@@ -92,9 +93,49 @@
           </div>
         </div>
         <div class="main-table">
-          <h1>Users</h1>
-          <div class="users-table">
-            <p>ouchama</p>
+          <div class="heading">
+            <h1>Utilisateurs</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="users-searchbar">
+            <div class="container-searchbar">
+              <div class="searchbar">
+                <span class="material-icons-sharp"> search </span>
+                <input
+                  type="text"
+                  class="searchbar-text"
+                  placeholder="Entrez le nom de l'utilisateur"
+                />
+              </div>
+              <div class="add-users">
+                <button class="add-users-btn">Ajouter</button>
+              </div>
+            </div>
+          </div>
+          <!-- tableau principale -->
+          <div class="table">
+            <div class="heading-table">
+              <div class="container-heading-table">
+                <div class="heading-table-text">
+                  <p class="table-text">
+                    Tout les Utilisateurs (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns">
+                  <button class="heading-table-btn btn-edit">Modifier</button>
+                  <button class="heading-table-btn btn-delete">
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
           </div>
         </div>
       </main>
