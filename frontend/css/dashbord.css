@@ -278,7 +278,7 @@ aside .sidebar a:hover span {
   background-color: white;
   box-shadow: 0px 2px 10px 0px #00000080;
   border-radius: 20px;
-  /* padding-bottom: 4rem; */
+  padding: 0.2rem;
 }
 .container-searchbar {
   display: flex;
@@ -381,7 +381,7 @@ aside .sidebar a:hover span {
 }
 
 .table-container {
-  max-height: 395px;
+  max-height: 51.2vh;
   overflow-y: auto;
   border-radius: 20px;
   box-shadow: 0px 2px 10px 0px #00000066;
@@ -524,4 +524,44 @@ table tbody tr:last-child td {
   color: #ffffff;
   background-color: #545454;
   border-radius: 15px;
+}
+
+/* filtres */
+.container-filter {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem;
+  gap: 2rem;
+}
+.dropbtn-text {
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.6rem;
+  align-items: center;
+}
+.dropbtn {
+  width: 10rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 1px 1px 1px 0px #00000066;
+  border: 1px solid #e4e4e4;
+}
+.dropbtn p {
+  font-size: 0.9rem;
+  color: #4b4b4b;
+  font-weight: 400;
+}
+.filter-text {
+  font-size: 0.9rem;
+  color: #000000;
+  font-weight: 600;
+}
+
+.dropbtn span {
+  font-size: 1.6rem;
+  /* padding: 0.6rem; */
 }
