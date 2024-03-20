@@ -286,7 +286,7 @@ aside .sidebar a:hover span {
   padding: 0.6rem 0.6rem;
 }
 .searchbar {
-  width: 30rem;
+  /* width: 35vw; */
   height: 2.5rem;
   display: flex;
   align-items: center;
@@ -301,6 +301,7 @@ aside .sidebar a:hover span {
   color: #9a9a9a;
 }
 .searchbar-text {
+  width: 35vw;
   font-size: 1.1rem;
   padding: 0.4rem 0.4rem;
   border-radius: 25px;
@@ -528,10 +529,11 @@ table tbody tr:last-child td {
 
 /* filtres */
 .container-filter {
+  width: 35vw;
   display: flex;
   align-items: center;
   padding: 0.6rem;
-  gap: 2.4rem;
+  gap: 3.5rem;
 }
 .dropbtn-text {
   display: flex;
