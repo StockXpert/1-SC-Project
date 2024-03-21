@@ -368,7 +368,7 @@
       <!-- fin du main content -->
 
       <!-- debut de section pour ajouter un  user -->
-      <div class="add-user-container">
+      <div class="add-user-container hidden">
         <form class="add-user-cart">
           <button class="close-btn">
             <span class="material-icons-sharp close-btn"> close </span>
@@ -377,10 +377,6 @@
           <div class="heading-add-user">
             <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
           </div>
-          <!-- <div class="error-message hidden">
-            <ion-icon class="error-icon" name="close-circle-outline"></ion-icon>
-             <p class="text-err">Email deja utilisé</p>
-          </div>  -->
           <!-- for inputs -->
           <div class="inputs">
             <div class="dropdown-roles">
@@ -453,8 +449,22 @@
       </div>
       <!-- fin de section  ajouter un  user -->
 
+      <!-- section pour supprimer user etes vous sure de vouloir supprimer -->
+      <div class="container-supp-user hidden">
+        <form class="supp-user-cart">
+          <p class="supp-user-text">
+            Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action
+            est irréversible et toutes les données associées seront perdues.
+          </p>
+          <div class="supp-user-btns">
+            <button class="btn-supp supp-user-annuler">Annuler</button>
+            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+          </div>
+        </form>
+      </div>
+
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
-      <div id="overlay"></div>
+      <div id="overlay hidden"></div>
     </div>
     <script src="../js/dashbord.js"></script>
   </body>
