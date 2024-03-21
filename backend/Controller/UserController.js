@@ -39,13 +39,10 @@ async function login(req, res) {
                 SecretKey,
                 { expiresIn: '30m' }
               );
+              let role = response.role;
               res
                 .status(200)
-                .json({
-                  response: 'succuss of login',
-                  jwt: token,
-                  role: response.role,
-                });
+                .json({ response: 'succuss of login', jwt: token, role });
             } else res.status(404).json({ response: 'Password error' });
           })
           .catch(error => {
@@ -104,12 +101,20 @@ function showUsers(req, res) {
 }
 function showUser(req, res) {
   userModel
-    .getUser(req.email)
-    .then(results => {
-      res.status(200).json({ response: results });
+    .getRole(req.email)
+    .then(role => {
+      userModel
+        .getUser(req.email, role)
+        .then(Users => {
+          res.status(200).json({ response: Users });
+        })
+        .catch(error => {
+          res.status(500).json({ response: error });
+        });
     })
     .catch(error => {
-      res.status(500).json({ error: 'internal error' });
+      console.log(error);
+      res.status(500).json({ response: error });
     });
 }
 function forgotPassword(req, res) {

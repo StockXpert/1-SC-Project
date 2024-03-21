@@ -1,10 +1,37 @@
 const mysql=require('mysql');
 const connectionConfig = {
-  host: 'sql11.freemysqlhosting.net',
-  user: 'sql11691251',
-  password: 'QjdjqXx86J',
-  database: 'sql11691251'
+  host: 'sql11.freesqldatabase.com',
+  user: 'sql11693152',
+  password: 'GujpSNqWUm',
+  database: 'sql11693152'
 };
+function getRole(email) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = "SELECT role FROM utilisateur WHERE email = ?";
+    const values = [email];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        console.log(results)
+        resolve(results[0].role); // Récupérer le rôle depuis le premier résultat
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function insertUser(email,role, password) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
@@ -123,12 +150,26 @@ function getUsers()
     });
   }); 
 }
-function getUser(email)
+function getUser(email,role)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    
-    const query = 'SELECT email,role FROM utilisateur where email = ?';
+    console.log({role})
+    switch (role) {
+      case 'Consommateur':
+           
+           query= 'SELECT U.email,role,date_naissance,nom,prenom,type FROM utilisateur U,consommateur C where C.email = ? and U.email=C.email'       
+            break;
+      case 'RD':
+           query= 'SELECT U.email,role,date_naissance,nom,prenom FROM utilisateur U,reponsable R where R.email = ? and U.email=R.email'       
+            break;
+      case 'DG':
+           query= 'SELECT U.email,role,date_naissance,nom,prenom FROM utilisateur U,reponsable R where R.email = ? and U.email=R.email'       
+            break;      
+      default:
+        query = 'SELECT email,role FROM utilisateur where email = ?';
+        break;
+    }
     const values=[email]
     connection.connect((err) => {
       if (err) {
@@ -515,7 +556,7 @@ function showResp()
 module.exports={insertUser,verifyUser,getPassword,getUsers,getUser,changePassword,
                 updateInformations,deletePerson,getStructurId,createConsommateur,addStructure
                 ,afficherConsommateurs,responsable,getconsommateurId,getStructures,
-                 addResponsable,showResp};
+                 addResponsable,showResp,getRole};
 
 
 
