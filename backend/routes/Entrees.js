@@ -3,5 +3,5 @@ const router=express.Router();
 const EntreeController=require('../Controller/EntreeController');
 const authMiddleware=require('../Middlewares/authMiddleware');
 router.get("/ficheBesoins",authMiddleware,EntreeController.genererFicheBesoins)
-
+router.post('/bonCommande',authMiddleware,EntreeController.genererBondeCommande)
 module.exports=router;

@@ -1,9 +1,9 @@
 const mysql=require('mysql');
 const connectionConfig = {
-  host: 'sql11.freemysqlhosting.net',
-  user: 'sql11691251',
-  password: 'QjdjqXx86J',
-  database: 'sql11691251'
+  host: 'sql11.freesqldatabase.com',
+  user: 'sql11693152',
+  password: 'GujpSNqWUm',
+  database: 'sql11693152'
 };
 function getChapterId(chapitre)
 {
@@ -150,7 +150,7 @@ function addArticleProduct(articleId,productId)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into contient (num_article,id_produit) values (?,?)';
+        const query = 'insert into contient (id_article,id_produit) values (?,?)';
         const values = [articleId,productId];
       
         connection.connect((err) => {
@@ -454,7 +454,39 @@ function getArticles()
     });
   });
 }
+function getFournisseur(raisonSociale) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = 'SELECT * FROM fournisseur WHERE raison_sociale = ?';
+    const values = [raisonSociale];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        connection.end(); // Move connection closure here to ensure it's executed after query execution
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+
+        resolve(results);
+      });
+    });
+    
+    // Handle connection errors outside of the connect callback
+    connection.on('error', (err) => {
+      console.error('Erreur de connexion :', err);
+      reject("connexion erreur");
+    });
+  });
+}
 module.exports={getChapterId,addArticle,addProduct,getArticleId,getProductId,addArticleProduct,
                 deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
-                ,getArticles,getChapters}
+                ,getArticles,getChapters,getFournisseur}
