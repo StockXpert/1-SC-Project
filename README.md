@@ -145,8 +145,8 @@ body
 {
     "response":'internal error'
 }
-# show user (show the authentificated user)
-localhost:3000/Users/showUser
+# show users (show the authentificated user)
+localhost:3000/Users/showUsers
 ## input
 header
 {
