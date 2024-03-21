@@ -475,7 +475,7 @@ function getFournisseur(raisonSociale) {
           return;
         }
 
-        resolve(results);
+        resolve(results[0]);
       });
     });
     

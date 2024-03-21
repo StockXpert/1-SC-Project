@@ -10,16 +10,14 @@ function getDate()
     jour = jour < 10 ? '0' + jour : jour;
     return `${annee}-${mois}-${jour}`;
 }
-async function genererBondeCommande(num_commande,produits,fournisseur,objet,type,copyId)
+async function genererBondeCommande(num_commande,produits,fourn,objet,type,copyId)
 {
     return new Promise(async(resolve,reject)=>{
         //const copyId=googleMiddleware.getCopy(".l..")
         await googleMiddleware.updateCel('C1',`République Algerienne démoctatique et populaire
         Bon de commande
         ${num_commande} ${getDate()}`,copyId);
-        console.log(fournisseur)
-        nomencaltureModel.getFournisseur(fournisseur).then(async(fournisseur)=>{
-            console.log(fournisseur)
+        nomencaltureModel.getFournisseur(fourn).then(async(fournisseur)=>{
             await googleMiddleware.updateCel('C9',"Nom et prénom"+fournisseur.raison_sociale,copyId)
             await googleMiddleware.updateCel('C9',"Ou Raison Sociale:"+fournisseur.raison_sociale,copyId)
             await googleMiddleware.updateCel('C12',"Telephone et fax:"+fournisseur.telephone+"/"+fournisseur.fax,copyId)
