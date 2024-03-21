@@ -551,4 +551,5 @@ router.get('/showStructure', authMiddleware, UserController.showStructure);
  *                   description: Message d'erreur.
  */
 router.get('/showResp', authMiddleware, UserController.showResp);
+router.post('/changeStatus',authMiddleware,UserController.changeStatus)
 module.exports=router;
