@@ -8,6 +8,14 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
       rel="stylesheet"
     />
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
     <link rel="stylesheet" href="../css/dashbord.css" />
   </head>
   <body>
@@ -359,9 +367,100 @@
       </main>
       <!-- fin du main content -->
 
-      <!-- debut de section pour user en haut a droite -->
+      <!-- debut de section pour ajouter un  user -->
+      <div class="add-user-container">
+        <form class="add-user-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp close-btn">
+              close
+              </span>
+        </button>
 
-      <!-- fint de section pour user en haut a droite -->
+          <div class="heading-add-user">
+            <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
+          </div>
+          <!-- <div class="error-message hidden">
+            <ion-icon class="error-icon" name="close-circle-outline"></ion-icon>
+             <p class="text-err">Email deja utilisé</p>
+          </div>  -->
+          <!-- for inputs -->
+          <div class="inputs">
+            <div class="dropdown-roles">
+              <select 
+              name="roles" id="role-options"
+              placeholder="Selectionnés le rôle" 
+              required
+              >
+              <option value=""  selected="" disabled="">Rôles</option>
+              <option value="1">Directeur</option>
+              <option value="2">Résponsable direct</option>
+              <option value="3">Maganisier</option>
+              <option value="4">
+                Service Achat
+              </option>
+              <option value="5">Consommateur</option>
+            </select>
+            </div>
+            <div class="input-groupe">
+              <input
+                type="text"
+                class="input"
+                id="name"
+                placeholder="Nom et Prénom"
+                
+              />
+              <ion-icon class="input-icon"name="person-outline"></ion-icon>
+   
+            </div>
+            <div class="input-groupe">
+              <input
+                type="date"
+                class="input"
+                id="date"
+                placeholder="Entrez la date de naissance"
+                
+              />
+              <ion-icon class="input-icon"name="calendar-number-outline"></ion-icon>
+
+            </div>
+            <div class="input-groupe">
+              <input
+                type="email"
+                class="input"
+                id="email"
+                placeholder="Entrez l'email"
+                required
+              />
+              <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+            </div>
+            <div class="input-groupe">
+              <input
+                type="password"
+                class="input"
+                id="password"
+                placeholder="Entrez le mot de passe"
+                required
+              />
+              <a class="password-icon" href="#">
+                <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                <ion-icon
+                  class="input-icon hidden"
+                  name="eye-off-outline"
+                ></ion-icon>
+              </a>
+            </div>
+            <div class="create-btn">
+              <button>Crée l'utilisateur</button>
+            </div>
+          </div>
+        
+        </div>
+        </form>
+      </div>
+      <!-- fin de section  ajouter un  user -->
+
+      <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
+      <div id="overlay"></div>
     </div>
     <script src="dashbord.js"></script>
   </body>
