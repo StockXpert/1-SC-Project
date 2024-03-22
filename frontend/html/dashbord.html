@@ -459,7 +459,91 @@
         </div>
       </div>
       <!-- fin de section  ajouter un  user -->
+      <!-- debut popup pour modifier user  -->
+      <div class="edit-user-container">
+        <div class="edit-user-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
 
+          <div class="heading-add-user">
+            <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="inputs">
+            <div class="dropdown-roles">
+              <select
+                name="roles"
+                id="role-options"
+                placeholder="Selectionnés le rôle"
+                required
+              >
+                <option value="" selected="" disabled="">Rôles</option>
+                <option value="DG">Directeur</option>
+                <option value="RD">Résponsable direct</option>
+                <option value="Maganisier">Maganisier</option>
+                <option value="Service achat">Service Achat</option>
+                <option value="Consommateur">Consommateur</option>
+              </select>
+            </div>
+            <div class="input-groupe">
+              <input
+                name="name"
+                type="text"
+                class="input"
+                id="name"
+                placeholder="Nom et Prénom"
+              />
+              <ion-icon class="input-icon" name="person-outline"></ion-icon>
+            </div>
+            <div class="input-groupe">
+              <input
+                name="date"
+                type="date"
+                class="input"
+                id="date"
+                placeholder="Entrez la date de naissance"
+              />
+              <ion-icon
+                class="input-icon"
+                name="calendar-number-outline"
+              ></ion-icon>
+            </div>
+            <div class="input-groupe">
+              <input
+                name="email"
+                type="email"
+                class="input"
+                id="email"
+                placeholder="Entrez l'email"
+                required
+              />
+              <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+            </div>
+            <div class="input-groupe">
+              <input
+                name="password"
+                type="password"
+                class="input"
+                id="password"
+                placeholder="Entrez le mot de passe"
+                required
+              />
+              <a class="password-icon" href="#">
+                <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                <ion-icon
+                  class="input-icon hidden"
+                  name="eye-off-outline"
+                ></ion-icon>
+              </a>
+            </div>
+            <div class="create-btn">
+              <button>Crée l'utilisateur</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- debut popup pour modifier user  -->
       <!-- section pour supprimer user etes vous sure de vouloir supprimer -->
       <div class="container-supp-user hidden">
         <form class="supp-user-cart">
