@@ -12,7 +12,7 @@ export const loadSearchResults = async function (query) {
     state.search.query = query;
     //TODO: ${API_URL}
     const data = await getJSON(`${API_URL}/Users/showUsers`);
-    console.log(data);
+    // TODO: console.log(data);
 
     state.search.results = data.response.map(usr => {
       return {

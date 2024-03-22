@@ -9,7 +9,7 @@ class UsersView extends View {
     return this._data.map(this._generateMarkupPreview).join('');
   }
   _generateMarkupPreview(result) {
-    console.log(result);
+    // TODO: console.log(result);
     // const id = window.location.hash.slice(1);
     return `
     <tr>
@@ -22,7 +22,7 @@ class UsersView extends View {
     <td>${result.email}</td>
     <td class="table-status ${
       result.active ? 'active-status' : 'inactif-status'
-    }">${result.active ? 'Actif' : 'Inactif'}</td>
+    }">${result.active ? 'Activé' : 'Désactivé'}</td>
     <td><p class="admin-role">${result.roles}</p></td>
     <td>
       <button class="details-btn">
