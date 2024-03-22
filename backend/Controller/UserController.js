@@ -276,12 +276,16 @@ function showResp(req, res) {
       res.status(200).json({ response: 'internal error' });
     });
 }
-function changeStatus(req,res)
-{
-  const {email}=req.body;
-  userModel.updateStatus(email).then(()=>{
-    res.status(200).json({response:'status changed'});
-  }).catch(()=>{res.status(500).json({response:'internal error'})})
+function changeStatus(req, res) {
+  const { email } = req.body;
+  userModel
+    .updateStatus(email)
+    .then(() => {
+      res.status(200).json({ response: 'status changed' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
 }
 module.exports = {
   login,
@@ -300,5 +304,5 @@ module.exports = {
   showStructure,
   updateRespInformations,
   showResp,
-  changeStatus
+  changeStatus,
 };

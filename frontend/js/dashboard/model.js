@@ -11,7 +11,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     //TODO: ${API_URL}
-    const data = await getJSON(`http://localhost:3000/Users/showConsumers`);
+    const data = await getJSON(`${API_URL}/Users/showConsumers`);
     console.log(data);
 
     state.search.results = data.response.map(usr => {
@@ -19,6 +19,8 @@ export const loadSearchResults = async function (query) {
         email: usr.email,
         prenom: usr.prenom,
         nom: usr.nom,
+        //TODO: they are all set to active for now
+        active: true,
       };
     });
   } catch (err) {
