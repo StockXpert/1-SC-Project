@@ -16,7 +16,7 @@ class UsersView extends View {
     <td>
       <div class="checkbox-colomn">
         <input type="checkbox" id="checkbox-table" />
-        <p class="colomn-tags-name">${result.prenom + ' ' + result.nom}</p>
+        <p class="colomn-tags-name">${result.nom + ' ' + result.prenom}</p>
       </div>
     </td>
     <td>${result.email}</td>
