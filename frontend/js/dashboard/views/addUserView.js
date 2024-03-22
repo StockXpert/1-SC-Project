@@ -1,14 +1,14 @@
 import { state } from '../model.js';
-import View from 'View.js';
+import View from './view.js';
 
 class AddUserView extends View {
   _window = document.querySelector('.add-user-container');
-  _overlay = document.querySelector('#overlay');
+  _overlay = document.querySelector('.overlay');
   _btnOpen = document.querySelector('.add-users-btn');
   _btnClose = document.querySelector('.close-btn');
+  _parentElement = document.querySelector('.add-user-cart');
 
   constructor() {
-    console.log('made');
     super();
     this._addHandlerShowWindow();
     this._addHandlerHideWindow();
@@ -27,7 +27,20 @@ class AddUserView extends View {
     this._overlay.addEventListener('click', this.toggleWindow.bind(this));
   }
 
+  addHandlerUpload(handler) {
+    // console.log(this._parentElement);
+    this._parentElement.addEventListener('submit', function (e) {
+      e.preventDefault();
+      // console.log(this);
+      const dataArr = [...new FormData(this)];
+      // this=== this._parentElement (the upload form)
+      const data = Object.fromEntries(dataArr);
+      console.log(data);
+      handler(data);
+    });
+  }
+
   _generateMarkup() {}
 }
 
-export default new AddRecipeView();
+export default new AddUserView();

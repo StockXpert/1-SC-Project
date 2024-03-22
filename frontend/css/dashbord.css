@@ -809,7 +809,7 @@ a.password-icon:active {
 }
 /* pour flou */
 
-#overlay {
+.overlay {
   display: block;
   position: fixed;
   z-index: 999;

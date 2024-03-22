@@ -1,8 +1,8 @@
 const profileContainer = document.querySelector('.profile');
-console.log(profileContainer);
+// console.log(profileContainer);
 
 document.addEventListener('DOMContentLoaded', e => {
-  console.log(localStorage.getItem('JWT'));
+  // console.log(localStorage.getItem('JWT'));
   fetchUserInfo();
 });
 
@@ -31,8 +31,8 @@ async function fetchUserInfo() {
     if (!res.ok) throw new Error('Some shit is wrong');
     const data = await res.json();
     const [user] = data.response;
-    console.log(user);
-    console.log(data.response);
+    // console.log(user);
+    // console.log(data.response);
     displayUserInfo(user);
   } catch (error) {
     console.error(error);
