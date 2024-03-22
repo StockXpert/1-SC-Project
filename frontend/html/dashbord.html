@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashbord</title>
+    <title>Dashboard</title>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
       rel="stylesheet"
@@ -17,6 +17,7 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
     <link rel="stylesheet" href="../css/dashbord.css" />
+    <script type="module" src="../js/dashboard/controller.js"></script>
   </head>
   <body>
     <div class="container">
@@ -108,14 +109,14 @@
           <!-- searchbarre + btn ajouter -->
           <div class="users-searchbar">
             <div class="container-searchbar">
-              <div class="searchbar">
+              <form class="searchbar">
                 <span class="material-icons-sharp"> search </span>
                 <input
                   type="text"
                   class="searchbar-text"
                   placeholder="Entrez le nom de l'utilisateur"
                 />
-              </div>
+              </form>
               <div class="container-filter">
                 <button class="dropbtn">
                   <div class="dropbtn-text">
@@ -190,7 +191,7 @@
                     <th>Détails</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="results">
                   <!--une ligne nrml  -->
                   <tr>
                     <td>
