@@ -39,6 +39,7 @@ export const uploadUser = async function (data) {
     };
     console.log(postData);
     const resp = await sendJSON(`${API_URL}/Users/Register`, postData);
+
     console.log(resp);
   } catch (err) {
     console.error(err);

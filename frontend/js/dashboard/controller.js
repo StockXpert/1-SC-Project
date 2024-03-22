@@ -25,6 +25,7 @@ const controlAddUser = async function (newUser) {
     //TODO: addUserView.renderSpinner();
     await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
     //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
+    addUserView.toggleWindow();
     console.log(model.state.User);
     // update the view
     // usersView.render(model.state.User);
