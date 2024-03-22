@@ -1,5 +1,5 @@
 /* 86 prsq jai pris a partir de 1350 et jai div par 16 prsq c en em et pas px pour laptops*/
-@media (max-width: 84em) {
+@media (max-width: 114em) {
   .login {
     max-width: 95rem;
     height: 60rem;

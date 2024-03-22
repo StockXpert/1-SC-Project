@@ -28,6 +28,10 @@ function verifyToken(req, res, next) {
         if (req.role != 'Admin')
           return res.status(401).json({ error: 'Access denied' });
         break;
+      case '/changeStatus':
+        if (req.role != 'Admin')
+          return res.status(401).json({ error: 'Access denied' });
+        break;
       case '/showUsers':
         if (req.role != 'Admin')
           return res.status(401).json({ error: 'Access denied' });
