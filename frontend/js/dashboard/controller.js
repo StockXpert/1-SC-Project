@@ -2,9 +2,7 @@ import * as model from './model.js';
 import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
 import addUserView from './views/addUserView.js';
-
-// import 'core-js/stable';
-// import regeneratorRuntime from 'regenerator-runtime/runtime.js';
+import sideView from './views/sideView.js';
 
 const controlSearchResults = async function () {
   try {
@@ -44,3 +42,4 @@ const controlAddUser = async function (newUser) {
 
 searchView.addHandlerSearch(controlSearchResults);
 addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
+sideView.addHandlerUtilisateurs(controlSearchResults);

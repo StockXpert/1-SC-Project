@@ -17,8 +17,9 @@ export const loadSearchResults = async function (query) {
     state.search.results = data.response.map(usr => {
       return {
         email: usr.email,
-        prenom: usr.prenom,
+        prenom: usr.prénom,
         nom: usr.nom,
+        roles: usr.role,
         //TODO: they are all set to active for now
         active: true,
       };

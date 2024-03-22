@@ -23,7 +23,7 @@ class UsersView extends View {
     <td class="table-status ${
       result.active ? 'active-status' : 'inactif-status'
     }">${result.active ? 'Actif' : 'Inactif'}</td>
-    <td><p class="admin-role">Admin</p></td>
+    <td><p class="admin-role">${result.roles}</p></td>
     <td>
       <button class="details-btn">
         <span class="material-icons-sharp info-icon">
