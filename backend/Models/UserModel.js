@@ -123,12 +123,39 @@ function getPassword(email)
     });
   });
 }
+function updateStatus(email)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    
+    const query = 'update utilisateur set active= not active where email=?';
+    const values=[email]
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  }); 
+}
 function getUsers()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     
-    const query = 'SELECT email,role FROM utilisateur';
+    const query = 'SELECT email,role,active FROM utilisateur';
     
     connection.connect((err) => {
       if (err) {
@@ -158,16 +185,16 @@ function getUser(email,role)
     switch (role) {
       case 'Consommateur':
            
-           query= 'SELECT U.email,role,date_naissance,nom,prenom,type FROM utilisateur U,consommateur C where C.email = ? and U.email=C.email'       
+           query= 'SELECT active, U.email,role,date_naissance,nom,prenom,type FROM utilisateur U,consommateur C where C.email = ? and U.email=C.email'       
             break;
       case 'RD':
-           query= 'SELECT U.email,role,date_naissance,nom,prenom FROM utilisateur U,reponsable R where R.email = ? and U.email=R.email'       
+           query= 'SELECT active,U.email,role,date_naissance,nom,prenom FROM utilisateur U,reponsable R where R.email = ? and U.email=R.email'       
             break;
       case 'DG':
-           query= 'SELECT U.email,role,date_naissance,nom,prenom FROM utilisateur U,reponsable R where R.email = ? and U.email=R.email'       
+           query= 'SELECT active,U.email,role,date_naissance,nom,prenom FROM utilisateur U,reponsable R where R.email = ? and U.email=R.email'       
             break;      
       default:
-        query = 'SELECT email,role FROM utilisateur where email = ?';
+        query = 'SELECT active,email,role FROM utilisateur where email = ?';
         break;
     }
     const values=[email]
@@ -556,7 +583,7 @@ function showResp()
 module.exports={insertUser,verifyUser,getPassword,getUsers,getUser,changePassword,
                 updateInformations,deletePerson,getStructurId,createConsommateur,addStructure
                 ,afficherConsommateurs,responsable,getconsommateurId,getStructures,
-                 addResponsable,showResp,getRole};
+                 addResponsable,showResp,getRole,updateStatus};
 
 
 
