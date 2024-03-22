@@ -11,7 +11,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     //TODO: ${API_URL}
-    const data = await getJSON(`${API_URL}/Users/showConsumers`);
+    const data = await getJSON(`${API_URL}/Users/showUsers`);
     console.log(data);
 
     state.search.results = data.response.map(usr => {
@@ -26,5 +26,20 @@ export const loadSearchResults = async function (query) {
   } catch (err) {
     console.log(`${err} 💔`);
     throw err;
+  }
+};
+
+export const uploadUser = async function (data) {
+  try {
+    const postData = {
+      email: data.email,
+      role: data.roles,
+      password: data.password,
+    };
+    console.log(postData);
+    const resp = await sendJSON(`${API_URL}/Users/Register`, postData);
+    console.log(resp);
+  } catch (err) {
+    console.error(err);
   }
 };

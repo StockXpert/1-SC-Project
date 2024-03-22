@@ -31,9 +31,14 @@ class AddUserView extends View {
     // console.log(this._parentElement);
     this._parentElement.addEventListener('submit', function (e) {
       e.preventDefault();
-      // console.log(this);
-      const dataArr = [...new FormData(this)];
+      // this = document.querySelector('.inputs');
+      console.log(this);
+      const dataArr = [...new FormData(this.querySelector('.inputs'))];
+      // dataArr.forEach(([key, value]) => {
+      //   console.log(`Key: ${key}, Value: ${value}`);
+      // });
       // this=== this._parentElement (the upload form)
+      // console.log(dataArr);
       const data = Object.fromEntries(dataArr);
       console.log(data);
       handler(data);

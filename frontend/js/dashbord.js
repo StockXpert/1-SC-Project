@@ -21,7 +21,7 @@ function displayUserInfo(user) {
 
 async function fetchUserInfo() {
   try {
-    const res = await fetch('http://localhost:3000/Users/showConsumers', {
+    const res = await fetch('http://localhost:3000/Users/showUser', {
       method: 'GET',
       headers: {
         Authorization: localStorage.getItem('JWT'),

@@ -53,6 +53,7 @@ export const sendJSON = async function (url, uploadData) {
     const fetchPro = fetch(url, {
       method: 'POST',
       headers: {
+        Authorization: localStorage.getItem('JWT'),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(uploadData),

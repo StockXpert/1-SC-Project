@@ -31,11 +31,11 @@ const controlAddUser = async function (newUser) {
     // update the view
     // usersView.render(model.state.User);
 
-    addUserView.renderMessage();
+    // addUserView.renderMessage();
 
-    setTimeout(function () {
-      addUserView.toggleWindow();
-    }, MODAL_CLOSE_SEC * 1000);
+    // setTimeout(function () {
+    //   addUserView.toggleWindow();
+    // }, MODAL_CLOSE_SEC * 1000);
   } catch (err) {
     //TODO addUserView.renderError(err.message);
     console.error(err);

@@ -376,7 +376,7 @@
 
       <!-- debut de section pour ajouter un  user -->
       <div class="add-user-container hidden">
-        <form class="add-user-cart">
+        <div class="add-user-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
@@ -385,7 +385,7 @@
             <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
           </div>
           <!-- for inputs -->
-          <div class="inputs">
+          <form class="inputs">
             <div class="dropdown-roles">
               <select
                 name="roles"
@@ -394,15 +394,16 @@
                 required
               >
                 <option value="" selected="" disabled="">Rôles</option>
-                <option value="1">Directeur</option>
-                <option value="2">Résponsable direct</option>
-                <option value="3">Maganisier</option>
-                <option value="4">Service Achat</option>
-                <option value="5">Consommateur</option>
+                <option value="DG">Directeur</option>
+                <option value="RD">Résponsable direct</option>
+                <option value="Maganisier">Maganisier</option>
+                <option value="Service achat">Service Achat</option>
+                <option value="Consommateur">Consommateur</option>
               </select>
             </div>
             <div class="input-groupe">
               <input
+                name="name"
                 type="text"
                 class="input"
                 id="name"
@@ -412,6 +413,7 @@
             </div>
             <div class="input-groupe">
               <input
+                name="date"
                 type="date"
                 class="input"
                 id="date"
@@ -424,6 +426,7 @@
             </div>
             <div class="input-groupe">
               <input
+                name="email"
                 type="email"
                 class="input"
                 id="email"
@@ -434,6 +437,7 @@
             </div>
             <div class="input-groupe">
               <input
+                name="password"
                 type="password"
                 class="input"
                 id="password"
@@ -451,8 +455,8 @@
             <div class="create-btn">
               <button>Crée l'utilisateur</button>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
       <!-- fin de section  ajouter un  user -->
 
