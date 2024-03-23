@@ -405,7 +405,7 @@
             <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
           </div>
           <!-- for inputs -->
-          <form class="inputs">
+          <form class="add-user-inputs">
             <div class="dropdown-roles">
               <select
                 name="roles"
@@ -472,6 +472,23 @@
                 ></ion-icon>
               </a>
             </div>
+            <div class="input-groupe">
+              <input
+                name="password"
+                type="password"
+                class="input"
+                id="password"
+                placeholder="Confirmer le mot de passe"
+                required
+              />
+              <a class="password-icon" href="#">
+                <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                <ion-icon
+                  class="input-icon hidden"
+                  name="eye-off-outline"
+                ></ion-icon>
+              </a>
+            </div>
             <div class="create-btn">
               <button>Crée l'utilisateur</button>
             </div>
@@ -480,7 +497,7 @@
       </div>
       <!-- fin de section  ajouter un  user -->
       <!-- debut popup pour modifier user  -->
-      <div class="edit-user-container hidden">
+      <div class="edit-user-container">
         <div class="edit-user-cart">
           <div class="blue-backgroud"></div>
           <div class="heading-edit-user">

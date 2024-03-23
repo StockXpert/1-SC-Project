@@ -657,7 +657,7 @@ table tbody tr:last-child td {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: center;
   padding: 0.6rem;
   background-color: white;
@@ -697,7 +697,7 @@ table tbody tr:last-child td {
 
 .edit-user-cart {
   width: 53rem;
-  height: 45rem;
+  height: 44rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -770,6 +770,12 @@ table tbody tr:last-child td {
 }
 
 /*------------ Inputs -------------- */
+.add-user-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  align-items: center;
+}
 
 .inputs {
   display: grid;
@@ -816,7 +822,7 @@ table tbody tr:last-child td {
   padding: 0.4rem;
 }
 .input-groupe {
-  width: 28rem;
+  width: 100%;
   display: flex;
   padding: 0.1rem;
   justify-content: space-between;
@@ -896,7 +902,7 @@ a.password-icon:active {
 }
 .create-btn button {
   width: 15rem;
-  height: 3.8rem;
+  height: 3rem;
   background-color: #477ce2;
   border: 2px solid #477ce2;
   border-radius: 6rem;
