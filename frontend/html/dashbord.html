@@ -462,85 +462,196 @@
       <!-- debut popup pour modifier user  -->
       <div class="edit-user-container">
         <div class="edit-user-cart">
-          <button class="close-btn">
-            <span class="material-icons-sharp">close</span>
-          </button>
-
-          <div class="heading-add-user">
-            <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
+          <div class="blue-backgroud"></div>
+          <div class="heading-edit-user">
+            <button class="close-btn-edit">
+              <span class="material-icons-sharp">close</span>
+            </button>
+            <h1 class="heading-primary-edit-user">Détails</h1>
+            <!-- <p class="role-tag">CONSOMMATEUR</p> -->
           </div>
           <!-- for inputs -->
-          <form class="inputs">
-            <div class="dropdown-roles">
-              <select
-                name="roles"
-                id="role-options"
-                placeholder="Selectionnés le rôle"
-                required
-              >
-                <option value="" selected="" disabled="">Rôles</option>
-                <option value="DG">Directeur</option>
-                <option value="RD">Résponsable direct</option>
-                <option value="Maganisier">Maganisier</option>
-                <option value="Service achat">Service Achat</option>
-                <option value="Consommateur">Consommateur</option>
-              </select>
+          <form class="inputs-edit">
+            <div class="groupe-1">
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Nom:</p>
+                </div>
+                <div class="input-groupe-edit">
+                  <input
+                    name="name"
+                    type="text"
+                    class="input"
+                    id="name"
+                    placeholder="Nom"
+                    value="BAGHDADLI"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Mot de passe:</p>
+                </div>
+                <div class="input-groupe-edit">
+                  <input
+                    name="password"
+                    type="password"
+                    class="input"
+                    id="password"
+                    placeholder="Entrez le mot de passe"
+                    required
+                  />
+                  <a class="password-icon" href="#">
+                    <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                    <ion-icon
+                      class="input-icon hidden"
+                      name="eye-off-outline"
+                    ></ion-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Confirmer mot de passe:</p>
+                </div>
+                <div class="input-groupe-edit">
+                  <input
+                    name="password"
+                    type="password"
+                    class="input"
+                    id="password"
+                    placeholder="Confirmer le mot de passe"
+                    required
+                  />
+                  <a class="password-icon" href="#">
+                    <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                    <ion-icon
+                      class="input-icon hidden"
+                      name="eye-off-outline"
+                    ></ion-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Rôles:</p>
+                </div>
+                <div class="dropdown-roles">
+                  <select
+                    name="roles"
+                    id="role-options-edit"
+                    placeholder="Selectionnés le rôle"
+                    required
+                  >
+                    <option value="" selected="" disabled="">Rôles</option>
+                    <option value="DG">Directeur</option>
+                    <option value="RD">Résponsable direct</option>
+                    <option value="Magasinier">Magasinier</option>
+                    <option value="Service achat">Service Achat</option>
+                    <option value="Consommateur">Consommateur</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="input-groupe">
-              <input
-                name="name"
-                type="text"
-                class="input"
-                id="name"
-                placeholder="Nom et Prénom"
-              />
-              <ion-icon class="input-icon" name="person-outline"></ion-icon>
+            <div class="groupe-2">
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Prénom:</p>
+                </div>
+                <div class="input-groupe-edit">
+                  <input
+                    name="name"
+                    type="text"
+                    class="input"
+                    id="name"
+                    placeholder="Prénom"
+                    value="Abdelhadi"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Date de naissance:</p>
+                </div>
+                <div class="input-groupe-edit">
+                  <input
+                    name="date"
+                    type="date"
+                    class="input"
+                    id="date"
+                    placeholder="Entrez la date de naissance"
+                    value="19/04/2004"
+                  />
+                  <ion-icon
+                    class="input-icon"
+                    name="calendar-number-outline"
+                  ></ion-icon>
+                </div>
+              </div>
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Statructure:</p>
+                </div>
+                <div class="dropdown-activity">
+                  <select
+                    name="status"
+                    id="structure-options-edit"
+                    placeholder="Selectionnés le statut"
+                    required
+                  >
+                    <option value="" selected="" disabled="">
+                      Statructure
+                    </option>
+                    <option value="">Classe Préparatoire</option>
+                    <option value="">Second Cyle</option>
+                    <option value="">Direction</option>
+                  </select>
+                </div>
+              </div>
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Statut:</p>
+                </div>
+                <div class="dropdown-activity">
+                  <select
+                    name="status"
+                    id="status-options-edit"
+                    placeholder="Selectionnés le statut"
+                    required
+                  >
+                    <option value="" selected="" disabled="">Statut</option>
+                    <option value="" class="dropdown-active">Activé</option>
+                    <option value="" class="dropdown-inactif">Désactivé</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="input-groupe">
-              <input
-                name="date"
-                type="date"
-                class="input"
-                id="date"
-                placeholder="Entrez la date de naissance"
-              />
-              <ion-icon
-                class="input-icon"
-                name="calendar-number-outline"
-              ></ion-icon>
-            </div>
-            <div class="input-groupe">
-              <input
-                name="email"
-                type="email"
-                class="input"
-                id="email"
-                placeholder="Entrez l'email"
-                required
-              />
-              <ion-icon class="input-icon" name="mail-outline"></ion-icon>
-            </div>
-            <div class="input-groupe">
-              <input
-                name="password"
-                type="password"
-                class="input"
-                id="password"
-                placeholder="Entrez le mot de passe"
-                required
-              />
-              <a class="password-icon" href="#">
-                <ion-icon class="input-icon" name="eye-outline"></ion-icon>
-                <ion-icon
-                  class="input-icon hidden"
-                  name="eye-off-outline"
-                ></ion-icon>
-              </a>
-            </div>
-            <div class="create-btn">
-              <button>Crée l'utilisateur</button>
+            <div class="groupe-3">
+              <div class="main-input-groupe main-input-groupe-3">
+                <div class="input-text">
+                  <p>Email:</p>
+                </div>
+                <div class="input-groupe-3">
+                  <input
+                    name="email"
+                    type="email"
+                    class="input"
+                    id="email"
+                    placeholder="Entrez l'email"
+                    required
+                    value="a.baghdadli@esi-sba.dz"
+                  />
+                  <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+                </div>
+              </div>
             </div>
           </form>
+          <div class="edit-btns">
+            <button class="edit-btn-decline">Annuler</button>
+            <button class="edit-btn-save">Sauvegarder</button>
+          </div>
         </div>
       </div>
       <!-- debut popup pour modifier user  -->
@@ -559,7 +670,7 @@
       </div>
 
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
-      <div class="overlay hidden"></div>
+      <div class="overlay"></div>
     </div>
     <script src="../js/dashbord.js"></script>
   </body>
