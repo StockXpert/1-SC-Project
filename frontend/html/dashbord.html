@@ -102,7 +102,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table" id="main-table-users">
+        <div class="main-table hidden" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -394,7 +394,7 @@
         </div>
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
-        <div class="main-table hidden">
+        <div class="main-table">
           <div class="heading">
             <h1>Structures</h1>
             <hr class="line-style" />
@@ -846,6 +846,58 @@
           </div>
         </div>
       </div>
+      <!-- fin popup pour modifier structure  -->
+      <div class="edit-user-container">
+        <div class="edit-structure-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-user">
+            <h1 class="heading-primary-add-structure">Modifier la Structure</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-user-inputs">
+            <div class="input-groupe">
+              <input
+                name="name-structure"
+                type="text"
+                class="input"
+                id="name-structure-edit"
+                placeholder="Nom de la Structure"
+                value="Cycle préparatoire"
+              />
+              <span class="material-icons-sharp input-icon"> school </span>
+            </div>
+
+            <div class="dropdown-responsables-edit">
+              <div class="input-dropdown-edit">
+                <input
+                  type="text"
+                  placeholder="Ajouter un Réspnsable"
+                  class="search"
+                  value="Mohammed reda Aced"
+                />
+                <ion-icon
+                  name="person-circle-outline"
+                  class="input-icon"
+                ></ion-icon>
+              </div>
+              <div class="dropdown-content">
+                <a href="#">Utilisateur 1</a>
+                <a href="#">Utilisateur 2</a>
+                <a href="#">Utilisateur 3</a>
+                <!-- Ajoutez d'autres utilisateurs ici -->
+              </div>
+            </div>
+
+            <div class="create-btn">
+              <button>Modifier la Structure</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- debut popup pour modifier structure  -->
       <!-- fin popup pour modifier user  -->
       <!-- section pour supprimer user etes vous sure de vouloir supprimer -->
       <div class="container-supp-user hidden">

@@ -691,6 +691,19 @@ table tbody tr:last-child td {
   border-radius: 3rem;
   box-shadow: 0px 10px 10px 10px #00000040;
 }
+.edit-structure-cart {
+  width: 33rem;
+  height: 25rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.6rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+}
 .close-btn {
   width: 100%;
   display: flex;
@@ -1111,6 +1124,10 @@ a.password-icon:active {
   position: relative;
   display: inline-block;
 }
+.dropdown-responsables-edit {
+  position: relative;
+  display: inline-block;
+}
 
 .search {
   width: 24rem;
@@ -1142,6 +1159,16 @@ a.password-icon:active {
   transition: all 0.3s ease;
   border-radius: 1rem;
 }
+.input-dropdown-edit {
+  width: 100%;
+  display: flex;
+  padding: 0.1rem;
+  justify-content: space-between;
+  align-items: center;
+  outline: 1px solid #929292;
+  transition: all 0.3s ease;
+  border-radius: 1rem;
+}
 
 .dropdown-content a {
   width: 27rem;
@@ -1162,6 +1189,14 @@ a.password-icon:active {
 }
 
 .dropdown-responsables:hover .search {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.dropdown-responsables-edit:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-responsables-edit:hover .search {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
