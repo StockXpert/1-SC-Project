@@ -1001,6 +1001,10 @@ a.password-icon:active {
   display: flex;
   gap: 1rem;
 }
+.supp-structure-btns {
+  display: flex;
+  gap: 1rem;
+}
 .btn-supp {
   width: 13rem;
   height: 3.5rem;
