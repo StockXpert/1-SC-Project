@@ -155,7 +155,24 @@ function getUsers()
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     
-    const query = 'SELECT email,role,active FROM utilisateur';
+    const query = `SELECT 
+    u.email,
+    u.role,
+    u.active,
+    CASE 
+        WHEN c.nom IS NOT NULL THEN c.nom
+        WHEN r.nom IS NOT NULL THEN r.nom
+    END AS nom,
+    CASE 
+        WHEN c.prenom IS NOT NULL THEN c.prenom
+        WHEN r.prenom IS NOT NULL THEN r.prenom
+    END AS prénom
+FROM 
+    utilisateur u
+LEFT JOIN 
+    consommateur c ON u.email = c.email
+LEFT JOIN 
+    responsable r ON u.email = r.email`;
     
     connection.connect((err) => {
       if (err) {
