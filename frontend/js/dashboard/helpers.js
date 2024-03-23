@@ -31,6 +31,7 @@ const timeout = function (s) {
 // };
 export const getJSON = async function (url) {
   try {
+    console.log(localStorage.getItem('JWT'));
     const fetchPro = fetch(url, {
       method: 'GET',
       headers: {

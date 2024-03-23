@@ -3,6 +3,8 @@ import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
 import addUserView from './views/addUserView.js';
 import sideView from './views/sideView.js';
+import NumberView from './views/numberView.js';
+let numberView = new NumberView();
 
 const controlSearchResults = async function () {
   try {
@@ -11,7 +13,7 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
     usersView._clear();
     usersView.render(model.state.search.results);
-
+    numberView = new NumberView();
     return;
     //TODO: rendering the results of the query search
   } catch (err) {
@@ -19,7 +21,7 @@ const controlSearchResults = async function () {
     //TODO: throw err or treat it with a special func
   }
 };
-
+//controlAddUser is a handler function that takes in the newUser's data as
 const controlAddUser = async function (newUser) {
   try {
     //TODO: addUserView.renderSpinner();
@@ -41,6 +43,13 @@ const controlAddUser = async function (newUser) {
   }
 };
 
+const controlNumber = async function () {
+  console.log(model.state);
+  numberView._clear();
+  numberView.render(model.state);
+};
+
 searchView.addHandlerSearch(controlSearchResults);
 addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
+numberView.addHandlerNumber(controlNumber);
 sideView.addHandlerUtilisateurs(controlSearchResults);
