@@ -124,27 +124,37 @@
               </div>
 
               <div class="container-filter">
-                <button class="dropbtn">
-                  <div class="dropbtn-text">
-                    <p>Nom:</p>
-                    <b class="filter-text">Ascendant</b>
-                  </div>
-                  <span class="material-icons-sharp"> arrow_drop_down </span>
-                </button>
-                <button class="dropbtn">
-                  <div class="dropbtn-text">
-                    <p>Status:</p>
-                    <b class="filter-text">Tout</b>
-                  </div>
-                  <span class="material-icons-sharp"> arrow_drop_down </span>
-                </button>
-                <button class="dropbtn">
-                  <div class="dropbtn-text">
-                    <p>Rôles:</p>
-                    <b class="filter-text">Tout</b>
-                  </div>
-                  <span class="material-icons-sharp"> arrow_drop_down </span>
-                </button>
+                <div class="dropbtn-text">
+                  <select
+                    name="statut"
+                    class="filters"
+                    id="filter-status-options"
+                    placeholder="Selectionnés le rôle"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Rôle</option>
+                    <option value="all">Tout</option>
+                    <option value="DG">Directeur</option>
+                    <option value="RD">Résponsable direct</option>
+                    <option value="MG">Magasinier</option>
+                    <option value="SA">Service Achat</option>
+                    <option value="CO">Consommateur</option>
+                  </select>
+                </div>
+                <div class="dropbtn-text">
+                  <select
+                    name="roles"
+                    class="filters"
+                    id="filter-role-options"
+                    placeholder="Selectionnés le rôle"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Statut</option>
+                    <option value="all">Tout</option>
+                    <option value="active">Activé</option>
+                    <option value="inactive">Désactivé</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div class="add-users">
@@ -194,7 +204,7 @@
                     <th>Email</th>
                     <th>Statut</th>
                     <th>Rôles</th>
-                    <th>Détails</th>
+                    <th>Modifier</th>
                   </tr>
                 </thead>
                 <tbody class="results">
@@ -212,7 +222,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -233,7 +243,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -252,7 +262,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -270,7 +280,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -288,7 +298,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -306,7 +316,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -324,7 +334,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -342,7 +352,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -360,7 +370,7 @@
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
-                          info
+                          edit
                         </span>
                       </button>
                     </td>
@@ -460,7 +470,7 @@
       </div>
       <!-- fin de section  ajouter un  user -->
       <!-- debut popup pour modifier user  -->
-      <div class="edit-user-container">
+      <div class="edit-user-container hidden">
         <div class="edit-user-cart">
           <div class="blue-backgroud"></div>
           <div class="heading-edit-user">
@@ -670,7 +680,7 @@
       </div>
 
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
-      <div class="overlay"></div>
+      <div class="overlay hidden"></div>
     </div>
     <script src="../js/dashbord.js"></script>
   </body>

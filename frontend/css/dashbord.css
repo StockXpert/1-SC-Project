@@ -603,12 +603,16 @@ table tbody tr:last-child td {
   align-items: center;
   padding: 0.2rem;
 }
-.dropbtn-text {
-  display: flex;
-  gap: 0.2rem;
-  padding: 0.6rem;
-  align-items: center;
+.filters {
+  font-size: 1rem;
+  color: #477ce2;
+  font-weight: 600;
+  padding: 0.2rem;
+  border: 1px solid #e4e4e4;
+  border-radius: 15px;
+  box-shadow: 1px 1px 1px 0px #00000066;
 }
+
 .dropbtn {
   height: 1.8rem;
   display: flex;
