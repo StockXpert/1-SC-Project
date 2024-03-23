@@ -6,6 +6,10 @@ export const state = {
     query: '',
     results: [],
   },
+  displayed: {
+    role: 'all',
+    status: 'all',
+  },
 };
 export const loadSearchResults = async function (query) {
   try {
