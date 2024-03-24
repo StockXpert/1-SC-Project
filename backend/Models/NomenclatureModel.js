@@ -5,6 +5,51 @@ const connectionConfig = {
   password: 'GujpSNqWUm',
   database: 'sql11693152'
 };
+function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, nis, raisonSocial) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `
+    UPDATE fournisseur SET 
+    ${adresse ? 'adresse=?' : ''}${adresse && (telephone || fax || numRegistre || rib || rip || nif || nis) ? ', ' : ''}
+    ${telephone ? 'telephone=?' : ''}${telephone && (fax || numRegistre || rib || rip || nif || nis) ? ', ' : ''}
+    ${fax ? 'fax=?' : ''}${fax && (numRegistre || rib || rip || nif || nis) ? ', ' : ''}
+    ${numRegistre ? 'num_registre=?' : ''}${numRegistre && (rib || rip || nif || nis) ? ', ' : ''}
+    ${rib ? 'rib=?' : ''}${rib && (rip || nif || nis) ? ', ' : ''}
+    ${rip ? 'rip=?' : ''}${rip && (nif || nis) ? ', ' : ''}
+    ${nif ? 'nif=?' : ''}${nif && nis ? ', ' : ''}
+    ${nis ? 'nis=?' : ''}
+    WHERE raison_sociale=?`;
+    const values = [];
+    
+    if (adresse) values.push(adresse);
+    if (telephone) values.push(telephone);
+    if (fax) values.push(fax);
+    if (numRegistre) values.push(numRegistre);
+    if (rib) values.push(rib);
+    if (rip) values.push(rip);
+    if (nif) values.push(nif);
+    if (nis) values.push(nis);
+    values.push(raisonSocial);
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve("success");
+        connection.end(); // Fermer la connexion après l'exécution de la requête
+      });
+    });
+  }); 
+}
 function deleteChapter(designation)
 {
   return new Promise((resolve, reject) => {
@@ -661,8 +706,36 @@ function getFournisseur(raisonSociale) {
     });
   });
 }
+function updateRaisonSociale(newR,oldR)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = 'update fournisseur set raison_sociale=? where raison_sociale=?';
+    const values = [newR,oldR];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 module.exports={getChapterId,addArticle,addProduct,getArticleId,getProductId,addArticleProduct,
                 deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
                 ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
-              ,deleteChapter,updateArticle,canDeletefourn}
+              ,deleteChapter,updateArticle,canDeletefourn,updateFournisseur,updateRaisonSociale}
