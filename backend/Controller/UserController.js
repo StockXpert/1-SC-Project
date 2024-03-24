@@ -282,6 +282,18 @@ async function deletePermissions(req,res)
   }
   res.status(200).json({response:'permissions deleted'})
 }
+function showRoles(req,res)
+{
+    userModel.getRoles().then((roles)=>{
+      res.status(200).json({response:roles})
+    }).catch(()=>{res.status(500).json({response:"internal error"})})
+}
+function showPermissions(req,res)
+{
+  userModel.getPermissions().then((permissions)=>{
+    res.status(200).json({response:permissions})
+  }).catch(()=>{res.status(500).json({response:"internal error"})})
+}
 function deleteStructure(req,res)
 {
   const {structure}=req.body
@@ -320,5 +332,7 @@ module.exports = {
   changeStatus,
   deleteRole,
   addPermissions,
-  deletePermissions
+  deletePermissions,
+  showRoles,
+  showPermissions
 };

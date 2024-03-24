@@ -498,6 +498,8 @@ router.get('/showStructure', authMiddleware('show structure'), UserController.sh
  */
 router.post('/changeStatus',authMiddleware('change status'),UserController.changeStatus)
 router.post('/addRole',authMiddleware('add role'),UserController.addRole)
+router.get('/showRoles',authMiddleware('show roles'),UserController.showRoles)
+router.get('/showPermissions',authMiddleware('show permissions'),UserController.showPermissions)
 router.delete('/deleteRole',authMiddleware('delete role'),UserController.deleteRole)
 router.put('/addPermissions',authMiddleware('add permissions'),UserController.addPermissions);
 router.delete('/deletePermissions',authMiddleware('delete permissions'),UserController.deletePermissions)
