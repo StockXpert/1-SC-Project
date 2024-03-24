@@ -144,6 +144,24 @@ function showArticles(req,res)
         res.status(500).json({response:"internal error"});
     })
 }
+function updateFournisseur(req,res)
+{
+    const {adresse,telephone,fax,numRegistre,rib,rip,nif,nis,raisonSociale}=req.body
+    NomenclatureModel.updateFournisseur(adresse,telephone,fax,numRegistre,rib,rip,nif,nis,raisonSociale).then(()=>{
+        res.status(200).json({response:"fournisseur updated"});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
+function updateRaisonSociale(req,res)
+{
+    const {newRaisonSociale,oldRaisonSociale}=req.body
+    NomenclatureModel.updateRaisonSociale(newRaisonSociale,oldRaisonSociale).then(()=>{
+        res.status(200).json({response:"fournisseur updated"});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
 module.exports={addArticle,addProduct,addFournisseur,deleteArticle,
     deleteProduct,deleteFournisseur,showFournisseurs,showProducts,showChapters,showArticles,
-    addChapter,updateChapter,deleteChapter,updateArticle};
+    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur};
