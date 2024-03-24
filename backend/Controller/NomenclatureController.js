@@ -1,5 +1,37 @@
 const NomenclatureModel = require('../Models/NomenclatureModel');
 const NomenclatureService=require('../Services/NomenclatureService');
+function addChapter(req,res)
+{
+  const {designation}=req.body;
+  NomenclatureModel.insertChapter(designation).then(()=>{
+    res.status(200).json({response:'chapter added'})
+  }).catch(()=>{
+    res.status(500).json({response:'internal error'})
+  })
+}
+function updateChapter(req,res)
+{
+    const {oldDesignation,newDesignation}=req.body;
+    NomenclatureModel.updateChapter(oldDesignation,newDesignation).then(()=>{
+        res.status(200).json({response:'chapter updated'})
+    }).catch(()=>{
+      res.status(500).json({response:'internal error'})
+    })
+}
+function deleteChapter(req,res)
+{
+  const {designation}=req.body
+  NomenclatureModel.canDelete(designation,'chapitre').then(()=>{
+    NomenclatureModel.deleteChapter(designation).then(()=>{
+        res.status(200).json({response:'chapter deleted'})
+    }).catch(()=>{
+        res.status(500).json({response:'prohibited to delete chapter'})
+    })
+
+  }).catch(()=>{
+      res.status(500).json({response:'internal error'})
+    })
+}
 function addArticle(req,res)
 {
     const {numArt,chapitre,designation}=req.body;
@@ -10,14 +42,33 @@ function addArticle(req,res)
     })
 
 }
+function deleteFournisseur(raisonSocial)
+{
+    NomenclatureModel.canDeletefourn(raisonSocial).then(()=>{
+        NomenclatureModel.deleteFournisseur(raisonSocial).then(()=>{
+            res.status(200).json({response:'fournisseur deleted'})
+        }).catch(()=>{res.status(500).json({response:'internal error'})})
+    }).catch(()=>{res.status(500).json({response:'prohibited to delete fournisseur'})})
+}
+function updateArticle(req,res)
+{
+    const {oldDesignation,newDesignation,chapitre}=req.body
+    NomenclatureModel.updateArticle(oldDesignation,newDesignation,chapitre).then(()=>{
+        res.status(200).json({response:'article updated'});
+    }).catch(()=>{
+        res.status(500).json({response:'internal error'})
+    })
+}
 function deleteArticle(req,res)
 {
     const {designation}=req.body;
-    NomenclatureService.deleteArticle(designation).then((response)=>{
-        res.status(200).json({response})
-    }).catch((response)=>{
-        res.status(500).json({response})
-    })
+    NomenclatureModel.canDelete(designation,'article').then(()=>{
+        NomenclatureService.deleteArticle(designation).then((response)=>{
+            res.status(200).json({response})
+        }).catch((response)=>{
+            res.status(500).json({response})
+        })
+    }).catch(()=>{res.status(500).json({response:"prohibited to delete article"})})
 }
 function addProduct(req,res)
 {
@@ -89,4 +140,5 @@ function showArticles(req,res)
     })
 }
 module.exports={addArticle,addProduct,addFournisseur,deleteArticle,
-    deleteProduct,deleteFournisseur,showFournisseurs,showProducts,showChapters,showArticles};
+    deleteProduct,deleteFournisseur,showFournisseurs,showProducts,showChapters,showArticles,
+    addChapter,updateChapter,deleteChapter,updateArticle};

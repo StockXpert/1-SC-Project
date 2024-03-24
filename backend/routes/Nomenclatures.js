@@ -1,15 +1,19 @@
 const express=require('express');
 const router=express.Router();
 const authMiddleware=require('../Middlewares/authMiddleware');
-const NomenclatureController=require('../Controller/NomenclatureController')
-router.post('/addProduct',authMiddleware,NomenclatureController.addProduct);
-router.delete('/deleteProduct',authMiddleware,NomenclatureController.deleteProduct);
-router.post('/addArticle',authMiddleware,NomenclatureController.addArticle);
-router.delete('/deleteArticle',authMiddleware,NomenclatureController.deleteArticle);
-router.post('/addFournisseur',authMiddleware,NomenclatureController.addFournisseur);
-router.delete('/deleteFournisseur',authMiddleware,NomenclatureController.deleteFournisseur);
-router.get('/showFournisseurs',authMiddleware,NomenclatureController.showFournisseurs);
-router.get('/showProducts',authMiddleware,NomenclatureController.showProducts);
-router.get('/showArticles',authMiddleware,NomenclatureController.showArticles);
-router.get('/showChapters',authMiddleware,NomenclatureController.showChapters);
+const NomenclatureController=require('../Controller/NomenclatureController');
+router.post('/addChapter',authMiddleware('add chapter'),NomenclatureController.addChapter);
+router.delete('/deleteChapter',authMiddleware('delete chapter'),NomenclatureController.deleteChapter);
+router.put('/updateChapter',authMiddleware('update chapter'),NomenclatureController.updateChapter)
+router.post('/addProduct',authMiddleware('add product'),NomenclatureController.addProduct);
+router.delete('/deleteProduct',authMiddleware('delete product'),NomenclatureController.deleteProduct);
+router.post('/addArticle',authMiddleware('add article'),NomenclatureController.addArticle);
+router.put('/updateArticle',authMiddleware('update article'),NomenclatureController.updateArticle)
+router.delete('/deleteArticle',authMiddleware('delete article'),NomenclatureController.deleteArticle);
+router.post('/addFournisseur',authMiddleware('add fournisseur'),NomenclatureController.addFournisseur);
+router.delete('/deleteFournisseur',authMiddleware('delete fournisseur'),NomenclatureController.deleteFournisseur);
+router.get('/showFournisseurs',authMiddleware('show fournisseurs'),NomenclatureController.showFournisseurs);
+router.get('/showProducts',authMiddleware('show products'),NomenclatureController.showProducts);
+router.get('/showArticles',authMiddleware('show articles'),NomenclatureController.showArticles);
+router.get('/showChapters',authMiddleware('show chapters'),NomenclatureController.showChapters);
 module.exports=router;

@@ -5,6 +5,121 @@ const connectionConfig = {
   password: 'GujpSNqWUm',
   database: 'sql11693152'
 };
+function deleteChapter(designation)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    console.log({chapitre})
+    const query = 'delete from chapitre where designation=?';
+    const values = [designation];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        console.log({results})
+        resolve(results[0].num_chap);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function insertChapter(designation)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    console.log({chapitre})
+    const query = 'insert into chapitre (num_chap,designation,date_ajout) values (?,NOW()) ';
+    const values = [designation];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        console.log({results})
+        resolve(results[0].num_chap);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function canDelete(designation,table)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select email from ${table} where designation=? and date_ajout>= NOW() - INTERVAL 1 HOUR`;
+    const values=[designation]
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length===0)
+          reject('erreur');
+        else 
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})  
+}
+function updateChapter(oldDesignation,newDesignation)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = 'update chapitre set designation=? where designation=?';
+    const values = [oldDesignation,newDesignation];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function getChapterId(chapitre)
 {
     return new Promise((resolve, reject) => {
@@ -34,11 +149,39 @@ function getChapterId(chapitre)
         });
       });
 }
+function updateArticle(oldDesignation,newDesignation,chapitre)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `update article set ${newDesignation?'designation=?':''} ${(newDesignation&&chapitre)?',':''} ${chapitre?'id_chapitre=(select id_chapitre from chapitre where designation=?':''} where designation=?`;
+    const values = [oldDesignation,newDesignation,chapitre];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function addArticle(numArt,chapitreId,designation)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into article (num_article,designation,num_chap) values (?,?,?)';
+        const query = 'insert into article (num_article,designation,num_chap,date_ajout) values (?,?,?,NOW())';
         const values = [numArt,designation,chapitreId];
       
         connection.connect((err) => {
@@ -290,7 +433,7 @@ function insertFournisseur(raisonSocial,adresse,tel,fax,numRegistre,rib,rip,nif,
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'insert into fournisseur (raison_sociale,adresse,telephone,fax,num_registre,rib,rip,nif,nis) values (?,?,?,?,?,?,?,?,?)';
+    const query = 'insert into fournisseur (raison_sociale,adresse,telephone,fax,num_registre,rib,rip,nif,nis,date_ajout) values (?,?,?,?,?,?,?,?,?,NOW())';
     const values = [raisonSocial,adresse,tel,fax,numRegistre,rib,rip,nif,nis];
   
     connection.connect((err) => {
@@ -313,6 +456,35 @@ function insertFournisseur(raisonSocial,adresse,tel,fax,numRegistre,rib,rip,nif,
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });
   });
+}
+function canDeletefourn(raisonSocial)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select email from fournisseur where raison_sociale=? and date_ajout>= NOW() - INTERVAL 1 HOUR`;
+    const values=[raisonSocial]
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length===0)
+          reject('erreur');
+        else 
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})  
 }
 function deleteFournisseur(raisonSociale)
 {
@@ -489,4 +661,5 @@ function getFournisseur(raisonSociale) {
 module.exports={getChapterId,addArticle,addProduct,getArticleId,getProductId,addArticleProduct,
                 deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
-                ,getArticles,getChapters,getFournisseur}
+                ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
+              ,deleteChapter,updateArticle,canDeletefourn}
