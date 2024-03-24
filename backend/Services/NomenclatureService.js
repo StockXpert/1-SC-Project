@@ -50,7 +50,7 @@ function deleteArticle(designation)
 function deleteProduct(designation)
 {
     return new Promise((resolve,reject)=>{
-        NomenclatureModel.canDelete(designation).then(()=>{
+        NomenclatureModel.canDelete(designation,'produit').then(()=>{
          NomenclatureModel.getProductId(designation).then((articleId)=>{
             NomenclatureModel.deleteProduct(articleId).then(()=>{
               NomenclatureModel.deleteProductFromC(articleId).then(()=>{

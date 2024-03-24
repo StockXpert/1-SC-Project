@@ -43,7 +43,7 @@ async function login(req, res) {
               let role=response.role
               res
                 .status(200)
-                .json({ response: 'succuss of login', jwt: token,role});
+                .json({ response: 'succuss of login', jwt: token,role:response.designation});
             } else res.status(404).json({ response: 'Password error' });
           })
           .catch(error => {

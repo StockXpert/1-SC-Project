@@ -9,7 +9,7 @@ function deleteChapter(designation)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    console.log({chapitre})
+    
     const query = 'delete from chapitre where designation=?';
     const values = [designation];
   
@@ -27,20 +27,19 @@ function deleteChapter(designation)
           return;
         }
         console.log({results})
-        resolve(results[0].num_chap);
+        resolve('success');
       });
       
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });
   });
 }
-function insertChapter(designation)
+function insertChapter(numChap,designation)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    console.log({chapitre})
-    const query = 'insert into chapitre (num_chap,designation,date_ajout) values (?,NOW()) ';
-    const values = [designation];
+    const query = 'insert into chapitre (num_chap,designation,date_ajout) values (?,?,NOW()) ';
+    const values = [numChap,designation];
   
     connection.connect((err) => {
       if (err) {
@@ -56,7 +55,7 @@ function insertChapter(designation)
           return;
         }
         console.log({results})
-        resolve(results[0].num_chap);
+        resolve('success');
       });
       
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -68,7 +67,7 @@ function canDelete(designation,table)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select email from ${table} where designation=? and date_ajout>= NOW() - INTERVAL 1 HOUR`;
+    const query = `select designation from ${table} where designation=? and date_ajout>= NOW() - INTERVAL 1 DAY`;
     const values=[designation]
     connection.connect((err) => {
       if (err) {
@@ -97,7 +96,7 @@ function updateChapter(oldDesignation,newDesignation)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query = 'update chapitre set designation=? where designation=?';
-    const values = [oldDesignation,newDesignation];
+    const values = [newDesignation,oldDesignation];
   
     connection.connect((err) => {
       if (err) {
@@ -142,6 +141,7 @@ function getChapterId(chapitre)
               return;
             }
             console.log({results})
+            if(results[0].num_chap)
             resolve(results[0].num_chap);
           });
           
@@ -153,8 +153,11 @@ function updateArticle(oldDesignation,newDesignation,chapitre)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `update article set ${newDesignation?'designation=?':''} ${(newDesignation&&chapitre)?',':''} ${chapitre?'id_chapitre=(select id_chapitre from chapitre where designation=?':''} where designation=?`;
-    const values = [oldDesignation,newDesignation,chapitre];
+    const query = `update article set ${newDesignation?'designation=?':''} ${(newDesignation&&chapitre)?',':''} ${chapitre?'num_chap=(select num_chap from chapitre where designation=?)':''} where designation=?`;
+    let values=[];
+    if(newDesignation) values.push(newDesignation);
+    if(chapitre) values.push(chapitre);
+    values.push(oldDesignation)
   
     connection.connect((err) => {
       if (err) {
@@ -209,7 +212,7 @@ function addProduct(quantite,designation,description)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into produit (designation,description,quantite) values (?,?,?)';
+        const query = 'insert into produit (designation,description,quantite,date_ajout) values (?,?,?,now())';
         const values = [designation,description,quantite];
       
         connection.connect((err) => {
@@ -349,7 +352,7 @@ function deleteArticleFromC(articleId)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'delete from contient where num_article=?';
+        const query = 'delete from contient where id_article=?';
         const values = [articleId];
       
         connection.connect((err) => {
@@ -462,7 +465,7 @@ function canDeletefourn(raisonSocial)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select email from fournisseur where raison_sociale=? and date_ajout>= NOW() - INTERVAL 1 HOUR`;
+    const query = `select raison_sociale from fournisseur where raison_sociale=? and date_ajout>= NOW() - INTERVAL 1 DAY`;
     const values=[raisonSocial]
     connection.connect((err) => {
       if (err) {

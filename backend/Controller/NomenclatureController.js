@@ -2,10 +2,11 @@ const NomenclatureModel = require('../Models/NomenclatureModel');
 const NomenclatureService=require('../Services/NomenclatureService');
 function addChapter(req,res)
 {
-  const {designation}=req.body;
-  NomenclatureModel.insertChapter(designation).then(()=>{
+  const {numChap,designation}=req.body;
+  NomenclatureModel.insertChapter(numChap,designation).then(()=>{
     res.status(200).json({response:'chapter added'})
-  }).catch(()=>{
+  }).catch((error)=>{
+    console.log({error})
     res.status(500).json({response:'internal error'})
   })
 }
@@ -24,12 +25,13 @@ function deleteChapter(req,res)
   NomenclatureModel.canDelete(designation,'chapitre').then(()=>{
     NomenclatureModel.deleteChapter(designation).then(()=>{
         res.status(200).json({response:'chapter deleted'})
-    }).catch(()=>{
-        res.status(500).json({response:'prohibited to delete chapter'})
+    }).catch((err)=>{
+        console.log({err})
+        res.status(500).json({response:'internal error'})
     })
-
-  }).catch(()=>{
-      res.status(500).json({response:'internal error'})
+  }).catch((err)=>{
+    console.log({err})
+      res.status(500).json({response:'prohibited to delete chapter'})
     })
 }
 function addArticle(req,res)
@@ -55,7 +57,8 @@ function updateArticle(req,res)
     const {oldDesignation,newDesignation,chapitre}=req.body
     NomenclatureModel.updateArticle(oldDesignation,newDesignation,chapitre).then(()=>{
         res.status(200).json({response:'article updated'});
-    }).catch(()=>{
+    }).catch((err)=>{
+        console.log({err})
         res.status(500).json({response:'internal error'})
     })
 }
@@ -100,11 +103,13 @@ function addFournisseur(req,res)
 function deleteFournisseur(req,res)
 {
     const {raisonSociale}=req.body;
-    NomenclatureModel.deleteFournisseur(raisonSociale).then(()=>{
-        res.status(200).json({response:"fournisseur deleted"})
-    }).catch(()=>{
-        res.status(500).json({response:"internal error"});
-    })
+    NomenclatureModel.canDeletefourn(raisonSociale).then(()=>{
+        NomenclatureModel.deleteFournisseur(raisonSociale).then(()=>{
+            res.status(200).json({response:"fournisseur deleted"})
+        }).catch(()=>{
+            res.status(500).json({response:"internal error"});
+        })
+    }).catch(()=>{res.status(500).json({response:"prohibited to delete fournisseur"});})
 }
 function showFournisseurs(req,res)
 {
