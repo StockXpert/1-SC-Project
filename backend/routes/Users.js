@@ -121,7 +121,7 @@ router.post("/login",UserController.login)
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.post("/register",authMiddleware,UserController.register);
+router.post("/register",authMiddleware('register'),UserController.register);
 /**
  * @swagger
  * /users/showUsers:
@@ -155,7 +155,7 @@ router.post("/register",authMiddleware,UserController.register);
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.get("/showUsers",authMiddleware,UserController.showUsers)
+router.get("/showUsers",authMiddleware('show users'),UserController.showUsers)
 /**
  * @swagger
  * /users/showUser:
@@ -186,7 +186,7 @@ router.get("/showUsers",authMiddleware,UserController.showUsers)
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.get("/showUser",authMiddleware,UserController.showUser);
+router.get("/showUser",authMiddleware('show user'),UserController.showUser);
 /**
  * @swagger
  * /users/forgotPassword:
@@ -309,7 +309,7 @@ router.post("/changePasswordMail", UserController.changePasswordMail);
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.post("/changePasswordAuth", authMiddleware, UserController.changePasswordAuth);
+router.post("/changePasswordAuth", authMiddleware('change password auth'), UserController.changePasswordAuth);
 /**
  * @swagger
  * /users/addStructure:
@@ -345,7 +345,7 @@ router.post("/changePasswordAuth", authMiddleware, UserController.changePassword
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.post("/addStructure", authMiddleware, UserController.addStructure);
+router.post("/addStructure", authMiddleware('add structure'), UserController.addStructure);
 
 /**
  * @swagger
@@ -376,38 +376,7 @@ router.post("/addStructure", authMiddleware, UserController.addStructure);
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.put("/updateConsumerInformations", authMiddleware, UserController.updateConsumerInformations);
-
-/**
- * @swagger
- * /users/updateRespInformations:
- *   put:
- *     summary: Mettre à jour les informations du responsable
- *     description: Met à jour les informations du responsable spécifié.
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             // Définissez ici les attributs nécessaires pour mettre à jour les informations du responsable.
- *     responses:
- *       '200':
- *         description: Informations du responsable mises à jour avec succès.
- *       '500':
- *         description: Erreur serveur interne.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 response:
- *                   type: string
- *                   description: Message d'erreur.
- */
-router.put("/updateRespInformations", authMiddleware, UserController.updateRespInformations);
+router.put("/updateUser", authMiddleware('update user'), UserController.updateUser);
 /**
  * @swagger
  * /users/deleteUser:
@@ -442,31 +411,8 @@ router.put("/updateRespInformations", authMiddleware, UserController.updateRespI
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.delete("/deleteUser", authMiddleware, UserController.deleteUser);
+router.delete("/deleteUser", authMiddleware('delete user'), UserController.deleteUser);
 
-/**
- * @swagger
- * /users/showConsumers:
- *   get:
- *     summary: Afficher les consommateurs
- *     description: Récupère la liste de tous les consommateurs.
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       '200':
- *         description: Liste des consommateurs récupérée avec succès.
- *       '500':
- *         description: Erreur serveur interne.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 response:
- *                   type: string
- *                   description: Message d'erreur.
- */
-router.get("/showConsumers", authMiddleware, UserController.afficherConsommateurs);
 
 /**
  * @swagger
@@ -503,7 +449,7 @@ router.get("/showConsumers", authMiddleware, UserController.afficherConsommateur
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.put("/rattacher", authMiddleware, UserController.rattacher);
+router.put("/rattacher", authMiddleware('rattacher'), UserController.rattacher);
 /**
  * @swagger
  * /users/showStructure:
@@ -526,7 +472,7 @@ router.put("/rattacher", authMiddleware, UserController.rattacher);
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.get('/showStructure', authMiddleware, UserController.showStructure);
+router.get('/showStructure', authMiddleware('show structure'), UserController.showStructure);
 
 /**
  * @swagger
@@ -550,6 +496,13 @@ router.get('/showStructure', authMiddleware, UserController.showStructure);
  *                   type: string
  *                   description: Message d'erreur.
  */
-router.get('/showResp', authMiddleware, UserController.showResp);
-router.post('/changeStatus',authMiddleware,UserController.changeStatus)
+router.post('/changeStatus',authMiddleware('change status'),UserController.changeStatus)
+router.post('/addRole',authMiddleware('add role'),UserController.addRole)
+router.get('/showRoles',authMiddleware('show roles'),UserController.showRoles)
+router.get('/showPermissions',authMiddleware('show permissions'),UserController.showPermissions)
+router.delete('/deleteRole',authMiddleware('delete role'),UserController.deleteRole)
+router.put('/addPermissions',authMiddleware('add permissions'),UserController.addPermissions);
+router.delete('/deletePermissions',authMiddleware('delete permissions'),UserController.deletePermissions)
+router.put('/updateStructure',authMiddleware('update structure'),UserController.updateStructure)
+router.delete('/deleteStructure',authMiddleware('delete structure'),UserController.deleteStructure)
 module.exports=router;

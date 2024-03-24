@@ -50,13 +50,15 @@ function deleteArticle(designation)
 function deleteProduct(designation)
 {
     return new Promise((resolve,reject)=>{
-        NomenclatureModel.getProductId(designation).then((articleId)=>{
-          NomenclatureModel.deleteProduct(articleId).then(()=>{
-            NomenclatureModel.deleteProductFromC(articleId).then(()=>{
-               resolve("product deleted");
+        NomenclatureModel.canDelete(designation,'produit').then(()=>{
+         NomenclatureModel.getProductId(designation).then((articleId)=>{
+            NomenclatureModel.deleteProduct(articleId).then(()=>{
+              NomenclatureModel.deleteProductFromC(articleId).then(()=>{
+                 resolve("product deleted");
+              }).catch(()=>{reject("internal error")});
             }).catch(()=>{reject("internal error")});
           }).catch(()=>{reject("internal error")});
-        }).catch(()=>{reject("internal error")});
+        }).catch(()=>{reject("prohibited to delete product")})
        })
 }
 module.exports={addArticle,addProduct,deleteArticle,deleteProduct};
