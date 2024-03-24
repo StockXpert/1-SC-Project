@@ -82,7 +82,7 @@
       </aside>
       <!-- fin of sidebar -->
 
-      <!-- debut de main content -->
+      <!---------------------------------- debut de main content for Admin tables----------------------------------->
       <main class="main-container">
         <!-- photo de profile + nom et role -->
         <div class="right-section">
@@ -101,7 +101,8 @@
             </div>
           </div>
         </div>
-        <div class="main-table">
+        <!------ debut de content for Admin : 1 - Users tables----- -->
+        <div class="main-table hidden" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -189,7 +190,7 @@
             </div>
             <!--fin  heading tbale -->
 
-            <!-- debut du tableau -->
+            <!------------debut du tableau ------------------------>
             <!-- <div class="users-table"> -->
             <div class="table-container">
               <table>
@@ -391,8 +392,112 @@
             <!-- </div> -->
           </div>
         </div>
+        <!------ fin de content for Admin : 1 - Users tables----- -->
+        <!------ debut de content for Admin : 2 - Structure tables----- -->
+        <div class="main-table">
+          <div class="heading">
+            <h1>Structures</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <!-- tableau principale -->
+          <!-- heading tbale -->
+          <div class="table-top">
+            <div class="heading-table">
+              <div class="container-heading-table">
+                <div
+                  class="heading-table-text"
+                  id="heading-table-text-structures"
+                >
+                  <p class="table-text">
+                    Tout les Structures (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns">
+                  <button
+                    class="heading-table-btn btn-edit"
+                    id="edit-btn-structure"
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    class="heading-table-btn btn-delete"
+                    id="supp-btn-structure"
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    class="heading-table-btn btn-add"
+                    id="add-btn-structure"
+                  >
+                    Ajouter
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <!--fin  heading tbale -->
+
+            <!------------debut du tableau ------------------------>
+            <!-- <div class="users-table"> -->
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table-all" />
+                        <p class="colomn-tags">Structure</p>
+                      </div>
+                    </th>
+                    <th>ID</th>
+                    <th>Responsable</th>
+                    <th>Afféctation</th>
+                  </tr>
+                </thead>
+                <tbody class="main-table-structure">
+                  <!--une ligne nrml  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">Cycle préparatoire</p>
+                      </div>
+                    </td>
+                    <td>1</td>
+                    <td>Mohammed reda aced</td>
+                    <td class="table-structure">12</td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">Baidar Samir</p>
+                      </div>
+                    </td>
+                    <td>2</td>
+                    <td class="table-status inactif-status">Inactif</td>
+
+                    <td class="table-structure">12</td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+        <!------ fin de content for Admin : 2 - Structure tables----- -->
       </main>
-      <!-- fin du main content -->
+      <!----------------------------------- fin du main content for Admin Table----------------------------------------->
 
       <!-- debut de section pour ajouter un  user -->
       <div class="add-user-container hidden">
@@ -496,6 +601,56 @@
         </div>
       </div>
       <!-- fin de section  ajouter un  user -->
+      <!-- debut de section pour ajouter une  structure -->
+      <div class="add-user-container hidden">
+        <div class="add-structure-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-user">
+            <h1 class="heading-primary-add-structure">Ajouter une Structure</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-user-inputs">
+            <div class="input-groupe">
+              <input
+                name="name-structure"
+                type="text"
+                class="input"
+                id="name-structure"
+                placeholder="Nom de la Structure"
+              />
+              <span class="material-icons-sharp input-icon"> school </span>
+            </div>
+
+            <div class="dropdown-responsables">
+              <div class="input-dropdown">
+                <input
+                  type="text"
+                  placeholder="Ajouter un Réspnsable"
+                  class="search"
+                />
+                <ion-icon
+                  name="person-circle-outline"
+                  class="input-icon"
+                ></ion-icon>
+              </div>
+              <div class="dropdown-content">
+                <a href="#">Utilisateur 1</a>
+                <a href="#">Utilisateur 2</a>
+                <a href="#">Utilisateur 3</a>
+                <!-- Ajoutez d'autres utilisateurs ici -->
+              </div>
+            </div>
+
+            <div class="create-btn">
+              <button>Crée la Structure</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin de section  ajouter une  structure -->
       <!-- debut popup pour modifier user  -->
       <div class="edit-user-container hidden">
         <div class="edit-user-cart">
@@ -691,8 +846,60 @@
           </div>
         </div>
       </div>
-      <!-- debut popup pour modifier user  -->
-      <!-- section pour supprimer user etes vous sure de vouloir supprimer -->
+      <!-- fin popup pour modifier structure  -->
+      <div class="edit-user-container hidden">
+        <div class="edit-structure-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-user">
+            <h1 class="heading-primary-add-structure">Modifier la Structure</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-user-inputs">
+            <div class="input-groupe">
+              <input
+                name="name-structure"
+                type="text"
+                class="input"
+                id="name-structure-edit"
+                placeholder="Nom de la Structure"
+                value="Cycle préparatoire"
+              />
+              <span class="material-icons-sharp input-icon"> school </span>
+            </div>
+
+            <div class="dropdown-responsables-edit">
+              <div class="input-dropdown-edit">
+                <input
+                  type="text"
+                  placeholder="Ajouter un Réspnsable"
+                  class="search"
+                  value="Mohammed reda Aced"
+                />
+                <ion-icon
+                  name="person-circle-outline"
+                  class="input-icon"
+                ></ion-icon>
+              </div>
+              <div class="dropdown-content">
+                <a href="#">Utilisateur 1</a>
+                <a href="#">Utilisateur 2</a>
+                <a href="#">Utilisateur 3</a>
+                <!-- Ajoutez d'autres utilisateurs ici -->
+              </div>
+            </div>
+
+            <div class="create-btn">
+              <button>Modifier la Structure</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- debut popup pour modifier structure  -->
+      <!-- fin popup pour modifier user  -->
+      <!-- debut section pour supprimer user etes vous sure de vouloir supprimer -->
       <div class="container-supp-user hidden">
         <form class="supp-user-cart">
           <p class="supp-user-text">
@@ -705,7 +912,24 @@
           </div>
         </form>
       </div>
+      <!-- fin section for supprimer user -->
+      <!-- debut section pour supprimer structure  -->
+      <div class="container-supp-user hidden">
+        <form class="supp-user-cart">
+          <p class="supp-user-text">
+            Êtes-vous sûr de vouloir supprimer cet Structure ? Cette action est
+            irréversible et toutes les données associées seront perdues.
+          </p>
+          <div class="supp-structure-btns">
+            <button class="btn-supp supp-user-annuler">Annuler</button>
+            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+          </div>
+        </form>
+      </div>
+      <!-- fin section pour supprimer structure  -->
+      <!---------------------------------- debut de main content for structures----------------------------------->
 
+      <!---------------------------------- debut de main content for structures----------------------------------->
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay hidden"></div>
     </div>
