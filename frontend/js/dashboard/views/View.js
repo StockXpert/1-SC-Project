@@ -11,6 +11,7 @@ export default class View {
     //   return console.log('something went wrong while trying to render this...');
     // this.renderError();
 
+    //this here is pointing towards an instance of the viewclass (or subclasses)
     this._data = data; // updating the _data field that child classes use in their _generateMarkup functions
     const markup = this._generateMarkup(); // to each child class its _generateMarkup
     if (!render) return markup;

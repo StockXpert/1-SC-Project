@@ -3,8 +3,10 @@ import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
 import addUserView from './views/addUserView.js';
 import sideView from './views/sideView.js';
-import NumberView from './views/numberView.js';
-let numberView = new NumberView();
+import numberView from './views/numberView.js';
+import Fuse from 'fuse.js';
+//controller is the mastermind behind the applciation
+//it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 
 const controlSearchResults = async function () {
   try {
@@ -13,7 +15,8 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
     usersView._clear();
     usersView.render(model.state.search.results);
-    numberView = new NumberView();
+    numberView.addHandlerNumber(controlNumber);
+    numberView.addHandlerMasterCheckbox(controlNumber);
     return;
     //TODO: rendering the results of the query search
   } catch (err) {
@@ -43,13 +46,53 @@ const controlAddUser = async function (newUser) {
   }
 };
 
-const controlNumber = async function () {
+const controlNumber = function () {
+  console.log('CONTROL NUMBER');
   console.log(model.state);
   numberView._clear();
+  model.state.displayed.selected = numberView.calculateCheckboxes();
   numberView.render(model.state);
 };
+
+// SEARCH
+
+const fuzzySearchFunctionMaker = (list, keys = []) => {
+  const fuse = new Fuse(list, { ...FUSE_OPTIONS, keys });
+  return pattern => fuse.search(pattern);
+};
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 searchView.addHandlerSearch(controlSearchResults);
 addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
 numberView.addHandlerNumber(controlNumber);
 sideView.addHandlerUtilisateurs(controlSearchResults);
+numberView.addHandlerMasterCheckbox(controlNumber);
