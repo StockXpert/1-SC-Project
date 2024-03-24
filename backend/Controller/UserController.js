@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const userService = require('../Services/UserService');
 const userModel = require('../Models/UserModel');
 const nodeMailer = require('nodemailer');
+const { forEach } = require('async');
 const transporter = nodeMailer.createTransport({
   service: 'gmail',
   auth: {
@@ -19,7 +20,6 @@ try {
 async function login(req, res) {
   const { email, password } = req.body;
   const SecretKey = process.env.KEY;
-  // console.log({SecretKey})
   userService
     .verifyUser(email)
     .then(response => {
@@ -34,15 +34,16 @@ async function login(req, res) {
           .then(result => {
             // console.log('hi');
             if (result) {
+              console.log(response.designation)
               const token = jwt.sign(
-                { email: email, role: response.role },
+                { email: email, role: response.designation },
                 SecretKey,
                 { expiresIn: '30m' }
               );
               let role=response.role
               res
                 .status(200)
-                .json({ response: 'succuss of login', jwt: token,role});
+                .json({ response: 'succuss of login', jwt: token,role:response.designation});
             } else res.status(404).json({ response: 'Password error' });
           })
           .catch(error => {
@@ -58,36 +59,12 @@ async function login(req, res) {
 }
 async function register(req, res) {
   const SecretKey = process.env.KEY;
-  const { email, role, password } = req.body;
+  const { email, role, password,prenom,nom,date_naissance,type,structure } = req.body;
   const encry_pswrd = await bcrypt.hash(password, 10);
-  userService.createUser(email, role, encry_pswrd).then(response => {
-    if (
-      (role != 'Consommateur' && role != 'RD' && role != 'DG') ||
-      response != 'utilisateur insere'
-    )
-      return res.json({ response });
-    if (role == 'RD' || role == 'DG') {
-      const { nom, prenom, email, date_naissance } = req.body;
-      userService
-        .createResponsable(nom, prenom, email, date_naissance)
-        .then(response => {
-          res.status(200).json({ response });
-        })
-        .catch(response => {
-          res.status(500).json({ response });
-        });
-    } else {
-      const { nom, prenom, date_naissance, type, structure } = req.body;
-      userService
-        .createConsommateur(nom, prenom, date_naissance, structure, email, type)
-        .then(() => {
-          res.status(200).json({ response: 'user created' });
-        })
-        .catch(() => {
-          res.status(500).json({ response: 'internal error' });
-        });
-    }
-  });
+  userService.createUser(email, role, encry_pswrd,prenom,nom,date_naissance,type,structure).then(()=>{
+    res.status(200).json({response:'user created'})
+  }
+).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 function showUsers(req, res) {
   userModel
@@ -100,11 +77,11 @@ function showUsers(req, res) {
     });
 }
 function showUser(req, res) {
-  userModel.getRole(req.email).then((role)=>{
-    userModel.getUser(req.email,role).then((Users)=>{
+  
+    userModel.getUser(req.email).then((Users)=>{
       res.status(200).json({response:Users});
     }).catch((error)=>{res.status(500).json({response:error})})
-  }).catch((error)=>{console.log(error);res.status(500).json({response:error})})
+  
 }
 function forgotPassword(req, res) {
   let { email } = req.body;
@@ -160,10 +137,10 @@ async function changePasswordAuth(req, res) {
       res.status(500).json({ response: 'internal error' });
     });
 }
-function updateConsumerInformations(req, res) {
-  const { email, nom, prenom, date_naissance, structure, type } = req.body;
+function updateUser(req, res) {
+  const { email, nom, prenom, date_naissance, structure, type,role } = req.body;
   userService
-    .updateConsumerInfos(email, nom, prenom, date_naissance, type, structure)
+    .updateUser(email, nom, prenom, date_naissance, type, structure,role)
     .then(() => {
       res.status(200).json({ response: 'informations changed' });
     })
@@ -180,8 +157,8 @@ function deleteUser(req, res) {
     .then(() => {
       res.status(200).json({ response: 'user deleted' });
     })
-    .catch(() => {
-      res.status(500).json({ response: 'internal error' });
+    .catch((error) => {
+      res.status(500).json({ response: error });
     });
 }
 function addStructure(req, res) {
@@ -209,7 +186,7 @@ function afficherConsommateurs(req, res) {
 function rattacher(req, res) {
   const { structure, email } = req.body;
   userService
-    .rattacher(email, structure)
+    .rattacher(structure,email)
     .then(response => {
       res.status(200).json({ response });
     })
@@ -238,23 +215,6 @@ function showStructure(req, res) {
       res.status(500).json({ response: 'internal error' });
     });
 }
-function updateRespInformations(req, res) {
-  const { nom, prenom, email, date_naissance } = req.body;
-  userModel
-    .updateInformations(
-      email,
-      nom,
-      prenom,
-      date_naissance,
-      null,
-      null,
-      'responsable'
-    )
-    .then(() => {
-      res.status(200).json({ response: 'infomations updated' });
-    })
-    .catch({ response: 'internal error' });
-}
 function showResp(req, res) {
   userModel
     .showResp()
@@ -272,22 +232,107 @@ function changeStatus(req,res)
     res.status(200).json({response:'status changed'});
   }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
+async function addRole(req, res) {
+  const { role, permissions } = req.body;
+
+  try {
+    await userModel.insertRole(role);
+    const roleId = await userModel.getRole(role);
+    const response = await userModel.insertRoleDroit(roleId, permissions);
+
+    if (response === "success") {
+      res.status(200).json({ response: "role added" });
+    } else {
+      res.status(500).json({ response: "internal error" });
+    }
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du rôle avec les autorisations :", error);
+    res.status(500).json({ response: "internal error" });
+  }
+}
+function deleteRole(req,res)
+{
+  const {role}=req.body;
+  userModel.canDeleteRole(role).then(()=>{
+    userModel.deleteRoleDroit(role).then(()=>{
+      userModel.deleteRole(role).then(()=>{
+        res.status(200).json({response:'role deleted'})
+      }).then(()=>{res.status(500).json({response:"internal error"})})
+    }).catch(()=>{res.status(500).json({response:"internal error"})})
+  }).catch(()=>{res.status(500).json({response:"can't delete"})})
+}
+async function addPermissions(req,res)
+{
+  const {role,permissions}=req.body;
+  userModel.getRole(role).then((roleId)=>{
+    userModel.insertRoleDroit(roleId,permissions).then(()=>{
+      res.status(500).json({response:"permissions added"})
+    }).catch(()=>{res.status(500).json({response:"internal error"})})
+  }).catch(()=>{res.status(500).json({response:"internal error"})})
+}
+async function deletePermissions(req,res)
+{
+  const {role,permissions}=req.body;
+  let response;
+  for(let permission of permissions)
+  {
+    response=await userModel.deleteRoleDroit(role,permission);
+    if(response!="success")
+       res.status(500).json({response:"internal error"})
+  }
+  res.status(200).json({response:'permissions deleted'})
+}
+function showRoles(req,res)
+{
+    userModel.getRoles().then((roles)=>{
+      res.status(200).json({response:roles})
+    }).catch(()=>{res.status(500).json({response:"internal error"})})
+}
+function showPermissions(req,res)
+{
+  userModel.getPermissions().then((permissions)=>{
+    res.status(200).json({response:permissions})
+  }).catch(()=>{res.status(500).json({response:"internal error"})})
+}
+function deleteStructure(req,res)
+{
+  const {structure}=req.body
+  userModel.canDeleteStructure(structure).then(()=>{
+    userModel.deleteStructure(structure).then(()=>{
+      res.status(200).json({response:'structure deleted'})
+    }).catch(()=>{res.status(500).json({response:'internal error'})})
+  }).catch(()=>{res.status(200).json({response:'prohibited to delete'})})
+}
+function updateStructure(req,res)
+{
+  const {oldDesignation,newDesignation}=req.body
+  userModel.updateStructure(oldDesignation,newDesignation).then(()=>{
+    res.status(200).json({response:'structure updated'})
+  }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
 module.exports = {
   login,
   register,
   showUsers,
+  deleteStructure,
+  updateStructure,
   showUser,
   forgotPassword,
   changePasswordAuth,
   changePasswordMail,
-  updateConsumerInformations,
+  updateUser,
   deleteUser,
   addStructure,
   afficherConsommateurs,
   rattacher,
   responsable,
   showStructure,
-  updateRespInformations,
+  addRole,
   showResp,
-  changeStatus
+  changeStatus,
+  deleteRole,
+  addPermissions,
+  deletePermissions,
+  showRoles,
+  showPermissions
 };
