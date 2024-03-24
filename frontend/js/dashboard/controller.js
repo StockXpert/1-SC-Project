@@ -4,6 +4,7 @@ import usersView from './views/usersView.js';
 import addUserView from './views/addUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
+import editUserView from './views/editUserView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -17,6 +18,7 @@ const controlSearchResults = async function () {
     usersView.render(model.state.search.results);
     numberView.addHandlerNumber(controlNumber);
     numberView.addHandlerMasterCheckbox(controlNumber);
+    // let editUserView = new EditUserView();
     return;
     //TODO: rendering the results of the query search
   } catch (err) {
@@ -24,7 +26,8 @@ const controlSearchResults = async function () {
     //TODO: throw err or treat it with a special func
   }
 };
-//controlAddUser is a handler function that takes in the newUser's data as
+//controlAddUser is a handler function that takes in the newUser's data
+// this taking of the newUser data is coded in the addHandlerUpload
 const controlAddUser = async function (newUser) {
   try {
     //TODO: addUserView.renderSpinner();
@@ -102,7 +105,8 @@ controlSearchResults();
 //
 
 searchView.addHandlerSearch(controlSearchResults);
-addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
+addUserView.addHandlerUpload(controlAddUser, '.add-user-inputs'); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
+// editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
 numberView.addHandlerNumber(controlNumber);
 sideView.addHandlerUtilisateurs(controlSearchResults);
 numberView.addHandlerMasterCheckbox(controlNumber);

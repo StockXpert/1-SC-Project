@@ -821,7 +821,9 @@ table tbody tr:last-child td {
 }
 
 /*------------ Inputs -------------- */
-.add-user-inputs {
+.add-user-inputs,
+.add-structure-inputs,
+.edit-structure-inputs {
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
