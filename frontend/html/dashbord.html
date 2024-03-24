@@ -102,7 +102,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table hidden" id="main-table-users">
+        <div class="main-table" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -394,7 +394,7 @@
         </div>
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
-        <div class="main-table">
+        <div class="main-table hidden">
           <div class="heading">
             <h1>Structures</h1>
             <hr class="line-style" />
@@ -530,8 +530,7 @@
               <input
                 name="name"
                 type="text"
-                class="input"
-                id="name"
+                class="input name"
                 placeholder="Nom et Prénom"
               />
               <ion-icon class="input-icon" name="person-outline"></ion-icon>
@@ -541,7 +540,7 @@
                 name="date"
                 type="date"
                 class="input"
-                id="date"
+                id="add--date"
                 placeholder="Entrez la date de naissance"
               />
               <ion-icon
@@ -553,8 +552,8 @@
               <input
                 name="email"
                 type="email"
-                class="input"
-                id="email"
+                class="input email"
+                autocomplete="email"
                 placeholder="Entrez l'email"
                 required
               />
@@ -564,9 +563,9 @@
               <input
                 name="password"
                 type="password"
-                class="input"
-                id="password"
+                class="input password"
                 placeholder="Entrez le mot de passe"
+                autocomplete="new-password"
                 required
               />
               <a class="password-icon" href="#">
@@ -581,9 +580,9 @@
               <input
                 name="password"
                 type="password"
-                class="input"
-                id="password"
+                class="input password-confirm"
                 placeholder="Confirmer le mot de passe"
+                autocomplete="new-password"
                 required
               />
               <a class="password-icon" href="#">
@@ -673,8 +672,8 @@
                   <input
                     name="name"
                     type="text"
-                    class="input"
-                    id="name"
+                    class="input name"
+                    autocomplete="name"
                     placeholder="Nom"
                     value="BAGHDADLI"
                   />
@@ -689,9 +688,9 @@
                   <input
                     name="password"
                     type="password"
-                    class="input"
-                    id="password"
+                    class="input password"
                     placeholder="Entrez le mot de passe"
+                    autocomplete="new-password"
                     required
                   />
                   <a class="password-icon" href="#">
@@ -711,9 +710,9 @@
                   <input
                     name="password"
                     type="password"
-                    class="input"
-                    id="password"
+                    class="input password-confirm"
                     placeholder="Confirmer le mot de passe"
+                    autocomplete="new-password"
                     required
                   />
                   <a class="password-icon" href="#">
@@ -755,8 +754,7 @@
                   <input
                     name="name"
                     type="text"
-                    class="input"
-                    id="name"
+                    class="input name"
                     placeholder="Prénom"
                     value="Abdelhadi"
                   />
@@ -772,9 +770,9 @@
                     name="date"
                     type="date"
                     class="input"
-                    id="date"
+                    id="edit--date"
                     placeholder="Entrez la date de naissance"
-                    value="19/04/2004"
+                    value="2004-04-19"
                   />
                   <ion-icon
                     class="input-icon"
@@ -829,10 +827,10 @@
                   <input
                     name="email"
                     type="email"
-                    class="input"
-                    id="email"
+                    class="input email"
                     placeholder="Entrez l'email"
                     required
+                    autocomplete="email"
                     value="a.baghdadli@esi-sba.dz"
                   />
                   <ion-icon class="input-icon" name="mail-outline"></ion-icon>

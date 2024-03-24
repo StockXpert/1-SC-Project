@@ -6,17 +6,27 @@ class NumberView extends View {
   _table = document.querySelector('.results');
   _checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
   _masterCheckbox = document.getElementById('checkbox-table-all');
-
+  _elements = this._table.querySelectorAll('tr');
   calculateCheckboxes() {
-    console.log(this._checkboxes);
     let checkedCount = 0;
-    this._checkboxes.forEach(checkbox => {
+    const func = checkbox => {
+      // console.log(this._data);
       if (checkbox.checked) {
         checkedCount++;
+        checkbox.parentElement.parentElement.parentElement.classList.add(
+          'selected-row'
+        );
+      } else {
+        checkbox.parentElement.parentElement.parentElement.classList.remove(
+          'selected-row'
+        );
       }
-    });
+    };
+    this._checkboxes.forEach(func);
     return checkedCount;
   }
+
+  updateSelectabilityVisually() {}
 
   // export const state = {
   //   search: {
@@ -35,23 +45,35 @@ class NumberView extends View {
     return `
       <p class="table-text">
       
-        Tout les Utilisateurs (<b class="number-users">${this._data.search.results.length}</b>)
+        Tout les Utilisateurs (<b class="number-users">${
+          this._data.search.results.length
+        }</b>)
       </p>
       <p class="table-text">
-        Selectionnés (<b class="number-users">${this._data.displayed.selected}</b>)
+
+      ${
+        this._data.displayed.selected
+          ? this._data.displayed.selected === this._data.search.results.length
+            ? `Tous Selectionnés (<b class="number-users">${this._data.displayed.selected}</b>) `
+            : `Selectionnés (<b class="number-users">${this._data.displayed.selected}</b>)`
+          : ''
+      }
+
+      ${true ? '' : 'nothing'}
       </p>
   `;
   }
   addHandlerMasterCheckbox(controller) {
     const checkboxes = this._checkboxes;
     const masterCheckbox = this._masterCheckbox;
+
     const toggleCheckboxes = function toggleCheckboxes() {
       checkboxes.forEach(checkbox => {
         checkbox.checked = masterCheckbox.checked;
       });
     };
+
     this._masterCheckbox.addEventListener('change', function (e) {
-      console.log();
       toggleCheckboxes();
       controller();
     });
@@ -61,8 +83,18 @@ class NumberView extends View {
     fn();
     this._table = document.querySelector('.results');
     this._checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
+    const slaveCheckboxes = this._checkboxes;
+    const masterCheckbox = this._masterCheckbox;
+    function updateMasterCheckbox() {
+      const allChecked = Array.from(slaveCheckboxes).every(
+        checkbox => checkbox.checked
+      );
+      masterCheckbox.checked = allChecked;
+    }
+
     this._checkboxes.forEach(el =>
       el.addEventListener('change', e => {
+        updateMasterCheckbox();
         fn();
       })
     );

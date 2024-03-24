@@ -63,7 +63,7 @@ async function login() {
       localStorage.setItem('JWT', data.jwt);
       //redirect the user
       if (data.role === 'Admin') window.location.href = '../html/dashbord.html';
-      else window.location.href = '../html/foo.html';
+      else window.location.href = '../html/dashbord.html';
     } else {
       if (res.status === 404) {
         if (data.response === 'not existing account') {

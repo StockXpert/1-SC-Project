@@ -507,6 +507,9 @@ table tbody tr:hover {
 .selected-row {
   background-color: #cccccc;
 }
+.selected-row:hover {
+  background-color: #bbb;
+}
 td {
   width: 5rem;
   height: 3.5rem;

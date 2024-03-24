@@ -4,7 +4,7 @@ import usersView from './views/usersView.js';
 import addUserView from './views/addUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
-import Fuse from 'fuse.js';
+import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 
@@ -47,10 +47,11 @@ const controlAddUser = async function (newUser) {
 };
 
 const controlNumber = function () {
-  console.log('CONTROL NUMBER');
-  console.log(model.state);
+  // console.log('CONTROL NUMBER');
+  // console.log(model.state);
   numberView._clear();
   model.state.displayed.selected = numberView.calculateCheckboxes();
+
   numberView.render(model.state);
 };
 
@@ -83,6 +84,15 @@ const fuzzySearchFunctionMaker = (list, keys = []) => {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//TODO: TEMPORARY
+controlSearchResults();
 //
 //
 //
