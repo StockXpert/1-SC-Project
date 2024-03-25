@@ -1,6 +1,18 @@
 import View from './view.js';
 class UsersView extends View {
   _parentElement = document.querySelector('.results');
+  _trueParentElement = document.querySelector('.table-container');
+
+  renderSpinner = function (parentClass) {
+    const markup = `
+    <div class="spinner-parent">
+    <div class="spinner"></div>
+    </div>
+  `;
+    // this._clear();
+    // this._trueClear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+  };
 
   _generateMarkup() {
     //TODO: Refactoring

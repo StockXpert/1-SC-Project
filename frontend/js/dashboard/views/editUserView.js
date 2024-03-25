@@ -1,23 +1,25 @@
 import { state } from '../model.js';
 import View from './view.js';
 import { AddUserView } from './addUserView.js';
+import poppupView from './poppupView.js';
 
-export class EditUserView extends AddUserView {
-  setter() {
-    this._window = document.querySelector('.edit-user-container');
-    this._overlay = document.querySelector('.overlay');
-    this._btnOpen = document.querySelectorAll('.details-btn');
-    this._btnClose = document.querySelector('.close-btn-edit');
-    this._parentElement = document.querySelector('.edit-user-cart');
-  }
+class EditUserView extends AddUserView {
+  // setter() {
+  _window = document.querySelector('.edit-user-container');
+  _overlay = document.querySelector('.overlayEdit');
+  _btnOpen;
+  _btnClose;
+  _parentElement = document.querySelector('.edit-user-cart');
+  // }
 
   constructor() {
-    super(false);
-    this.setter();
-    this.handlersOfShowAndHideAdder();
+    super();
+    // this.adderOfShowAndHideHandlers();
   }
 
-  _addHandlerShowWindow() {
+  addHandlerShowWindow(OpClassName, windowClassName) {
+    this._window = document.querySelector(windowClassName);
+    this._btnOpen = document.querySelectorAll(OpClassName);
     const btnOpenArray = Array.from(this._btnOpen);
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', this.toggleWindow.bind(this));

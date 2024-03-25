@@ -1,24 +1,35 @@
 import * as model from './model.js';
 import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
+// import { AddUserView } from './views/addUserView.js';
+// import { EditUserView } from './views/editUserView.js';
 import addUserView from './views/addUserView.js';
+import editUserView from './views/editUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
-import editUserView from './views/editUserView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
+// let editUserView = new EditUserView();
 
 const controlSearchResults = async function () {
   try {
     //TODO: renderSpinner();
+    // usersView.renderSpinner();
     const query = searchView.getQuery();
+    // usersView._clear();
+    usersView.renderSpinner('');
     await model.loadSearchResults(query);
-    usersView._clear();
     usersView.render(model.state.search.results);
     numberView.addHandlerNumber(controlNumber);
     numberView.addHandlerMasterCheckbox(controlNumber);
-    // let editUserView = new EditUserView();
+    addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
+    addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
+    editUserView.addHandlerHideWindow(
+      '.close-btn-edit',
+      '.edit-user-container'
+    );
+    editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
     return;
     //TODO: rendering the results of the query search
   } catch (err) {
@@ -26,7 +37,7 @@ const controlSearchResults = async function () {
     //TODO: throw err or treat it with a special func
   }
 };
-//controlAddUser is a handler function that takes in the newUser's data
+// controlAddUser is a handler function that takes in the newUser's data
 // this taking of the newUser data is coded in the addHandlerUpload
 const controlAddUser = async function (newUser) {
   try {
@@ -35,16 +46,7 @@ const controlAddUser = async function (newUser) {
     //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
     addUserView.toggleWindow();
     console.log(model.state.User);
-    // update the view
-    // usersView.render(model.state.User);
-
-    // addUserView.renderMessage();
-
-    // setTimeout(function () {
-    //   addUserView.toggleWindow();
-    // }, MODAL_CLOSE_SEC * 1000);
   } catch (err) {
-    //TODO addUserView.renderError(err.message);
     console.error(err);
   }
 };

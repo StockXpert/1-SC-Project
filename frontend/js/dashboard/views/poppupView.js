@@ -1,4 +1,4 @@
-import View from './view';
+import View from './view.js';
 export class PoppupView extends View {
   _window;
   _overlay;
