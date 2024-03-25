@@ -6,15 +6,15 @@ const connectionConfig = {
   password: 'GujpSNqWUm',
   database: 'sql11693152'
 };
-function insertBonCommande(fournisseur,objet,type,date)
+function insertBonCommande(fournisseur,id_article,type)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
         
         const query = `insert into bon_de_commande
-                      (date_commande,id_fournisseur,objet_commande,type) 
-                       select ?,id_fournisseur,?,? from fournisseur where raison_sociale=?`;
-        const values = [date,objet,type,fournisseur];
+                      (date_commande,id_fournisseur,id_article,type) 
+                       select CURRENT_TIMESTAMP,id_fournisseur,?,? from fournisseur where raison_sociale=?`;
+        const values = [id_article,type,fournisseur];
       
         connection.connect((err) => {
           if (err) {

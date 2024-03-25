@@ -73,7 +73,7 @@ async function addRow(ligne,Content,idCopy)
             }
         };
         await sheets.spreadsheets.batchUpdate(insertRequest);
-        const valuesToInsert = [rowIndex-21,'',Content.designation,Content.quantite,Content.prixUnitaire,Content.quantite*Content.prixUnitaire];
+        const valuesToInsert = [rowIndex-21,'',Content.designation,Content.quantite,Content.prixUnitaire+'.00',Content.quantite*Content.prixUnitaire+'.00'];
         const range = `A${rowIndex}:${String.fromCharCode(64 + valuesToInsert.length)}${rowIndex}`;
         const updateRequest = {
             spreadsheetId:idCopy,
@@ -284,4 +284,39 @@ async function generatePDF(idCopy,filename)
         console.error('Error:', error);
     }
 }
-module.exports={generatePDF,getCopy,updateCel,addRow};
+async function deleteRows(ligneD,ligneF,id)
+{
+    try {
+        // Charger les informations d'identification OAuth 2.0 depuis le fichier
+        const auth= new google.auth.GoogleAuth(
+            {
+                keyFile:credentialsPath,
+                scopes:['https://www.googleapis.com/auth/spreadsheets']
+            }
+        )
+        console.log("connected")
+        // Créer une instance de l'API Google Sheets
+        const sheets= await google.sheets({version:"v4",auth});
+
+            // Envoyer la demande de mise à jour
+        const response = await sheets.spreadsheets.batchUpdate({
+            spreadsheetId:id,
+            requestBody:{
+                requests:[{
+                    deleteDimension:{
+                        range:{
+                            sheetId:0,
+                            dimension:'ROWS',
+                            startIndex:ligneD-1,
+                            endIndex:ligneF
+                        }
+                    }
+                }]
+            }
+        })
+        console.log('Rows deleted');
+    } catch (error) {
+        console.error('Error updating cell:', error);
+    }
+}
+module.exports={generatePDF,getCopy,updateCel,addRow,deleteRows};
