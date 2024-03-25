@@ -40,13 +40,21 @@ async function login(req, res) {
                 SecretKey,
                 { expiresIn: '30m' }
               );
-              let role = response.role;
-              res
-                .status(200)
-                .json({
-                  response: 'succuss of login',
-                  jwt: token,
-                  role: response.designation,
+
+              userModel
+                .getRolePermissons(response.designation)
+                .then(permissions => {
+                  res
+                    .status(200)
+                    .json({
+                      response: 'succuss of login',
+                      jwt: token,
+                      role: response.designation,
+                      permissions,
+                    });
+                })
+                .catch(() => {
+                  res.status(500).json({ response: 'internal error' });
                 });
             } else res.status(404).json({ response: 'Password error' });
           })
