@@ -142,7 +142,7 @@ addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but whe
 editUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
 // editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
 numberView.addHandlerNumber(controlNumber);
-sideView.addHandlerUtilisateurs(controlSearchResults);
+sideView.addHandlerBtns(controlSearchResults);
 numberView.addHandlerMasterCheckbox(controlNumber);
 editUserView.addHandlerEdit(controlEditUser);
 searchView.addHandlerSearchV2(controlFuzzySearch);
