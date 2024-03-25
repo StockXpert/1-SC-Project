@@ -149,8 +149,21 @@ aside .sidebar {
 aside .sidebar:hover {
   box-shadow: none;
 }
+.none {
+  display: none;
+}
 
-aside .sidebar a {
+/* aside .sidebar a {
+  display: flex;
+  align-items: center;
+  color: var(--color-dark);
+  height: 3.7rem;
+  gap: 1rem;
+  position: relative;
+  margin-left: 2rem;
+  transition: all 0.3s ease;
+} */
+.sidebar-btns {
   display: flex;
   align-items: center;
   color: var(--color-dark);
