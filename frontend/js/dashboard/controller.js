@@ -17,12 +17,10 @@ const controlSearchResults = async function () {
     //TODO: renderSpinner();
     // usersView.renderSpinner();
     const query = searchView.getQuery();
-
-    // usersView._clear();
     usersView.renderSpinner('');
     await model.loadSearchResults(query);
     searchView.addHandlerSearchV2(controlFuzzySearch);
-    usersView.render(model.state.search.results);
+    usersView.render(model.state.search.queryResults);
     numberView.addHandlerNumber(controlNumber);
     numberView.addHandlerMasterCheckbox(controlNumber);
     editUserView.addHandlerEdit(controlEditUser);
@@ -32,7 +30,10 @@ const controlSearchResults = async function () {
       '.close-btn-edit',
       '.edit-user-container'
     );
-
+    editUserView.addHandlerHideWindow(
+      '.edit-btn-decline',
+      '.edit-user-container'
+    );
     editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
 
     return;
@@ -70,7 +71,7 @@ const controlEditUser = function () {
   }
   const target = this;
   const targetIndex = findNodeIndex(editUserView._btnOpen, target);
-  console.log(targetIndex);
+  // console.log(targetIndex);
   // console.log(editUserView._btnOpen);
   //Use it to extract the input data from the state object
   //TODO:
@@ -87,7 +88,6 @@ const controlNumber = function () {
   // console.log(model.state);
   numberView._clear();
   model.state.displayed.selected = numberView.calculateCheckboxes();
-
   numberView.render(model.state);
 };
 
@@ -102,7 +102,7 @@ const controlFuzzySearch = function (searchKeyword) {
   }
   if (!(searchKeyword.trim() === '')) {
     model.state.search.queryResults = extractItems(filteredList);
-    usersView.render(extractItems(filteredList));
+    usersView.render(model.state.search.queryResults);
     numberView.addHandlerNumber(controlNumber);
     numberView.addHandlerMasterCheckbox(controlNumber);
     editUserView.addHandlerEdit(controlEditUser);
@@ -112,7 +112,6 @@ const controlFuzzySearch = function (searchKeyword) {
       '.close-btn-edit',
       '.edit-user-container'
     );
-
     editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
   } else {
     model.state.search.queryResults = model.state.search.results;
@@ -126,7 +125,6 @@ const controlFuzzySearch = function (searchKeyword) {
       '.close-btn-edit',
       '.edit-user-container'
     );
-
     editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
   }
 
@@ -140,11 +138,11 @@ const controlFuzzySearch = function (searchKeyword) {
 controlSearchResults();
 
 searchView.addHandlerSearch(controlSearchResults);
-addUserView.addHandlerUpload(controlAddUser, '.add-user-inputs'); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
-editUserView.addHandlerUpload(controlAddUser, '.inputs-edit'); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
+addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
+editUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
 // editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
 numberView.addHandlerNumber(controlNumber);
 sideView.addHandlerUtilisateurs(controlSearchResults);
 numberView.addHandlerMasterCheckbox(controlNumber);
 editUserView.addHandlerEdit(controlEditUser);
-// searchView.addHandlerSearchV2(controlFuzzySearch);
+searchView.addHandlerSearchV2(controlFuzzySearch);

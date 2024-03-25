@@ -8,11 +8,13 @@ export class AddUserView extends View {
   _btnOpen;
   _btnClose;
   _parentElement = document.querySelector('.add-user-cart');
+  _form = document.querySelector('.add-user-inputs');
   constructor() {
     super();
   }
   //THIS ===> the addUserView object
   _boundToggleWindow = e => {
+    e.preventDefault();
     this.toggleWindow.bind(this)();
   };
   //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
@@ -34,14 +36,14 @@ export class AddUserView extends View {
     this._window.classList.toggle('hidden');
   }
 
-  addHandlerUpload(handler, classOfForm) {
-    this._parentElement.addEventListener('submit', function (e) {
+  addHandlerUpload(handler) {
+    this._form.addEventListener('submit', function (e) {
       e.preventDefault();
-      // console.log('CLICKED!');
-      console.log(new FormData(this.querySelector(classOfForm)));
-      const dataArr = [...new FormData(this.querySelector(classOfForm))];
+      console.log(this);
+      const form = this;
+      const dataArr = [...new FormData(form)];
       const data = Object.fromEntries(dataArr);
-      // console.log(data);
+      console.log(data);
       // handler(data);
     });
   }

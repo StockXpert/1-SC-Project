@@ -19,7 +19,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    console.log(data.response);
+    // console.log(data);
     state.search.results = data.response.map(usr => {
       // usr:
       // "email": "o.djeziri@esi-sba.dz",
@@ -42,6 +42,7 @@ export const loadSearchResults = async function (query) {
         date_naissance: helpers.formatDate(usr.date_naissance),
       };
     });
+    state.search.queryResults = state.search.results;
     // console.log(state.search.results);
   } catch (err) {
     console.log(`${err} 💔`);

@@ -16,14 +16,12 @@ class EditUserView extends AddUserView {
 
   constructor() {
     super();
-    // this.adderOfShowAndHideHandlers();
   }
 
   addHandlerShowWindow(OpClassName, windowClassName) {
     const addEventListenerCallback = e => {
       this.toggleWindow.bind(this)();
       this.currTarget = e.target;
-      console.log(this.currTarget);
     };
     this._window = document.querySelector(windowClassName);
     this._btnOpen = document.querySelectorAll(OpClassName);
