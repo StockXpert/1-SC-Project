@@ -23,7 +23,7 @@ class EditUserView extends AddUserView {
     const addEventListenerCallback = e => {
       this.toggleWindow.bind(this)();
       this.currTarget = e.target;
-      // console.log(this.currTarget);
+      console.log(this.currTarget);
     };
     this._window = document.querySelector(windowClassName);
     this._btnOpen = document.querySelectorAll(OpClassName);
@@ -54,7 +54,6 @@ class EditUserView extends AddUserView {
   }
 
   addHandlerEdit(controller) {
-    console.log('addHandlerEdit');
     this._btnOpen = document.querySelectorAll('.details-btn');
     const btnOpenArray = Array.from(this._btnOpen);
     btnOpenArray.forEach(btn => {

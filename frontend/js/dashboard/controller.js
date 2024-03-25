@@ -70,8 +70,11 @@ const controlEditUser = function () {
   }
   const target = this;
   const targetIndex = findNodeIndex(editUserView._btnOpen, target);
+  console.log(targetIndex);
+  // console.log(editUserView._btnOpen);
   //Use it to extract the input data from the state object
-  editUserView.changeInputs(model.state.search.results[targetIndex]);
+  //TODO:
+  editUserView.changeInputs(model.state.search.queryResults[targetIndex]);
   //find a way to sense a change in the password (maybe a function that get triggered on the click of any of the pwd fields)
   //OnAClickOfAnPasswordInput:
   //  check if pwd > 8 chars
@@ -97,9 +100,36 @@ const controlFuzzySearch = function (searchKeyword) {
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
-  !(searchKeyword.trim() === '')
-    ? usersView.render(extractItems(filteredList))
-    : usersView.render(model.state.search.results);
+  if (!(searchKeyword.trim() === '')) {
+    model.state.search.queryResults = extractItems(filteredList);
+    usersView.render(extractItems(filteredList));
+    numberView.addHandlerNumber(controlNumber);
+    numberView.addHandlerMasterCheckbox(controlNumber);
+    editUserView.addHandlerEdit(controlEditUser);
+    addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
+    addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
+    editUserView.addHandlerHideWindow(
+      '.close-btn-edit',
+      '.edit-user-container'
+    );
+
+    editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
+  } else {
+    model.state.search.queryResults = model.state.search.results;
+    usersView.render(model.state.search.results);
+    numberView.addHandlerNumber(controlNumber);
+    numberView.addHandlerMasterCheckbox(controlNumber);
+    editUserView.addHandlerEdit(controlEditUser);
+    addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
+    addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
+    editUserView.addHandlerHideWindow(
+      '.close-btn-edit',
+      '.edit-user-container'
+    );
+
+    editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
+  }
+
   // const cleanFilteredList = filteredList
   //   .slice(0, BROWSER_SUGGESTIONS_MAX_SIZE)
   //   .map(el => el.item.longName);
