@@ -190,7 +190,11 @@ function getUsers()
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     
-    const query = 'Select u.email,u.nom,u.prenom,u.active,u.date_naissance,r.designation as role,u.type FROM utilisateur u ,role r WHERE  u.id_role=r.id_role';
+    const query = `SELECT u.email, u.nom, u.prenom, u.active, u.date_naissance, r.designation as role, s.designation as structure, u.type
+    FROM utilisateur u
+    LEFT JOIN role r ON u.id_role = r.id_role
+    LEFT JOIN structure s ON s.id_resp = u.email
+    `
     
     connection.connect((err) => {
       if (err) {
@@ -216,7 +220,11 @@ function getUser(email)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query='Select u.email,u.nom,u.prenom,u.active,u.date_naissance,r.designation as role,type from utilisateur u,role r where email=? and r.id_role=u.id_role'
+    const query=`SELECT u.email, u.nom, u.prenom, u.active, u.date_naissance, r.designation as role, s.designation as structure, u.type
+    FROM utilisateur u
+    LEFT JOIN role r ON u.id_role = r.id_role
+    LEFT JOIN structure s ON s.id_resp = u.email
+    WHERE u.email = ?;`
     const values=[email]
     connection.connect((err) => {
       if (err) {
@@ -968,7 +976,7 @@ module.exports={insertUser,verifyUser,getPassword,getUsers,getUser,changePasswor
                  addResponsable,showResp,getRole,updateStatus,canDeletePerson,
                  getRolePermissons,getRoles,getPermissions,
                  insertRole,insertRoleDroit,deleteRoleDroit,deleteRole,canDeleteRole,updateStructure,canDeleteStructure,
-                rattacher,deleteStructure};
+                rattacher,deleteStructure,getRolePermissons};
 
 
 
