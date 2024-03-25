@@ -247,7 +247,9 @@ aside .sidebar a:hover span {
   grid-template-rows: 1fr 10fr;
   /* gap: 1rem; */
 }
-.main-table {
+.main-table,
+.main-table-structure,
+.main-table-roles {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -368,7 +370,8 @@ aside .sidebar a:hover span {
   display: flex;
   flex-direction: column;
 }
-.container-heading-table {
+.container-heading-table,
+.container-heading-table-roles {
   display: flex;
   justify-content: space-between;
 }
@@ -723,11 +726,20 @@ table tbody tr:last-child td {
 .close-btn span:hover {
   color: #477ce2;
 }
+.heading-role-user {
+  z-index: 600;
+}
 .heading-primary-add-user {
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 1.2;
   color: #477ce2;
+}
+.heading-primary-roles {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: white;
 }
 .heading-primary-add-structure {
   font-size: 1.8rem;
@@ -762,6 +774,52 @@ table tbody tr:last-child td {
   position: relative;
   overflow: hidden;
 }
+.roles-cart-container {
+  padding: 0.4rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.roles-cart {
+  display: flex;
+  /* gap: 10rem; */
+  justify-content: space-between;
+  background-color: transparent;
+  padding: 1rem;
+  z-index: 1000;
+}
+.role {
+  width: 20rem;
+  height: 20rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* align-items: center; */
+
+  gap: 2rem;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+
+  z-index: 1000;
+}
+.blue-backgroud-role {
+  width: 20rem;
+  height: 7.5rem;
+  position: absolute;
+  background: linear-gradient(
+    180deg,
+    #92b1ed 0%,
+    #477ce2 99.98%,
+    #92b1ed 99.99%
+  );
+  left: -0px;
+  right: -0px;
+  top: -40px;
+  z-index: 200;
+  /* border-radius: 30%; */
+}
 
 .blue-backgroud {
   width: 65rem;
@@ -794,6 +852,34 @@ table tbody tr:last-child td {
   align-items: center;
   padding: 0.4rem;
   z-index: 600;
+}
+.heading-role-user {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.4rem;
+  z-index: 900;
+}
+.text-permissions {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.text-permissions p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4b4b4b;
+}
+.text-permissions::-webkit-scrollbar {
+  width: 5px;
+}
+
+.text-permissions::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 /* .role-tag {
   display: flex;
