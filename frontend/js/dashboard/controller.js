@@ -30,7 +30,10 @@ const controlSearchResults = async function () {
       '.close-btn-edit',
       '.edit-user-container'
     );
-
+    editUserView.addHandlerHideWindow(
+      '.edit-btn-decline',
+      '.edit-user-container'
+    );
     editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
 
     return;

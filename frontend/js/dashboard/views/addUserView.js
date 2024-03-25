@@ -14,6 +14,7 @@ export class AddUserView extends View {
   }
   //THIS ===> the addUserView object
   _boundToggleWindow = e => {
+    e.preventDefault();
     this.toggleWindow.bind(this)();
   };
   //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
