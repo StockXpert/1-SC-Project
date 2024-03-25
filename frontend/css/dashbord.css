@@ -284,7 +284,9 @@ aside .sidebar a:hover span {
   gap: 2rem;
 }
 
-.users-searchbar {
+.users-searchbar,
+.chapitres-searchbar,
+.articles-searchbar {
   display: flex;
   justify-content: space-between;
   background-color: white;
@@ -292,12 +294,16 @@ aside .sidebar a:hover span {
   border-radius: 20px;
   padding: 0.2rem;
 }
-.main-search {
+.main-search,
+.main-search-chapitre,
+.main-search-article {
   display: flex;
   gap: 1rem;
   justify-content: center;
 }
-.container-searchbar {
+.container-searchbar,
+.container-searchbar-chapitre,
+.container-searchbar-article {
   /* width: 30%; */
   display: flex;
   flex-direction: column;
@@ -305,7 +311,9 @@ aside .sidebar a:hover span {
   justify-content: center;
   padding: 0.6rem;
 }
-.searchbar {
+.searchbar,
+.searchbar-chapitre,
+.searchbar-article {
   height: 2.5rem;
   display: flex;
   align-items: center;
@@ -322,7 +330,9 @@ aside .sidebar a:hover span {
   padding: 0.4rem 0.4rem;
   color: #9a9a9a;
 }
-.searchbar-text {
+.searchbar-text,
+.searchbar-text-chapitre,
+.searchbar-text-article {
   width: 30vw;
   font-size: 1.1rem;
   padding: 0.4rem 0.4rem;
@@ -331,7 +341,9 @@ aside .sidebar a:hover span {
 .searchbar-text::placeholder {
   color: #9a9a9a;
 }
-.add-users {
+.add-users,
+.add-chapitres,
+.add-articles {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -340,7 +352,9 @@ aside .sidebar a:hover span {
   justify-content: center;
   border-radius: 25px;
 }
-.add-users-btn {
+.add-users-btn,
+.add-chapitres-btn,
+.add-articles-btn {
   width: 8rem;
   height: 2.5rem;
   font-size: 1rem;
@@ -369,13 +383,17 @@ aside .sidebar a:hover span {
 .search-users-btn:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
-.add-users-btn:hover {
+.add-users-btn:hover,
+.add-chapitres-btn:hover,
+.add-articles-btn:hover {
   background-color: #3963b5;
   /* transform: translateY(-2px); */
   transform: translateY(-2px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
-.add-users-btn:active {
+.add-users-btn:active,
+.add-chapitres-btn:active,
+.add-articles-btn:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -388,7 +406,9 @@ aside .sidebar a:hover span {
   display: flex;
   justify-content: space-between;
 }
-.heading-table-btns {
+.heading-table-btns,
+.heading-table-btns-chapitres,
+.heading-table-btns-articles {
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -417,37 +437,51 @@ aside .sidebar a:hover span {
   background-color: #3963b5;
   box-shadow: 0px 0px 8px rgb(145, 144, 144);
 }
-.btn-edit {
+.btn-edit,
+.btn-edit-chapitres,
+.btn-edit-articles {
   color: black;
   background-color: white;
   transition: all 0.3s ease-in-out;
 }
-.btn-edit:hover {
+.btn-edit:hover,
+.btn-edit-chapitres:hover,
+.btn-edit-articles:hover {
   transform: translateY(-4px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
-.btn-edit:active {
+.btn-edit:active,
+.btn-edit-chapitres:active,
+.btn-edit-articles:active {
   background-color: #e6e6e6;
   /* box-shadow: 0px 0px 16px rgba(0, 0, 0, 1); */
 }
-.btn-delete {
+.btn-delete,
+.btn-delete-chapitres,
+.btn-delete-articles {
   color: white;
   background: #e24747;
   transition: all 0.3s ease-in-out;
 }
-.btn-delete:active {
+.btn-delete:active,
+.btn-delete-chapitres:active,
+.btn-delete-articles:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
   background-color: #b53939;
 }
-.btn-delete:hover {
+.btn-delete:hover,
+.btn-delete-chapitres:hover,
+.btn-delete-articles:hover {
   /* background-color: transparent; */
   /* color: rgba(0, 0, 0, 1); */
   transform: translateY(-4px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
   /* border: 1px solid #b53939; */
 }
-.heading-table-text {
+.heading-table-text,
+.heading-table-text-chapitres,
+.heading-table-text-articles {
   display: flex;
   gap: 1rem;
 }
@@ -472,7 +506,9 @@ aside .sidebar a:hover span {
   gap: 0.8rem;
 }
 
-.table-container {
+.table-container,
+.table-container-chapitres,
+.table-container-chapitres {
   max-height: 51.2vh;
   overflow-y: auto;
   border-radius: 20px;
@@ -556,7 +592,9 @@ table tbody tr:last-child td {
   border: 2.5px solid #000000;
   border-radius: 2px;
 }
-#checkbox-table {
+#checkbox-table,
+#checkbox-table-chapitres,
+#checkbox-table-articles {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -569,7 +607,9 @@ table tbody tr:last-child td {
   background-color: #4b4b4b;
   border: none;
 }
-#checkbox-table:checked {
+#checkbox-table:checked,
+#checkbox-table-chapitres:checked,
+#checkbox-table-articles:checked {
   background-color: #4b4b4b;
   border: none;
 }
@@ -591,7 +631,9 @@ table tbody tr:last-child td {
   color: #4b4b4b;
   font-weight: 400;
 }
-.checkbox-colomn {
+.checkbox-colomn,
+.checkbox-colomn-chapitres,
+.checkbox-colomn-articles {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -1313,7 +1355,9 @@ a.password-icon:active {
   border-bottom-left-radius: 0;
 }
 
-.results {
+.results,
+.results-chapitres,
+.results-chapitres {
   position: relative;
 }
 

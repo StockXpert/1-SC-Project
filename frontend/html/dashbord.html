@@ -100,7 +100,7 @@
       </aside>
       <!-- fin of sidebar -->
 
-      <!---------------------------------- debut de main content for Admin tables----------------------------------->
+      <!------------------------ debut de main content for Admin tables----------------------------------->
       <main class="main-container">
         <!-- photo de profile + nom et role -->
         <div class="right-section">
@@ -137,9 +137,9 @@
                     placeholder="Entrez le nom de l'utilisateur"
                   />
                 </form>
-                <form class="search-user-btn">
+                <!-- <form class="search-user-btn">
                   <button class="search-users-btn">Recherche</button>
-                </form>
+                </form> -->
               </div>
 
               <div class="container-filter">
@@ -516,7 +516,7 @@
         </div>
         <!------ fin de content for Admin : 2 - Structure tables----- -->
         <!------ debut de content for Admin : 3 - Roles tables----- -->
-        <div class="main-table-roles">
+        <div class="main-table-roles hidden">
           <div class="heading">
             <h1>Rôles</h1>
             <hr class="line-style" />
@@ -662,6 +662,221 @@
           </div>
         </div>
         <!------ fin de content for Admin : 3 - Roles tables----- -->
+        <!--------------------------------- I- END ADMIN FONCTIONS --------------------------------------->
+        <!------------------------------ II- BEGIN ServiceAchat FONCTIONS ---------------------------------->
+        <!------ debut de content for ServiceAchat : 1 - Chapitres tables----- -->
+        <div class="main-table hidden" id="main-table-chapitres">
+          <div class="heading">
+            <h1>Chapitres</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="chapitres-searchbar">
+            <div class="container-searchbar-chapitre">
+              <div class="main-search-chapitre">
+                <form class="searchbar-chapitre">
+                  <span class="material-icons-sharp"> search </span>
+                  <input
+                    type="text"
+                    class="searchbar-text-chapitre"
+                    placeholder="Entrez le nom de l'utilisateur"
+                  />
+                </form>
+              </div>
+            </div>
+            <div class="add-chapitres">
+              <button class="add-chapitres-btn">Ajouter</button>
+            </div>
+          </div>
+
+          <!-- tableau principale -->
+
+          <!-- heading tbale -->
+          <div class="table-top">
+            <div class="heading-table">
+              <div class="container-heading-table">
+                <div class="heading-table-text-chapitres">
+                  <p class="table-text">
+                    Tout les Utilisateurs (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns-chapitres">
+                  <button class="heading-table-btn btn-edit-chapitres">
+                    Modifier
+                  </button>
+                  <button class="heading-table-btn btn-delete-chapitres">
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <!--fin  heading tbale -->
+
+            <!------------debut du tableau ------------------------>
+            <!-- <div class="users-table"> -->
+            <div class="table-container-chapitres">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table-all" />
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Nom</th>
+                    <th>date d'ajout</th>
+                  </tr>
+                </thead>
+                <tbody class="results-chapitres">
+                  <!--une ligne nrml  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-chapitres">
+                        <input type="checkbox" id="checkbox-table-chapitres" />
+                        <p class="colomn-tags-name">21-11</p>
+                      </div>
+                    </td>
+                    <td>Fournitures</td>
+                    <td>21/12/2024</td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-chapitres">
+                        <input type="checkbox" id="checkbox-table-chapitres" />
+                        <p class="colomn-tags-name">21-12</p>
+                      </div>
+                    </td>
+                    <td>Matériel et mobilier</td>
+                    <td>21/12/2024</td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+        <!------ fin de content for ServiceAchat : 1 - Chapitres tables----- -->
+        <!------ debut de content for ServiceAchat : 2 - articles tables----- -->
+        <div class="main-table" id="main-table-articles">
+          <div class="heading">
+            <h1>Articles</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="articles-searchbar">
+            <div class="container-searchbar-article">
+              <div class="main-search-article">
+                <form class="searchbar-article">
+                  <span class="material-icons-sharp"> search </span>
+                  <input
+                    type="text"
+                    class="searchbar-text-article"
+                    placeholder="Entrez le nom du Article"
+                  />
+                </form>
+              </div>
+            </div>
+            <div class="add-articles">
+              <button class="add-articles-btn">Ajouter</button>
+            </div>
+          </div>
+
+          <!-- tableau principale -->
+
+          <!-- heading tbale -->
+          <div class="table-top">
+            <div class="heading-table">
+              <div class="container-heading-table">
+                <div class="heading-table-text-articles">
+                  <p class="table-text">
+                    Tout les Articles (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns-articles">
+                  <button class="heading-table-btn btn-edit-articles">
+                    Modifier
+                  </button>
+                  <button class="heading-table-btn btn-delete-articles">
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <!--fin  heading tbale -->
+
+            <!------------debut du tableau ------------------------>
+            <!-- <div class="users-table"> -->
+            <div class="table-container-articles">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table-all" />
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Nom</th>
+                    <th>Nom du chapitre</th>
+                    <th>date d'ajout</th>
+                    <th>TVA</th>
+                  </tr>
+                </thead>
+                <tbody class="results-articles">
+                  <!--une ligne nrml  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-articles">
+                        <input type="checkbox" id="checkbox-table-articles" />
+                        <p class="colomn-tags-name">21-11 .11</p>
+                      </div>
+                    </td>
+                    <td>Ouvrages des bibliothèques</td>
+                    <td>Fournitures</td>
+                    <td>19/24/2024</td>
+                    <td>19%</td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-articles">
+                        <input type="checkbox" id="checkbox-table-articles" />
+                        <p class="colomn-tags-name">21-12 .8</p>
+                      </div>
+                    </td>
+                    <td>Habillement des personnels de service</td>
+                    <td>Fournitures</td>
+                    <td>19/24/2024</td>
+                    <td>19%</td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+        <!------ fin de content for ServiceAchat : 1 - Chapitres tables----- -->
+        <!------------------------------ II- END ServiceAchat FONCTIONS ------------------------------->
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
       <!--------------------------------- I- BEGIN ADMIN FONCTIONS --------------------------------------->
@@ -1100,9 +1315,6 @@
       </div>
       <!-- fin section pour supprimer structure  -->
 
-      <!--------------------------------- I- END ADMIN FONCTIONS --------------------------------------->
-      <!------------------------------ II- BEGIN ServiceAchat FONCTIONS ---------------------------------->
-      <!------------------------------ II- END ServiceAchat FONCTIONS ------------------------------->
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
