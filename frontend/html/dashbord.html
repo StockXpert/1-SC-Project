@@ -102,7 +102,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table hidden" id="main-table-users">
+        <div class="main-table" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -498,7 +498,7 @@
         </div>
         <!------ fin de content for Admin : 2 - Structure tables----- -->
         <!------ debut de content for Admin : 3 - Roles tables----- -->
-        <div class="main-table-roles">
+        <div class="main-table-roles hidden">
           <div class="heading">
             <h1>Rôles</h1>
             <hr class="line-style" />
@@ -831,7 +831,7 @@
                   <ion-icon class="input-icon" name="person-outline"></ion-icon>
                 </div>
               </div>
-              <div class="main-input-groupe">
+              <!-- <div class="main-input-groupe">
                 <div class="input-text">
                   <p>Mot de passe:</p>
                 </div>
@@ -873,6 +873,25 @@
                       name="eye-off-outline"
                     ></ion-icon>
                   </a>
+                </div>
+              </div> -->
+              <div class="main-input-groupe">
+                <div class="input-text">
+                  <p>Statut:</p>
+                </div>
+                <div class="dropdown-activity">
+                  <select
+                    name="active"
+                    id="status-options-edit"
+                    placeholder="Selectionnés le statut"
+                    required
+                  >
+                    <option value="" selected="" disabled="">Statut</option>
+                    <option value="1" class="dropdown-active">Activé</option>
+                    <option value="0" class="dropdown-inactif">
+                      Désactivé
+                    </option>
+                  </select>
                 </div>
               </div>
               <div class="main-input-groupe">
@@ -951,25 +970,6 @@
                     <option value="">Classe Préparatoire</option>
                     <option value="Cycle Supérieure">Second Cycle</option>
                     <option value="">Direction</option>
-                  </select>
-                </div>
-              </div>
-              <div class="main-input-groupe">
-                <div class="input-text">
-                  <p>Statut:</p>
-                </div>
-                <div class="dropdown-activity">
-                  <select
-                    name="active"
-                    id="status-options-edit"
-                    placeholder="Selectionnés le statut"
-                    required
-                  >
-                    <option value="" selected="" disabled="">Statut</option>
-                    <option value="1" class="dropdown-active">Activé</option>
-                    <option value="0" class="dropdown-inactif">
-                      Désactivé
-                    </option>
                   </select>
                 </div>
               </div>
