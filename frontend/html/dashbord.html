@@ -127,19 +127,23 @@
               <div class="container-filter">
                 <div class="dropbtn-text">
                   <select
-                    name="statut"
+                    name="role"
                     class="filters"
                     id="filter-status-options"
                     placeholder="Selectionnés le rôle"
                     required
                   >
                     <option value="all" disabled="" selected="">Rôle</option>
-                    <option value="all">Tout</option>
+                    <option value="">Tout</option>
+                    <option value="Directeur">Directeur</option>
                     <option value="DG">Directeur</option>
                     <option value="RD">Résponsable direct</option>
                     <option value="MG">Magasinier</option>
                     <option value="SA">Service Achat</option>
-                    <option value="CO">Consommateur</option>
+                    <option value="Consommateur">Consommateur</option>
+                    <option value="Administrateur System">
+                      Administrateur
+                    </option>
                   </select>
                 </div>
                 <div class="dropbtn-text">
@@ -519,11 +523,12 @@
                 required
               >
                 <option value="" selected="" disabled="">Rôles</option>
-                <option value="DG">Directeur</option>
+                <option value="Directeur">Directeur</option>
                 <option value="RD">Résponsable direct</option>
                 <option value="Magasinier">Magasinier</option>
                 <option value="Service achat">Service Achat</option>
                 <option value="Consommateur">Consommateur</option>
+                <option value="Administrateur System">Administrateur</option>
               </select>
             </div>
             <div class="input-groupe">
@@ -671,7 +676,7 @@
                 </div>
                 <div class="input-groupe-edit">
                   <input
-                    name="name"
+                    name="nom"
                     type="text"
                     class="input name"
                     autocomplete="name"
@@ -727,21 +732,24 @@
               </div>
               <div class="main-input-groupe">
                 <div class="input-text">
-                  <p>Rôles:</p>
+                  <p>Rôle:</p>
                 </div>
                 <div class="dropdown-roles">
                   <select
-                    name="roles"
+                    name="role"
                     id="role-options-edit"
                     placeholder="Selectionnés le rôle"
                     required
                   >
                     <option value="" selected="" disabled="">Rôles</option>
-                    <option value="DG">Directeur</option>
+                    <option value="Directeur">Directeur</option>
                     <option value="RD">Résponsable direct</option>
                     <option value="Magasinier">Magasinier</option>
                     <option value="Service achat">Service Achat</option>
                     <option value="Consommateur">Consommateur</option>
+                    <option value="Administrateur System">
+                      Administrateur
+                    </option>
                   </select>
                 </div>
               </div>
@@ -753,7 +761,7 @@
                 </div>
                 <div class="input-groupe-edit">
                   <input
-                    name="name"
+                    name="prenom"
                     type="text"
                     class="input name"
                     placeholder="Prénom"
@@ -768,7 +776,7 @@
                 </div>
                 <div class="input-groupe-edit">
                   <input
-                    name="date"
+                    name="date_naissance"
                     type="date"
                     class="input"
                     id="edit--date"
@@ -783,11 +791,11 @@
               </div>
               <div class="main-input-groupe">
                 <div class="input-text">
-                  <p>Statructure:</p>
+                  <p>Structure:</p>
                 </div>
                 <div class="dropdown-activity">
                   <select
-                    name="status"
+                    name="structure"
                     id="structure-options-edit"
                     placeholder="Selectionnés le statut"
                     required
@@ -796,7 +804,7 @@
                       Statructure
                     </option>
                     <option value="">Classe Préparatoire</option>
-                    <option value="">Second Cyle</option>
+                    <option value="Cycle Supérieure">Second Cycle</option>
                     <option value="">Direction</option>
                   </select>
                 </div>
@@ -807,7 +815,7 @@
                 </div>
                 <div class="dropdown-activity">
                   <select
-                    name="status"
+                    name="active"
                     id="status-options-edit"
                     placeholder="Selectionnés le statut"
                     required
@@ -936,5 +944,6 @@
       <div class="overlay overlayEdit hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
   </body>
 </html>

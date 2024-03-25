@@ -1,4 +1,5 @@
 import View from './view.js';
+import * as helpers from '../helpers.js';
 class UsersView extends View {
   _parentElement = document.querySelector('.results');
   _trueParentElement = document.querySelector('.table-container');
@@ -32,8 +33,12 @@ class UsersView extends View {
       </div>
     </td>
     <td>${result.email}</td>
-    <td class="table-status active-status">${result.active}</td>
-    <td><p class="admin-role">${result.role}</p></td>
+    <td class="table-status ${
+      result.active ? 'active-status' : 'inactif-status'
+    }">${result.active ? 'Activé' : 'Désactivé'}</td>
+    <td><p class="admin-role">${
+      result.role ? helpers.roleTranslator(result.role) : 'Aucun'
+    }</p></td>
     <td class="table-structure">${result.structure}</td>
     <td>
       <button class="details-btn">

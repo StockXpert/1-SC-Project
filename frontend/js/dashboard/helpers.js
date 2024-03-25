@@ -1,4 +1,5 @@
-import { TIMEOUT_SEC } from './config.js';
+import { TIMEOUT_SEC, FUSE_OPTIONS } from './config.js';
+import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -6,6 +7,22 @@ const timeout = function (s) {
       reject(new Error(`Request took too long! Timeout after ${s} second`));
     }, s * 1000);
   });
+};
+
+export const formatDate = inputDate => {
+  // Parse input date string into a Date object
+  const date = new Date(inputDate);
+
+  // Extract year, month, and day
+  const year = date.getFullYear();
+  // Months are zero-based, so add 1 to get the correct month
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  // Format the date in the desired format
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
 };
 
 // export const AJAX = async function (url, uploadData = undefined) {
@@ -155,4 +172,10 @@ export const roleTranslator = function (Brole) {
     case 'Administrateur System':
       return 'Administrateur';
   }
+};
+
+// fuzzySearchFunctionMaker:
+export const fuzzySearch = (list, keys = []) => {
+  const fuse = new Fuse(list, { ...FUSE_OPTIONS, keys });
+  return pattern => fuse.search(pattern);
 };

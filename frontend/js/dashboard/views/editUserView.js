@@ -10,6 +10,8 @@ class EditUserView extends AddUserView {
   _btnOpen;
   _btnClose;
   _parentElement = document.querySelector('.edit-user-cart');
+  _form = document.querySelector('.inputs-edit');
+  currTarget;
   // }
 
   constructor() {
@@ -18,31 +20,47 @@ class EditUserView extends AddUserView {
   }
 
   addHandlerShowWindow(OpClassName, windowClassName) {
+    const addEventListenerCallback = e => {
+      this.toggleWindow.bind(this)();
+      this.currTarget = e.target;
+      // console.log(this.currTarget);
+    };
     this._window = document.querySelector(windowClassName);
     this._btnOpen = document.querySelectorAll(OpClassName);
     const btnOpenArray = Array.from(this._btnOpen);
-    btnOpenArray.forEach(btn => {
-      btn.addEventListener('click', this.toggleWindow.bind(this));
+    btnOpenArray.forEach((btn, index) => {
+      btn.addEventListener('click', addEventListenerCallback);
     });
   }
 
-  // addHandlerUpload(handler) {
-  //   // console.log(this._parentElement);
-  //   this._parentElement.addEventListener('submit', function (e) {
-  //     e.preventDefault();
-  //     // this = document.querySelector('.inputs');
-  //     console.log(this);
-  //     const dataArr = [...new FormData(this.querySelector('.inputs'))];
-  //     // dataArr.forEach(([key, value]) => {
-  //     //   console.log(`Key: ${key}, Value: ${value}`);
-  //     // });
-  //     // this=== this._parentElement (the upload form)
-  //     // console.log(dataArr);
-  //     const data = Object.fromEntries(dataArr);
-  //     console.log(data);
-  //     handler(data);
-  //   });
-  // }
+  changeInputs(NewInputValuesObj) {
+    // Get the form element
+    const formElement = this._form;
+    // Create a new FormData object from the form
+    const formData = new FormData(formElement);
+    // TODO:
+    // formData.forEach(function (value, key) {
+    //   console.log(key + ': ' + value);
+    // });
+    // Update form fields with new values
+    for (const key in NewInputValuesObj) {
+      if (NewInputValuesObj.hasOwnProperty(key)) {
+        const input = formElement.elements[key];
+        if (input) {
+          input.value = NewInputValuesObj[key];
+        }
+      }
+    }
+  }
+
+  addHandlerEdit(controller) {
+    console.log('addHandlerEdit');
+    this._btnOpen = document.querySelectorAll('.details-btn');
+    const btnOpenArray = Array.from(this._btnOpen);
+    btnOpenArray.forEach(btn => {
+      btn.addEventListener('click', controller);
+    });
+  }
 
   _generateMarkup() {}
 }
