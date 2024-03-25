@@ -1,5 +1,5 @@
 const EntreeModel=require('../Models/EntreeModel');
-const { getArticleId } = require('../Models/NomenclatureModel');
+const { getArticleIdTva } = require('../Models/NomenclatureModel');
 const EntreeService=require('../Services/EntreeService')
 function genererFicheBesoins(req,res)
 {
@@ -9,11 +9,11 @@ function genererBondeCommande(req,res)
 {
    const {produits,fournisseur,objet,type}=req.body;
    const date=EntreeService.getDate()
-   getArticleId(objet).then((articleId)=>{
-      EntreeModel.insertBonCommande(fournisseur,objet,type,date,articleId).then((n_com)=>{
+   getArticleIdTva(objet).then((article)=>{
+      EntreeModel.insertBonCommande(fournisseur,objet,type,date,article.num_article).then((n_com)=>{
          EntreeModel.insertCommander(n_com,produits).then(()=>{
            EntreeService.genererBondeCommande(n_com,produits,fournisseur,objet,
-            type,'1KEtktsb0n8ZspuxitPk-8kX1S5OJ6AcJmnlbywh-s98').then((link)=>{
+            type,'1KEtktsb0n8ZspuxitPk-8kX1S5OJ6AcJmnlbywh-s98',article.tva).then((link)=>{
                res.status(200).json({response:"bon de commande insere",link})
             }).catch(()=>{res.status(500).json({response:"internal error"});})
          }).catch((error)=>{

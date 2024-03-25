@@ -40,8 +40,7 @@ function insertLink(link,n_commande)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        console.log({chapitre})
-        const query = "update bon_de_commande set link=? where n_commande=?";
+        const query = "update bon_de_commande set link=? where num_commande=?";
         const values = [link,n_commande];
       
         connection.connect((err) => {

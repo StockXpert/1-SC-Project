@@ -24,7 +24,7 @@ function TVA(montantHT,tva)
 {
     return Math.floor((montantHT*tva)/100)
 }
-async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id)
+async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tva)
 {
     return new Promise(async(resolve,reject)=>{
         await googleMiddleware.updateCel('C1',`République Algerienne démoctatique et populaire
@@ -42,7 +42,6 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id)
             await googleMiddleware.updateCel('C15',`RIB (ou RIP) :${fournisseur.rib?fournisseur.rib:fournisseur.rip}`,Id)
             await googleMiddleware.updateCel('F18',`Objet de la commande: ${objet}`,Id);
             let range
-            let tva=19
             switch (type) {
                 case "materiel":
                     range='A18'
@@ -52,7 +51,6 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id)
                     break;
                 case "service":
                     range='A20'
-                    tva=21
                     break;
                 default:
                     break;
@@ -61,7 +59,7 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id)
             await googleMiddleware.updateCel('F23',TVA(montantHT(produits),tva)+'.00',Id);
             await googleMiddleware.updateCel('F24',TVA(montantHT(produits),tva)+montantHT(produits)+'.00',Id);
             const myNumber=new numberWord(TVA(montantHT(produits),tva)+montantHT(produits),'fr').result.fullText
-            await googleMiddleware.updateCel('A26',`Arrêté le présent bon de commande à la somme de (en lettres) : ${myNumber} dinars algérien`,Id);
+            await googleMiddleware.updateCel('A27',`${myNumber} dinars algérien`,Id);
             await googleMiddleware.updateCel(range,true,Id);
             let i = 22;
             for (const produit of produits) {
@@ -69,12 +67,13 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id)
                 i++;
             }
             await googleMiddleware.generatePDF(Id,`commande${num_commande}`);
-            resolve("pdf generated");
+            await googleMiddleware.updateCel(range,false,Id);
             await googleMiddleware.deleteRows(22,i-1,Id);
-            const link=`BonCommande/commande${num_commande}`
-            /*insertLink(link)
-            resolve(link)*/
-        }).catch((err)=>{console.log(err)})
+            const link=`BonCommande/commande${num_commande}.pdf`
+            insertLink(link,num_commande).then(()=>{
+                resolve(link)
+            }).catch(()=>{reject("err")})
+        }).catch((err)=>{reject(err)})
     })
 }
 module.exports={getDate,genererBondeCommande,montantHT,TVA}
