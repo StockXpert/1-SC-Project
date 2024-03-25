@@ -247,7 +247,8 @@ aside .sidebar a:hover span {
   grid-template-rows: 1fr 10fr;
   /* gap: 1rem; */
 }
-.main-table {
+.main-table,
+.main-table-structure {
   display: flex;
   flex-direction: column;
   gap: 2rem;

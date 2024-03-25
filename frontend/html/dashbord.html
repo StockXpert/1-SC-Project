@@ -102,7 +102,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table" id="main-table-users">
+        <div class="main-table hidden" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -394,7 +394,7 @@
         </div>
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
-        <div class="main-table hidden">
+        <div class="main-table-structure">
           <div class="heading">
             <h1>Structures</h1>
             <hr class="line-style" />
@@ -455,12 +455,12 @@
                         <p class="colomn-tags">Structure</p>
                       </div>
                     </th>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <th>Responsable</th>
-                    <th>Afféctation</th>
+                    <!-- <th>Afféctation</th> -->
                   </tr>
                 </thead>
-                <tbody class="main-table-structure">
+                <tbody class="table-structure">
                   <!--une ligne nrml  -->
                   <tr>
                     <td>
@@ -469,9 +469,8 @@
                         <p class="colomn-tags-name">Cycle préparatoire</p>
                       </div>
                     </td>
-                    <td>1</td>
+
                     <td>Mohammed reda aced</td>
-                    <td class="table-structure">12</td>
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
@@ -480,13 +479,11 @@
                     <td>
                       <div class="checkbox-colomn">
                         <input type="checkbox" id="checkbox-table" />
-                        <p class="colomn-tags-name">Baidar Samir</p>
+                        <p class="colomn-tags-name">Cycle préparatoire</p>
                       </div>
                     </td>
-                    <td>2</td>
-                    <td class="table-status inactif-status">Inactif</td>
 
-                    <td class="table-structure">12</td>
+                    <td>Mohammed reda aced</td>
                   </tr>
                   <!--fin d'une ligne selected  -->
                 </tbody>
@@ -497,8 +494,8 @@
         </div>
         <!------ fin de content for Admin : 2 - Structure tables----- -->
       </main>
-      <!----------------------------------- fin du main content for Admin Table----------------------------------------->
-
+      <!----------- fin du main content for Admin Table----------------------------------------->
+      <!-- I- BEGIN ADMIN FONCTIONS -->
       <!-- debut de section pour ajouter un  user -->
       <div class="add-user-container hidden">
         <div class="add-user-cart">
@@ -927,9 +924,7 @@
         </form>
       </div>
       <!-- fin section pour supprimer structure  -->
-      <!---------------------------------- debut de main content for structures----------------------------------->
 
-      <!---------------------------------- debut de main content for structures----------------------------------->
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay hidden"></div>
     </div>
