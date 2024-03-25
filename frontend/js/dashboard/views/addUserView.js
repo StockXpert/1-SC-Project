@@ -37,9 +37,11 @@ export class AddUserView extends View {
   addHandlerUpload(handler, classOfForm) {
     this._parentElement.addEventListener('submit', function (e) {
       e.preventDefault();
+      // console.log('CLICKED!');
       const dataArr = [...new FormData(this.querySelector(classOfForm))];
       const data = Object.fromEntries(dataArr);
-      handler(data);
+      console.log(data);
+      // handler(data);
     });
   }
 

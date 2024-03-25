@@ -42,7 +42,8 @@ const controlSearchResults = async function () {
 const controlAddUser = async function (newUser) {
   try {
     //TODO: addUserView.renderSpinner();
-    await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
+    console.log(newUser);
+    // await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
     //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
     addUserView.toggleWindow();
     console.log(model.state.User);
@@ -108,6 +109,7 @@ controlSearchResults();
 
 searchView.addHandlerSearch(controlSearchResults);
 addUserView.addHandlerUpload(controlAddUser, '.add-user-inputs'); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
+editUserView.addHandlerUpload(controlAddUser, '.inputs-edit'); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
 // editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
 numberView.addHandlerNumber(controlNumber);
 sideView.addHandlerUtilisateurs(controlSearchResults);
