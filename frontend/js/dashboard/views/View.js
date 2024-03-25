@@ -1,7 +1,12 @@
+// import icons from '../../../img/icons.svg';
+
 export default class View {
   _data;
   _clear() {
     this._parentElement.innerHTML = '';
+  }
+  _trueClear() {
+    this._trueParentElement.innerHTML = '';
   }
 
   render(data, render = true) {
