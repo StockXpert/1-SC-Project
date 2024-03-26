@@ -14,7 +14,10 @@ export const state = {
     status: 'all',
     selected: 0,
   },
-  structures: [],
+  structures: {
+    results: [],
+    selected: 0,
+  },
 };
 
 export const loadSearchResults = async function (query) {
@@ -70,7 +73,7 @@ export const loadStructures = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showStructure`);
     // console.log(data.response);
-    state.structures = data.response.map(str => {
+    state.structures.results = data.response.map(str => {
       return {
         designation: str.designation,
         responsible: str.id_resp,
@@ -91,7 +94,7 @@ export const uploadStructure = async function (newStructure) {
       `${API_URL}/Users/addStructure`,
       postData
     );
-    state.structures.push({
+    state.structures.results.push({
       designation: newStructure.name,
       responsible: newStructure.responsable,
     });

@@ -12,6 +12,7 @@ import StructuresView from './views/structuresView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
+import numberStructuresView from './views/numberStructuresView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -62,13 +63,22 @@ const controlNumber = function () {
   numberView.render(model.state);
 };
 
+const controleSelectStructures = function () {
+  numberStructuresView._clear();
+  model.state.structures.selected = numberStructuresView.calculateCheckboxes();
+  numberStructuresView.render(model.state.structures);
+};
 const controlLoadStructures = async function () {
   try {
     console.log('LOADING STRUCTURES...');
     StructuresView.renderSpinner();
     await model.loadStructures();
     console.log('LOADED !');
-    StructuresView.render(model.state.structures);
+    StructuresView.render(model.state.structures.results);
+    numberStructuresView.render(model.state.structures);
+    numberStructuresView.updateMasterCheckbox();
+    numberStructuresView.addHandlerNumber(controleSelectStructures);
+    numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
   } catch (error) {
     console.error(error);
   }
@@ -77,8 +87,8 @@ const controlLoadStructures = async function () {
 const controlAddStructure = async function (newStructure) {
   try {
     await model.uploadStructure(newStructure);
-    console.log(model.state.structures);
-    StructuresView.render(model.state.structures);
+    console.log(model.state.structures.results);
+    StructuresView.render(model.state.structures.results);
     AddStructureView.clearForm();
     //Close Window
     // setTimeout(function () {
@@ -178,3 +188,6 @@ searchView.addHandlerSearchV2(controlFuzzySearch);
 // searchView.addHandlerSearchV2(controlFuzzySearch, true);
 searchView.addHandlerFilter(controlFilterring);
 // searchView.addHandlerFilter(controlFilterring, 1);
+// numberStructuresView.updateMasterCheckbox();
+numberStructuresView.addHandlerNumber(controlNumber);
+numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
