@@ -20,7 +20,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    console.log(data);
+    // console.log(data);
     state.search.results = data.response.map(usr => {
       // usr:
       // "email": "o.djeziri@esi-sba.dz",
@@ -70,7 +70,7 @@ export const uploadUser = async function (data) {
 export const loadStructures = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showStructure`);
-    console.log(data.response);
+    // console.log(data.response);
     state.structures = data.response.map(str => {
       return {
         designation: str.designation,
@@ -105,7 +105,7 @@ export const uploadStructure = async function (newStructure) {
 export const getUsersEmail = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    console.log(data.response.map(user => user.email));
+    // console.log(data.response.map(user => user.email));
     return data.response.map(user => user.email);
   } catch (error) {
     console.error('Shit shit :' + error);
@@ -118,69 +118,69 @@ export const getUsersEmail = async function () {
 //   [state.search.results],
 //   ['email', 'date_naissance', 'prenom', 'nom', 'role', 'structure']
 // );
-const data = [
-  {
-    email: '',
-    prenom: '',
-    nom: '',
-    role: null,
-    structure: 'Cycle Supérieure',
-    active: 1,
-    date_naissance: '1970-01-01',
-  },
-  {
-    email: 'a.baghdadli@esi-sba.dz',
-    prenom: 'Abdelhadi',
-    nom: 'BAGHDADLI',
-    role: 'Administrateur System',
-    structure: 'Cycle Supérieure',
-    active: 1,
-    date_naissance: '2004-04-19',
-  },
-  {
-    email: 'DG@esi-sba.dz',
-    prenom: 'Kamil',
-    nom: 'KAZI',
-    role: 'Directeur',
-    structure: 'Cycle Supérieure',
-    active: 1,
-    date_naissance: '2003-05-28',
-  },
-  {
-    email: 'kam@esi-sba.dz',
-    prenom: 'Kamil',
-    nom: 'KAZI',
-    role: 'Administrateur System',
-    structure: 'Cycle Supérieure',
-    active: 1,
-    date_naissance: '2003-05-28',
-  },
-  {
-    email: 'ms.senhadji@esi-sba.dz',
-    prenom: '',
-    nom: 'ms.senhadji',
-    role: 'Consommateur',
-    structure: 'Cycle Supérieure',
-    active: 1,
-    date_naissance: '1970-01-01',
-  },
-  {
-    email: 'o.djeziri@esi-sba.dz',
-    prenom: 'Oussama',
-    nom: 'DJEZIRI',
-    role: 'Administrateur System',
-    structure: 'Cycle Supérieure',
-    active: 1,
-    date_naissance: '2002-12-30',
-  },
-  {
-    email: 'ServiceAchat@esi-sba.dz',
-    prenom: '',
-    nom: 'Service Achat',
-    role: 'Service achat',
-    structure: 'Cycle Supérieure',
-    active: 1,
-    date_naissance: '2003-05-28',
-  },
-];
+// const data = [
+//   {
+//     email: '',
+//     prenom: '',
+//     nom: '',
+//     role: null,
+//     structure: 'Cycle Supérieure',
+//     active: 1,
+//     date_naissance: '1970-01-01',
+//   },
+//   {
+//     email: 'a.baghdadli@esi-sba.dz',
+//     prenom: 'Abdelhadi',
+//     nom: 'BAGHDADLI',
+//     role: 'Administrateur System',
+//     structure: 'Cycle Supérieure',
+//     active: 1,
+//     date_naissance: '2004-04-19',
+//   },
+//   {
+//     email: 'DG@esi-sba.dz',
+//     prenom: 'Kamil',
+//     nom: 'KAZI',
+//     role: 'Directeur',
+//     structure: 'Cycle Supérieure',
+//     active: 1,
+//     date_naissance: '2003-05-28',
+//   },
+//   {
+//     email: 'kam@esi-sba.dz',
+//     prenom: 'Kamil',
+//     nom: 'KAZI',
+//     role: 'Administrateur System',
+//     structure: 'Cycle Supérieure',
+//     active: 1,
+//     date_naissance: '2003-05-28',
+//   },
+//   {
+//     email: 'ms.senhadji@esi-sba.dz',
+//     prenom: '',
+//     nom: 'ms.senhadji',
+//     role: 'Consommateur',
+//     structure: 'Cycle Supérieure',
+//     active: 1,
+//     date_naissance: '1970-01-01',
+//   },
+//   {
+//     email: 'o.djeziri@esi-sba.dz',
+//     prenom: 'Oussama',
+//     nom: 'DJEZIRI',
+//     role: 'Administrateur System',
+//     structure: 'Cycle Supérieure',
+//     active: 1,
+//     date_naissance: '2002-12-30',
+//   },
+//   {
+//     email: 'ServiceAchat@esi-sba.dz',
+//     prenom: '',
+//     nom: 'Service Achat',
+//     role: 'Service achat',
+//     structure: 'Cycle Supérieure',
+//     active: 1,
+//     date_naissance: '2003-05-28',
+//   },
+// ];
 export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);

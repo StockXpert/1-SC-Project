@@ -55,6 +55,7 @@ async function login() {
         password: password.value,
       }),
     });
+    console.log(res);
     const data = await res.json();
     console.log(data);
     if (data.response === 'succuss of login') {

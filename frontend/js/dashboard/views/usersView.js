@@ -4,17 +4,6 @@ class UsersView extends View {
   _parentElement = document.querySelector('.results');
   _trueParentElement = document.querySelector('.table-container');
 
-  renderSpinner = function (parentClass) {
-    const markup = `
-    <div class="spinner-parent">
-    <div class="spinner"></div>
-    </div>
-  `;
-    // this._clear();
-    // this._trueClear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  };
-
   _generateMarkup() {
     //TODO: Refactoring
     // return this._data.map(result => previewView.render(result, false)).join('');

@@ -61,6 +61,7 @@ export const getJSON = async function (url) {
     // console.log(res);
     const data = await res.json();
     console.log(data);
+    // localStorage.setItem('JWT', data.jwt);
     if (!res.ok)
       throw new Error(`${data.error} (${res.statusText} - ${res.status})`);
     return data;

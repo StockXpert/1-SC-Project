@@ -91,7 +91,10 @@ const controlNumber = function () {
 
 const controlLoadStructures = async function () {
   try {
+    console.log('LOADING STRUCTURES...');
+    StructuresView.renderSpinner();
     await model.loadStructures();
+    console.log('LOADED !');
     StructuresView.render(model.state.structures);
   } catch (error) {
     console.error(error);
@@ -174,12 +177,12 @@ addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but whe
 editUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
 // editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
 numberView.addHandlerNumber(controlNumber);
-const controllers = [controlSearchResults, ''];
+const controllers = [controlSearchResults, controlLoadStructures];
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
 
 controlShowUsersEmail();
-controlLoadStructures();
+// controlLoadStructures();
 
 AddStructureView.addHandlerUpload(controlAddStructure);
 

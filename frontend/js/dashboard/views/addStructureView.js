@@ -1,9 +1,9 @@
-import View from './View.js';
+import View from './view.js';
 import { truncateEmail } from '../helpers.js';
 
 class addStructureView extends View {
   _window = document.querySelector('.add-structure-container');
-  _overlay = document.querySelector('.overlay');
+  _overlay = document.querySelector('.overlayAddStr');
   _btnOpen = document.getElementById('add-btn-structure');
   _btnClose = document.getElementsByClassName('close-btn')[1];
   _parentElement = document.querySelector('.add-structure-inputs');
@@ -27,7 +27,7 @@ class addStructureView extends View {
 
   _addHandlerHideWindow() {
     this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
-    // this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
   }
   addHandlerUpload(handler) {
     // console.log(this._parentElement);

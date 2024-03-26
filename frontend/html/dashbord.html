@@ -116,7 +116,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table hidden" id="main-table-users">
+        <div class="main-table" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -130,14 +130,13 @@
                   <input
                     type="text"
                     class="searchbar-text"
-                    placeholder="Entrez le nom de l'utilisateur"
+                    placeholder="Chercher Un Utilisateur..."
                   />
                 </form>
                 <!-- <form class="search-user-btn">
                   <button class="search-users-btn">Recherche</button>
                 </form> -->
               </div>
-
               <div class="container-filter">
                 <div class="dropbtn-text">
                   <select
@@ -177,7 +176,7 @@
               </div>
             </div>
             <div class="add-users">
-              <button class="add-users-btn">Ajouter</button>
+              <button class="add-users-btn">Ajouter Un Utilisateur</button>
             </div>
           </div>
 
@@ -412,7 +411,7 @@
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
 
-        <div class="main-table" id="main-table-structures">
+        <div class="main-table hidden" id="main-table-structures">
           <div class="heading">
             <h1>Structures</h1>
             <hr class="line-style" />
@@ -1490,6 +1489,7 @@
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
+      <div class="overlay overlayAddStr hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>

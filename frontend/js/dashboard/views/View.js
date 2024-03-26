@@ -23,4 +23,14 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+  renderSpinner = function (parentClass) {
+    const markup = `
+    <div class="spinner-parent">
+    <div class="spinner"></div>
+    </div>
+  `;
+    // this._clear();
+    // this._trueClear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+  };
 }

@@ -1,4 +1,4 @@
-import View from './View.js';
+import View from './view.js';
 
 class StructuresView extends View {
   _parentElement = document.querySelector('.table-structures');
