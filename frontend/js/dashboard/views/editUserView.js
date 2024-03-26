@@ -2,6 +2,7 @@ import { state } from '../model.js';
 import View from './view.js';
 import { AddUserView } from './addUserView.js';
 import poppupView from './poppupView.js';
+import * as helpers from '../helpers.js';
 
 class EditUserView extends AddUserView {
   // setter() {

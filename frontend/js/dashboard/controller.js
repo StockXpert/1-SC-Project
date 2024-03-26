@@ -7,6 +7,7 @@ import addUserView from './views/addUserView.js';
 import editUserView from './views/editUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
+import * as helpers from './helpers.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -61,16 +62,8 @@ const controlAddUser = async function (newUser) {
 const controlEditUser = function () {
   //ONCLICK OF A EDIT BUTTON
   //Get the index of the clicked edit button here
-  function findNodeIndex(nodeList, targetNode) {
-    for (let i = 0; i < nodeList.length; i++) {
-      if (nodeList[i] === targetNode) {
-        return i; // Return the index if the node matches the target node
-      }
-    }
-    return -1; // Return -1 if the target node is not found in the NodeList
-  }
   const target = this;
-  const targetIndex = findNodeIndex(editUserView._btnOpen, target);
+  const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
   // console.log(targetIndex);
   // console.log(editUserView._btnOpen);
   //Use it to extract the input data from the state object
@@ -142,7 +135,8 @@ addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but whe
 editUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
 // editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
 numberView.addHandlerNumber(controlNumber);
-sideView.addHandlerUtilisateurs(controlSearchResults);
+const controllers = [controlSearchResults, ''];
+sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
 editUserView.addHandlerEdit(controlEditUser);
 searchView.addHandlerSearchV2(controlFuzzySearch);
