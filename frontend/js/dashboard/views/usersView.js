@@ -4,17 +4,6 @@ class UsersView extends View {
   _parentElement = document.querySelector('.results');
   _trueParentElement = document.querySelector('.table-container');
 
-  renderSpinner = function (parentClass) {
-    const markup = `
-    <div class="spinner-parent">
-    <div class="spinner"></div>
-    </div>
-  `;
-    // this._clear();
-    // this._trueClear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  };
-
   _generateMarkup() {
     //TODO: Refactoring
     // return this._data.map(result => previewView.render(result, false)).join('');
@@ -35,7 +24,7 @@ class UsersView extends View {
     <td>${result.email}</td>
     <td class="table-status ${
       result.active ? 'active-status' : 'inactif-status'
-    }">${result.active ? 'Activé' : 'Désactivé'}</td>
+    }">${result.active}</td>
     <td><p class="admin-role">${
       result.role ? helpers.roleTranslator(result.role) : 'Aucun'
     }</p></td>

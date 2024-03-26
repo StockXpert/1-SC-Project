@@ -68,7 +68,7 @@
             <span class="material-icons-sharp"> article </span>
             <h3>Articles</h3>
           </a>
-          <a class="sidebar-btns produits-btn hidden" href="">
+          <a class="sidebar-btns produits-btn" href="">
             <span class="material-icons-sharp produits-btn">
               shopping_cart
             </span>
@@ -116,7 +116,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table hidden" id="main-table-users">
+        <div class="main-table" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -130,30 +130,32 @@
                   <input
                     type="text"
                     class="searchbar-text"
-                    placeholder="Entrez le nom de l'utilisateur"
+                    placeholder="Chercher Un Utilisateur..."
                   />
                 </form>
                 <!-- <form class="search-user-btn">
                   <button class="search-users-btn">Recherche</button>
                 </form> -->
               </div>
-
               <div class="container-filter">
                 <div class="dropbtn-text">
                   <select
                     name="role"
                     class="filters"
-                    id="filter-status-options"
+                    id="filter-role-options"
                     placeholder="Selectionnés le rôle"
                     required
                   >
-                    <option value="all" disabled="" selected="">Rôle</option>
-                    <option value="">Tout</option>
+                    <option value="all" disabled="" selected="">
+                      Choisissez un Rôle
+                    </option>
+                    <option value="all">Tout</option>
                     <option value="Directeur">Directeur</option>
-                    <option value="DG">Directeur</option>
-                    <option value="RD">Résponsable direct</option>
-                    <option value="MG">Magasinier</option>
-                    <option value="SA">Service Achat</option>
+                    <option value="Responsable direct">
+                      Résponsable direct
+                    </option>
+                    <option value="Magasinier">Magasinier</option>
+                    <option value="Service Achat">Service Achat</option>
                     <option value="Consommateur">Consommateur</option>
                     <option value="Administrateur System">
                       Administrateur
@@ -164,20 +166,22 @@
                   <select
                     name="roles"
                     class="filters"
-                    id="filter-role-options"
+                    id="filter-status-options"
                     placeholder="Selectionnés le rôle"
                     required
                   >
-                    <option value="all" disabled="" selected="">Statut</option>
+                    <option value="all" disabled="" selected="">
+                      Choisissez un Statut
+                    </option>
                     <option value="all">Tout</option>
-                    <option value="active">Activé</option>
-                    <option value="inactive">Désactivé</option>
+                    <option value="Activé">Activé</option>
+                    <option value="Désactivé">Désactivé</option>
                   </select>
                 </div>
               </div>
             </div>
             <div class="add-users">
-              <button class="add-users-btn">Ajouter</button>
+              <button class="add-users-btn">Ajouter Un Utilisateur</button>
             </div>
           </div>
 
@@ -411,6 +415,7 @@
         </div>
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
+
         <div class="main-table hidden" id="main-table-structures">
           <div class="heading">
             <h1>Structures</h1>
@@ -471,7 +476,7 @@
                     <th>Modifier</th>
                   </tr>
                 </thead>
-                <tbody class="table-structure">
+                <tbody class="table-structures">
                   <!--une ligne nrml  -->
                   <tr>
                     <td>
@@ -1210,7 +1215,7 @@
                       </div>
                     </th>
                     <th>Nom</th>
-                    <th>Nom du chapitre</th>
+                    <th>Description</th>
 
                     <th>quantité</th>
                     <th>date d'ajout</th>
@@ -1377,7 +1382,7 @@
       </div>
       <!-- fin de section  ajouter un  user -->
       <!-- debut de section pour ajouter une  structure -->
-      <div class="add-user-container hidden">
+      <div class="add-structure-container hidden">
         <div class="add-structure-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
@@ -1390,7 +1395,7 @@
           <form class="add-structure-inputs">
             <div class="input-groupe">
               <input
-                name="name-structure"
+                name="name"
                 type="text"
                 class="input"
                 id="name-structure"
@@ -1401,23 +1406,28 @@
 
             <div class="dropdown-responsables">
               <div class="input-dropdown">
-                <input
-                  type="text"
-                  placeholder="Ajouter un Réspnsable"
+                <select
+                  name="responsable"
+                  placeholder="selectionné l'email d'un Réspnsable"
                   class="search"
                   id="search-responsable"
-                />
+                  required
+                >
+                  <option disabled selected value="">
+                    selectionné l'email d'un Réspnsable
+                  </option>
+                </select>
                 <ion-icon
                   name="person-circle-outline"
                   class="input-icon"
                 ></ion-icon>
               </div>
-              <div class="dropdown-content">
+              <!-- <div class="dropdown-content">
                 <a href="#">Utilisateur 1</a>
                 <a href="#">Utilisateur 2</a>
-                <a href="#">Utilisateur 3</a>
-                <!-- Ajoutez d'autres utilisateurs ici -->
-              </div>
+                <a href="#">Utilisateur 3</a> -->
+              <!-- Ajoutez d'autres utilisateurs ici -->
+              <!-- </div> -->
             </div>
 
             <div class="create-btn">
@@ -1514,8 +1524,10 @@
                     required
                   >
                     <option value="" selected="" disabled="">Statut</option>
-                    <option value="1" class="dropdown-active">Activé</option>
-                    <option value="0" class="dropdown-inactif">
+                    <option value="Activé" class="dropdown-active">
+                      Activé
+                    </option>
+                    <option value="Désactivé" class="dropdown-inactif">
                       Désactivé
                     </option>
                   </select>
@@ -1664,7 +1676,7 @@
                   class="input-icon"
                 ></ion-icon>
               </div>
-              <div class="dropdown-content">
+              <div class="dropdown-content hidden">
                 <a href="#">Utilisateur 1</a>
                 <a href="#">Utilisateur 2</a>
                 <a href="#">Utilisateur 3</a>
@@ -1712,6 +1724,7 @@
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
+      <div class="overlay overlayAddStr hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>

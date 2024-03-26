@@ -11,6 +11,7 @@ class SideView extends View {
     document.querySelector('.archive-btn'),
     document.querySelector('.articles-btn'),
     document.querySelector('.chapitres-btn'),
+    document.querySelector('.produits-btn'),
   ];
   divs = [
     document.getElementById('main-table-users'),
@@ -22,6 +23,7 @@ class SideView extends View {
     ,
     document.getElementById('main-table-articles'),
     document.getElementById('main-table-chapitres'),
+    document.getElementById('main-table-produits'),
   ];
 
   addHandlerBtns(controllers) {

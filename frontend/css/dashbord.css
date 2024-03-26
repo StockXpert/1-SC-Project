@@ -323,7 +323,7 @@ aside .sidebar a:hover span {
 .container-searchbar-permission {
   /* width: 30%; */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
   justify-content: center;
   padding: 0.6rem;
@@ -381,8 +381,8 @@ aside .sidebar a:hover span {
 .add-chapitres-btn,
 .add-articles-btn,
 .add-produits-btn {
-  width: 8rem;
-  height: 2.5rem;
+  width: 12rem;
+  height: 3rem;
   font-size: 1rem;
   font-weight: 700;
   color: white;
@@ -590,7 +590,8 @@ aside .sidebar a:hover span {
 .table-container-chapitres,
 .table-container-articles,
 .table-container-produits {
-  max-height: 51.2vh;
+  /* max-height: 51.2vh; */
+  max-height: 59.6vh;
   overflow-y: auto;
   border-radius: 20px;
   box-shadow: 0px 2px 10px 0px #00000066;
@@ -784,9 +785,10 @@ table tbody tr:last-child td {
 .container-filter-produits {
   display: flex;
   /* justify-content: space-between; */
-  gap: 3rem;
+  gap: 1rem;
   align-items: center;
   padding: 0.2rem;
+  /* transform: translateX(-5rem); */
 }
 .filters,
 .filters-produits {
@@ -828,7 +830,8 @@ table tbody tr:last-child td {
 
 /* ------------- cart add user --------------- */
 
-.add-user-container {
+.add-user-container,
+.add-structure-container {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -1514,7 +1517,7 @@ a.password-icon:active {
 }
 .spinner-parent {
   position: absolute;
-  height: 80%;
+  min-height: 55.6vh;
   width: 100%;
   backdrop-filter: blur(5px);
   display: flex;

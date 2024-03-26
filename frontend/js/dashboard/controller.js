@@ -1,44 +1,32 @@
 import * as model from './model.js';
+import { MODAL_CLOSE_SEC } from './config.js';
 import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
 // import { AddUserView } from './views/addUserView.js';
 // import { EditUserView } from './views/editUserView.js';
 import addUserView from './views/addUserView.js';
-import editUserView from './views/editUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
+import editUserView from './views/editUserView.js';
+import StructuresView from './views/structuresView.js';
+import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
+import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 // let editUserView = new EditUserView();
 
+// THIS CONTROLLER HAPPENS AT PAGE LANDING :
 const controlSearchResults = async function () {
   try {
-    //TODO: renderSpinner();
-    // usersView.renderSpinner();
-    const query = searchView.getQuery();
     usersView.renderSpinner('');
-    await model.loadSearchResults(query);
+    await model.loadSearchResults();
+    // D Y N A M I C   S E A R C H   A C T I V A T I O N :
     searchView.addHandlerSearchV2(controlFuzzySearch);
-    usersView.render(model.state.search.queryResults);
-    numberView.addHandlerNumber(controlNumber);
-    numberView.addHandlerMasterCheckbox(controlNumber);
-    editUserView.addHandlerEdit(controlEditUser);
-    addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
-    addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
-    editUserView.addHandlerHideWindow(
-      '.close-btn-edit',
-      '.edit-user-container'
-    );
-    editUserView.addHandlerHideWindow(
-      '.edit-btn-decline',
-      '.edit-user-container'
-    );
-    editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
-
+    usersView.render(model.state.search.results);
+    userViewAdders();
     return;
-    //TODO: rendering the results of the query search
   } catch (err) {
     console.error(err);
     //TODO: throw err or treat it with a special func
@@ -48,9 +36,8 @@ const controlSearchResults = async function () {
 // this taking of the newUser data is coded in the addHandlerUpload
 const controlAddUser = async function (newUser) {
   try {
-    //TODO: addUserView.renderSpinner();
     console.log(newUser);
-    // await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
+    await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
     //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
     addUserView.toggleWindow();
     console.log(model.state.User);
@@ -64,67 +51,109 @@ const controlEditUser = function () {
   //Get the index of the clicked edit button here
   const target = this;
   const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
-  // console.log(targetIndex);
-  // console.log(editUserView._btnOpen);
   //Use it to extract the input data from the state object
-  //TODO:
   editUserView.changeInputs(model.state.search.queryResults[targetIndex]);
-  //find a way to sense a change in the password (maybe a function that get triggered on the click of any of the pwd fields)
-  //OnAClickOfAnPasswordInput:
-  //  check if pwd > 8 chars
-  //  Check if mdp=confmdp (else visual html error)
-  //  add password to
+  //                                                                           TODO:
 };
 
 const controlNumber = function () {
-  // console.log('CONTROL NUMBER');
-  // console.log(model.state);
   numberView._clear();
   model.state.displayed.selected = numberView.calculateCheckboxes();
   numberView.render(model.state);
 };
 
+const controlLoadStructures = async function () {
+  try {
+    console.log('LOADING STRUCTURES...');
+    StructuresView.renderSpinner();
+    await model.loadStructures();
+    console.log('LOADED !');
+    StructuresView.render(model.state.structures);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlAddStructure = async function (newStructure) {
+  try {
+    await model.uploadStructure(newStructure);
+    console.log(model.state.structures);
+    StructuresView.render(model.state.structures);
+    AddStructureView.clearForm();
+    //Close Window
+    // setTimeout(function () {
+    //   AddStructureView.toggleWindow();
+    // }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlShowUsersEmail = async function () {
+  try {
+    const options = await model.getUsersEmail();
+    AddStructureView.addEmailsSelection(options);
+  } catch (error) {
+    console.error('🤔 ' + error);
+  }
+};
 // SEARCH
 
-const controlFuzzySearch = function (searchKeyword) {
-  console.log(model.state.search.results);
-  const fuse = model.fuseMaker(model.state.search.results);
+const controlFilterring = function (filters, isFirst) {
+  controlFuzzySearch(filters, isFirst);
+};
+
+const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
+  // console.log(model.state.search.results);
+  let fuse = '';
+  if (!isFirstFilter) {
+    fuse = model.fuseMaker(model.state.search.results);
+  } else {
+    fuse = model.fuseMaker(model.state.search.queryResults);
+  }
   const filteredList = fuse.search(searchKeyword);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
+  //        Q U E R Y        A I N ' T        E M P T Y
   if (!(searchKeyword.trim() === '')) {
     model.state.search.queryResults = extractItems(filteredList);
     usersView.render(model.state.search.queryResults);
-    numberView.addHandlerNumber(controlNumber);
-    numberView.addHandlerMasterCheckbox(controlNumber);
-    editUserView.addHandlerEdit(controlEditUser);
-    addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
-    addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
-    editUserView.addHandlerHideWindow(
-      '.close-btn-edit',
-      '.edit-user-container'
-    );
-    editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
+    userViewAdders();
+    //        Q U E R Y        I S        E M P T Y
   } else {
-    model.state.search.queryResults = model.state.search.results;
-    usersView.render(model.state.search.results);
-    numberView.addHandlerNumber(controlNumber);
-    numberView.addHandlerMasterCheckbox(controlNumber);
-    editUserView.addHandlerEdit(controlEditUser);
-    addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
-    addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
-    editUserView.addHandlerHideWindow(
-      '.close-btn-edit',
-      '.edit-user-container'
-    );
-    editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
+    if (!isFirstFilter)
+      model.state.search.queryResults = model.state.search.results;
+    //RERENDERRING RESULTS CONSTANTLY (This function will get re-executed on each search bar input change)
+    //WERE PRING queryResults, so that's where the play is gonna happen
+    usersView.render(model.state.search.queryResults);
+    userViewAdders();
   }
-
+  if (isFirstFilter) {
+    model.state.search.filteredResults = model.state.search.queryResults;
+    console.log('THE FILTERED RESULTS');
+    console.log(model.state.search.filteredResults);
+  }
   // const cleanFilteredList = filteredList
   //   .slice(0, BROWSER_SUGGESTIONS_MAX_SIZE)
   //   .map(el => el.item.longName);
   // renderInputSuggestions(browserInputElement, cleanFilteredList);
+};
+
+const userViewAdders = function () {
+  numberView.updateMasterCheckbox();
+  numberView.addHandlerNumber(controlNumber);
+  numberView.addHandlerMasterCheckbox(controlNumber);
+  addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
+  addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
+  editUserView.addHandlerHideWindow('.close-btn-edit', '.edit-user-container');
+  editUserView.addHandlerHideWindow(
+    '.edit-btn-decline',
+    '.edit-user-container'
+  );
+  editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
+  editUserView.addHandlerEdit(controlEditUser);
+  // searchView.addHandlerFilter(controlFilterring);
 };
 
 //TODO: TEMPORARY
@@ -135,8 +164,17 @@ addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but whe
 editUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
 // editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
 numberView.addHandlerNumber(controlNumber);
-const controllers = [controlSearchResults, ''];
+const controllers = [controlSearchResults, controlLoadStructures];
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
+
+controlShowUsersEmail();
+// controlLoadStructures();
+
+AddStructureView.addHandlerUpload(controlAddStructure);
+
 editUserView.addHandlerEdit(controlEditUser);
 searchView.addHandlerSearchV2(controlFuzzySearch);
+// searchView.addHandlerSearchV2(controlFuzzySearch, true);
+searchView.addHandlerFilter(controlFilterring);
+// searchView.addHandlerFilter(controlFilterring, 1);

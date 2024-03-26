@@ -6,5 +6,13 @@ export const FUSE_OPTIONS = {
   includeScore: true,
   shouldSort: true,
   threshold: 0.3,
-  keys: ['email', 'prenom', 'nom', 'role', 'structure', 'date_naissance'],
+  keys: [
+    'email',
+    'prenom',
+    'nom',
+    'role',
+    'structure',
+    'date_naissance',
+    'active',
+  ],
 };
