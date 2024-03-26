@@ -602,7 +602,8 @@ function getProducts()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'select designation,quantite,description from produit ';
+    const query = `select p.designation,p.quantite,p.description,a.designation as article from produit p , contient c ,article a 
+                   where p.id_produit=c.id_produit and c.id_article=a.id_article`;
     
   
     connection.connect((err) => {
