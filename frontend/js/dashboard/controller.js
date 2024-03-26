@@ -7,6 +7,7 @@ import addUserView from './views/addUserView.js';
 import editUserView from './views/editUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
+import * as helpers from './helpers.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
