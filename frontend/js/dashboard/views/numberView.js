@@ -79,22 +79,22 @@ class NumberView extends View {
     });
   }
 
+  updateMasterCheckbox() {
+    const slaveCheckboxes = this._checkboxes;
+    const masterCheckbox = this._masterCheckbox;
+    const allChecked = Array.from(slaveCheckboxes).every(
+      checkbox => checkbox.checked
+    );
+    masterCheckbox.checked = allChecked;
+  }
   addHandlerNumber(fn) {
     fn();
     this._table = document.querySelector('.results');
     this._checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
-    const slaveCheckboxes = this._checkboxes;
-    const masterCheckbox = this._masterCheckbox;
-    function updateMasterCheckbox() {
-      const allChecked = Array.from(slaveCheckboxes).every(
-        checkbox => checkbox.checked
-      );
-      masterCheckbox.checked = allChecked;
-    }
 
     this._checkboxes.forEach(el =>
       el.addEventListener('change', e => {
-        updateMasterCheckbox();
+        this.updateMasterCheckbox();
         fn();
       })
     );

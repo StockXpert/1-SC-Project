@@ -19,7 +19,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    // console.log(data);
+    console.log(data);
     state.search.results = data.response.map(usr => {
       // usr:
       // "email": "o.djeziri@esi-sba.dz",

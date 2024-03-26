@@ -24,6 +24,7 @@ const controlSearchResults = async function () {
     usersView.render(model.state.search.queryResults);
     numberView.addHandlerNumber(controlNumber);
     numberView.addHandlerMasterCheckbox(controlNumber);
+
     editUserView.addHandlerEdit(controlEditUser);
     addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
     addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
@@ -98,6 +99,7 @@ const controlFuzzySearch = function (searchKeyword) {
     usersView.render(model.state.search.queryResults);
     numberView.addHandlerNumber(controlNumber);
     numberView.addHandlerMasterCheckbox(controlNumber);
+    numberView.updateMasterCheckbox();
     editUserView.addHandlerEdit(controlEditUser);
     addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
     addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
@@ -111,6 +113,7 @@ const controlFuzzySearch = function (searchKeyword) {
     usersView.render(model.state.search.results);
     numberView.addHandlerNumber(controlNumber);
     numberView.addHandlerMasterCheckbox(controlNumber);
+    numberView.updateMasterCheckbox();
     editUserView.addHandlerEdit(controlEditUser);
     addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
     addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
