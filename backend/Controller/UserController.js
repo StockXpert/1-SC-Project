@@ -38,7 +38,7 @@ async function login(req, res) {
               const token = jwt.sign(
                 { email: email, role: response.designation },
                 SecretKey,
-                { expiresIn: '30m' }
+                { expiresIn: '24h' }
               );
               
               userModel.getRolePermissons(response.designation).then((permissions)=>{
