@@ -305,8 +305,6 @@ aside .sidebar a:hover span {
   border-radius: 20px;
   padding: 0.2rem;
 }
-.permissions-searchbar {
-}
 .main-search,
 .main-search-chapitre,
 .main-search-article,
@@ -542,10 +540,6 @@ aside .sidebar a:hover span {
   display: flex;
   justify-content: space-between;
   padding: 0.6rem;
-}
-.container-pick-role {
-}
-.container-cart-permissions {
 }
 .cart-permissions {
   display: flex;
