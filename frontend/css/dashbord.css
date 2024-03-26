@@ -272,6 +272,16 @@ aside .sidebar a:hover span {
   flex-direction: column;
   gap: 0.4rem;
 }
+.heading-permissions {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  gap: 0.4rem;
+}
+.heading-permissions h2 {
+  display: flex;
+  justify-content: center;
+}
 
 .line-style {
   border: 0.8px solid #4b4b4b;
@@ -295,10 +305,13 @@ aside .sidebar a:hover span {
   border-radius: 20px;
   padding: 0.2rem;
 }
+.permissions-searchbar {
+}
 .main-search,
 .main-search-chapitre,
 .main-search-article,
-.main-search-produit {
+.main-search-produit,
+.main-search-permission {
   display: flex;
   gap: 1rem;
   justify-content: center;
@@ -306,7 +319,8 @@ aside .sidebar a:hover span {
 .container-searchbar,
 .container-searchbar-chapitre,
 .container-searchbar-article,
-.container-searchbar-produit {
+.container-searchbar-produit,
+.container-searchbar-permission {
   /* width: 30%; */
   display: flex;
   flex-direction: column;
@@ -317,7 +331,8 @@ aside .sidebar a:hover span {
 .searchbar,
 .searchbar-chapitre,
 .searchbar-article,
-.searchbar-produit {
+.searchbar-produit,
+.searchbar-permission {
   height: 2.5rem;
   display: flex;
   align-items: center;
@@ -343,6 +358,7 @@ aside .sidebar a:hover span {
   padding: 0.4rem 0.4rem;
   border-radius: 25px;
 }
+
 .searchbar-text::placeholder,
 .searchbar-text-chapitre::placeholder,
 .searchbar-text-article::placeholder,
@@ -522,6 +538,52 @@ aside .sidebar a:hover span {
   flex-direction: column;
   gap: 0.8rem;
 }
+.container-permissions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem;
+}
+.container-pick-role {
+}
+.container-cart-permissions {
+}
+.cart-permissions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 45vw;
+  height: 76vh;
+  max-height: 70vh;
+  max-height: 80vh;
+  background-color: white;
+  padding: 0.6rem;
+  border-radius: 5rem;
+}
+.no-role-selected {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+}
+.no-role-selected p {
+  font-size: 1.1rem;
+}
+.pick-role {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  background-color: white;
+  padding: 1.6rem;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  border-radius: 50px;
+}
+.checkboxes-permission {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
 
 .table-container,
 .table-container-structures,
@@ -623,6 +685,15 @@ table tbody tr:last-child td {
   border: 2px solid #4b4b4b;
   border-radius: 2px;
 }
+#checkbox-table-permissions {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #4b4b4b;
+  border-radius: 2px;
+}
+#checkbox-table-permissions:checked {
+  border: none;
+}
 #checkbox-table-all:checked {
   background-color: #4b4b4b;
   border: none;
@@ -656,14 +727,25 @@ table tbody tr:last-child td {
   color: #4b4b4b;
   font-weight: 400;
 }
+.colomn-tags-name-permissions {
+  padding: 0.2rem;
+  font-size: 1rem;
+  color: #4b4b4b;
+  font-weight: 400;
+}
 .checkbox-colomn,
 .checkbox-colomn-chapitres,
 .checkbox-colomn-articles,
-.checkbox-colomn-produits {
+.checkbox-colomn-produits,
+.checkbox-colomn-permissions {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   margin-left: 0.8rem;
+}
+.heading-permission-text {
+  font-size: 1.1rem;
+  color: #4b4b4b;
 }
 .info-icon {
   font-size: 2.1rem;
@@ -950,6 +1032,13 @@ table tbody tr:last-child td {
   max-height: 200px;
   overflow-y: auto;
 }
+.container-checkboxes-permissions {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
 .text-permissions p {
   font-size: 0.9rem;
   font-weight: 600;
@@ -958,8 +1047,13 @@ table tbody tr:last-child td {
 .text-permissions::-webkit-scrollbar {
   width: 5px;
 }
+.container-checkboxes-permissions::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
 
-.text-permissions::-webkit-scrollbar-thumb {
+.text-permissions::-webkit-scrollbar-thumb,
+.container-checkboxes-permissions::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
@@ -1017,7 +1111,25 @@ table tbody tr:last-child td {
   justify-content: center;
   align-content: center;
 }
-
+#pick-role-options {
+  width: 26vw;
+  height: 2.5rem;
+  padding: 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  outline: 1px solid #e4e4e4;
+  box-shadow: 1px 1px 1px 0px #00000066;
+  color: #000000;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+.searchbar-text-permission {
+  width: 24vw;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0.4rem;
+  border-radius: 25px;
+}
 #role-options {
   width: 28rem;
   height: 3rem;
