@@ -1,4 +1,5 @@
 import View from './view.js';
+import * as helpers from '../helpers.js';
 class SideView extends View {
   btns = [
     document.querySelector('.utilisateurs'),
@@ -8,20 +9,39 @@ class SideView extends View {
     document.querySelector('.modification-btn'),
     document.querySelector('.statistiques-btn'),
     document.querySelector('.archive-btn'),
+    document.querySelector('.articles-btn'),
+    document.querySelector('.chapitres-btn'),
+  ];
+  divs = [
+    document.getElementById('main-table-users'),
+    document.getElementById('main-table-structures'),
+    document.getElementById('main-table-roles'),
+    ,
+    ,
+    ,
+    ,
+    document.getElementById('main-table-articles'),
+    document.getElementById('main-table-chapitres'),
   ];
 
-  addHandlerBtns(controller) {
+  addHandlerBtns(controllers) {
     this.btns.forEach(el =>
       el.addEventListener('click', e => {
         e.preventDefault();
         const targeto = e.currentTarget;
-        console.log();
         // console.log(targeto.h3);
         this.btns.forEach(btn => {
           btn.classList.remove('active');
         });
+        this.divs.forEach(btn => {
+          btn.classList.add('hidden');
+        });
+        this.divs[helpers.findNodeIndex(this.btns, targeto)].classList.remove(
+          'hidden'
+        );
         targeto.classList.add('active');
-        if (targeto.classList.contains('utilisateurs')) controller();
+        console.log(helpers.findNodeIndex(this.btns, targeto));
+        controllers[helpers.findNodeIndex(this.btns, targeto)]();
       })
     );
   }

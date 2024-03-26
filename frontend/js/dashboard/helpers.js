@@ -131,3 +131,12 @@ export const fuzzySearch = (list, keys = []) => {
   const fuse = new Fuse(list, { ...FUSE_OPTIONS, keys });
   return pattern => fuse.search(pattern);
 };
+
+export const findNodeIndex = function (nodeList, targetNode) {
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i] === targetNode) {
+      return i; // Return the index if the node matches the target node
+    }
+  }
+  return -1; // Return -1 if the target node is not found in the NodeList
+};
