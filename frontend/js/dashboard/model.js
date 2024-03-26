@@ -7,6 +7,7 @@ export const state = {
     // query: '',
     results: [],
     queryResults: [],
+    filteredResults: [],
   },
   displayed: {
     role: 'all',

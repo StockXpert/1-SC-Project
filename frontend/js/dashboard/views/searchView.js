@@ -22,14 +22,15 @@ class SearchView extends View {
       fn();
     });
   }
-  addHandlerSearchV2(Controller) {
+  addHandlerSearchV2(Controller, isFilterring = false) {
     this.#searchInput.addEventListener('input', () => {
       const searchKeyword = this.getQuery();
-      Controller(searchKeyword, false);
+      Controller(searchKeyword, isFilterring);
     });
   }
+
   addHandlerFilter(Controller) {
-    console.log(this.#filters);
+    // console.log(this.#filters);
     const newFilterValues = ['', ''];
     this.#filters.forEach((filterInput, index) => {
       filterInput.addEventListener('change', e => {

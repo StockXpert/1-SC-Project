@@ -17,6 +17,7 @@ import * as helpers from './helpers.js';
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 // let editUserView = new EditUserView();
 
+// THIS CONTROLLER HAPPENS AT PAGE LANDING :
 const controlSearchResults = async function () {
   try {
     usersView.renderSpinner('');
@@ -98,15 +99,14 @@ const controlShowUsersEmail = async function () {
 };
 // SEARCH
 
-const controlFilterring = function (filters, bool) {
-  controlFuzzySearch(filters, bool);
+const controlFilterring = function (filters, isFirst) {
+  controlFuzzySearch(filters, isFirst);
 };
 
-const controlFuzzySearch = function (searchKeyword, isFilterring) {
+const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
   // console.log(model.state.search.results);
   let fuse = '';
-  if (!isFilterring) {
-    console.log(model.state.search.results);
+  if (!isFirstFilter) {
     fuse = model.fuseMaker(model.state.search.results);
   } else {
     fuse = model.fuseMaker(model.state.search.queryResults);
@@ -122,14 +122,18 @@ const controlFuzzySearch = function (searchKeyword, isFilterring) {
     userViewAdders();
     //        Q U E R Y        I S        E M P T Y
   } else {
-    if (!isFilterring)
+    if (!isFirstFilter)
       model.state.search.queryResults = model.state.search.results;
     //RERENDERRING RESULTS CONSTANTLY (This function will get re-executed on each search bar input change)
     //WERE PRING queryResults, so that's where the play is gonna happen
     usersView.render(model.state.search.queryResults);
     userViewAdders();
   }
-
+  if (isFirstFilter) {
+    model.state.search.filteredResults = model.state.search.queryResults;
+    console.log('THE FILTERED RESULTS');
+    console.log(model.state.search.filteredResults);
+  }
   // const cleanFilteredList = filteredList
   //   .slice(0, BROWSER_SUGGESTIONS_MAX_SIZE)
   //   .map(el => el.item.longName);
@@ -171,5 +175,6 @@ AddStructureView.addHandlerUpload(controlAddStructure);
 
 editUserView.addHandlerEdit(controlEditUser);
 searchView.addHandlerSearchV2(controlFuzzySearch);
+// searchView.addHandlerSearchV2(controlFuzzySearch, true);
 searchView.addHandlerFilter(controlFilterring);
 // searchView.addHandlerFilter(controlFilterring, 1);
