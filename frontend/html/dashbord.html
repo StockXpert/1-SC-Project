@@ -120,7 +120,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table" id="main-table-users">
+        <div class="main-table hidden" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -200,7 +200,6 @@
                   </p>
                 </div>
                 <div class="heading-table-btns">
-                  <button class="heading-table-btn btn-edit">Modifier</button>
                   <button class="heading-table-btn btn-delete">
                     Supprimer
                   </button>
@@ -416,7 +415,7 @@
         </div>
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
-        <div class="main-table-structure hidden">
+        <div class="main-table hidden" id="main-table-structures">
           <div class="heading">
             <h1>Structures</h1>
             <hr class="line-style" />
@@ -440,12 +439,6 @@
                 </div>
                 <div class="heading-table-btns">
                   <button
-                    class="heading-table-btn btn-edit"
-                    id="edit-btn-structure"
-                  >
-                    Modifier
-                  </button>
-                  <button
                     class="heading-table-btn btn-delete"
                     id="supp-btn-structure"
                   >
@@ -467,7 +460,7 @@
 
             <!------------debut du tableau ------------------------>
             <!-- <div class="users-table"> -->
-            <div class="table-container">
+            <div class="table-container-structures">
               <table>
                 <thead>
                   <tr>
@@ -479,7 +472,7 @@
                     </th>
                     <!-- <th>ID</th> -->
                     <th>Responsable</th>
-                    <!-- <th>Afféctation</th> -->
+                    <th>Modifier</th>
                   </tr>
                 </thead>
                 <tbody class="table-structure">
@@ -493,6 +486,13 @@
                     </td>
 
                     <td>Mohammed reda aced</td>
+                    <td>
+                      <button class="details-btn-structures">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
@@ -506,6 +506,13 @@
                     </td>
 
                     <td>Mohammed reda aced</td>
+                    <td>
+                      <button class="details-btn-structures">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                   <!--fin d'une ligne selected  -->
                 </tbody>
@@ -516,7 +523,7 @@
         </div>
         <!------ fin de content for Admin : 2 - Structure tables----- -->
         <!------ debut de content for Admin : 3 - Roles tables----- -->
-        <div class="main-table-roles hidden">
+        <div class="main-table hidden" id="main-table-roles">
           <div class="heading">
             <h1>Rôles</h1>
             <hr class="line-style" />
@@ -704,9 +711,6 @@
                   </p>
                 </div>
                 <div class="heading-table-btns-chapitres">
-                  <button class="heading-table-btn btn-edit-chapitres">
-                    Modifier
-                  </button>
                   <button class="heading-table-btn btn-delete-chapitres">
                     Supprimer
                   </button>
@@ -732,6 +736,7 @@
                     </th>
                     <th>Nom</th>
                     <th>date d'ajout</th>
+                    <th>Modifier</th>
                   </tr>
                 </thead>
                 <tbody class="results-chapitres">
@@ -745,6 +750,13 @@
                     </td>
                     <td>Fournitures</td>
                     <td>21/12/2024</td>
+                    <td>
+                      <button class="details-btn">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
@@ -758,6 +770,13 @@
                     </td>
                     <td>Matériel et mobilier</td>
                     <td>21/12/2024</td>
+                    <td>
+                      <button class="details-btn-chapitres">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                   <!--fin d'une ligne selected  -->
                 </tbody>
@@ -768,7 +787,7 @@
         </div>
         <!------ fin de content for ServiceAchat : 1 - Chapitres tables----- -->
         <!------ debut de content for ServiceAchat : 2 - articles tables----- -->
-        <div class="main-table" id="main-table-articles">
+        <div class="main-table hidden" id="main-table-articles">
           <div class="heading">
             <h1>Articles</h1>
             <hr class="line-style" />
@@ -807,9 +826,6 @@
                   </p>
                 </div>
                 <div class="heading-table-btns-articles">
-                  <button class="heading-table-btn btn-edit-articles">
-                    Modifier
-                  </button>
                   <button class="heading-table-btn btn-delete-articles">
                     Supprimer
                   </button>
@@ -837,6 +853,7 @@
                     <th>Nom du chapitre</th>
                     <th>date d'ajout</th>
                     <th>TVA</th>
+                    <th>Modifier</th>
                   </tr>
                 </thead>
                 <tbody class="results-articles">
@@ -852,6 +869,13 @@
                     <td>Fournitures</td>
                     <td>19/24/2024</td>
                     <td>19%</td>
+                    <td>
+                      <button class="details-btn-articles">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
@@ -867,6 +891,13 @@
                     <td>Fournitures</td>
                     <td>19/24/2024</td>
                     <td>19%</td>
+                    <td>
+                      <button class="details-btn">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                   <!--fin d'une ligne selected  -->
                 </tbody>
@@ -875,7 +906,146 @@
             <!-- </div> -->
           </div>
         </div>
-        <!------ fin de content for ServiceAchat : 1 - Chapitres tables----- -->
+        <!------ fin de content for ServiceAchat : 2 - articles tables----- -->
+        <!------ debut de content for ServiceAchat : 3 - produits tables----- -->
+        <div class="main-table hidden" id="main-table-produits">
+          <div class="heading">
+            <h1>Produits</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="produits-searchbar">
+            <div class="container-searchbar-produit">
+              <div class="main-search-produit">
+                <form class="searchbar-produit">
+                  <span class="material-icons-sharp"> search </span>
+                  <input
+                    type="text"
+                    class="searchbar-text-produit"
+                    placeholder="Entrez le nom du produit"
+                  />
+                </form>
+              </div>
+              <div class="container-filter-produits">
+                <div class="dropbtn-text">
+                  <select
+                    name="Article"
+                    class="filters-produits"
+                    id="filter-status-options-produits"
+                    placeholder="Selectionnés le rôle"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">
+                      Articles
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="add-produits">
+              <button class="add-produits-btn">Ajouter</button>
+            </div>
+          </div>
+
+          <!-- tableau principale -->
+
+          <!-- heading tbale -->
+          <div class="table-top">
+            <div class="heading-table">
+              <div class="container-heading-table">
+                <div class="heading-table-text-produits">
+                  <p class="table-text">
+                    Tout les Articles (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns-produits">
+                  <button class="heading-table-btn btn-delete-produits">
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <!--fin  heading tbale -->
+
+            <!------------debut du tableau ------------------------>
+            <!-- <div class="users-table"> -->
+            <div class="table-container-produits">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table-all" />
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Nom</th>
+                    <th>Nom du chapitre</th>
+
+                    <th>quantité</th>
+                    <th>date d'ajout</th>
+                    <th>Modifier</th>
+                  </tr>
+                </thead>
+                <tbody class="results-produits">
+                  <!--une ligne nrml  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-produits">
+                        <input type="checkbox" id="checkbox-table-produits" />
+                        <p class="colomn-tags-name">21-11 .11</p>
+                      </div>
+                    </td>
+                    <td>Photocopieur KYOCERA FS-1025 MFP</td>
+
+                    <td>trés beau produit</td>
+                    <td>19</td>
+                    <td>19/04/2004</td>
+                    <td>
+                      <button class="details-btn-produits">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-produits">
+                        <input type="checkbox" id="checkbox-table-produits" />
+                        <p class="colomn-tags-name">21-12 .8</p>
+                      </div>
+                    </td>
+                    <td>Duplicopieur - Monochrome - A3</td>
+
+                    <td>trés beau produit</td>
+                    <td>12</td>
+                    <td>19/04/2004</td>
+                    <td>
+                      <button class="details-btn-produits">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+        <!------ fin de content for ServiceAchat : 3 - produits tables----- -->
         <!------------------------------ II- END ServiceAchat FONCTIONS ------------------------------->
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->

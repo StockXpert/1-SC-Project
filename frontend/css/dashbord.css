@@ -286,7 +286,8 @@ aside .sidebar a:hover span {
 
 .users-searchbar,
 .chapitres-searchbar,
-.articles-searchbar {
+.articles-searchbar,
+.produits-searchbar {
   display: flex;
   justify-content: space-between;
   background-color: white;
@@ -296,14 +297,16 @@ aside .sidebar a:hover span {
 }
 .main-search,
 .main-search-chapitre,
-.main-search-article {
+.main-search-article,
+.main-search-produit {
   display: flex;
   gap: 1rem;
   justify-content: center;
 }
 .container-searchbar,
 .container-searchbar-chapitre,
-.container-searchbar-article {
+.container-searchbar-article,
+.container-searchbar-produit {
   /* width: 30%; */
   display: flex;
   flex-direction: column;
@@ -313,7 +316,8 @@ aside .sidebar a:hover span {
 }
 .searchbar,
 .searchbar-chapitre,
-.searchbar-article {
+.searchbar-article,
+.searchbar-produit {
   height: 2.5rem;
   display: flex;
   align-items: center;
@@ -332,18 +336,23 @@ aside .sidebar a:hover span {
 }
 .searchbar-text,
 .searchbar-text-chapitre,
-.searchbar-text-article {
+.searchbar-text-article,
+.searchbar-text-produit {
   width: 30vw;
   font-size: 1.1rem;
   padding: 0.4rem 0.4rem;
   border-radius: 25px;
 }
-.searchbar-text::placeholder {
+.searchbar-text::placeholder,
+.searchbar-text-chapitre::placeholder,
+.searchbar-text-article::placeholder,
+.searchbar-text-produit::placeholder {
   color: #9a9a9a;
 }
 .add-users,
 .add-chapitres,
-.add-articles {
+.add-articles,
+.add-produits {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -354,7 +363,8 @@ aside .sidebar a:hover span {
 }
 .add-users-btn,
 .add-chapitres-btn,
-.add-articles-btn {
+.add-articles-btn,
+.add-produits-btn {
   width: 8rem;
   height: 2.5rem;
   font-size: 1rem;
@@ -385,7 +395,8 @@ aside .sidebar a:hover span {
 }
 .add-users-btn:hover,
 .add-chapitres-btn:hover,
-.add-articles-btn:hover {
+.add-articles-btn:hover,
+.add-produits-btn:hover {
   background-color: #3963b5;
   /* transform: translateY(-2px); */
   transform: translateY(-2px);
@@ -393,7 +404,8 @@ aside .sidebar a:hover span {
 }
 .add-users-btn:active,
 .add-chapitres-btn:active,
-.add-articles-btn:active {
+.add-articles-btn:active,
+.add-produits-btn:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -408,7 +420,8 @@ aside .sidebar a:hover span {
 }
 .heading-table-btns,
 .heading-table-btns-chapitres,
-.heading-table-btns-articles {
+.heading-table-btns-articles,
+.heading-table-btns-produits {
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -459,20 +472,23 @@ aside .sidebar a:hover span {
 }
 .btn-delete,
 .btn-delete-chapitres,
-.btn-delete-articles {
+.btn-delete-articles,
+.btn-delete-produits {
   color: white;
   background: #e24747;
   transition: all 0.3s ease-in-out;
 }
 .btn-delete:active,
 .btn-delete-chapitres:active,
-.btn-delete-articles:active {
+.btn-delete-articles:active,
+.btn-delete-produits:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
   background-color: #b53939;
 }
 .btn-delete:hover,
 .btn-delete-chapitres:hover,
-.btn-delete-articles:hover {
+.btn-delete-articles:hover,
+.btn-delete-produits:hover {
   /* background-color: transparent; */
   /* color: rgba(0, 0, 0, 1); */
   transform: translateY(-4px);
@@ -481,7 +497,8 @@ aside .sidebar a:hover span {
 }
 .heading-table-text,
 .heading-table-text-chapitres,
-.heading-table-text-articles {
+.heading-table-text-articles,
+.heading-table-text-produits {
   display: flex;
   gap: 1rem;
 }
@@ -507,8 +524,10 @@ aside .sidebar a:hover span {
 }
 
 .table-container,
+.table-container-structures,
 .table-container-chapitres,
-.table-container-chapitres {
+.table-container-articles,
+.table-container-produits {
   max-height: 51.2vh;
   overflow-y: auto;
   border-radius: 20px;
@@ -594,7 +613,8 @@ table tbody tr:last-child td {
 }
 #checkbox-table,
 #checkbox-table-chapitres,
-#checkbox-table-articles {
+#checkbox-table-articles,
+#checkbox-table-produits {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -609,11 +629,16 @@ table tbody tr:last-child td {
 }
 #checkbox-table:checked,
 #checkbox-table-chapitres:checked,
-#checkbox-table-articles:checked {
+#checkbox-table-articles:checked,
+#checkbox-table-produits:checked {
   background-color: #4b4b4b;
   border: none;
 }
-.details-btn {
+.details-btn,
+.details-btn-structures,
+.details-btn-chapitres,
+.details-btn-articles,
+.details-btn-produits {
   background-color: transparent;
   color: #4b4b4b;
   cursor: pointer;
@@ -633,7 +658,8 @@ table tbody tr:last-child td {
 }
 .checkbox-colomn,
 .checkbox-colomn-chapitres,
-.checkbox-colomn-articles {
+.checkbox-colomn-articles,
+.checkbox-colomn-produits {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -672,14 +698,16 @@ table tbody tr:last-child td {
 }
 
 /* filtres */
-.container-filter {
+.container-filter,
+.container-filter-produits {
   display: flex;
   /* justify-content: space-between; */
   gap: 3rem;
   align-items: center;
   padding: 0.2rem;
 }
-.filters {
+.filters,
+.filters-produits {
   font-size: 1rem;
   color: #477ce2;
   font-weight: 600;
@@ -1356,7 +1384,8 @@ a.password-icon:active {
 
 .results,
 .results-chapitres,
-.results-chapitres {
+.results-articles,
+.results-produits {
   position: relative;
 }
 
