@@ -8,15 +8,12 @@ import addUserView from './views/addUserView.js';
 import editUserView from './views/editUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
-<<<<<<< HEAD
 import editUserView from './views/editUserView.js';
 import structuresView from './views/structuresView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 import addStructureView from './views/addStructureView.js';
-=======
 import * as helpers from './helpers.js';
 
->>>>>>> b535b6c5b75ff27188d1cc045ecd016261c446ac
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 // let editUserView = new EditUserView();
@@ -182,13 +179,11 @@ numberView.addHandlerNumber(controlNumber);
 const controllers = [controlSearchResults, ''];
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
-<<<<<<< HEAD
 
 controlShowUsersEmail();
 controlLoadStructures();
 
 addStructureView.addHandlerUpload(controlAddStructure);
-=======
+
 editUserView.addHandlerEdit(controlEditUser);
 searchView.addHandlerSearchV2(controlFuzzySearch);
->>>>>>> b535b6c5b75ff27188d1cc045ecd016261c446ac

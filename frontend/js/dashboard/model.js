@@ -67,7 +67,7 @@ export const uploadUser = async function (data) {
   }
 };
 
-<<<<<<< HEAD
+
 export const loadStructures = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showStructure`);
@@ -116,7 +116,7 @@ export const getUsersEmail = async function () {
     console.error('Shit shit :' + error);
   }
 };
-=======
+
 //fuzzySearch is basically a searchFunction MAKER
 //the searchFunction it made is fuzzySearchBrowsersList
 // export const fuzzySearcher = helpers.fuzzySearch(
@@ -189,4 +189,4 @@ const data = [
   },
 ];
 export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
->>>>>>> b535b6c5b75ff27188d1cc045ecd016261c446ac
+
