@@ -1,11 +1,51 @@
 import View from './view.js';
+import * as helpers from '../helpers.js';
 class SideView extends View {
-  utilisateurs = document.querySelector('.utilisateurs');
-  addHandlerUtilisateurs(fn) {
-    this.utilisateurs.addEventListener('click', e => {
-      e.preventDefault();
-      fn();
-    });
+  btns = [
+    document.querySelector('.utilisateurs'),
+    document.querySelector('.structures-btn'),
+    document.querySelector('.roles-btn'),
+    document.querySelector('.permissions-btn'),
+    document.querySelector('.modification-btn'),
+    document.querySelector('.statistiques-btn'),
+    document.querySelector('.archive-btn'),
+    document.querySelector('.articles-btn'),
+    document.querySelector('.chapitres-btn'),
+    document.querySelector('.produits-btn'),
+  ];
+  divs = [
+    document.getElementById('main-table-users'),
+    document.getElementById('main-table-structures'),
+    document.getElementById('main-table-roles'),
+    ,
+    ,
+    ,
+    ,
+    document.getElementById('main-table-articles'),
+    document.getElementById('main-table-chapitres'),
+    document.getElementById('main-table-produits'),
+  ];
+
+  addHandlerBtns(controllers) {
+    this.btns.forEach(el =>
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        const targeto = e.currentTarget;
+        // console.log(targeto.h3);
+        this.btns.forEach(btn => {
+          btn.classList.remove('active');
+        });
+        this.divs.forEach(btn => {
+          btn.classList.add('hidden');
+        });
+        this.divs[helpers.findNodeIndex(this.btns, targeto)].classList.remove(
+          'hidden'
+        );
+        targeto.classList.add('active');
+        console.log(helpers.findNodeIndex(this.btns, targeto));
+        controllers[helpers.findNodeIndex(this.btns, targeto)]();
+      })
+    );
   }
 }
 export default new SideView();

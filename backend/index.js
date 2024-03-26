@@ -6,12 +6,14 @@ const port = 3000;
 const UserRoute = require('./routes/Users');
 const EntreeRoute = require('./routes/Entrees');
 const NomenclatureRoute = require('./routes/Nomenclatures');
+const path = require('path');
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 app.use('/Users', UserRoute);
 app.use('/Entrees', EntreeRoute);
 app.use('/Nomenclatures', NomenclatureRoute);
+app.use('/bonCommande', express.static(path.join(__dirname, 'bonCommande')));
 const options = {
   definition: {
     openapi: '3.1.0',
@@ -30,5 +32,5 @@ const options = {
 const spacs = swaggerjsdoc(options);
 app.use('/api-docs', swaggerui.serve, swaggerui.setup(spacs));
 app.listen(port, () => {
-  console.log(`app is listening in port ${port} `);
+  console.log(`app is listening in port ${port}`);
 });

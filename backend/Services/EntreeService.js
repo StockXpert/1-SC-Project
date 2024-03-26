@@ -1,5 +1,7 @@
 const googleMiddleware= require('../Middlewares/googleMiddleware');
+const { insertLink } = require('../Models/EntreeModel');
 const nomencaltureModel=require('../Models/NomenclatureModel')
+const numberWord=require('french-numbers-to-words');
 function getDate()
 {
     const dateActuelle = new Date();
@@ -10,23 +12,37 @@ function getDate()
     jour = jour < 10 ? '0' + jour : jour;
     return `${annee}-${mois}-${jour}`;
 }
-async function genererBondeCommande(num_commande,produits,fourn,objet,type,copyId)
+function montantHT(produits)
+{
+    let somme
+    console.log(produits)
+    for(let produit of produits)
+        somme=parseInt(produit.quantite)*parseInt(produit.prixUnitaire);
+    return somme
+}
+function TVA(montantHT,tva)
+{
+    return Math.floor((montantHT*tva)/100)
+}
+async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id)
 {
     return new Promise(async(resolve,reject)=>{
-        //const copyId=googleMiddleware.getCopy(".l..")
         await googleMiddleware.updateCel('C1',`République Algerienne démoctatique et populaire
         Bon de commande
-        ${num_commande} ${getDate()}`,copyId);
+        N° ${num_commande} ${getDate()}`,Id);
         nomencaltureModel.getFournisseur(fourn).then(async(fournisseur)=>{
-            await googleMiddleware.updateCel('C9',"Nom et prénom"+fournisseur.raison_sociale,copyId)
-            await googleMiddleware.updateCel('C9',"Ou Raison Sociale:"+fournisseur.raison_sociale,copyId)
-            await googleMiddleware.updateCel('C12',"Telephone et fax:"+fournisseur.telephone+"/"+fournisseur.fax,copyId)
-            await googleMiddleware.updateCel('F13',"N.I.F"+fournisseur.nif,copyId)
-            await googleMiddleware.updateCel('F14',"N.I.S"+fournisseur.nis,copyId)
-            await googleMiddleware.updateCel('C15',"RIB (ou RIP)"+fournisseur.rib?fournisseur.rib:fournisseur.rip,copyId)
-            await googleMiddleware.updateCel('F18',`Objet de la commande :
-            ${objet}`,copyId);
+            await googleMiddleware.updateCel('C11',"Adresse "+fournisseur.adresse,Id)
+            await googleMiddleware.updateCel('C8',"Nom et prénom "+fournisseur.raison_sociale,Id)
+            await googleMiddleware.updateCel('C9',"Ou Raison Sociale: "+fournisseur.raison_sociale,Id)
+            await googleMiddleware.updateCel('C12',"Telephone et fax:"+fournisseur.telephone+"/"+fournisseur.fax,Id)
+            await googleMiddleware.updateCel('C13',"N° R.C : "+fournisseur.num_registre,Id)
+            await googleMiddleware.updateCel('F13',`N.I.F : ${fournisseur.nif?fournisseur.nif:''}`,Id)
+            await googleMiddleware.updateCel('F14',`N.I.S : ${+fournisseur.nis?fournisseur.nis:''}`,Id)
+            await googleMiddleware.updateCel('F22',montantHT(produits)+'.00',Id)
+            await googleMiddleware.updateCel('C15',`RIB (ou RIP) :${fournisseur.rib?fournisseur.rib:fournisseur.rip}`,Id)
+            await googleMiddleware.updateCel('F18',`Objet de la commande: ${objet}`,Id);
             let range
+            let tva=19
             switch (type) {
                 case "materiel":
                     range='A18'
@@ -36,19 +52,29 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,copyI
                     break;
                 case "service":
                     range='A20'
+                    tva=21
                     break;
                 default:
                     break;
             }
-            await googleMiddleware.updateCel(range,true,copyId);
+            await googleMiddleware.updateCel('D23',`TVA ${tva}%`,Id);
+            await googleMiddleware.updateCel('F23',TVA(montantHT(produits),tva)+'.00',Id);
+            await googleMiddleware.updateCel('F24',TVA(montantHT(produits),tva)+montantHT(produits)+'.00',Id);
+            const myNumber=new numberWord(TVA(montantHT(produits),tva)+montantHT(produits),'fr').result.fullText
+            await googleMiddleware.updateCel('A26',`Arrêté le présent bon de commande à la somme de (en lettres) : ${myNumber} dinars algérien`,Id);
+            await googleMiddleware.updateCel(range,true,Id);
             let i = 22;
             for (const produit of produits) {
-                await googleMiddleware.addRow(i, produit, copyId);
+                await googleMiddleware.addRow(i, produit,Id);
                 i++;
             }
-            googleMiddleware.generatePDF(copyId,`commande${num_commande}`);
+            await googleMiddleware.generatePDF(Id,`commande${num_commande}`);
             resolve("pdf generated");
-        }).catch(()=>{console.log("erreur")/*reject("internal error")*/})
+            await googleMiddleware.deleteRows(22,i-1,Id);
+            const link=`BonCommande/commande${num_commande}`
+            /*insertLink(link)
+            resolve(link)*/
+        }).catch((err)=>{console.log(err)})
     })
 }
-module.exports={getDate,genererBondeCommande}
+module.exports={getDate,genererBondeCommande,montantHT,TVA}

@@ -1,4 +1,5 @@
-import { TIMEOUT_SEC } from './config.js';
+import { TIMEOUT_SEC, FUSE_OPTIONS } from './config.js';
+import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -6,6 +7,22 @@ const timeout = function (s) {
       reject(new Error(`Request took too long! Timeout after ${s} second`));
     }, s * 1000);
   });
+};
+
+export const formatDate = inputDate => {
+  // Parse input date string into a Date object
+  const date = new Date(inputDate);
+
+  // Extract year, month, and day
+  const year = date.getFullYear();
+  // Months are zero-based, so add 1 to get the correct month
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  // Format the date in the desired format
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
 };
 
 // export const AJAX = async function (url, uploadData = undefined) {
@@ -39,61 +56,13 @@ export const getJSON = async function (url) {
         'content-Type': 'application/json',
       },
     });
+    // console.log(fetchPro);
     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    // console.log(res);
     const data = await res.json();
-    // console.log(data);
-    //   const data = JSON.parse(`[
-    //     {
-    //         "email": "Amrane@esi-sba.dz",
-    //         "prenom": "Abdelkader",
-    //         "nom": "Amrane",
-    //         "structure": "DED",
-    //         "date_naissance": "0000-00-00",
-    //         "type": null
-    //     },
-    //     {
-    //         "email": "Fetitah@esi-sba.dz",
-    //         "prenom": "Omar",
-    //         "nom": "FETITAH",
-    //         "structure": "DCP",
-    //         "date_naissance": "0000-00-00",
-    //         "type": null
-    //     },
-    //     {
-    //         "email": "Kies@esi-sba.dz",
-    //         "prenom": "Nadia",
-    //         "nom": "KIES",
-    //         "structure": "DSC",
-    //         "date_naissance": "0000-00-00",
-    //         "type": null
-    //     },
-    //     {
-    //         "email": "Zelmat@esi-sba.dz",
-    //         "prenom": "Fatima",
-    //         "nom": "ZELMAT",
-    //         "structure": "DRE",
-    //         "date_naissance": "0000-00-00",
-    //         "type": null
-    //     },
-    //     {
-    //         "email": "Kechakch@esi-sba.dz",
-    //         "prenom": "SidAhmed",
-    //         "nom": "KECHKACH",
-    //         "structure": "SG",
-    //         "date_naissance": "0000-00-00",
-    //         "type": null
-    //     },
-    //     {
-    //         "email": "Abdelhak@esi-sba.dz",
-    //         "prenom": "Assia",
-    //         "nom": "ABDELHAK",
-    //         "structure": "DG",
-    //         "date_naissance": "0000-00-00",
-    //         "type": null
-    //     }
-    // ]`);
-
-    // if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    console.log(data);
+    if (!res.ok)
+      throw new Error(`${data.error} (${res.statusText} - ${res.status})`);
     return data;
   } catch (err) {
     throw err;
@@ -155,4 +124,19 @@ export const roleTranslator = function (Brole) {
     case 'Administrateur System':
       return 'Administrateur';
   }
+};
+
+// fuzzySearchFunctionMaker:
+export const fuzzySearch = (list, keys = []) => {
+  const fuse = new Fuse(list, { ...FUSE_OPTIONS, keys });
+  return pattern => fuse.search(pattern);
+};
+
+export const findNodeIndex = function (nodeList, targetNode) {
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i] === targetNode) {
+      return i; // Return the index if the node matches the target node
+    }
+  }
+  return -1; // Return -1 if the target node is not found in the NodeList
 };
