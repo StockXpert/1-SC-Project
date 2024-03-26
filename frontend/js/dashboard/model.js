@@ -67,7 +67,6 @@ export const uploadUser = async function (data) {
   }
 };
 
-
 export const loadStructures = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showStructure`);
@@ -75,9 +74,7 @@ export const loadStructures = async function () {
     state.structures = data.response.map(str => {
       return {
         designation: str.designation,
-        id: 1,
         responsible: str.id_resp,
-        Assignment: 12,
       };
     });
   } catch (error) {
@@ -97,9 +94,7 @@ export const uploadStructure = async function (newStructure) {
     );
     state.structures.push({
       designation: newStructure.name,
-      id: 1,
       responsible: newStructure.responsable,
-      Assignment: 12,
     });
     console.log(res);
   } catch (error) {
@@ -189,4 +184,3 @@ const data = [
   },
 ];
 export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
-

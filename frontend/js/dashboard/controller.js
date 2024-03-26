@@ -5,13 +5,12 @@ import usersView from './views/usersView.js';
 // import { AddUserView } from './views/addUserView.js';
 // import { EditUserView } from './views/editUserView.js';
 import addUserView from './views/addUserView.js';
-import editUserView from './views/editUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
 import editUserView from './views/editUserView.js';
-import structuresView from './views/structuresView.js';
+import StructuresView from './views/structuresView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
-import addStructureView from './views/addStructureView.js';
+import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
 
 //controller is the mastermind behind the applciation
@@ -93,8 +92,7 @@ const controlNumber = function () {
 const controlLoadStructures = async function () {
   try {
     await model.loadStructures();
-    // structuresView._clear();
-    structuresView.render(model.state.structures);
+    StructuresView.render(model.state.structures);
   } catch (error) {
     console.error(error);
   }
@@ -104,11 +102,11 @@ const controlAddStructure = async function (newStructure) {
   try {
     await model.uploadStructure(newStructure);
     console.log(model.state.structures);
-    structuresView.render(model.state.structures);
-    addStructureView.clearForm();
+    StructuresView.render(model.state.structures);
+    AddStructureView.clearForm();
     //Close Window
     // setTimeout(function () {
-    //   addStructureView.toggleWindow();
+    //   AddStructureView.toggleWindow();
     // }, MODAL_CLOSE_SEC * 1000);
   } catch (error) {
     console.error(error);
@@ -118,7 +116,7 @@ const controlAddStructure = async function (newStructure) {
 const controlShowUsersEmail = async function () {
   try {
     const options = await model.getUsersEmail();
-    addStructureView.addEmailsSelection(options);
+    AddStructureView.addEmailsSelection(options);
   } catch (error) {
     console.error('🤔 ' + error);
   }
@@ -183,7 +181,7 @@ numberView.addHandlerMasterCheckbox(controlNumber);
 controlShowUsersEmail();
 controlLoadStructures();
 
-addStructureView.addHandlerUpload(controlAddStructure);
+AddStructureView.addHandlerUpload(controlAddStructure);
 
 editUserView.addHandlerEdit(controlEditUser);
 searchView.addHandlerSearchV2(controlFuzzySearch);

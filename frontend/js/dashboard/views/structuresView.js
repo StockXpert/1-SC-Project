@@ -1,7 +1,7 @@
 import View from './View.js';
 
-class structuresView extends View {
-  _parentElement = document.querySelector('.main-table-structure');
+class StructuresView extends View {
+  _parentElement = document.querySelector('.table-structures');
 
   _generateMarkup() {
     //TODO: Refactoring
@@ -14,16 +14,21 @@ class structuresView extends View {
     <tr>
       <td>
         <div class="checkbox-colomn">
-          <input type="checkbox" id="checkbox-table" />
+           <input type="checkbox" id="checkbox-table" />
           <p class="colomn-tags-name">${result.designation}</p>
         </div>
       </td>
-      <td>${result.id}</td>
       <td>${result.responsible}</td>
-      <td class="table-structure">${result.Assignment}</td>
+      <td>
+        <button class="details-btn-structures">
+           <span class="material-icons-sharp info-icon">
+             edit
+           </span>
+        </button>
+      </td>
     </tr>
     `;
   }
 }
 
-export default new structuresView();
+export default new StructuresView();
