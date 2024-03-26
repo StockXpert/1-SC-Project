@@ -4,7 +4,7 @@ import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
 export const state = {
   search: {
-    query: '',
+    // query: '',
     results: [],
     queryResults: [],
   },
@@ -18,7 +18,6 @@ export const state = {
 
 export const loadSearchResults = async function (query) {
   try {
-    state.search.query = query;
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
     // console.log(data);
     state.search.results = data.response.map(usr => {
@@ -39,12 +38,11 @@ export const loadSearchResults = async function (query) {
         role: usr.role,
         // TODO: structure: usr.structure,
         structure: 'Cycle Supérieure',
-        active: usr.active,
+        active: usr.active ? 'Activé' : 'Désactivé',
         date_naissance: helpers.formatDate(usr.date_naissance),
       };
     });
     state.search.queryResults = state.search.results;
-    // console.log(state.search.results);
   } catch (err) {
     console.log(`${err} 💔`);
     throw err;

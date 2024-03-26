@@ -24,7 +24,7 @@ class UsersView extends View {
     <td>${result.email}</td>
     <td class="table-status ${
       result.active ? 'active-status' : 'inactif-status'
-    }">${result.active ? 'Activé' : 'Désactivé'}</td>
+    }">${result.active}</td>
     <td><p class="admin-role">${
       result.role ? helpers.roleTranslator(result.role) : 'Aucun'
     }</p></td>

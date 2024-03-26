@@ -82,9 +82,12 @@ class NumberView extends View {
   updateMasterCheckbox() {
     const slaveCheckboxes = this._checkboxes;
     const masterCheckbox = this._masterCheckbox;
-    const allChecked = Array.from(slaveCheckboxes).every(
+    let allChecked = Array.from(slaveCheckboxes).every(
       checkbox => checkbox.checked
     );
+    if (!slaveCheckboxes.length) {
+      allChecked = false;
+    }
     masterCheckbox.checked = allChecked;
   }
   addHandlerNumber(fn) {

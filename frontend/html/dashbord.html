@@ -142,17 +142,20 @@
                   <select
                     name="role"
                     class="filters"
-                    id="filter-status-options"
+                    id="filter-role-options"
                     placeholder="Selectionnés le rôle"
                     required
                   >
-                    <option value="all" disabled="" selected="">Rôle</option>
-                    <option value="">Tout</option>
+                    <option value="all" disabled="" selected="">
+                      Choisissez un Rôle
+                    </option>
+                    <option value="all">Tout</option>
                     <option value="Directeur">Directeur</option>
-                    <option value="DG">Directeur</option>
-                    <option value="RD">Résponsable direct</option>
-                    <option value="MG">Magasinier</option>
-                    <option value="SA">Service Achat</option>
+                    <option value="Responsable direct">
+                      Résponsable direct
+                    </option>
+                    <option value="Magasinier">Magasinier</option>
+                    <option value="Service Achat">Service Achat</option>
                     <option value="Consommateur">Consommateur</option>
                     <option value="Administrateur System">
                       Administrateur
@@ -163,14 +166,16 @@
                   <select
                     name="roles"
                     class="filters"
-                    id="filter-role-options"
+                    id="filter-status-options"
                     placeholder="Selectionnés le rôle"
                     required
                   >
-                    <option value="all" disabled="" selected="">Statut</option>
+                    <option value="all" disabled="" selected="">
+                      Choisissez un Statut
+                    </option>
                     <option value="all">Tout</option>
-                    <option value="active">Activé</option>
-                    <option value="inactive">Désactivé</option>
+                    <option value="Activé">Activé</option>
+                    <option value="Désactivé">Désactivé</option>
                   </select>
                 </div>
               </div>
@@ -1291,8 +1296,10 @@
                     required
                   >
                     <option value="" selected="" disabled="">Statut</option>
-                    <option value="1" class="dropdown-active">Activé</option>
-                    <option value="0" class="dropdown-inactif">
+                    <option value="Activé" class="dropdown-active">
+                      Activé
+                    </option>
+                    <option value="Désactivé" class="dropdown-inactif">
                       Désactivé
                     </option>
                   </select>
