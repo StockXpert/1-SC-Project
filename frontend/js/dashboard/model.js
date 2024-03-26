@@ -12,6 +12,7 @@ export const state = {
     status: 'all',
     selected: 0,
   },
+  structures: [],
 };
 
 export const loadSearchResults = async function (query) {
@@ -59,5 +60,54 @@ export const uploadUser = async function (data) {
     console.log(resp);
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const loadStructures = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Users/showStructure`);
+    console.log(data.response);
+    state.structures = data.response.map(str => {
+      return {
+        designation: str.designation,
+        id: 1,
+        responsible: str.id_resp,
+        Assignment: 12,
+      };
+    });
+  } catch (error) {
+    console.error('Shit shit :' + error);
+  }
+};
+
+export const uploadStructure = async function (newStructure) {
+  try {
+    const postData = {
+      designation: newStructure.name,
+      email: newStructure.responsable,
+    };
+    const res = await helpers.sendJSON(
+      `${API_URL}/Users/addStructure`,
+      postData
+    );
+    state.structures.push({
+      designation: newStructure.name,
+      id: 1,
+      responsible: newStructure.responsable,
+      Assignment: 12,
+    });
+    console.log(res);
+  } catch (error) {
+    console.error('Shit shit :' + error);
+  }
+};
+
+export const getUsersEmail = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
+    console.log(data.response.map(user => user.email));
+    return data.response.map(user => user.email);
+  } catch (error) {
+    console.error('Shit shit :' + error);
   }
 };

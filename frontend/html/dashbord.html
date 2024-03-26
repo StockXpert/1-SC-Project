@@ -394,7 +394,7 @@
         </div>
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
-        <div class="main-table hidden">
+        <div class="main-table">
           <div class="heading">
             <h1>Structures</h1>
             <hr class="line-style" />
@@ -601,7 +601,7 @@
       </div>
       <!-- fin de section  ajouter un  user -->
       <!-- debut de section pour ajouter une  structure -->
-      <div class="add-user-container hidden">
+      <div class="add-structure-container hidden">
         <div class="add-structure-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
@@ -614,7 +614,7 @@
           <form class="add-structure-inputs">
             <div class="input-groupe">
               <input
-                name="name-structure"
+                name="name"
                 type="text"
                 class="input"
                 id="name-structure"
@@ -625,23 +625,28 @@
 
             <div class="dropdown-responsables">
               <div class="input-dropdown">
-                <input
-                  type="text"
-                  placeholder="Ajouter un Réspnsable"
+                <select
+                  name="responsable"
+                  placeholder="selectionné l'email d'un Réspnsable"
                   class="search"
                   id="search-responsable"
-                />
+                  required
+                >
+                  <option disabled selected value="">
+                    selectionné l'email d'un Réspnsable
+                  </option>
+                </select>
                 <ion-icon
                   name="person-circle-outline"
                   class="input-icon"
                 ></ion-icon>
               </div>
-              <div class="dropdown-content">
+              <!-- <div class="dropdown-content">
                 <a href="#">Utilisateur 1</a>
                 <a href="#">Utilisateur 2</a>
-                <a href="#">Utilisateur 3</a>
-                <!-- Ajoutez d'autres utilisateurs ici -->
-              </div>
+                <a href="#">Utilisateur 3</a> -->
+              <!-- Ajoutez d'autres utilisateurs ici -->
+              <!-- </div> -->
             </div>
 
             <div class="create-btn">
@@ -883,7 +888,7 @@
                   class="input-icon"
                 ></ion-icon>
               </div>
-              <div class="dropdown-content">
+              <div class="dropdown-content hidden">
                 <a href="#">Utilisateur 1</a>
                 <a href="#">Utilisateur 2</a>
                 <a href="#">Utilisateur 3</a>

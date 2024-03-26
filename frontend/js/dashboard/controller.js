@@ -1,11 +1,14 @@
 import * as model from './model.js';
+import { MODAL_CLOSE_SEC } from './config.js';
 import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
 import addUserView from './views/addUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
 import editUserView from './views/editUserView.js';
+import structuresView from './views/structuresView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
+import addStructureView from './views/addStructureView.js';
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 
@@ -58,6 +61,39 @@ const controlNumber = function () {
   numberView.render(model.state);
 };
 
+const controlLoadStructures = async function () {
+  try {
+    await model.loadStructures();
+    // structuresView._clear();
+    structuresView.render(model.state.structures);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlAddStructure = async function (newStructure) {
+  try {
+    await model.uploadStructure(newStructure);
+    console.log(model.state.structures);
+    structuresView.render(model.state.structures);
+    addStructureView.clearForm();
+    //Close Window
+    // setTimeout(function () {
+    //   addStructureView.toggleWindow();
+    // }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlShowUsersEmail = async function () {
+  try {
+    const options = await model.getUsersEmail();
+    addStructureView.addEmailsSelection(options);
+  } catch (error) {
+    console.error('🤔 ' + error);
+  }
+};
 // SEARCH
 
 const fuzzySearchFunctionMaker = (list, keys = []) => {
@@ -110,3 +146,8 @@ addUserView.addHandlerUpload(controlAddUser, '.add-user-inputs'); //adds a handl
 numberView.addHandlerNumber(controlNumber);
 sideView.addHandlerUtilisateurs(controlSearchResults);
 numberView.addHandlerMasterCheckbox(controlNumber);
+
+controlShowUsersEmail();
+controlLoadStructures();
+
+addStructureView.addHandlerUpload(controlAddStructure);

@@ -659,7 +659,8 @@ table tbody tr:last-child td {
 
 /* ------------- cart add user --------------- */
 
-.add-user-container {
+.add-user-container,
+.add-structure-container {
   display: block;
   position: fixed;
   z-index: 1000;
