@@ -62,7 +62,7 @@ export const updateUser = async function (newUser) {
       email: updateObj.email,
     });
 
-    await helpers.sendJSON(`${API_URL}/Users/rattacher`, {
+    await helpers.putJSON(`${API_URL}/Users/rattacher`, {
       structure: updateObj.structure,
       email: updateObj.email,
     });

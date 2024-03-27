@@ -72,6 +72,8 @@ const controlEditUser = function () {
 const controlNumber = function () {
   numberView._clear();
   model.state.displayed.selected = numberView.calculateCheckboxes();
+  // console.log('state updated :');
+  // console.log(model.state);
   numberView.render(model.state);
 };
 
@@ -158,8 +160,11 @@ const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
   }
 };
 
+numberView.addHandlerMasterCheckbox(controlNumber);
 const userViewAdders = function () {
-  numberView.updateMasterCheckbox();
+  numberView.masterSelectionUpdater();
+  numberView.selectionUpdater();
+  numberView.addHandlerNumber(controlNumber);
   addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
   addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
   editUserView.addHandlerHideWindow('.close-btn-edit', '.edit-user-container');
@@ -169,10 +174,9 @@ const userViewAdders = function () {
   );
   editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
   editUserView.addHandlerEdit(controlEditUser);
+  numberView.updateMasterCheckbox();
 };
-
-numberView.addHandlerMasterCheckbox(controlNumber);
-numberView.addHandlerNumber(controlNumber);
+// numberView.selectionUpdater();
 editUserView.addHandlerUpload(controlUpdateUser);
 
 //TODO: TEMPORARY
