@@ -1460,6 +1460,24 @@
           </div>
           <!-- for inputs -->
           <form class="add-user-inputs">
+            <div class="groupe-3-add hidden">
+              <div class="dropdown-structure">
+                <select
+                  name="Consommateur"
+                  id="consommateur-add-user-options"
+                  structure-add-user-options
+                  placeholder="Selectionnés Un Type"
+                  required
+                >
+                  <option value="" selected="" disabled="">
+                    Type du Consommateur
+                  </option>
+                  <option value="ens">Enseignant</option>
+                  <option value="et">Etudiant</option>
+                  <option value="et">Autre</option>
+                </select>
+              </div>
+            </div>
             <div class="groupe-1-add">
               <div class="dropdown-roles">
                 <select
@@ -1525,22 +1543,7 @@
                   <option value="cs">Cycle Supperieur</option>
                 </select>
               </div>
-              <div class="dropdown-structure hidden">
-                <select
-                  name="Consommateur"
-                  id="consommateur-add-user-options"
-                  structure-add-user-options
-                  placeholder="Selectionnés Un Type"
-                  required
-                >
-                  <option value="" selected="" disabled="">
-                    Type du Consommateur
-                  </option>
-                  <option value="ens">Enseignant</option>
-                  <option value="et">Etudiant</option>
-                  <option value="et">Autre</option>
-                </select>
-              </div>
+
               <div class="input-groupe-add">
                 <input
                   name="prenom"
@@ -1585,6 +1588,7 @@
                 </a>
               </div>
             </div>
+
             <div class="create-btn">
               <button>Créer l'Utilisateur</button>
             </div>
