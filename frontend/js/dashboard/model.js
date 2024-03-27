@@ -8,6 +8,11 @@ export const state = {
     // query: '',
     results: [],
     queryResults: [],
+    // filteredResults: [],
+    filters: {
+      isFilterring: false,
+      filterValues: [],
+    },
     filteredResults: [],
   },
   displayed: {
@@ -20,6 +25,12 @@ export const state = {
     selected: 0,
   },
 };
+export const updateFilters = function (filterValues, isFilterring) {
+  state.search.filters.isFilterring = isFilterring;
+  state.search.filters.filterValues = filterValues;
+  console.log(filterValues, isFilterring);
+};
+
 export const updateUser = async function (newUser) {
   const updateObj = helpers.getUpdateObject(state.user, newUser);
   console.log(updateObj);
@@ -99,6 +110,7 @@ export const loadSearchResults = async function (query) {
       };
     });
     state.search.queryResults = state.search.results;
+    state.search.filteredResults = state.search.results;
   } catch (err) {
     console.log(`${err} 💔`);
     throw err;

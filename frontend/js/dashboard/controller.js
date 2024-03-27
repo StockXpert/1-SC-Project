@@ -137,19 +137,39 @@ const controlShowUsersEmail = async function () {
 };
 // SEARCH
 
-const controlFilterring = function (filters, isFirst) {
-  controlFuzzySearch(filters, isFirst);
+//ON FILTER CHANGE
+const controlFilterring = function (filterValues, isFilterring) {
+  model.updateFilters(filterValues, isFilterring);
+  // use controlFuzzySearch to update model.state.search.filteredResults
+  controlFuzzySearch(filterValues[0], false, true);
+  const filteredResults = controlFuzzySearch(filterValues[1], true, true);
+  //updating filteredResults
+  console.log(filteredResults);
+  model.state.search.filteredResults = filteredResults;
 };
 
-const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
-  // console.log(model.state.search.results);
+const controlFuzzySearch = function (
+  searchKeyword,
+  isSubseqFilter = false,
+  isGettingfGR = false
+) {
+  // console.log(model.state.search.filters.isFilterring);
   let fuse = '';
-  if (!isFirstFilter) {
-    fuse = model.fuseMaker(model.state.search.results);
+  //if isntFiltering then
+  // if (!model.state.search.filters.isFilterring) {
+  if (isGettingfGR) {
+    if (!isSubseqFilter) fuse = model.fuseMaker(model.state.search.results);
+    else {
+      fuse = model.fuseMaker(model.state.search.queryResults);
+    }
   } else {
-    fuse = model.fuseMaker(model.state.search.queryResults);
+    if (model.state.search.filters.isFilterring)
+      fuse = model.fuseMaker(model.state.search.filteredResults);
+    else fuse = model.fuseMaker(model.state.search.results);
   }
+  //else (isFiltering)
   const filteredList = fuse.search(searchKeyword);
+  console.log(filteredList);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
@@ -160,18 +180,22 @@ const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
     userViewAdders();
     //        Q U E R Y        I S        E M P T Y
   } else {
-    if (!isFirstFilter)
-      model.state.search.queryResults = model.state.search.results;
-    //RERENDERRING RESULTS CONSTANTLY (This function will get re-executed on each search bar input change)
-    //WERE PRING queryResults, so that's where the play is gonna happen
+    if (isGettingfGR) {
+      if (!isSubseqFilter) {
+        model.state.search.queryResults = model.state.search.results;
+      }
+    } else {
+      if (model.state.search.filters.isFilterring) {
+        model.state.search.queryResults = model.state.search.filteredResults;
+      } else {
+        model.state.search.queryResults = model.state.search.results;
+      }
+    }
     usersView.render(model.state.search.queryResults);
-    userViewAdders();
+    userViewAdders(model.state.search.queryResults);
   }
-  if (isFirstFilter) {
-    model.state.search.filteredResults = model.state.search.queryResults;
-    console.log('THE FILTERED RESULTS');
-    console.log(model.state.search.filteredResults);
-  }
+  // console.log(model.state.search.queryResults);
+  return model.state.search.queryResults;
 };
 
 const controlDeleteUsers = async function () {
@@ -242,6 +266,7 @@ const controllers = [controlSearchResults, controlLoadStructures];
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
 searchView.addHandlerSearch(controlSearchResults);
+searchView.addHandlerFilter(controlFilterring);
 addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);

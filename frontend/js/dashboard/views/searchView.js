@@ -22,31 +22,35 @@ class SearchView extends View {
       fn();
     });
   }
-  addHandlerSearchV2(Controller, isFilterring = false) {
+  addHandlerSearchV2(Controller) {
     this.#searchInput.addEventListener('input', () => {
       const searchKeyword = this.getQuery();
-      Controller(searchKeyword, isFilterring);
+      Controller(searchKeyword);
     });
   }
 
   addHandlerFilter(Controller) {
-    // console.log(this.#filters);
     const newFilterValues = ['', ''];
     this.#filters.forEach((filterInput, index) => {
+      newFilterValues.splice(
+        index,
+        1,
+        filterInput.options[filterInput.selectedIndex].value
+      );
+      Controller(
+        newFilterValues,
+        newFilterValues.some(el => el !== '')
+      );
       filterInput.addEventListener('change', e => {
         newFilterValues.splice(
           index,
           1,
-          filterInput.options[filterInput.selectedIndex].value == 'all' ||
-            filterInput.options[filterInput.selectedIndex].value == ''
-            ? ''
-            : filterInput.options[filterInput.selectedIndex].value
+          filterInput.options[filterInput.selectedIndex].value
         );
-
-        // SINCE THE WAY THE FILTERED SEARCH IS WORKING, DEPENDS ON THE PREVIOUS QUERY'S RESULTS (if set to true), and doesn't otherwise,
-        // you gotta first look in the general results first (on the first filter)
-        Controller(newFilterValues[0], false);
-        Controller(newFilterValues[1], true);
+        Controller(
+          newFilterValues,
+          newFilterValues.some(el => el !== '')
+        );
       });
     });
   }

@@ -9,9 +9,10 @@ export class AddUserView extends View {
   _btnClose;
   _parentElement = document.querySelector('.add-user-cart');
   _form = document.querySelector('.add-user-inputs');
-  _passwordIcons = document.querySelectorAll('.password-icon');
-  _password = document.getElementById('password');
-  _confirmPassword = document.getElementById('confirm-password');
+  _inputsContainer = document.querySelector('.groupe-2-add');
+  _passwordIcons = this._inputsContainer.querySelectorAll('.password-icon');
+  _password = this._inputsContainer.querySelector('.password');
+  _confirmPassword = this._inputsContainer.querySelector('.password-confirm');
   constructor() {
     super();
     this._passwordIcons.forEach(icon => {
