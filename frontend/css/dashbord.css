@@ -980,7 +980,8 @@ table tbody tr:last-child td {
   color: #477ce2;
 }
 /* ------------- popup edit user --------------- */
-.edit-user-container {
+.edit-user-container,
+.edit-structure-container {
   display: block;
   position: fixed;
   z-index: 1000;

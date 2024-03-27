@@ -13,6 +13,7 @@ import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
 import numberStructuresView from './views/numberStructuresView.js';
+import editStructureView from './views/editStructureView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -55,6 +56,12 @@ const controlEditUser = function () {
   //Use it to extract the input data from the state object
   editUserView.changeInputs(model.state.search.queryResults[targetIndex]);
   //                                                                           TODO:
+};
+
+const controlEditStructure = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+  editStructureView.changeInputs(model.state.structures.results[targetIndex]);
 };
 
 const controlNumber = function () {
@@ -191,3 +198,14 @@ searchView.addHandlerFilter(controlFilterring);
 // numberStructuresView.updateMasterCheckbox();
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
+
+function fn() {
+  console.log('WTF');
+}
+
+editStructureView.addHandlerShowWindow(
+  '.details-btn-structures',
+  'edit-structure-container'
+);
+editStructureView.addHandlerHideWindow();
+editStructureView.addHandlerEdit(controlEditStructure);
