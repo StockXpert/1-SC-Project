@@ -34,6 +34,17 @@ export class AddUserView extends View {
         child.classList.toggle('hidden');
       })
     );
+    const confirmPasswordInput = this._confirmPassword;
+    const newPasswordInput = this._password;
+    confirmPasswordInput.addEventListener('input', function () {
+      if (confirmPasswordInput.value !== newPasswordInput.value) {
+        confirmPasswordInput.setCustomValidity(
+          'Les mots de passe saisis ne sont pas identiques.'
+        );
+      } else {
+        confirmPasswordInput.setCustomValidity('');
+      }
+    });
   };
 
   //THIS ===> the addUserView object
@@ -62,19 +73,14 @@ export class AddUserView extends View {
   }
 
   async addHandlerUpload(handler) {
-    const userBtn = document.querySelector('.utilisateurs-btn');
-    // const closeBtn = document.querySelector('.close-btn-edit');
     const closeBtn = this._btnClose;
     this._form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const form = this;
       const dataArr = [...new FormData(form)];
       const data = Object.fromEntries(dataArr);
-      // console.log(document.querySelector('.utilisateurs-btn'));
       closeBtn.click();
       await handler(data);
-      // console.log(closeBtn);
-      // userBtn.click();
     });
   }
 

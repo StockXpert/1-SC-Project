@@ -27,6 +27,7 @@ export const updateUser = async function (newUser) {
   console.log(updateObj);
   //  /updateUser
   // console.log(updateObj.nom || updateObj.prenom);
+  if (updateObj == {}) return;
   if (
     updateObj.nom ||
     updateObj.prenom ||

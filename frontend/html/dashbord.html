@@ -1469,7 +1469,8 @@
               >
                 <option value="" selected="" disabled="">Rôles</option>
                 <option value="Directeur">Directeur</option>
-                <option value="RD">Résponsable direct</option>
+                <option value="Responsable directe">Résponsable direct</option>
+                <option value="SG">SG</option>
                 <option value="Magasinier">Magasinier</option>
                 <option value="Service achat">Service Achat</option>
                 <option value="Consommateur">Consommateur</option>
@@ -1516,7 +1517,7 @@
                 type="password"
                 class="input password"
                 placeholder="Entrez le mot de passe"
-                autocomplete="new-password"
+                autocomplete="off"
                 required
               />
               <a class="password-icon" href="#">
@@ -1534,8 +1535,10 @@
                 type="password"
                 class="input password-confirm"
                 placeholder="Confirmer le mot de passe"
-                autocomplete="new-password"
+                autocomplete="off"
                 required
+                pattern=".{8,}"
+                title="Password must be at least 8 characters long"
               />
               <a class="password-icon" href="#">
                 <ion-icon class="input-icon" name="eye-outline"></ion-icon>
@@ -1717,7 +1720,10 @@
                   >
                     <option value="" selected="" disabled="">Rôles</option>
                     <option value="Directeur">Directeur</option>
-                    <option value="RD">Résponsable direct</option>
+                    <option value="Responsable directe">
+                      Résponsable direct
+                    </option>
+                    <option value="SG">SG</option>
                     <option value="Magasinier">Magasinier</option>
                     <option value="Service achat">Service Achat</option>
                     <option value="Consommateur">Consommateur</option>

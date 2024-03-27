@@ -40,10 +40,9 @@ const controlSearchResults = async function () {
 const controlAddUser = async function (newUser) {
   try {
     console.log(newUser);
-    await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
     usersView.renderSpinner("Ajout de l'utilisateur " + newUser.name + '...');
+    await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
     //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
-    // addUserView.toggleWindow();
     controlSearchResults();
   } catch (err) {
     console.error(err);
@@ -52,7 +51,13 @@ const controlAddUser = async function (newUser) {
 
 const controlUpdateUser = async function (newUser) {
   try {
-    // console.log('updateUser');
+    if (
+      Object.entries(helpers.getUpdateObject(model.state.user, newUser))
+        .length === 0
+    ) {
+      controlSearchResults();
+      return;
+    }
     usersView.renderSpinner("Mise à jour de l'utilisateur ...");
     await model.updateUser(newUser);
     controlSearchResults();

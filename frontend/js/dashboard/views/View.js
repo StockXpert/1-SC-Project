@@ -26,7 +26,7 @@ export default class View {
   renderSpinner = function (message = '') {
     const markup = `
     <div class="spinner-parent">
-    <b>${message}</b>
+    <b>${!message ? '' : `<div class="spinner"></div>`} ${message}</b>
     ${message ? '' : `<div class="spinner"></div>`}
     </div>
   `;
