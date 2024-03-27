@@ -23,10 +23,11 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
-  renderSpinner = function (parentClass) {
+  renderSpinner = function (message) {
     const markup = `
     <div class="spinner-parent">
-    <div class="spinner"></div>
+    <b>${message}</b>
+    ${message ? '' : `<div class="spinner"></div>`}
     </div>
   `;
     // this._clear();

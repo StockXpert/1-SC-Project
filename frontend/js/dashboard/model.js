@@ -26,7 +26,7 @@ export const updateUser = async function (newUser) {
   updateObj.email = state.user.email;
   console.log(updateObj);
   //  /updateUser
-  console.log(updateObj.nom || updateObj.prenom);
+  // console.log(updateObj.nom || updateObj.prenom);
   if (
     updateObj.nom ||
     updateObj.prenom ||
@@ -43,7 +43,7 @@ export const updateUser = async function (newUser) {
     console.log(putData);
     putData = helpers.removeUndefinedProperties(putData);
     console.log(putData);
-    helpers.putJSON(`${API_URL}/Users/updateUser`, putData);
+    await helpers.putJSON(`${API_URL}/Users/updateUser`, putData);
     // helpers.putJSON(`${API_URL}/Users/updateUser`, newUser);
   }
   // /changeStatus
@@ -53,7 +53,7 @@ export const updateUser = async function (newUser) {
     console.log(postData);
     // postData.active = updateObj.active === 'Activé' ? 1 : 0;
     // console.log(postData);
-    helpers.sendJSON(`${API_URL}/Users/changeStatus`, postData);
+    await helpers.sendJSON(`${API_URL}/Users/changeStatus`, postData);
   }
 };
 
