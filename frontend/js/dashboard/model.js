@@ -150,7 +150,7 @@ export const loadStructures = async function () {
     state.structures.results = data.response.map(str => {
       return {
         designation: str.designation,
-        responsible: str.id_resp,
+        responsible: `${str.nom} ${str.prenom}`,
       };
     });
   } catch (error) {
@@ -182,7 +182,13 @@ export const getUsersEmail = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
     // console.log(data.response.map(user => user.email));
-    return data.response.map(user => user.email);
+    return data.response.map(user => {
+      return {
+        email: user.email,
+        nom: user.nom,
+        prenom: user.prenom,
+      };
+    });
   } catch (error) {
     console.error('Shit shit :' + error);
   }

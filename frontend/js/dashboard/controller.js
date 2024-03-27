@@ -271,16 +271,11 @@ addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
 
+controlShowUsersEmail();
+
 AddStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
-function fn() {
-  console.log('WTF');
-}
 
-editStructureView.addHandlerShowWindow(
-  '.details-btn-structures',
-  'edit-structure-container'
-);
-// editStructureView.addHandlerHideWindow();
-editStructureView.addHandlerEdit(controlEditStructure);
+// editStructureView.addHandlerShowWindow();
+// editStructureView.addHandlerEdit(controlEditStructure);

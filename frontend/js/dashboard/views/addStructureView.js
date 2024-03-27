@@ -50,8 +50,8 @@ class addStructureView extends View {
   addEmailsSelection(options) {
     options.forEach(option => {
       const optionElement = document.createElement('option');
-      optionElement.value = option;
-      optionElement.textContent = truncateEmail(option);
+      optionElement.value = option.email;
+      optionElement.textContent = `${option.nom} ${option.prenom}`;
       this._selectionUsers.appendChild(optionElement);
     });
   }

@@ -4,7 +4,9 @@ import View from './view.js';
 class EditStructureView extends View {
   _window = document.querySelector('.edit-structure-container');
   _overlay = document.querySelector('.overlayEdit');
-  _btnOpen;
+  _btnOpen = document
+    .querySelector('.table-structures')
+    .querySelectorAll('.details-btn-structures');
   _parentElement = document.querySelector('.edit-structure-cart');
   _form = document.querySelector('.edit-structure-inputs');
   _btnClose = this._parentElement.querySelector('.close-btn');
@@ -12,18 +14,33 @@ class EditStructureView extends View {
 
   constructor() {
     super();
+    this.addHandlerShowWindow();
   }
 
-  addHandlerShowWindow(OpClassName, windowClassName) {
-    const addEventListenerCallback = e => {
-      this.toggleWindow.bind(this)();
-      this.currTarget = e.target;
-    };
-    this._window = document.querySelector(windowClassName);
-    this._btnOpen = document.querySelectorAll(OpClassName);
+  addHandlerShowWindow() {
+    // const addEventListenerCallback = e => {
+    //   this.toggleWindow.bind(this)();
+    //   console.log(e.target);
+    //   this.currTarget = e.target;
+    // };
+    console.log(this._window);
+
     const btnOpenArray = Array.from(this._btnOpen);
+    console.log(
+      '🚀 ~ EditStructureView ~ addHandlerShowWindow ~ btnOpenArray:',
+      btnOpenArray
+    );
     btnOpenArray.forEach(btn => {
-      btn.addEventListener('click', addEventListenerCallback);
+      console.log(btn);
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        console.log(this);
+        console.log(e);
+      });
+      // btn.addEventListener('click', e => {
+      //   e.preventDefault();
+      //   console.log(e.target);
+      // });
     });
   }
 
