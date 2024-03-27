@@ -1,5 +1,5 @@
 import * as model from './model.js';
-import { MODAL_CLOSE_SEC } from './config.js';
+import { API_URL, MODAL_CLOSE_SEC } from './config.js';
 import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
 // import { AddUserView } from './views/addUserView.js';
@@ -8,6 +8,7 @@ import addUserView from './views/addUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
 import editUserView from './views/editUserView.js';
+import deleteUserView from './views/deleteUserView.js';
 import StructuresView from './views/structuresView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 import AddStructureView from './views/addStructureView.js';
@@ -40,9 +41,10 @@ const controlAddUser = async function (newUser) {
   try {
     console.log(newUser);
     await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
+    usersView.renderSpinner("Ajout de l'utilisateur " + newUser.name + '...');
     //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
-    addUserView.toggleWindow();
-    console.log(model.state.User);
+    // addUserView.toggleWindow();
+    controlSearchResults();
   } catch (err) {
     console.error(err);
   }
@@ -167,7 +169,51 @@ const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
   }
 };
 
-numberView.addHandlerMasterCheckbox(controlNumber);
+const controlDeleteUsers = async function () {
+  function getCheckboxStates(checkboxes) {
+    const checkboxStates = [];
+    checkboxes.forEach(function (checkbox) {
+      checkboxStates.push(checkbox.checked);
+    });
+    return checkboxStates;
+  }
+  function filterArrayByBooleans(dataArray, booleanArray) {
+    const filteredArray = [];
+    for (let i = 0; i < dataArray.length; i++) {
+      if (booleanArray[i]) {
+        filteredArray.push(dataArray[i]);
+      }
+    }
+    return filteredArray;
+  }
+
+  filterArrayByBooleans(
+    model.state.search.queryResults,
+    getCheckboxStates(
+      document
+        .querySelector('.results')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    usersView.renderSpinner(
+      "Suppression de l'utilisateur " + el.nom + ' ' + el.prenom + '...'
+    );
+    console.log({
+      email: el.email,
+    });
+    await helpers.delJSON(`${API_URL}/Users/deleteUser`, {
+      email: el.email,
+    });
+    // back to main menu
+    controlSearchResults();
+  });
+
+  // console.log(model.state.search.queryResults);
+  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+};
+
+// deleteUserView.addDeleteController(controlDeleteUsers);
 const userViewAdders = function () {
   numberView.masterSelectionUpdater();
   numberView.selectionUpdater();
@@ -183,24 +229,21 @@ const userViewAdders = function () {
   editUserView.addHandlerEdit(controlEditUser);
   numberView.updateMasterCheckbox();
 };
-// numberView.selectionUpdater();
-editUserView.addHandlerUpload(controlUpdateUser);
-
+// REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demostration)
 //TODO: TEMPORARY
 controlSearchResults();
-searchView.addHandlerSearch(controlSearchResults);
-
 userViewAdders();
-addUserView.addHandlerUpload(controlAddUser);
 const controllers = [controlSearchResults, controlLoadStructures];
 sideView.addHandlerBtns(controllers);
-
-// controlShowUsersEmail();
+numberView.addHandlerMasterCheckbox(controlNumber);
+searchView.addHandlerSearch(controlSearchResults);
+addUserView.addHandlerUpload(controlAddUser);
+editUserView.addHandlerUpload(controlUpdateUser);
+deleteUserView.addDeleteController(controlDeleteUsers);
 
 AddStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
-
 function fn() {
   console.log('WTF');
 }
@@ -209,5 +252,5 @@ editStructureView.addHandlerShowWindow(
   '.details-btn-structures',
   'edit-structure-container'
 );
-editStructureView.addHandlerHideWindow();
+// editStructureView.addHandlerHideWindow();
 editStructureView.addHandlerEdit(controlEditStructure);

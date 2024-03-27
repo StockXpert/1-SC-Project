@@ -12,7 +12,7 @@ class UsersView extends View {
   }
   _generateMarkupPreview(result) {
     // TODO: console.log(result);
-    console.log(result.active);
+    // console.log(result.active);
     // const id = window.location.hash.slice(1);
     return `
     <tr>

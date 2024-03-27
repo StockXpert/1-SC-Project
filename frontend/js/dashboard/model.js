@@ -71,9 +71,9 @@ export const updateUser = async function (newUser) {
 
 export const loadSearchResults = async function (query) {
   try {
-    console.log('loading search results...');
+    // console.log('loading search results...');
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    console.log(data);
+    // console.log(data);
     // console.log('loading search results...');
     state.search.results = data.response.map(usr => {
       // usr:
@@ -106,10 +106,20 @@ export const loadSearchResults = async function (query) {
 
 export const uploadUser = async function (data) {
   try {
+    // email,
+    // role,
+    // password,
+    // prenom,
+    // nom,
+    // date_naissance,
+    // type,
+    // structure,
     const postData = {
       email: data.email,
       role: data.roles,
       password: data.password,
+      prenom: data.name.split(' ')[1],
+      nom: data.name.split(' ')[0],
     };
     console.log(postData);
     const resp = await helpers.sendJSON(`${API_URL}/Users/Register`, postData);

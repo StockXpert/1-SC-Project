@@ -89,13 +89,13 @@ class NumberView extends View {
   }
   addHandlerMasterCheckbox(controller) {
     const checkboxes = this.selectionUpdater();
-    console.log(checkboxes);
+    // console.log(checkboxes);
     // this._masterCheckbox = document.getElementById('checkbox-table-all');
     const masterCheckbox = this._masterCheckbox;
     // console.log(masterCheckbox);
     const tcb = this.toggleCheckboxes;
     this._masterCheckbox.addEventListener('change', function (e) {
-      console.log('CHANGE');
+      // console.log('CHANGE');
       tcb();
       controller();
     });
@@ -115,13 +115,13 @@ class NumberView extends View {
   addHandlerNumber(fn) {
     this._table = document.querySelector('.results');
     this._checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
-    console.log(this._checkboxes);
+    // console.log(this._checkboxes);
     fn();
     this._checkboxes.forEach(el =>
       el.addEventListener('change', e => {
         this.updateMasterCheckbox();
         fn();
-        console.log('CHANGE IN A CHECKBOX');
+        // console.log('CHANGE IN A CHECKBOX');
       })
     );
   }

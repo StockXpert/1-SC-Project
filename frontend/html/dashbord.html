@@ -204,7 +204,7 @@
                   </p>
                 </div>
                 <div class="heading-table-btns">
-                  <button class="heading-table-btn btn-delete">
+                  <button class="heading-table-btn btn-delete btn-delete-user">
                     Supprimer
                   </button>
                 </div>
@@ -1512,6 +1512,7 @@
             <div class="input-groupe">
               <input
                 name="password"
+                id="password"
                 type="password"
                 class="input password"
                 placeholder="Entrez le mot de passe"
@@ -1529,6 +1530,7 @@
             <div class="input-groupe">
               <input
                 name="password"
+                id="confirm-password"
                 type="password"
                 class="input password-confirm"
                 placeholder="Confirmer le mot de passe"
@@ -1544,7 +1546,7 @@
               </a>
             </div>
             <div class="create-btn">
-              <button>Crée l'utilisateur</button>
+              <button>Créer l'Utilisateur</button>
             </div>
           </form>
         </div>
@@ -1863,7 +1865,7 @@
       <!-- fin popup pour modifier user  -->
       <!-- debut section pour supprimer user etes vous sure de vouloir supprimer -->
       <div class="container-supp-user hidden">
-        <form class="supp-user-cart">
+        <div class="supp-user-cart">
           <p class="supp-user-text">
             Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action
             est irréversible et toutes les données associées seront perdues.
@@ -1872,7 +1874,7 @@
             <button class="btn-supp supp-user-annuler">Annuler</button>
             <button class="btn-supp supp-user-confirmer">Confirmer</button>
           </div>
-        </form>
+        </div>
       </div>
       <!-- fin section for supprimer user -->
       <!-- debut section pour supprimer structure  -->
@@ -1883,8 +1885,8 @@
             irréversible et toutes les données associées seront perdues.
           </p>
           <div class="supp-structure-btns">
-            <button class="btn-supp supp-user-annuler">Annuler</button>
-            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+            <button class="btn-supp supp-str-annuler">Annuler</button>
+            <button class="btn-supp supp-str-confirmer">Confirmer</button>
           </div>
         </form>
       </div>
@@ -1894,6 +1896,7 @@
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
       <div class="overlay overlayAddStr hidden"></div>
+      <div class="overlay overlayDel hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

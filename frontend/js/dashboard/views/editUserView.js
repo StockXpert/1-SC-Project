@@ -4,7 +4,7 @@ import { AddUserView } from './addUserView.js';
 import poppupView from './poppupView.js';
 import * as helpers from '../helpers.js';
 
-class EditUserView extends AddUserView {
+export class EditUserView extends AddUserView {
   // setter() {
   _window = document.querySelector('.edit-user-container');
   _overlay = document.querySelector('.overlayEdit');

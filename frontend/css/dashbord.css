@@ -1369,18 +1369,22 @@ a.password-icon:active {
   cursor: pointer;
   border: 2px solid #4b4b4b;
 }
-.supp-user-confirmer {
+.supp-user-confirmer,
+.supp-str-confirmer {
   background-color: #e24747;
   color: white;
 }
-.supp-user-confirmer:hover {
+.supp-user-confirmer:hover,
+.supp-str-confirmer:hover {
   background-color: #9e3232;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
-.supp-user-annuler {
+.supp-user-annuler,
+.supp-str-annuler {
   color: #4b4b4b;
 }
-.supp-user-annuler:hover {
+.supp-user-annuler:hover,
+.supp-str-annuler:hover {
   background-color: #cccccc;
 }
 /* pour flou */
