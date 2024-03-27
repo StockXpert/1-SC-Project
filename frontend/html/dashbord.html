@@ -78,6 +78,10 @@
             <span class="material-icons-sharp"> local_shipping </span>
             <h3>Fournisseurs</h3>
           </a>
+          <a class="sidebar-btns bon-de-commandes-btn hidden" href="">
+            <span class="material-icons-sharp"> description </span>
+            <h3>Bon de Commande</h3>
+          </a>
 
           <a class="sidebar-btns statistiques-btn" href="">
             <span class="material-icons-sharp"> query_stats </span>
@@ -116,7 +120,7 @@
           </div>
         </div>
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table" id="main-table-users">
+        <div class="main-table hidden" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -1275,6 +1279,171 @@
           </div>
         </div>
         <!------ fin de content for ServiceAchat : 3 - produits tables----- -->
+        <!------ debut de content for ServiceAchat : 4 - eleboration-bon-de-commande----- -->
+        <div class="main-table hidden" id="main-table-bdc">
+          <div class="heading">
+            <h1>Bons de Commandes</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="bdc-searchbar">
+            <div class="container-searchbar-bdc">
+              <div class="main-search-bdc">
+                <form class="searchbar-bdc">
+                  <span class="material-icons-sharp"> search </span>
+                  <input
+                    type="text"
+                    class="searchbar-text-bdc"
+                    placeholder="Chercher Un bon de Commande..."
+                  />
+                </form>
+              </div>
+              <div class="container-filter-bdc">
+                <div class="dropbtn-text-bdc">
+                  <select
+                    name="date-bdc"
+                    class="filters-bdc"
+                    id="filter-bdc-date"
+                    placeholder="Date"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Date:</option>
+                    <option value="acd">Acendant</option>
+                    <option value="dcd">Decendant</option>
+                  </select>
+                </div>
+                <div class="dropbtn-text-bdc">
+                  <select
+                    name="status"
+                    class="filters-bdc"
+                    id="filter-bdc-status"
+                    placeholder="Selectionnés un status"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Statut:</option>
+                    <option value="all">Tout</option>
+                    <option value="Terminé">Terminé</option>
+                    <option value="en-cour">En Cour</option>
+                    <option value="Annulé">Annulé</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="add-bdc">
+              <button class="add-bdc-btn">Crée un bon</button>
+              <button class="print-bdc-btn">Imprimé</button>
+            </div>
+          </div>
+
+          <!-- tableau principale -->
+
+          <!-- heading tbale -->
+          <div class="table-top-bdc">
+            <div class="heading-table-bdc">
+              <div class="container-heading-table-bdc">
+                <div class="heading-table-text-bdc">
+                  <p class="table-text-bdc">
+                    Tout les Bons (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns-bdc">
+                  <button class="heading-table-btn btn-delete-bdc">
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <!--fin  heading tbale -->
+
+            <!------------debut du tableau ------------------------>
+            <!-- <div class="users-table"> -->
+            <div class="table-container-bdc">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="checkbox-colomn-bdc">
+                        <p class="colomn-tags-bdc">N°Commande</p>
+                      </div>
+                    </th>
+                    <th>Fournisseur</th>
+                    <th>Article</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Produits</th>
+                  </tr>
+                </thead>
+                <tbody class="results">
+                  <!--une ligne nrml  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>Frounisseur1</td>
+                    <td>21.11</td>
+                    <td>21/12/2023</td>
+                    <td><p class="status encour-status">En Cour</p></td>
+                    <td>
+                      <button class="view-btc-btn">
+                        <p>Voir Produits</p>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>Frounisseur2</td>
+                    <td>21.11</td>
+                    <td>21/12/2023</td>
+                    <td><p class="status finish-status">Terminé</p></td>
+                    <td>
+                      <button class="details-btn">
+                        <button class="view-btc-btn">
+                          <p>Voir Produits</p>
+                        </button>
+                      </button>
+                    </td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>Frounisseur2</td>
+                    <td>21.11</td>
+                    <td>21/12/2023</td>
+                    <td><p class="status canceled-status">Annulé</p></td>
+                    <td>
+                      <button class="details-btn">
+                        <button class="view-btc-btn">
+                          <p>Voir Produits</p>
+                        </button>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+        <!------debut de content for ServiceAchat : 4 - eleboration-bon-de-commande----- -->
         <!------------------------------ II- END ServiceAchat FONCTIONS ------------------------------->
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
