@@ -18,7 +18,7 @@ class SideView extends View {
     document.getElementById('main-table-users'),
     document.getElementById('main-table-structures'),
     document.getElementById('main-table-roles'),
-    ,
+    document.getElementById('main-table-permissions'),
     ,
     ,
     ,
