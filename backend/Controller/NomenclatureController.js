@@ -36,8 +36,8 @@ function deleteChapter(req,res)
 }
 function addArticle(req,res)
 {
-    const {numArt,chapitre,designation}=req.body;
-    NomenclatureService.addArticle(chapitre,designation,numArt).then((response)=>{
+    const {numArt,chapitre,designation,tva}=req.body;
+    NomenclatureService.addArticle(chapitre,designation,numArt,tva).then((response)=>{
         res.status(200).json({response})
     }).catch((response)=>{
         res.status(500).json({response})
@@ -54,8 +54,8 @@ function deleteFournisseur(raisonSocial)
 }
 function updateArticle(req,res)
 {
-    const {oldDesignation,newDesignation,chapitre}=req.body
-    NomenclatureModel.updateArticle(oldDesignation,newDesignation,chapitre).then(()=>{
+    const {oldDesignation,newDesignation,chapitre,tva}=req.body
+    NomenclatureModel.updateArticle(oldDesignation,newDesignation,chapitre,tva).then(()=>{
         res.status(200).json({response:'article updated'});
     }).catch((err)=>{
         console.log({err})
@@ -79,7 +79,8 @@ function addProduct(req,res)
     NomenclatureService.addProduct(article,designation,description,quantite).then((response)=>{
         res.status(200).json({response})
     }).catch((response)=>{
-        res.status(500).json({response})
+        console.log(response)
+        res.status(500).json({response:response})
     })
 }
 function deleteProduct(req,res)
