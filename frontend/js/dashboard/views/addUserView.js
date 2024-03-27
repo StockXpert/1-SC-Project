@@ -66,8 +66,9 @@ export class AddUserView extends View {
       const form = this;
       const dataArr = [...new FormData(form)];
       const data = Object.fromEntries(dataArr);
-      closeBtn.click();
-      await handler(data);
+      console.log(data);
+      // closeBtn.click();
+      // await handler(data);
     });
   }
 

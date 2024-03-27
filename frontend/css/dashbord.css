@@ -1194,7 +1194,7 @@ table tbody tr:last-child td {
   flex-direction: column;
   gap: 1.2rem;
 }
-.groupe-3-add .groupe-3,
+.groupe-3,
 .groupe-3-add {
   display: grid;
   grid-column: 1/-1;
