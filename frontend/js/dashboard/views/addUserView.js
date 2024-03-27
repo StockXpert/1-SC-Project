@@ -37,14 +37,18 @@ export class AddUserView extends View {
   }
 
   addHandlerUpload(handler) {
+    const userBtn = document.querySelector('.utilisateurs-btn');
+    const closeBtn = document.querySelector('.close-btn-edit');
     this._form.addEventListener('submit', function (e) {
       e.preventDefault();
-      console.log(this);
       const form = this;
       const dataArr = [...new FormData(form)];
       const data = Object.fromEntries(dataArr);
-      console.log(data);
-      // handler(data);
+      console.log(document.querySelector('.utilisateurs-btn'));
+      handler(data);
+      // console.log(closeBtn);
+      // userBtn.click();
+      closeBtn.click();
     });
   }
 

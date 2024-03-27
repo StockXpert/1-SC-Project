@@ -47,11 +47,22 @@ const controlAddUser = async function (newUser) {
   }
 };
 
+const controlUpdateUser = async function (newUser) {
+  try {
+    console.log('updateUser');
+    model.updateUser(newUser);
+    controlSearchResults();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const controlEditUser = function () {
   //ONCLICK OF A EDIT BUTTON
   //Get the index of the clicked edit button here
   const target = this;
   const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+  model.state.user = model.state.search.queryResults[targetIndex];
   //Use it to extract the input data from the state object
   editUserView.changeInputs(model.state.search.queryResults[targetIndex]);
   //                                                                           TODO:
@@ -144,16 +155,10 @@ const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
     console.log('THE FILTERED RESULTS');
     console.log(model.state.search.filteredResults);
   }
-  // const cleanFilteredList = filteredList
-  //   .slice(0, BROWSER_SUGGESTIONS_MAX_SIZE)
-  //   .map(el => el.item.longName);
-  // renderInputSuggestions(browserInputElement, cleanFilteredList);
 };
 
 const userViewAdders = function () {
   numberView.updateMasterCheckbox();
-  numberView.addHandlerNumber(controlNumber);
-  numberView.addHandlerMasterCheckbox(controlNumber);
   addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
   addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
   editUserView.addHandlerHideWindow('.close-btn-edit', '.edit-user-container');
@@ -163,31 +168,23 @@ const userViewAdders = function () {
   );
   editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
   editUserView.addHandlerEdit(controlEditUser);
-  // searchView.addHandlerFilter(controlFilterring);
 };
+
+numberView.addHandlerMasterCheckbox(controlNumber);
+numberView.addHandlerNumber(controlNumber);
+editUserView.addHandlerUpload(controlUpdateUser);
 
 //TODO: TEMPORARY
 controlSearchResults();
-
 searchView.addHandlerSearch(controlSearchResults);
-addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
-editUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
-// editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
-numberView.addHandlerNumber(controlNumber);
+
+userViewAdders();
+addUserView.addHandlerUpload(controlAddUser);
 const controllers = [controlSearchResults, controlLoadStructures];
 sideView.addHandlerBtns(controllers);
-numberView.addHandlerMasterCheckbox(controlNumber);
 
-controlShowUsersEmail();
-// controlLoadStructures();
+// controlShowUsersEmail();
 
 AddStructureView.addHandlerUpload(controlAddStructure);
-
-editUserView.addHandlerEdit(controlEditUser);
-searchView.addHandlerSearchV2(controlFuzzySearch);
-// searchView.addHandlerSearchV2(controlFuzzySearch, true);
-searchView.addHandlerFilter(controlFilterring);
-// searchView.addHandlerFilter(controlFilterring, 1);
-// numberStructuresView.updateMasterCheckbox();
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);

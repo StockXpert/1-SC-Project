@@ -12,6 +12,7 @@ class UsersView extends View {
   }
   _generateMarkupPreview(result) {
     // TODO: console.log(result);
+    console.log(result.active);
     // const id = window.location.hash.slice(1);
     return `
     <tr>
@@ -23,7 +24,7 @@ class UsersView extends View {
     </td>
     <td>${result.email}</td>
     <td class="table-status ${
-      result.active ? 'active-status' : 'inactif-status'
+      result.active === 'Activé' ? 'active-status' : 'inactif-status'
     }">${result.active}</td>
     <td><p class="admin-role">${
       result.role ? helpers.roleTranslator(result.role) : 'Aucun'

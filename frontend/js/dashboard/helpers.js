@@ -46,24 +46,56 @@ export const formatDate = inputDate => {
 //     throw err;
 //   }
 // };
+// export const getJSON = async function (url) {
+//   try {
+//     console.log('getJSON executing ...');
+//     // console.log(localStorage.getItem('JWT'));
+//     const fetchPro = fetch(url, {
+//       method: 'GET',
+//       headers: {
+//         Authorization: localStorage.getItem('JWT'),
+//         'content-Type': 'application/json',
+//       },
+//     });
+//     // console.log(fetchPro);
+//     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+//     // console.log(res);
+//     const data = await res.json();
+//     // console.log(data);
+//     // localStorage.setItem('JWT', data.jwt);
+//     if (!res.ok)
+//       throw new Error(`${data.error} (${res.statusText} - ${res.status})`);
+//     return data;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
+
+// export const te
+
 export const getJSON = async function (url) {
   try {
-    // console.log(localStorage.getItem('JWT'));
-    const fetchPro = fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: localStorage.getItem('JWT'),
-        'content-Type': 'application/json',
-      },
-    });
-    // console.log(fetchPro);
-    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
-    // console.log(res);
+    console.log('getJSON');
+    const res = await Promise.race([
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: localStorage.getItem('JWT'),
+          'content-Type': 'application/json',
+        },
+      }),
+      timeout(TIMEOUT_SEC),
+    ]);
+
+    // const res = await fetch(url, {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: localStorage.getItem('JWT'),
+    //     'content-Type': 'application/json',
+    //   },
+    // });
     const data = await res.json();
-    // console.log(data);
-    // localStorage.setItem('JWT', data.jwt);
-    if (!res.ok)
-      throw new Error(`${data.error} (${res.statusText} - ${res.status})`);
+    if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
     throw err;
@@ -72,24 +104,90 @@ export const getJSON = async function (url) {
 
 export const sendJSON = async function (url, uploadData) {
   try {
-    const fetchPro = fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: localStorage.getItem('JWT'),
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(uploadData),
-    });
-
-    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    console.log('sendJSON');
+    const res = await Promise.race([
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: localStorage.getItem('JWT'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(uploadData),
+      }),
+      timeout(TIMEOUT_SEC),
+    ]);
     const data = await res.json();
 
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
     throw err;
   }
 };
+export const putJSON = async function (url, uploadData) {
+  try {
+    console.log('putJSON');
+    const res = await Promise.race([
+      fetch(url, {
+        method: 'PUT',
+        headers: {
+          Authorization: localStorage.getItem('JWT'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(uploadData),
+      }),
+      timeout(TIMEOUT_SEC),
+    ]);
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+// export const sendJSON = async function (url, uploadData) {
+//   try {
+//     const fetchPro = fetch(url, {
+//       method: 'POST',
+//       headers: {
+//         Authorization: localStorage.getItem('JWT'),
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(uploadData),
+//     });
+
+//     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+//     const data = await res.json();
+//     console.log(data);
+
+//     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+//     return data;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
+// export const putJSON = async function (url, uploadData) {
+//   try {
+//     const fetchPro = fetch(url, {
+//       method: 'PUT',
+//       headers: {
+//         Authorization: localStorage.getItem('JWT'),
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(uploadData),
+//     });
+
+//     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+//     const data = await res.json();
+
+//     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+//     return data;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
 
 export const truncateEmail = function (email) {
   const formatWord = function (word) {
@@ -140,4 +238,28 @@ export const findNodeIndex = function (nodeList, targetNode) {
     }
   }
   return -1; // Return -1 if the target node is not found in the NodeList
+};
+
+export const getUpdateObject = function (oldObj, newObj) {
+  const updateObj = {};
+
+  // Iterate through properties of the new object
+  for (const key in newObj) {
+    // Check if the property exists in the old object and has a different value
+    if (oldObj.hasOwnProperty(key) && oldObj[key] !== newObj[key]) {
+      // Add the property to the update object with the new value
+      updateObj[key] = newObj[key];
+    }
+  }
+
+  return updateObj;
+};
+
+export const removeUndefinedProperties = function (obj) {
+  for (const key in obj) {
+    if (obj[key] === undefined) {
+      delete obj[key];
+    }
+  }
+  return obj;
 };

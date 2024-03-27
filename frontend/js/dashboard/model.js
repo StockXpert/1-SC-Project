@@ -3,6 +3,7 @@ import { API_URL, FUSE_OPTIONS, TIMEOUT_SEC } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
 export const state = {
+  user: {},
   search: {
     // query: '',
     results: [],
@@ -19,11 +20,49 @@ export const state = {
     selected: 0,
   },
 };
+export const updateUser = async function (newUser) {
+  const updateObj = helpers.getUpdateObject(state.user, newUser);
+  console.log(updateObj);
+  updateObj.email = state.user.email;
+  console.log(updateObj);
+  //  /updateUser
+  console.log(updateObj.nom || updateObj.prenom);
+  if (
+    updateObj.nom ||
+    updateObj.prenom ||
+    updateObj.date_naissance ||
+    updateObj.role
+  ) {
+    let putData = {
+      email: updateObj.email,
+      nom: updateObj.nom,
+      prenom: updateObj.prenom,
+      date_naissance: updateObj.date_naissance,
+      role: updateObj.role,
+    };
+    console.log(putData);
+    putData = helpers.removeUndefinedProperties(putData);
+    console.log(putData);
+    helpers.putJSON(`${API_URL}/Users/updateUser`, putData);
+    // helpers.putJSON(`${API_URL}/Users/updateUser`, newUser);
+  }
+  // /changeStatus
+  if (updateObj.active) {
+    console.log('STATUS CHANGED !');
+    const postData = { email: updateObj.email };
+    console.log(postData);
+    // postData.active = updateObj.active === 'Activé' ? 1 : 0;
+    // console.log(postData);
+    helpers.sendJSON(`${API_URL}/Users/changeStatus`, postData);
+  }
+};
 
 export const loadSearchResults = async function (query) {
   try {
+    console.log('loading search results...');
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    // console.log(data);
+    console.log(data);
+    // console.log('loading search results...');
     state.search.results = data.response.map(usr => {
       // usr:
       // "email": "o.djeziri@esi-sba.dz",
