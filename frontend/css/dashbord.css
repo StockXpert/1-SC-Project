@@ -903,12 +903,12 @@ table tbody tr:last-child td {
 }
 
 .add-user-cart {
-  width: 33rem;
-  height: 42rem;
+  width: 46rem;
+  height: 32rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.8rem;
   align-items: center;
   padding: 0.6rem;
   background-color: white;
@@ -950,7 +950,7 @@ table tbody tr:last-child td {
 }
 .close-btn span {
   color: #4b4b4b;
-  padding: 0.8rem;
+  padding: 0.2rem;
   font-size: 2rem;
 }
 .close-btn span:hover {
@@ -1165,7 +1165,9 @@ table tbody tr:last-child td {
   align-items: center;
 }
 .groupe-1,
-.groupe-2 {
+.groupe-2,
+.groupe-1-add,
+.groupe-2-add {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -1195,9 +1197,11 @@ table tbody tr:last-child td {
   padding: 0.4rem;
   border-radius: 25px;
 }
-#role-options {
-  width: 28rem;
-  height: 3rem;
+#role-options,
+#structure-add-user-options,
+#consommateur-add-user-options {
+  width: 20rem;
+  height: 2.7rem;
   padding: 0.2rem;
   font-size: 1.1rem;
   font-weight: 600;
@@ -1302,6 +1306,13 @@ a.password-icon:hover,
 a.password-icon:active {
   color: #477ce2;
 }
+.create-btn {
+  display: grid;
+  grid-column: 1/-1;
+  justify-content: center;
+  align-content: center;
+}
+
 .create-btn button {
   width: 15rem;
   height: 3rem;
@@ -1398,7 +1409,8 @@ a.password-icon:active {
   display: none;
 }
 
-.inputs-edit {
+.inputs-edit,
+.add-user-inputs {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.6rem;
@@ -1447,6 +1459,17 @@ a.password-icon:active {
   border-radius: 1rem;
   transition: all 0.3s ease;
 }
+.input-groupe-add {
+  width: 20rem;
+  height: 2.7rem;
+  display: flex;
+  padding: 0.2rem;
+  justify-content: space-between;
+  align-items: center;
+  outline: 1px solid #929292;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
 .input-groupe-3 {
   width: 41.5rem;
   display: flex;
@@ -1467,7 +1490,8 @@ a.password-icon:active {
   background-color: transparent;
   /* transition: all 0.3s ease; */
 }
-.input-groupe-edit .input {
+.input-groupe-edit .input,
+.input-groupe-add .input {
   width: 22rem;
   height: 1.8rem;
   padding: 0.6rem;

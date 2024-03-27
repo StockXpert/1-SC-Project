@@ -1449,7 +1449,7 @@
       <!----------- fin du main content for Admin Table----------------------------------------->
       <!--------------------------------- I- BEGIN ADMIN FONCTIONS --------------------------------------->
       <!-- debut de section pour ajouter un  user -->
-      <div class="add-user-container hidden">
+      <div class="add-user-container">
         <div class="add-user-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
@@ -1460,88 +1460,130 @@
           </div>
           <!-- for inputs -->
           <form class="add-user-inputs">
-            <div class="dropdown-roles">
-              <select
-                name="roles"
-                id="role-options"
-                placeholder="Selectionnés le rôle"
-                required
-              >
-                <option value="" selected="" disabled="">Rôles</option>
-                <option value="Directeur">Directeur</option>
-                <option value="RD">Résponsable direct</option>
-                <option value="Magasinier">Magasinier</option>
-                <option value="Service achat">Service Achat</option>
-                <option value="Consommateur">Consommateur</option>
-                <option value="Administrateur System">Administrateur</option>
-              </select>
-            </div>
-            <div class="input-groupe">
-              <input
-                name="name"
-                type="text"
-                class="input name"
-                placeholder="Nom et Prénom"
-              />
-              <ion-icon class="input-icon" name="person-outline"></ion-icon>
-            </div>
-            <div class="input-groupe">
-              <input
-                name="date"
-                type="date"
-                class="input"
-                id="add--date"
-                placeholder="Entrez la date de naissance"
-              />
-              <ion-icon
-                class="input-icon"
-                name="calendar-number-outline"
-              ></ion-icon>
-            </div>
-            <div class="input-groupe">
-              <input
-                name="email"
-                type="email"
-                class="input email"
-                autocomplete="email"
-                placeholder="Entrez l'email"
-                required
-              />
-              <ion-icon class="input-icon" name="mail-outline"></ion-icon>
-            </div>
-            <div class="input-groupe">
-              <input
-                name="password"
-                type="password"
-                class="input password"
-                placeholder="Entrez le mot de passe"
-                autocomplete="new-password"
-                required
-              />
-              <a class="password-icon" href="#">
-                <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+            <div class="groupe-1-add">
+              <div class="dropdown-roles">
+                <select
+                  name="roles"
+                  id="role-options"
+                  placeholder="Selectionnés le rôle"
+                  required
+                >
+                  <option value="" selected="" disabled="">Rôles</option>
+                  <option value="Directeur">Directeur</option>
+                  <option value="RD">Résponsable direct</option>
+                  <option value="Magasinier">Magasinier</option>
+                  <option value="Service achat">Service Achat</option>
+                  <option value="Consommateur">Consommateur</option>
+                  <option value="Administrateur System">Administrateur</option>
+                </select>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="name"
+                  type="text"
+                  class="input input-add-name"
+                  placeholder="Nom"
+                />
+                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="date"
+                  type="date"
+                  class="input"
+                  id="add--date"
+                  placeholder="Entrez la date de naissance"
+                />
                 <ion-icon
-                  class="input-icon hidden"
-                  name="eye-off-outline"
+                  class="input-icon"
+                  name="calendar-number-outline"
                 ></ion-icon>
-              </a>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="email"
+                  type="email"
+                  class="input email"
+                  autocomplete="email"
+                  placeholder="Entrez l'email"
+                  required
+                />
+                <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+              </div>
             </div>
-            <div class="input-groupe">
-              <input
-                name="password"
-                type="password"
-                class="input password-confirm"
-                placeholder="Confirmer le mot de passe"
-                autocomplete="new-password"
-                required
-              />
-              <a class="password-icon" href="#">
-                <ion-icon class="input-icon" name="eye-outline"></ion-icon>
-                <ion-icon
-                  class="input-icon hidden"
-                  name="eye-off-outline"
-                ></ion-icon>
-              </a>
+            <div class="groupe-2-add">
+              <div class="dropdown-structure">
+                <select
+                  name="structures"
+                  id="structure-add-user-options"
+                  structure-add-user-options
+                  placeholder="Selectionnés Une Structure"
+                  required
+                >
+                  <option value="" selected="" disabled="">Structures</option>
+                  <option value="cp">Cycle Préparatoire</option>
+                  <option value="cs">Cycle Supperieur</option>
+                </select>
+              </div>
+              <div class="dropdown-structure hidden">
+                <select
+                  name="Consommateur"
+                  id="consommateur-add-user-options"
+                  structure-add-user-options
+                  placeholder="Selectionnés Un Type"
+                  required
+                >
+                  <option value="" selected="" disabled="">
+                    Type du Consommateur
+                  </option>
+                  <option value="ens">Enseignant</option>
+                  <option value="et">Etudiant</option>
+                  <option value="et">Autre</option>
+                </select>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="prenom"
+                  type="text"
+                  class="input input-add-prenom"
+                  placeholder="Prénom"
+                />
+                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="password"
+                  type="password"
+                  class="input password"
+                  placeholder="Entrez le mot de passe"
+                  autocomplete="new-password"
+                  required
+                />
+                <a class="password-icon" href="#">
+                  <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                  <ion-icon
+                    class="input-icon hidden"
+                    name="eye-off-outline"
+                  ></ion-icon>
+                </a>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="password"
+                  type="password"
+                  class="input password-confirm"
+                  placeholder="Confirmer le mot de passe"
+                  autocomplete="new-password"
+                  required
+                />
+                <a class="password-icon" href="#">
+                  <ion-icon class="input-icon" name="eye-outline"></ion-icon>
+                  <ion-icon
+                    class="input-icon hidden"
+                    name="eye-off-outline"
+                  ></ion-icon>
+                </a>
+              </div>
             </div>
             <div class="create-btn">
               <button>Crée l'utilisateur</button>
