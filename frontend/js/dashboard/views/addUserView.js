@@ -44,7 +44,7 @@ export class AddUserView extends View {
       const form = this;
       const dataArr = [...new FormData(form)];
       const data = Object.fromEntries(dataArr);
-      console.log(document.querySelector('.utilisateurs-btn'));
+      // console.log(document.querySelector('.utilisateurs-btn'));
       handler(data);
       // console.log(closeBtn);
       // userBtn.click();

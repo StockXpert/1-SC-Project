@@ -49,7 +49,7 @@ const controlAddUser = async function (newUser) {
 
 const controlUpdateUser = async function (newUser) {
   try {
-    console.log('updateUser');
+    // console.log('updateUser');
     usersView.renderSpinner("Mise à jour de l'utilisateur ...");
     await model.updateUser(newUser);
     controlSearchResults();

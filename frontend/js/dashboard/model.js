@@ -55,6 +55,18 @@ export const updateUser = async function (newUser) {
     // console.log(postData);
     await helpers.sendJSON(`${API_URL}/Users/changeStatus`, postData);
   }
+  if (updateObj.structure) {
+    console.log('structure update');
+    console.log({
+      structure: updateObj.structure,
+      email: updateObj.email,
+    });
+
+    await helpers.sendJSON(`${API_URL}/Users/rattacher`, {
+      structure: updateObj.structure,
+      email: updateObj.email,
+    });
+  }
 };
 
 export const loadSearchResults = async function (query) {
