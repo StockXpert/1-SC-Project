@@ -1,19 +1,14 @@
-import { state } from '../model.js';
+import addStructureView from './addStructureView.js';
 import View from './view.js';
-import { AddUserView } from './addUserView.js';
-import poppupView from './poppupView.js';
-import * as helpers from '../helpers.js';
 
-export class EditUserView extends AddUserView {
-  // setter() {
-  _window = document.querySelector('.edit-user-container');
+class EditStructureView extends View {
+  _window = document.querySelector('.edit-structure-container');
   _overlay = document.querySelector('.overlayEdit');
   _btnOpen;
-  _btnClose;
-  _parentElement = document.querySelector('.edit-user-cart');
-  _form = document.querySelector('.inputs-edit');
+  _parentElement = document.querySelector('.edit-structure-cart');
+  _form = document.querySelector('.edit-structure-inputs');
+  _btnClose = this._parentElement.querySelector('.close-btn');
   currTarget;
-  // }
 
   constructor() {
     super();
@@ -27,8 +22,16 @@ export class EditUserView extends AddUserView {
     this._window = document.querySelector(windowClassName);
     this._btnOpen = document.querySelectorAll(OpClassName);
     const btnOpenArray = Array.from(this._btnOpen);
-    btnOpenArray.forEach((btn, index) => {
+    btnOpenArray.forEach(btn => {
       btn.addEventListener('click', addEventListenerCallback);
+    });
+  }
+
+  addHandlerEdit(controller) {
+    this._btnOpen = document.querySelectorAll('.details-btn-structures');
+    const btnOpenArray = Array.from(this._btnOpen);
+    btnOpenArray.forEach(btn => {
+      btn.addEventListener('click', controller);
     });
   }
 
@@ -37,11 +40,7 @@ export class EditUserView extends AddUserView {
     const formElement = this._form;
     // Create a new FormData object from the form
     const formData = new FormData(formElement);
-    // TODO:
-    // formData.forEach(function (value, key) {
-    //   console.log(key + ': ' + value);
-    // });
-    // Update form fields with new values
+    console.log(formData);
     for (const key in NewInputValuesObj) {
       if (NewInputValuesObj.hasOwnProperty(key)) {
         const input = formElement.elements[key];
@@ -51,16 +50,6 @@ export class EditUserView extends AddUserView {
       }
     }
   }
-
-  addHandlerEdit(controller) {
-    this._btnOpen = document.querySelectorAll('.details-btn');
-    const btnOpenArray = Array.from(this._btnOpen);
-    btnOpenArray.forEach(btn => {
-      btn.addEventListener('click', controller);
-    });
-  }
-
-  _generateMarkup() {}
 }
 
-export default new EditUserView();
+export default new EditStructureView();

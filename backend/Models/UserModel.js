@@ -678,7 +678,7 @@ function getStructures()
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = 'select designation,id_resp from structure ';
+    const query = 'select s.designation,u.nom,u.prenom from structure s,utilisateur u where s.id_resp=u.email ';
    
     connection.connect((err) => {
       if (err) {

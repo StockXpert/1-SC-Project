@@ -1,5 +1,5 @@
 import * as model from './model.js';
-import { MODAL_CLOSE_SEC } from './config.js';
+import { API_URL, MODAL_CLOSE_SEC } from './config.js';
 import searchView from './views/searchView.js';
 import usersView from './views/usersView.js';
 // import { AddUserView } from './views/addUserView.js';
@@ -8,11 +8,13 @@ import addUserView from './views/addUserView.js';
 import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
 import editUserView from './views/editUserView.js';
+import deleteUserView from './views/deleteUserView.js';
 import StructuresView from './views/structuresView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
 import numberStructuresView from './views/numberStructuresView.js';
+import editStructureView from './views/editStructureView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -38,10 +40,27 @@ const controlSearchResults = async function () {
 const controlAddUser = async function (newUser) {
   try {
     console.log(newUser);
+    usersView.renderSpinner("Ajout de l'utilisateur " + newUser.name + '...');
     await model.uploadUser(newUser); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
     //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
-    addUserView.toggleWindow();
-    console.log(model.state.User);
+    controlSearchResults();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const controlUpdateUser = async function (newUser) {
+  try {
+    if (
+      Object.entries(helpers.getUpdateObject(model.state.user, newUser))
+        .length === 0
+    ) {
+      controlSearchResults();
+      return;
+    }
+    usersView.renderSpinner("Mise à jour de l'utilisateur ...");
+    await model.updateUser(newUser);
+    controlSearchResults();
   } catch (err) {
     console.error(err);
   }
@@ -52,14 +71,23 @@ const controlEditUser = function () {
   //Get the index of the clicked edit button here
   const target = this;
   const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+  model.state.user = model.state.search.queryResults[targetIndex];
   //Use it to extract the input data from the state object
   editUserView.changeInputs(model.state.search.queryResults[targetIndex]);
   //                                                                           TODO:
 };
 
+const controlEditStructure = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+  editStructureView.changeInputs(model.state.structures.results[targetIndex]);
+};
+
 const controlNumber = function () {
   numberView._clear();
   model.state.displayed.selected = numberView.calculateCheckboxes();
+  // console.log('state updated :');
+  // console.log(model.state);
   numberView.render(model.state);
 };
 
@@ -144,16 +172,57 @@ const controlFuzzySearch = function (searchKeyword, isFirstFilter) {
     console.log('THE FILTERED RESULTS');
     console.log(model.state.search.filteredResults);
   }
-  // const cleanFilteredList = filteredList
-  //   .slice(0, BROWSER_SUGGESTIONS_MAX_SIZE)
-  //   .map(el => el.item.longName);
-  // renderInputSuggestions(browserInputElement, cleanFilteredList);
 };
 
+const controlDeleteUsers = async function () {
+  function getCheckboxStates(checkboxes) {
+    const checkboxStates = [];
+    checkboxes.forEach(function (checkbox) {
+      checkboxStates.push(checkbox.checked);
+    });
+    return checkboxStates;
+  }
+  function filterArrayByBooleans(dataArray, booleanArray) {
+    const filteredArray = [];
+    for (let i = 0; i < dataArray.length; i++) {
+      if (booleanArray[i]) {
+        filteredArray.push(dataArray[i]);
+      }
+    }
+    return filteredArray;
+  }
+
+  filterArrayByBooleans(
+    model.state.search.queryResults,
+    getCheckboxStates(
+      document
+        .querySelector('.results')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    usersView.renderSpinner(
+      "Suppression de l'utilisateur " + el.nom + ' ' + el.prenom + '...'
+    );
+    console.log({
+      email: el.email,
+    });
+    await helpers.delJSON(`${API_URL}/Users/deleteUser`, {
+      email: el.email,
+    });
+    // back to main menu
+    controlSearchResults();
+  });
+
+  // console.log(model.state.search.queryResults);
+  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+};
+
+// deleteUserView.addDeleteController(controlDeleteUsers);
 const userViewAdders = function () {
-  numberView.updateMasterCheckbox();
+  numberView.masterSelectionUpdater();
+  numberView.selectionUpdater();
   numberView.addHandlerNumber(controlNumber);
-  numberView.addHandlerMasterCheckbox(controlNumber);
   addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
   addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
   editUserView.addHandlerHideWindow('.close-btn-edit', '.edit-user-container');
@@ -163,31 +232,30 @@ const userViewAdders = function () {
   );
   editUserView.addHandlerShowWindow('.details-btn', '.edit-user-container');
   editUserView.addHandlerEdit(controlEditUser);
-  // searchView.addHandlerFilter(controlFilterring);
+  numberView.updateMasterCheckbox();
 };
-
+// REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demostration)
 //TODO: TEMPORARY
 controlSearchResults();
-
-searchView.addHandlerSearch(controlSearchResults);
-addUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
-editUserView.addHandlerUpload(controlAddUser); //adds a handler function, but when that handler gets called, it gets called on data from the form submission          (see addUserView.js) (in this case the handler is controlAddUser())
-// editUserView.addHandlerUpload(controlAddUser, '.inputs-edit');
-numberView.addHandlerNumber(controlNumber);
+userViewAdders();
 const controllers = [controlSearchResults, controlLoadStructures];
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
-
-controlShowUsersEmail();
-// controlLoadStructures();
+searchView.addHandlerSearch(controlSearchResults);
+addUserView.addHandlerUpload(controlAddUser);
+editUserView.addHandlerUpload(controlUpdateUser);
+deleteUserView.addDeleteController(controlDeleteUsers);
 
 AddStructureView.addHandlerUpload(controlAddStructure);
-
-editUserView.addHandlerEdit(controlEditUser);
-searchView.addHandlerSearchV2(controlFuzzySearch);
-// searchView.addHandlerSearchV2(controlFuzzySearch, true);
-searchView.addHandlerFilter(controlFilterring);
-// searchView.addHandlerFilter(controlFilterring, 1);
-// numberStructuresView.updateMasterCheckbox();
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
+function fn() {
+  console.log('WTF');
+}
+
+editStructureView.addHandlerShowWindow(
+  '.details-btn-structures',
+  'edit-structure-container'
+);
+// editStructureView.addHandlerHideWindow();
+editStructureView.addHandlerEdit(controlEditStructure);

@@ -1,5 +1,4 @@
 import View from './view.js';
-import * as model from '../model.js';
 
 class NumberView extends View {
   _parentElement = document.querySelector('.heading-table-text');
@@ -22,6 +21,7 @@ class NumberView extends View {
         );
       }
     };
+    // console.log(this._checkboxes.length);
     this._checkboxes.forEach(func);
     return checkedCount;
   }
@@ -63,18 +63,40 @@ class NumberView extends View {
       </p>
   `;
   }
-  addHandlerMasterCheckbox(controller) {
-    const checkboxes = this._checkboxes;
+
+  selectionUpdater() {
+    this._table = document.querySelector('.results');
+    const checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
+    this._checkboxes = checkboxes;
+    return checkboxes;
+  }
+
+  masterSelectionUpdater() {
+    this._table = document.querySelector('.results');
+    const checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
     const masterCheckbox = this._masterCheckbox;
+    return masterCheckbox;
+  }
 
-    const toggleCheckboxes = function toggleCheckboxes() {
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = masterCheckbox.checked;
-      });
-    };
-
+  toggleCheckboxes() {
+    const checkboxes = document
+      .querySelector('.results')
+      .querySelectorAll('input[type="checkbox"]');
+    const masterCheckbox = document.getElementById('checkbox-table-all');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = masterCheckbox.checked;
+    });
+  }
+  addHandlerMasterCheckbox(controller) {
+    const checkboxes = this.selectionUpdater();
+    // console.log(checkboxes);
+    // this._masterCheckbox = document.getElementById('checkbox-table-all');
+    const masterCheckbox = this._masterCheckbox;
+    // console.log(masterCheckbox);
+    const tcb = this.toggleCheckboxes;
     this._masterCheckbox.addEventListener('change', function (e) {
-      toggleCheckboxes();
+      // console.log('CHANGE');
+      tcb();
       controller();
     });
   }
@@ -91,14 +113,15 @@ class NumberView extends View {
     masterCheckbox.checked = allChecked;
   }
   addHandlerNumber(fn) {
-    fn();
     this._table = document.querySelector('.results');
     this._checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
-
+    // console.log(this._checkboxes);
+    fn();
     this._checkboxes.forEach(el =>
       el.addEventListener('change', e => {
         this.updateMasterCheckbox();
         fn();
+        // console.log('CHANGE IN A CHECKBOX');
       })
     );
   }

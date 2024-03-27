@@ -194,14 +194,22 @@ function getChapterId(chapitre)
         });
       });
 }
-function updateArticle(oldDesignation,newDesignation,chapitre)
+function updateArticle(oldDesignation,newDesignation,chapitre,tva)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `update article set ${newDesignation?'designation=?':''} ${(newDesignation&&chapitre)?',':''} ${chapitre?'num_chap=(select num_chap from chapitre where designation=?)':''} where designation=?`;
+    const query = `UPDATE article
+    SET 
+        ${newDesignation ? 'designation=?' : ''} 
+        ${(newDesignation && chapitre) ? ',' : ''} 
+        ${chapitre ? 'num_chap=(SELECT num_chap FROM chapitre WHERE designation=?)' : ''} 
+        ${(newTva ? (newDesignation || chapitre ? ',' : '') + 'tva=?' : '')}
+    WHERE 
+        designation=?;`
     let values=[];
     if(newDesignation) values.push(newDesignation);
     if(chapitre) values.push(chapitre);
+    if(tva) values.push(tva)
     values.push(oldDesignation)
   
     connection.connect((err) => {
@@ -225,13 +233,13 @@ function updateArticle(oldDesignation,newDesignation,chapitre)
     });
   });
 }
-function addArticle(numArt,chapitreId,designation)
+function addArticle(numArt,chapitreId,designation,tva)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into article (num_article,designation,num_chap,date_ajout) values (?,?,?,NOW())';
-        const values = [numArt,designation,chapitreId];
-      
+        const query = 'insert into article (num_article,designation,num_chap,date_ajout) values (?,?,?,NOW(),?)';
+        const values = [numArt,designation,chapitreId,tva];
+        
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -259,7 +267,7 @@ function addProduct(quantite,designation,description)
         const connection = mysql.createConnection(connectionConfig);
         const query = 'insert into produit (designation,description,quantite,date_ajout) values (?,?,?,now())';
         const values = [designation,description,quantite];
-      
+        if(quantite===null) quantite=0;
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -281,11 +289,11 @@ function addProduct(quantite,designation,description)
         });
       });
 }
-function getArticleId(article)
+function getArticleIdTva(article)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'select num_article from article where designation=?';
+        const query = 'select num_article,tva from article where designation=?';
         const values = [article];
       
         connection.connect((err) => {
@@ -302,7 +310,7 @@ function getArticleId(article)
               return;
             }
             
-            resolve(results[0].num_article);
+            resolve(results[0]);
           });
           
           connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -594,7 +602,8 @@ function getProducts()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'select designation,quantite,description from produit ';
+    const query = `select p.designation,p.quantite,p.description,a.designation as article from produit p , contient c ,article a 
+                   where p.id_produit=c.id_produit and c.id_article=a.id_article`;
     
   
     connection.connect((err) => {
@@ -734,7 +743,7 @@ function updateRaisonSociale(newR,oldR)
     });
   });
 }
-module.exports={getChapterId,addArticle,addProduct,getArticleId,getProductId,addArticleProduct,
+module.exports={getChapterId,addArticle,addProduct,getArticleIdTva,getProductId,addArticleProduct,
                 deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
                 ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
