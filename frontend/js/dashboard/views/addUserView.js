@@ -13,6 +13,10 @@ export class AddUserView extends View {
   _passwordIcons = this._inputsContainer.querySelectorAll('.password-icon');
   _password = this._inputsContainer.querySelector('.password');
   _confirmPassword = this._inputsContainer.querySelector('.password-confirm');
+  _typeConsumer = document
+    .querySelector('.groupe-3-add')
+    .querySelector('.dropdown-structure');
+  _role = document.querySelector('#role-options');
   constructor() {
     super();
     this._passwordIcons.forEach(icon => {
@@ -20,6 +24,50 @@ export class AddUserView extends View {
         e.preventDefault();
         this.togglePasswordVisibility();
       });
+    });
+  }
+  _boundToggleWindow = e => {
+    e.preventDefault();
+    this.toggleWindow.bind(this)();
+  };
+  //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
+  addHandlerShowWindow(OpClassName, windowClassName) {
+    this._window = document.querySelector(windowClassName);
+    this._btnOpen = document.querySelector(OpClassName);
+    this._btnOpen.addEventListener('click', this._boundToggleWindow);
+  }
+  toggleTypeConsumer(hide) {
+    if (hide) {
+      this._typeConsumer.classList.add('hidden');
+    } else {
+      this._typeConsumer.classList.remove('hidden');
+    }
+  }
+  handleConsumerChange = e => {
+    {
+      console.log('consumer change !');
+      e.preventDefault();
+      const filterInput = e.target;
+      // console.log;
+      if (
+        filterInput.options[filterInput.selectedIndex].value == 'Consommateur'
+      )
+        this.toggleTypeConsumer.bind(this)(false);
+      else {
+        this.toggleTypeConsumer.bind(this)(true);
+      }
+    }
+  };
+  async addHandlerUpload(handler) {
+    const closeBtn = this._btnClose;
+    this._role.addEventListener('change', this.handleConsumerChange);
+    this._form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = this;
+      const dataArr = [...new FormData(form)];
+      const data = Object.fromEntries(dataArr);
+      closeBtn.click();
+      await handler(data);
     });
   }
 
@@ -49,16 +97,6 @@ export class AddUserView extends View {
   };
 
   //THIS ===> the addUserView object
-  _boundToggleWindow = e => {
-    e.preventDefault();
-    this.toggleWindow.bind(this)();
-  };
-  //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
-  addHandlerShowWindow(OpClassName, windowClassName) {
-    this._window = document.querySelector(windowClassName);
-    this._btnOpen = document.querySelector(OpClassName);
-    this._btnOpen.addEventListener('click', this._boundToggleWindow);
-  }
 
   addHandlerHideWindow(CloserClassName, windowClassName) {
     this._window = document.querySelector(windowClassName);
@@ -71,18 +109,6 @@ export class AddUserView extends View {
   toggleWindow() {
     this._overlay.classList.toggle('hidden');
     this._window.classList.toggle('hidden');
-  }
-
-  async addHandlerUpload(handler) {
-    const closeBtn = this._btnClose;
-    this._form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const form = this;
-      const dataArr = [...new FormData(form)];
-      const data = Object.fromEntries(dataArr);
-      closeBtn.click();
-      await handler(data);
-    });
   }
 
   _generateMarkup() {}
