@@ -904,13 +904,13 @@ table tbody tr:last-child td {
 
 .add-user-cart {
   width: 46rem;
-  height: 32rem;
+  height: auto;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
   align-items: center;
-  padding: 0.6rem;
+  padding: 1rem;
   background-color: white;
   border-radius: 3rem;
   box-shadow: 0px 10px 10px 10px #00000040;
@@ -1173,7 +1173,8 @@ table tbody tr:last-child td {
   flex-direction: column;
   gap: 1.2rem;
 }
-.groupe-3 {
+.groupe-3-add .groupe-3,
+.groupe-3-add {
   display: grid;
   grid-column: 1/-1;
   justify-content: center;
