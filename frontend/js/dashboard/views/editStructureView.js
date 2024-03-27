@@ -1,6 +1,7 @@
 import addStructureView from './addStructureView.js';
+import View from './view.js';
 
-class EditStructureView extends addStructureView {
+class EditStructureView extends View {
   _window = document.querySelector('.edit-structure-container');
   _overlay = document.querySelector('.overlayEdit');
   _btnOpen;

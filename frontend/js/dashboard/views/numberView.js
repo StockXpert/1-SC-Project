@@ -1,5 +1,4 @@
 import View from './view.js';
-import * as model from '../model.js';
 
 class NumberView extends View {
   _parentElement = document.querySelector('.heading-table-text');
