@@ -32,13 +32,9 @@ export class AddUserView extends View {
   };
   //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
   addHandlerShowWindow(OpClassName, windowClassName) {
-    // console.log(this._btnOpen);
     this._window = document.querySelector(windowClassName);
     this._btnOpen = document.querySelector(OpClassName);
     this._btnOpen.addEventListener('click', this._boundToggleWindow);
-    console.log('adding handler open');
-    console.log(document.querySelector(windowClassName));
-    console.log(document.querySelector(OpClassName));
   }
   addHandlerOpenWindowAndUpdateSelect(handler) {
     this._btnOpen.addEventListener('click', handler);
@@ -61,7 +57,6 @@ export class AddUserView extends View {
       console.log('consumer change !');
       e.preventDefault();
       const filterInput = e.target;
-      // console.log;
       if (
         filterInput.options[filterInput.selectedIndex].value == 'Consommateur'
       )
@@ -97,7 +92,7 @@ export class AddUserView extends View {
       let inputs = Array.from(form.getElementsByTagName('input'));
       const select = Array.from(form.getElementsByTagName('select'));
       inputs = inputs.concat(select);
-      console.log(inputs);
+      // console.log(inputs);
 
       const allFilled = inputs.every(input => {
         const isRequired = input.required;

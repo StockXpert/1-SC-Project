@@ -113,8 +113,8 @@ class NumberView extends View {
     masterCheckbox.checked = allChecked;
   }
   addHandlerNumber(fn) {
-    this._table = document.querySelector('.results');
-    this._checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
+    // this._table = document.querySelector('.results');
+    // this._checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
     // console.log(this._checkboxes);
     fn();
     this._checkboxes.forEach(el =>

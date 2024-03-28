@@ -26,6 +26,7 @@ class SearchView extends View {
     this.#searchInput.addEventListener('input', () => {
       const searchKeyword = this.getQuery();
       Controller(searchKeyword);
+      console.log('addHandlerSearchV2(Controller) executed');
     });
   }
 

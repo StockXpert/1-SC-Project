@@ -83,10 +83,10 @@ export const updateUser = async function (newUser) {
 };
 export const loadSearchResults = async function (query) {
   try {
-    // console.log('loading search results...');
+    console.log('loading users from db...');
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    console.log(data);
-    // console.log('loading search results...');
+    // console.log(data);
+    console.log('users loaded!');
     state.search.results = data.response.map(usr => {
       // usr:
       // "email": "o.djeziri@esi-sba.dz",

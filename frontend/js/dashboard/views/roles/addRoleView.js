@@ -8,5 +8,10 @@ class AddRoleView extends AddUserView {
   _parentElement = document.querySelector('.add-user-container');
   _form = document.querySelector('.add-role-inputs');
   // _inputsContainer = document.querySelector('.groupe-2-add');
+  constructor() {
+    super();
+    this.addHandlerShowWindow('#add-btn-role', '.add-role-container');
+    this.addHandlerHideWindow('.close-btn-add-role', '.add-role-container');
+  }
 }
 export default new AddRoleView();

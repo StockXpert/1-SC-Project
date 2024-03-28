@@ -28,7 +28,7 @@ class SideView extends View {
     document.getElementById('main-table-bdc'),
   ];
 
-  addHandlerBtns(controllers) {
+  addHandlerBtns(controllers, index = '') {
     this.btns.forEach(el =>
       el.addEventListener('click', e => {
         e.preventDefault();
@@ -45,10 +45,15 @@ class SideView extends View {
         );
         targeto.classList.add('active');
         console.log(helpers.findNodeIndex(this.btns, targeto));
-        console.log(controllers);
         controllers[helpers.findNodeIndex(this.btns, targeto)]();
       })
     );
+    if (index !== '') {
+      this.divs.forEach(div => {
+        div.classList.add('hidden');
+      });
+      this.divs[index];
+    }
   }
 }
 export default new SideView();
