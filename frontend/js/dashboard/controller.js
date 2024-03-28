@@ -25,6 +25,7 @@ const controlSearchResults = async function () {
   try {
     usersView.renderSpinner('');
     await model.loadSearchResults();
+    await controlAddUserUpdateSelects();
     // D Y N A M I C   S E A R C H   A C T I V A T I O N :
     searchView.addHandlerSearchV2(controlFuzzySearch);
     usersView.render(model.state.search.results);
@@ -129,8 +130,8 @@ const controlAddStructure = async function (newStructure) {
 
 const controlShowUsersEmail = async function () {
   try {
-    const options = await model.getUsersEmail();
-    AddStructureView.addEmailsSelection(options);
+    const emails = await model.getUsersEmail();
+    AddStructureView.addToSelection(emails, 'search-responsable');
   } catch (error) {
     console.error('🤔 ' + error);
   }
@@ -243,7 +244,7 @@ const controlDeleteUsers = async function () {
 };
 
 // deleteUserView.addDeleteController(controlDeleteUsers);
-const userViewAdders = function () {
+const userViewAdders = async function () {
   numberView.masterSelectionUpdater();
   numberView.selectionUpdater();
   numberView.addHandlerNumber(controlNumber);
@@ -258,8 +259,25 @@ const userViewAdders = function () {
   editUserView.addHandlerEdit(controlEditUser);
   numberView.updateMasterCheckbox();
 };
+// addUserView.addHandlerUpdateSelects(controlAddUserUpdateSelects);
+const controlAddUserUpdateSelects = async function () {
+  console.log('Updating AddUser inputs ...');
+  addUserView.renderSpinner('Veuillez attendre un moment...');
+  const roles = await model.getRoles();
+  addUserView.addToSelection(roles, 'role-options', 'role');
+  const structures = await model.getStructures();
+  addUserView.addToSelection(
+    structures,
+    'structure-add-user-options',
+    'structure'
+  );
+  addUserView.unrenderSpinner();
+};
+
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demostration)
 //TODO: TEMPORARY
+// await controlAddUserUpdateSelects();
+// addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
 controlSearchResults();
 userViewAdders();
 const controllers = [controlSearchResults, controlLoadStructures];

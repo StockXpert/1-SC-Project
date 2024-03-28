@@ -230,8 +230,8 @@ export const capitalizeWord = function (word) {
 export const capitalizeFirstLetter = function (word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
-export const roleTranslator = function (Brole) {
-  switch (Brole) {
+export const roleTranslator = function (RoleInTheBackend) {
+  switch (RoleInTheBackend) {
     case 'Service achat':
       return 'S. Achat';
     case 'Magasinier':
@@ -286,4 +286,12 @@ export const removeUndefinedProperties = function (obj) {
     }
   }
   return obj;
+};
+
+export const removeChildrenFromSecond = function (element) {
+  if (element.children.length >= 2) {
+    for (let i = element.children.length - 1; i >= 1; i--) {
+      element.removeChild(element.children[i]);
+    }
+  }
 };
