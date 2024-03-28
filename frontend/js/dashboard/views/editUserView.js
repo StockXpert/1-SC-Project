@@ -31,7 +31,7 @@ export class EditUserView extends AddUserView {
       btn.addEventListener('click', addEventListenerCallback);
     });
   }
-
+  handleConsumerChange = () => {};
   changeInputs(NewInputValuesObj) {
     // Get the form element
     const formElement = this._form;

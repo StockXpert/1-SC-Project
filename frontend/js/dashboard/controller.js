@@ -9,12 +9,12 @@ import sideView from './views/sideView.js';
 import numberView from './views/numberView.js';
 import editUserView from './views/editUserView.js';
 import deleteUserView from './views/deleteUserView.js';
-import StructuresView from './views/structuresView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
 import numberStructuresView from './views/numberStructuresView.js';
 import editStructureView from './views/editStructureView.js';
+import structuresView from './views/structuresView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -25,6 +25,7 @@ const controlSearchResults = async function () {
   try {
     usersView.renderSpinner('');
     await model.loadSearchResults();
+    await controlAddUserUpdateSelects();
     // D Y N A M I C   S E A R C H   A C T I V A T I O N :
     searchView.addHandlerSearchV2(controlFuzzySearch);
     usersView.render(model.state.search.results);
@@ -79,8 +80,30 @@ const controlEditUser = function () {
 
 const controlEditStructure = function () {
   const target = this;
-  const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.details-btn-structures'),
+    target
+  );
+  // console.log(targetIndex);
+  // console.log(model.state.structures.results[targetIndex]);
   editStructureView.changeInputs(model.state.structures.results[targetIndex]);
+  editStructureView.addHandlerUpdate(controlUpdateStructure);
+};
+
+const controlUpdateStructure = async function (oldStructure, newStructure) {
+  try {
+    // if (
+    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
+    //     .length === 0
+    // ) return;
+    // console.log(oldStructure.designation, newStructure.designation);
+    if (oldStructure.designation === newStructure.designation) return;
+    structuresView.renderSpinner('Modification de la structure...');
+    await model.updateStructure(oldStructure, newStructure);
+    controlLoadStructures();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const controlNumber = function () {
@@ -98,15 +121,17 @@ const controleSelectStructures = function () {
 };
 const controlLoadStructures = async function () {
   try {
-    console.log('LOADING STRUCTURES...');
-    StructuresView.renderSpinner();
+    structuresView.renderSpinner('Loading Structures');
     await model.loadStructures();
     console.log('LOADED !');
-    StructuresView.render(model.state.structures.results);
+    structuresView.render(model.state.structures.results);
     numberStructuresView.render(model.state.structures);
     numberStructuresView.updateMasterCheckbox();
     numberStructuresView.addHandlerNumber(controleSelectStructures);
     numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
+    editStructureView.addHandlerShowWindow();
+    editStructureView.addHandlerHideWindow();
+    editStructureView.addHandlerEdit(controlEditStructure);
   } catch (error) {
     console.error(error);
   }
@@ -116,7 +141,7 @@ const controlAddStructure = async function (newStructure) {
   try {
     await model.uploadStructure(newStructure);
     console.log(model.state.structures.results);
-    StructuresView.render(model.state.structures.results);
+    await controlLoadStructures();
     AddStructureView.clearForm();
     //Close Window
     // setTimeout(function () {
@@ -129,8 +154,9 @@ const controlAddStructure = async function (newStructure) {
 
 const controlShowUsersEmail = async function () {
   try {
-    const options = await model.getUsersEmail();
-    AddStructureView.addEmailsSelection(options);
+    const emails = await model.getResponsiblesEmail();
+    AddStructureView.addToSelection(emails, 'search-responsable');
+    editStructureView.addToSelection(emails, 'search-structure-edit');
   } catch (error) {
     console.error('🤔 ' + error);
   }
@@ -243,7 +269,7 @@ const controlDeleteUsers = async function () {
 };
 
 // deleteUserView.addDeleteController(controlDeleteUsers);
-const userViewAdders = function () {
+const userViewAdders = async function () {
   numberView.masterSelectionUpdater();
   numberView.selectionUpdater();
   numberView.addHandlerNumber(controlNumber);
@@ -258,8 +284,25 @@ const userViewAdders = function () {
   editUserView.addHandlerEdit(controlEditUser);
   numberView.updateMasterCheckbox();
 };
+// addUserView.addHandlerUpdateSelects(controlAddUserUpdateSelects);
+const controlAddUserUpdateSelects = async function () {
+  console.log('Updating AddUser inputs ...');
+  addUserView.renderSpinner('Veuillez attendre un moment...');
+  const roles = await model.getRoles();
+  addUserView.addToSelection(roles, 'role-options', 'role');
+  const structures = await model.getStructures();
+  addUserView.addToSelection(
+    structures,
+    'structure-add-user-options',
+    'structure'
+  );
+  addUserView.unrenderSpinner();
+};
+
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demostration)
 //TODO: TEMPORARY
+// await controlAddUserUpdateSelects();
+// addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
 controlSearchResults();
 userViewAdders();
 const controllers = [controlSearchResults, controlLoadStructures];

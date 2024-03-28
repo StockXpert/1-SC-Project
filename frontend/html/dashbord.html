@@ -1470,21 +1470,20 @@
           </div>
           <!-- for inputs -->
           <form class="add-user-inputs">
-            <div class="groupe-3-add hidden">
-              <div class="dropdown-structure">
+            <div class="groupe-3-add">
+              <div class="dropdown-structure hidden">
                 <select
-                  name="Consommateur"
+                  name="type"
                   id="consommateur-add-user-options"
                   structure-add-user-options
                   placeholder="Selectionnés Un Type"
-                  required
                 >
                   <option value="" selected="" disabled="">
                     Type du Consommateur
                   </option>
-                  <option value="ens">Enseignant</option>
-                  <option value="et">Etudiant</option>
-                  <option value="et">Autre</option>
+                  <option value="Enseignant">Enseignant</option>
+                  <option value="Etudiant">Etudiant</option>
+                  <option value="Autre">Autre</option>
                 </select>
               </div>
             </div>
@@ -1497,12 +1496,15 @@
                   required
                 >
                   <option value="" selected="" disabled="">Rôles</option>
-                  <option value="Directeur">Directeur</option>
-                  <option value="RD">Résponsable direct</option>
+                  <!--
                   <option value="Magasinier">Magasinier</option>
                   <option value="Service achat">Service Achat</option>
+                  <option value="Directeur">Directeur</option>
+                  <option value="Responsable directe">
+                    Résponsable direct
+                  </option>
                   <option value="Consommateur">Consommateur</option>
-                  <option value="Administrateur System">Administrateur</option>
+                  <option value="Administrateur System">Administrateur</option> -->
                 </select>
               </div>
               <div class="input-groupe-add">
@@ -1549,8 +1551,8 @@
                   required
                 >
                   <option value="" selected="" disabled="">Structures</option>
-                  <option value="cp">Cycle Préparatoire</option>
-                  <option value="cs">Cycle Supperieur</option>
+                  <!-- <option value="cp">Cycle Préparatoire</option>
+                  <option value="cs">Cycle Supperieur</option> -->
                 </select>
               </div>
 
@@ -1924,24 +1926,34 @@
 
             <div class="dropdown-responsables-edit">
               <div class="input-dropdown-edit">
-                <input
+                <!-- <input
                   type="text"
                   placeholder="Ajouter un Réspnsable"
                   class="search"
                   value="Mohammed reda Aced"
                   id="search-structure-edit"
-                />
+                /> -->
+                <select
+                  name="responsable"
+                  placeholder="selectionné l'email d'un Réspnsable"
+                  class="search"
+                  id="search-structure-edit"
+                  required
+                >
+                  <option disabled selected value="">
+                    selectionné l'email d'un Réspnsable
+                  </option>
                 <ion-icon
                   name="person-circle-outline"
                   class="input-icon"
                 ></ion-icon>
               </div>
-              <div class="dropdown-content hidden">
+              <!-- <div class="dropdown-content hidden">
                 <a href="#">Utilisateur 1</a>
                 <a href="#">Utilisateur 2</a>
                 <a href="#">Utilisateur 3</a>
-                <!-- Ajoutez d'autres utilisateurs ici -->
-              </div>
+                
+              </div> -->
             </div>
 
             <div class="create-btn">

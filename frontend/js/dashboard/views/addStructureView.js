@@ -47,14 +47,14 @@ class addStructureView extends View {
   clearForm() {
     this._parentElement.reset();
   }
-  addEmailsSelection(options) {
-    options.forEach(option => {
-      const optionElement = document.createElement('option');
-      optionElement.value = option.email;
-      optionElement.textContent = `${option.nom} ${option.prenom}`;
-      this._selectionUsers.appendChild(optionElement);
-    });
-  }
+  // addToSelection(options) {
+  //   options.forEach(option => {
+  //     const optionElement = document.createElement('option');
+  //     optionElement.value = option.email;
+  //     optionElement.textContent = `${option.nom} ${option.prenom}`;
+  //     this._selectionUsers.appendChild(optionElement);
+  //   });
+  // }
 
   _generateMarkup() {}
 }

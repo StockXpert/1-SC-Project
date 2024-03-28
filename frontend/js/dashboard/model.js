@@ -1,4 +1,5 @@
 // import { async } from 'regenerator-runtime';
+// import { config } from 'dotenv';
 import { API_URL, FUSE_OPTIONS, TIMEOUT_SEC } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -127,12 +128,41 @@ export const uploadUser = async function (data) {
     // date_naissance,
     // type,
     // structure,
+
+    // date
+    // :
+    // "2002-03-12"
+    // email
+    // :
+    // "pls@pepega.pogu"
+    // name
+    // :
+    // "DJEZIRI"
+    // password
+    // :
+    // "12345678"
+    // prenom
+    // :
+    // "Oussama"
+    // roles
+    // :
+    // "Consommateur"
+    // structures
+    // :
+    // "STR1"
+    // type
+    // :
+    // "Enseignant"
+    console.log(data);
     const postData = {
       email: data.email,
       role: data.roles,
       password: data.password,
-      prenom: data.name.split(' ')[1],
-      nom: data.name.split(' ')[0],
+      prenom: data.prenom,
+      nom: data.name,
+      date_naissance: data.date,
+      type: data.type,
+      structure: data.structures,
     };
     console.log(postData);
     const resp = await helpers.sendJSON(`${API_URL}/Users/Register`, postData);
@@ -178,22 +208,66 @@ export const uploadStructure = async function (newStructure) {
   }
 };
 
-export const getUsersEmail = async function () {
+export const updateStructure = async function (oldStructure, newStructure) {
+  try {
+    const uploadData = {
+      oldDesignation: oldStructure.designation,
+      newDesignation: newStructure.designation,
+    };
+    const data = await helpers.putJSON(
+      `${API_URL}/Users/updateStructure`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getResponsiblesEmail = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
     // console.log(data.response.map(user => user.email));
-    return data.response.map(user => {
-      return {
-        email: user.email,
-        nom: user.nom,
-        prenom: user.prenom,
-      };
-    });
+
+    return data.response
+      .filter(
+        user => user.role === 'Admin' || user.role === 'Administrateur System'
+      )
+      .map(user => {
+        return {
+          email: user.email,
+          nom: user.nom,
+          prenom: user.prenom,
+        };
+      });
   } catch (error) {
     console.error('Shit shit :' + error);
   }
 };
 
+export const getRoles = async function () {
+  try {
+    const roles = await helpers.getJSON(`${API_URL}/Users/showRoles`);
+    // console.log(roles.response);
+    const rolesArray = [];
+    roles.response.forEach(role => rolesArray.push(role.designation));
+    return rolesArray;
+  } catch (error) {
+    console.error('💥getRoles threw this error :' + error);
+  }
+};
+
+export const getStructures = async function () {
+  try {
+    const structures = await helpers.getJSON(`${API_URL}/Users/showStructure`);
+    // console.log(roles.response);
+    const structuresArray = [];
+    structures.response.forEach(str => structuresArray.push(str.designation));
+    return structuresArray;
+  } catch (error) {
+    console.error('💥getStructures threw this error :' + error);
+  }
+};
 //fuzzySearch is basically a searchFunction MAKER
 //the searchFunction it made is fuzzySearchBrowsersList
 // export const fuzzySearcher = helpers.fuzzySearch(
