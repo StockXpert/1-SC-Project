@@ -1895,24 +1895,34 @@
 
             <div class="dropdown-responsables-edit">
               <div class="input-dropdown-edit">
-                <input
+                <!-- <input
                   type="text"
                   placeholder="Ajouter un Réspnsable"
                   class="search"
                   value="Mohammed reda Aced"
                   id="search-structure-edit"
-                />
+                /> -->
+                <select
+                  name="responsable"
+                  placeholder="selectionné l'email d'un Réspnsable"
+                  class="search"
+                  id="search-structure-edit"
+                  required
+                >
+                  <option disabled selected value="">
+                    selectionné l'email d'un Réspnsable
+                  </option>
                 <ion-icon
                   name="person-circle-outline"
                   class="input-icon"
                 ></ion-icon>
               </div>
-              <div class="dropdown-content hidden">
+              <!-- <div class="dropdown-content hidden">
                 <a href="#">Utilisateur 1</a>
                 <a href="#">Utilisateur 2</a>
                 <a href="#">Utilisateur 3</a>
-                <!-- Ajoutez d'autres utilisateurs ici -->
-              </div>
+                
+              </div> -->
             </div>
 
             <div class="create-btn">
