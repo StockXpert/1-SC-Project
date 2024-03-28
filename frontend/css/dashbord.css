@@ -1024,12 +1024,37 @@ table tbody tr:last-child td {
   overflow: hidden;
 }
 .roles-cart-container {
-  padding: 0.4rem;
-  max-height: 70vh;
-  overflow-y: auto;
+  /* padding: 0.4rem; */
 }
+
+/* .container-checkboxes-permissions::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.text-permissions::-webkit-scrollbar-thumb,
+.container-checkboxes-permissions::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+} */
+.roles-cart::-webkit-scrollbar {
+  width: 5px;
+  /* height: 5px; */
+}
+.roles-cart::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
 .roles-cart {
-  display: flex;
+  /* display: flex; */
+  max-height: 70vh;
+  overflow-y: scroll;
+  display: grid;
+  /* scrollbar-color: var(--color-dark) var(--color-background);
+  scrollbar-width: thin; */
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
   /* gap: 10rem; */
   justify-content: space-between;
   background-color: transparent;

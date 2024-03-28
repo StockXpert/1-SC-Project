@@ -1,15 +1,7 @@
-import View from './view.js';
-import * as helpers from '../helpers.js';
-export class UsersView extends View {
-  _parentElement = document.querySelector('.results');
-  _trueParentElement = document.querySelector('.table-container');
+import { UsersView } from '../usersView.js';
+import View from '../view.js';
 
-  _generateMarkup() {
-    //TODO: Refactoring
-    // return this._data.map(result => previewView.render(result, false)).join('');
-    // console.log(`${this._data.map(this._generateMarkupPreview).join('')}`);
-    return this._data.map(this._generateMarkupPreview).join('');
-  }
+class RolesView extends UsersView {
   _generateMarkupPreview(result) {
     // TODO: console.log(result);
     // console.log(result.active);
@@ -41,4 +33,4 @@ export class UsersView extends View {
   `;
   }
 }
-export default new UsersView();
+export default new RolesView();
