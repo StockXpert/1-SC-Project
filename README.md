@@ -31,7 +31,11 @@ or "response": "Internal server error" status(500)
 
 # forgot password
 
+# forgot password
+
 localhost:3000/Users/forgotPassword
+
+## input
 
 ## input
 

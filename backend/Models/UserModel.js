@@ -1,9 +1,9 @@
 const mysql=require('mysql');
 const connectionConfig = {
-  host: 'sql11.freesqldatabase.com',
-  user: 'sql11693152',
-  password: 'GujpSNqWUm',
-  database: 'sql11693152'
+  host: 'bibznsnq8nf1q3j7r74o-mysql.services.clever-cloud.com',
+  user: 'ucvk6cpbqavmyqnb',
+  password: 'w7Xaq1AwW42V3jvOiTgb',
+  database: 'bibznsnq8nf1q3j7r74o'
 };
 function getRolePermissons(role)
 {
