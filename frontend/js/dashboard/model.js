@@ -166,6 +166,22 @@ export const uploadStructure = async function (newStructure) {
   }
 };
 
+export const updateStructure = async function (oldStructure, newStructure) {
+  try {
+    const uploadData = {
+      oldDesignation: oldStructure.designation,
+      newDesignation: newStructure.designation,
+    };
+    const data = await helpers.putJSON(
+      `${API_URL}/Users/updateStructure`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getUsersEmail = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
