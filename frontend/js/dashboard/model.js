@@ -86,7 +86,7 @@ export const loadSearchResults = async function (query) {
   try {
     // console.log('loading search results...');
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    // console.log(data);
+    console.log(data);
     // console.log('loading search results...');
     state.search.results = data.response.map(usr => {
       // usr:

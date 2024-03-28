@@ -11,6 +11,7 @@ export class DeleteUserView extends AddUserView {
     super();
     // this._confirm = document.querySelector('.supp-user-confirmer');
     // console.log(this._confirm);
+    console.log(document.querySelector('.supp-user-annuler'));
     this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
     this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
     this._overlay.addEventListener('click', this.toggleWindow.bind(this));

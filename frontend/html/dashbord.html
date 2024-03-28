@@ -1665,7 +1665,7 @@
       </div>
       <!-- fin de section  ajouter une  structure -->
       <!-- debut de section pour ajouter un role -->
-      <div class="add-role-container">
+      <div class="add-role-container hidden">
         <div class="add-role-cart">
           <button class="close-btn close-btn-add-role">
             <span class="material-icons-sharp">close</span>
@@ -1696,7 +1696,7 @@
       <!-- fin de section pour ajouter un role -->
       <!-- debut popup pour modifier user  -->
       <div class="edit-user-container hidden">
-        <form class="edit-user-cart">
+        <div class="edit-user-cart">
           <div class="blue-backgroud"></div>
           <div class="heading-edit-user">
             <button class="close-btn-edit">
@@ -1707,7 +1707,7 @@
             <!-- <p class="role-tag">CONSOMMATEUR</p> -->
           </div>
           <!-- for inputs -->
-          <div class="inputs-edit">
+          <form class="inputs-edit">
             <div class="groupe-1">
               <div class="main-input-groupe">
                 <div class="input-text">
@@ -1892,12 +1892,12 @@
                 </div>
               </div>
             </div>
-          </div>
+          </form>
           <div class="edit-btns">
             <button class="edit-btn-decline">Annuler</button>
             <button class="edit-btn-save">Sauvegarder</button>
           </div>
-        </form>
+        </div>
       </div>
       <!-- fin popup pour modifier structure  -->
       <!-- debut popup pour modifier structure  -->
@@ -1943,19 +1943,11 @@
                   <option disabled selected value="">
                     selectionné l'email d'un Réspnsable
                   </option>
-                <ion-icon
-                  name="person-circle-outline"
-                  class="input-icon"
-                ></ion-icon>
+                </select>
+                <ion-icon name="person-circle-outline" class="input-icon">
+                </ion-icon>
               </div>
-              <!-- <div class="dropdown-content hidden">
-                <a href="#">Utilisateur 1</a>
-                <a href="#">Utilisateur 2</a>
-                <a href="#">Utilisateur 3</a>
-                
-              </div> -->
             </div>
-
             <div class="create-btn">
               <button>Modifier la Structure</button>
             </div>
@@ -1995,10 +1987,9 @@
 
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
-      <div class="overlay overlayEdit"></div>
+      <div class="overlay overlayEdit hidden"></div>
       <div class="overlay overlayAddStr hidden"></div>
       <div class="overlay overlayDel hidden"></div>
-      <div class="overlay overlayEditStr hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->
