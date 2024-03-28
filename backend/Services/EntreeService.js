@@ -1,7 +1,9 @@
+const { reject } = require('async');
 const googleMiddleware= require('../Middlewares/googleMiddleware');
-const { insertLink } = require('../Models/EntreeModel');
+const EntreeModel= require('../Models/EntreeModel');
 const nomencaltureModel=require('../Models/NomenclatureModel')
 const numberWord=require('french-numbers-to-words');
+const { promises } = require('nodemailer/lib/xoauth2');
 function getDate()
 {
     const dateActuelle = new Date();
@@ -24,12 +26,12 @@ function TVA(montantHT,tva)
 {
     return Math.floor((montantHT*tva)/100)
 }
-async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tva)
+async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tva,date)
 {
     return new Promise(async(resolve,reject)=>{
         await googleMiddleware.updateCel('C1',`République Algerienne démoctatique et populaire
         Bon de commande
-        N° ${num_commande} ${getDate()}`,Id);
+        N° ${num_commande} ${date}`,Id);
         nomencaltureModel.getFournisseur(fourn).then(async(fournisseur)=>{
             await googleMiddleware.updateCel('C11',"Adresse "+fournisseur.adresse,Id)
             await googleMiddleware.updateCel('C8',"Nom et prénom "+fournisseur.raison_sociale,Id)
@@ -70,10 +72,113 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tv
             await googleMiddleware.updateCel(range,false,Id);
             await googleMiddleware.deleteRows(22,i-1,Id);
             const link=`BonCommande/commande${num_commande}.pdf`
-            insertLink(link,num_commande).then(()=>{
+            EntreeModel.insertLink(link,num_commande).then(()=>{
                 resolve(link)
             }).catch(()=>{reject("err")})
         }).catch((err)=>{reject(err)})
     })
 }
-module.exports={getDate,genererBondeCommande,montantHT,TVA}
+function changeQuantite(numCommande,produits)
+{
+    return new Promise(async(resolve,reject)=>{
+        let response
+        for(let produit of produits)
+        {
+          await nomencaltureModel.getProductId(produit.designation).then(async(idProduit)=>{
+            response =await EntreeModel.updateQuantiteCommande(produit.quantite,numCommande,idProduit)
+            if(response!='success') reject('inetnal error1');
+            response =await EntreeModel.updateQuantite(produit.quantite,idProduit);
+            if(response!='success') reject('inetnal error2');
+          }).catch((err)=>{console.log(err); reject(err)})
+        }
+        resolve('success')
+    })
+}
+function uploadvalidity(numCommande)
+{
+    return new Promise((resolve,reject)=>{
+        EntreeModel.checkValidity(numCommande).then((validity)=>{
+            console.log({validity})
+            if(validity==='valid')
+               EntreeModel.changeStatus('delivré',numCommande).then(()=>{resolve('quantite updated')}).catch(()=>{reject('internal error4')})
+            else 
+            EntreeModel.changeStatus('en cours',numCommande).then(()=>{resolve('quantite updated')}).catch((err)=>{console.log(err);reject(err)})   
+        }).catch((err)=>{
+            console.log(err)
+            reject(err)})
+    })
+}
+function changeBonCommande(objet,fournisseur,deletedProducts,addedProducts,date,numCommande)
+{
+   return new Promise(async (resolve,reject)=>{
+    let response;
+    if(objet||fournisseur||date)
+    {
+     EntreeModel.updateBonCommande(fournisseur,objet,date,numCommande).then(async()=>{
+         if(addedProducts)
+         {
+           response=await EntreeModel.insertCommander(numCommande,addedProducts);
+           if(response!='success') reject('internal error')
+         }
+        if(deletedProducts)
+        {
+            response=await EntreeModel.deleteCommander(numCommande,deletedProducts);
+           if(response!='success') reject('internal error')
+        }
+        resolve('bon commande updated')
+     }).catch(()=>{
+        reject('internal error'); 
+     })
+    }
+    else
+    {
+        if(addedProducts)
+         {
+           response=await EntreeModel.insertCommander(numCommande,addedProducts);
+           if(response!='success') reject('internal error')
+         }
+        if(deletedProducts)
+        {
+            response=await EntreeModel.deleteCommander(numCommande,deletedProducts);
+           if(response!='success') reject('internal error')
+        }
+        resolve('bon commande updated')
+    }
+   })
+}
+function createReception(numCommande,produits,numFacture,numLivraison,bonLivraisonLink,factureLink,dateReception)
+{
+  return new Promise ((resolve,reject)=>{
+    EntreeModel.insertBonReception(numCommande, dateReception,bonLivraisonLink,factureLink,numFacture,numLivraison)
+    .then((numReception)=>{
+        EntreeModel.insertLivre(numReception,produits).then(()=>{
+            EntreeModel.getCommande(numCommande).then((commande)=>{
+                genererBonReception(produits,numCommande,commande.fournisseur,commande.date_commande,
+                    dateReception,numReception,'1CkIm8C3xJloKITIqfm-LsfqMpiZSSrGk1TVG6tzI1_w').then(()=>{
+                        resolve('bon reception created');
+                    }).catch(()=>{reject('internal error')})
+            }).catch(()=>{reject('internal error')})
+        }).catch(()=>{reject('internal error')})
+    }).catch(()=>{reject('internal error')})
+  })
+}
+async function genererBonReception(produits,numCommande,fournisseur,dateCommande,dateReception,numReception,Id)
+{
+    return new Promise(async(resolve,reject)=>{
+    await googleMiddleware.updateCel('A6',`Fournisseur: ${fournisseur}`,Id)
+    await googleMiddleware.updateCel('C4',`N° ${numReception} Date ${dateReception}`,Id)
+    await googleMiddleware.updateCel('A7',`N° du Bon de commande : ${numCommande}`,Id)
+    await googleMiddleware.updateCel('A7',`Date du Bon de Commande : ${dateCommande}`,Id)
+    let i = 11;
+    for (const produit of produits) {
+        await googleMiddleware.addRow(i, produit,Id);
+        i++;
+    }
+    await googleMiddleware.deleteRows(11,i-1,Id);
+    const link=`BonReception/reception${numReception}.pdf`
+    EntreeModel.insertLink(link,numReception).then(()=>{
+                resolve(link)
+     }).catch(()=>{reject("err")})
+    })
+}
+module.exports={getDate,genererBondeCommande,montantHT,TVA,changeQuantite,changeBonCommande,uploadvalidity,createReception}

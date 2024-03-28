@@ -1,9 +1,9 @@
 const mysql=require('mysql');
 const connectionConfig = {
-  host: 'sql11.freesqldatabase.com',
-  user: 'sql11693152',
-  password: 'GujpSNqWUm',
-  database: 'sql11693152'
+  host: 'bibznsnq8nf1q3j7r74o-mysql.services.clever-cloud.com',
+  user: 'ucvk6cpbqavmyqnb',
+  password: 'w7Xaq1AwW42V3jvOiTgb',
+  database: 'bibznsnq8nf1q3j7r74o'
 };
 function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, nis, raisonSocial) {
   return new Promise((resolve, reject) => {
@@ -602,7 +602,8 @@ function getProducts()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'select designation,quantite,description from produit ';
+    const query = `select p.designation,p.quantite,p.description,a.designation as article from produit p , contient c ,article a 
+                   where p.id_produit=c.id_produit and c.id_article=a.id_article`;
     
   
     connection.connect((err) => {
