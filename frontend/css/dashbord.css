@@ -1049,13 +1049,14 @@ table tbody tr:last-child td {
 .roles-cart {
   position: relative;
   /* display: flex; */
+  width: 81.5vw;
   max-height: 70vh;
   overflow-y: scroll;
   display: grid;
   /* scrollbar-color: var(--color-dark) var(--color-background);
   scrollbar-width: thin; */
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
   /* gap: 10rem; */
   justify-content: space-between;
   background-color: transparent;
@@ -1063,7 +1064,7 @@ table tbody tr:last-child td {
   /* z-index: 1000; */
 }
 .role {
-  width: 25rem;
+  width: 23rem;
   height: 20rem;
   background-color: white;
   display: flex;
