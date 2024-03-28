@@ -154,8 +154,9 @@ const controlAddStructure = async function (newStructure) {
 
 const controlShowUsersEmail = async function () {
   try {
-    const emails = await model.getUsersEmail();
+    const emails = await model.getResponsiblesEmail();
     AddStructureView.addToSelection(emails, 'search-responsable');
+    editStructureView.addToSelection(emails, 'search-structure-edit');
   } catch (error) {
     console.error('🤔 ' + error);
   }

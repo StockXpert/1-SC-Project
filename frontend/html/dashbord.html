@@ -1664,6 +1664,36 @@
         </div>
       </div>
       <!-- fin de section  ajouter une  structure -->
+      <!-- debut de section pour ajouter un role -->
+      <div class="add-role-container">
+        <div class="add-role-cart">
+          <button class="close-btn close-btn-add-role">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-role">
+            <h1 class="heading-primary-add-role">Ajouter un Rôle</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-role-inputs">
+            <div class="input-groupe-role">
+              <input
+                name="name-role"
+                type="text"
+                class="input-add-role"
+                id="name-role"
+                placeholder="Nom du Rôle"
+              />
+              <span class="material-icons-sharp input-icon"> work </span>
+            </div>
+
+            <div class="create-btn-role">
+              <button>Créer le Rôle</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin de section pour ajouter un role -->
       <!-- debut popup pour modifier user  -->
       <div class="edit-user-container hidden">
         <form class="edit-user-cart">
@@ -1870,6 +1900,7 @@
         </form>
       </div>
       <!-- fin popup pour modifier structure  -->
+      <!-- debut popup pour modifier structure  -->
       <div class="edit-structure-container hidden">
         <div class="edit-structure-cart">
           <button class="close-btn">
@@ -1895,24 +1926,34 @@
 
             <div class="dropdown-responsables-edit">
               <div class="input-dropdown-edit">
-                <input
+                <!-- <input
                   type="text"
                   placeholder="Ajouter un Réspnsable"
                   class="search"
                   value="Mohammed reda Aced"
                   id="search-structure-edit"
-                />
+                /> -->
+                <select
+                  name="responsable"
+                  placeholder="selectionné l'email d'un Réspnsable"
+                  class="search"
+                  id="search-structure-edit"
+                  required
+                >
+                  <option disabled selected value="">
+                    selectionné l'email d'un Réspnsable
+                  </option>
                 <ion-icon
                   name="person-circle-outline"
                   class="input-icon"
                 ></ion-icon>
               </div>
-              <div class="dropdown-content hidden">
+              <!-- <div class="dropdown-content hidden">
                 <a href="#">Utilisateur 1</a>
                 <a href="#">Utilisateur 2</a>
                 <a href="#">Utilisateur 3</a>
-                <!-- Ajoutez d'autres utilisateurs ici -->
-              </div>
+                
+              </div> -->
             </div>
 
             <div class="create-btn">
@@ -1921,7 +1962,7 @@
           </form>
         </div>
       </div>
-      <!-- debut popup pour modifier structure  -->
+
       <!-- fin popup pour modifier user  -->
       <!-- debut section pour supprimer user etes vous sure de vouloir supprimer -->
       <div class="container-supp-user hidden">
@@ -1954,7 +1995,7 @@
 
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
-      <div class="overlay overlayEdit hidden"></div>
+      <div class="overlay overlayEdit"></div>
       <div class="overlay overlayAddStr hidden"></div>
       <div class="overlay overlayDel hidden"></div>
       <div class="overlay overlayEditStr hidden"></div>

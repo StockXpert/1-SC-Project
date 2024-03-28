@@ -224,17 +224,22 @@ export const updateStructure = async function (oldStructure, newStructure) {
   }
 };
 
-export const getUsersEmail = async function () {
+export const getResponsiblesEmail = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
     // console.log(data.response.map(user => user.email));
-    return data.response.map(user => {
-      return {
-        email: user.email,
-        nom: user.nom,
-        prenom: user.prenom,
-      };
-    });
+
+    return data.response
+      .filter(
+        user => user.role === 'Admin' || user.role === 'Administrateur System'
+      )
+      .map(user => {
+        return {
+          email: user.email,
+          nom: user.nom,
+          prenom: user.prenom,
+        };
+      });
   } catch (error) {
     console.error('Shit shit :' + error);
   }
