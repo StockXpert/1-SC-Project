@@ -31,6 +31,11 @@
   box-sizing: border-box;
 }
 
+/* *:focus {
+  outline: 3px solid var(--color-primary);
+  border: 2px solid var(--color-primary);
+} */
+
 html {
   font-size: 14px;
 }
@@ -1004,7 +1009,7 @@ table tbody tr:last-child td {
   width: 53rem;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: column !important;
   gap: 2rem;
   align-items: center;
   padding: 0.6rem;
@@ -1277,6 +1282,7 @@ table tbody tr:last-child td {
 .edit-btns button,
 .edit-btn-decline,
 .edit-btn-save {
+  cursor: pointer;
   width: 10rem;
   height: 2.8rem;
   font-size: 1.1rem;

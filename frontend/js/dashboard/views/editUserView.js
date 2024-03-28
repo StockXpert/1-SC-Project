@@ -11,7 +11,7 @@ export class EditUserView extends AddUserView {
   _btnOpen;
   _btnClose;
   _parentElement = document.querySelector('.edit-user-cart');
-  _form = document.querySelector('.inputs-edit');
+  _form = document.querySelector('.edit-user-cart');
   currTarget;
   // }
 

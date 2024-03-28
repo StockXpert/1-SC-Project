@@ -169,7 +169,7 @@ const controlFilterring = function (filterValues, isFilterring) {
   controlFuzzySearch(filterValues[0], false, true);
   const filteredResults = controlFuzzySearch(filterValues[1], true, true);
   //updating filteredResults
-  console.log(filteredResults);
+  // console.log(filteredResults);
   model.state.search.filteredResults = filteredResults;
 };
 
@@ -194,7 +194,7 @@ const controlFuzzySearch = function (
   }
   //else (isFiltering)
   const filteredList = fuse.search(searchKeyword);
-  console.log(filteredList);
+  // console.log(filteredList);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }

@@ -93,6 +93,7 @@ export class AddUserView extends View {
       let inputs = Array.from(form.getElementsByTagName('input'));
       const select = Array.from(form.getElementsByTagName('select'));
       inputs = inputs.concat(select);
+      console.log(inputs);
 
       const allFilled = inputs.every(input => {
         const isRequired = input.required;

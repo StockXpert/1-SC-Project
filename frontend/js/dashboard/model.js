@@ -29,7 +29,7 @@ export const state = {
 export const updateFilters = function (filterValues, isFilterring) {
   state.search.filters.isFilterring = isFilterring;
   state.search.filters.filterValues = filterValues;
-  console.log(filterValues, isFilterring);
+  // console.log(filterValues, isFilterring);
 };
 
 export const updateUser = async function (newUser) {

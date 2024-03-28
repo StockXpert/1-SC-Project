@@ -3,7 +3,7 @@ import View from './view.js';
 
 class EditStructureView extends View {
   _window = document.querySelector('.edit-structure-container');
-  _overlay = document.querySelector('.overlayEdit');
+  _overlay = document.querySelector('.overlayEditStr');
   _btnOpen = document.querySelectorAll('.details-btn-structures');
   _parentElement = document.querySelector('.edit-structure-cart');
   _form = document.querySelector('.edit-structure-inputs');
