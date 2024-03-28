@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const userService = require('../Services/UserService');
 const userModel = require('../Models/UserModel');
 const nodeMailer = require('nodemailer');
-const { forEach } = require('async');
 const transporter = nodeMailer.createTransport({
   service: 'gmail',
   auth: {

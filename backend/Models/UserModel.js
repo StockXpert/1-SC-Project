@@ -754,7 +754,8 @@ function getRoles()
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query ='select designation from role';
+    const query =`select r.designation as role ,d.designation as droit 
+    from role r,role_droit p ,droit_acces d where d.id_droit=p.id_droit and p.id_role=r.id_role`;
     connection.connect((err) => {
       if (err) {
         console.error('Erreur de connexion :', err);
@@ -768,7 +769,18 @@ function getRoles()
           reject("request error");
           return;
         }
-        resolve(results);
+        const groupedByRole = results.reduce((acc, { role, droit }) => {
+          if (!acc[role]) {
+            acc[role] = [];
+          }
+          acc[role].push(droit);
+          return acc;
+        }, {});
+
+        // Transformer l'objet regroupé en tableau d'objets
+        const groupedResults = Object.entries(groupedByRole).map(([role, droits]) => ({ role, droits }));
+
+        resolve(groupedResults);
       });
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });}) 
