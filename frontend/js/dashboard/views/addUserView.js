@@ -32,9 +32,13 @@ export class AddUserView extends View {
   };
   //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
   addHandlerShowWindow(OpClassName, windowClassName) {
+    // console.log(this._btnOpen);
     this._window = document.querySelector(windowClassName);
     this._btnOpen = document.querySelector(OpClassName);
     this._btnOpen.addEventListener('click', this._boundToggleWindow);
+    console.log('adding handler open');
+    console.log(document.querySelector(windowClassName));
+    console.log(document.querySelector(OpClassName));
   }
   addHandlerOpenWindowAndUpdateSelect(handler) {
     this._btnOpen.addEventListener('click', handler);

@@ -45,6 +45,7 @@ class SideView extends View {
         );
         targeto.classList.add('active');
         console.log(helpers.findNodeIndex(this.btns, targeto));
+        console.log(controllers);
         controllers[helpers.findNodeIndex(this.btns, targeto)]();
       })
     );

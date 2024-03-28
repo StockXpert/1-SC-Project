@@ -15,6 +15,8 @@ import * as helpers from './helpers.js';
 import numberStructuresView from './views/numberStructuresView.js';
 import editStructureView from './views/editStructureView.js';
 import structuresView from './views/structuresView.js';
+import rolesView from './views/roles/rolesView.js';
+import addRoleView from './views/roles/addRoleView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -299,13 +301,44 @@ const controlAddUserUpdateSelects = async function () {
   addUserView.unrenderSpinner();
 };
 
+const controlLoadRoles = async function () {
+  rolesView.renderSpinner('');
+  const roles = await model.loadRoles();
+  rolesView.render(roles);
+  addRoleView.addHandlerShowWindow('#add-btn-role', '.add-role-container');
+  addRoleView.addHandlerHideWindow(
+    '.close-btn-add-role',
+    '.add-role-container'
+  );
+};
+
+// const controlSearchResults = async function () {
+//   try {
+//     usersView.renderSpinner('');
+//     await model.loadSearchResults();
+//     await controlAddUserUpdateSelects();
+//     // D Y N A M I C   S E A R C H   A C T I V A T I O N :
+//     searchView.addHandlerSearchV2(controlFuzzySearch);
+//     usersView.render(model.state.search.results);
+//     userViewAdders();
+//     return;
+//   } catch (err) {
+//     console.error(err);
+//     //TODO: throw err or treat it with a special func
+//   }
+// };
+
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demostration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
 // addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
 controlSearchResults();
 userViewAdders();
-const controllers = [controlSearchResults, controlLoadStructures];
+const controllers = [
+  controlSearchResults,
+  controlLoadStructures,
+  controlLoadRoles,
+];
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
 searchView.addHandlerSearch(controlSearchResults);

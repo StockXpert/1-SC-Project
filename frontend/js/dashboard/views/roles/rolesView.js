@@ -2,34 +2,29 @@ import { UsersView } from '../usersView.js';
 import View from '../view.js';
 
 class RolesView extends UsersView {
+  _parentElement = document.querySelector('.roles-cart');
+  // _trueParentElement = document.getElementById('main-table-roles');
+
   _generateMarkupPreview(result) {
     // TODO: console.log(result);
     // console.log(result.active);
     // const id = window.location.hash.slice(1);
     return `
-    <tr>
-    <td>
-      <div class="checkbox-colomn">
-        <input type="checkbox" id="checkbox-table">
-        <p class="colomn-tags-name">${result.nom + ' ' + result.prenom} </p>
+    <div class="role">
+      <div class="blue-backgroud-role"></div>
+      <div class="heading-role-user">
+        <h1 class="heading-primary-roles">${result.role}</h1>
       </div>
-    </td>
-    <td>${result.email}</td>
-    <td class="table-status ${
-      result.active === 'Activé' ? 'active-status' : 'inactif-status'
-    }">${result.active}</td>
-    <td><p class="admin-role">${
-      result.role ? helpers.roleTranslator(result.role) : 'Aucun'
-    }</p></td>
-    <td class="table-structure">${result.structure}</td>
-    <td>
-      <button class="details-btn">
-        <span class="material-icons-sharp info-icon">
-          edit
-        </span>
-      </button>
-    </td>
-  </tr>
+      <div class="text-permissions">
+          ${result.droits
+            .map(
+              droit => `
+            <p>${droit}</p>
+            `
+            )
+            .join('')}
+      </div>
+    </div>
   `;
   }
 }

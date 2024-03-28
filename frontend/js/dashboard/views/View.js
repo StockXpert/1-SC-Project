@@ -65,6 +65,7 @@ export default class View {
     // this._clear();
     // this._trueClear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    // this._trueParentElement?.insertAdjacentHTML('afterbegin', markup);
   };
   unrenderSpinner = function () {
     this._parentElement.querySelector('.spinner-parent').remove();

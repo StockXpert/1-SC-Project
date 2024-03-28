@@ -81,7 +81,6 @@ export const updateUser = async function (newUser) {
     });
   }
 };
-
 export const loadSearchResults = async function (query) {
   try {
     // console.log('loading search results...');
@@ -340,3 +339,13 @@ export const getStructures = async function () {
 //   },
 // ];
 export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
+
+export const loadRoles = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Users/showRoles`);
+    console.log(data);
+    return data.response;
+  } catch (err) {
+    console.error(`💢 loadRoles got this error:, ${err}`);
+  }
+};

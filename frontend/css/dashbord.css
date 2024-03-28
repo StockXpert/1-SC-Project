@@ -1047,6 +1047,7 @@ table tbody tr:last-child td {
 }
 
 .roles-cart {
+  position: relative;
   /* display: flex; */
   max-height: 70vh;
   overflow-y: scroll;
@@ -1059,10 +1060,10 @@ table tbody tr:last-child td {
   justify-content: space-between;
   background-color: transparent;
   padding: 1rem;
-  z-index: 1000;
+  /* z-index: 1000; */
 }
 .role {
-  width: 20rem;
+  width: 25rem;
   height: 20rem;
   background-color: white;
   display: flex;
@@ -1076,10 +1077,10 @@ table tbody tr:last-child td {
   overflow: hidden;
   border-radius: 15px;
 
-  z-index: 1000;
+  /* z-index: 1000; */
 }
 .blue-backgroud-role {
-  width: 20rem;
+  width: 25rem;
   height: 7.5rem;
   position: absolute;
   background: linear-gradient(
@@ -1668,6 +1669,7 @@ a.password-icon:active {
   animation: spin 0.7s infinite linear;
 }
 .spinner-parent {
+  z-index: 99999;
   position: absolute;
   min-height: 55.6vh;
   width: 100%;
