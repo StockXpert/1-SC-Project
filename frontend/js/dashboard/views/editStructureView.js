@@ -4,68 +4,79 @@ import View from './view.js';
 class EditStructureView extends View {
   _window = document.querySelector('.edit-structure-container');
   _overlay = document.querySelector('.overlayEdit');
-  _btnOpen = document
-    .querySelector('.table-structures')
-    .querySelectorAll('.details-btn-structures');
+  _btnOpen = document.querySelectorAll('.details-btn-structures');
   _parentElement = document.querySelector('.edit-structure-cart');
   _form = document.querySelector('.edit-structure-inputs');
   _btnClose = this._parentElement.querySelector('.close-btn');
   currTarget;
+  currStructure;
 
   constructor() {
     super();
-    this.addHandlerShowWindow();
+  }
+
+  toggleWindow() {
+    this._overlay.classList.toggle('hidden');
+    this._window.classList.toggle('hidden');
   }
 
   addHandlerShowWindow() {
-    // const addEventListenerCallback = e => {
-    //   this.toggleWindow.bind(this)();
-    //   console.log(e.target);
-    //   this.currTarget = e.target;
-    // };
-    console.log(this._window);
-
-    const btnOpenArray = Array.from(this._btnOpen);
-    console.log(
-      '🚀 ~ EditStructureView ~ addHandlerShowWindow ~ btnOpenArray:',
-      btnOpenArray
+    const btnOpenArray = Array.from(
+      document.querySelectorAll('.details-btn-structures')
     );
     btnOpenArray.forEach(btn => {
-      console.log(btn);
       btn.addEventListener('click', e => {
         e.preventDefault();
-        console.log(this);
-        console.log(e);
+        this.toggleWindow();
+        this.currTarget = e.target;
+        console.log(this.currTarget);
       });
-      // btn.addEventListener('click', e => {
-      //   e.preventDefault();
-      //   console.log(e.target);
-      // });
+    });
+  }
+
+  addHandlerHideWindow() {
+    this._btnClose.addEventListener('click', e => {
+      e.preventDefault();
+      this.toggleWindow();
     });
   }
 
   addHandlerEdit(controller) {
-    this._btnOpen = document.querySelectorAll('.details-btn-structures');
-    const btnOpenArray = Array.from(this._btnOpen);
+    const btnOpenArray = Array.from(
+      document.querySelectorAll('.details-btn-structures')
+    );
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', controller);
     });
+
+    this._form.addEventListener('submit', e => {});
   }
 
-  changeInputs(NewInputValuesObj) {
+  changeInputs(inputValuesObj) {
+    this.currStructure = inputValuesObj;
     // Get the form element
-    const formElement = this._form;
+    const formElement = document.querySelector('.edit-structure-inputs');
     // Create a new FormData object from the form
     const formData = new FormData(formElement);
-    console.log(formData);
-    for (const key in NewInputValuesObj) {
-      if (NewInputValuesObj.hasOwnProperty(key)) {
-        const input = formElement.elements[key];
-        if (input) {
-          input.value = NewInputValuesObj[key];
-        }
-      }
-    }
+    // console.log('🚀 ~ EditStructureView ~ changeInputs ~ formData:', formData);
+    formElement.querySelector('#name-structure-edit').value =
+      inputValuesObj.designation;
+    formElement.querySelector('#search-structure-edit').value =
+      inputValuesObj.responsible;
+  }
+
+  addHandlerUpdate(controller) {
+    const formElement = document.querySelector('.edit-structure-inputs');
+
+    this._form.addEventListener('submit', e => {
+      e.preventDefault();
+      const newStructure = {
+        designation: formElement.querySelector('#name-structure-edit').value,
+      };
+      console.log(this.currStructure, newStructure);
+      controller(this.currStructure, newStructure);
+      this.toggleWindow();
+    });
   }
 }
 
