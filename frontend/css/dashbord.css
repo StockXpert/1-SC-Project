@@ -1000,7 +1000,8 @@ table tbody tr:last-child td {
 }
 /* ------------- popup edit user --------------- */
 .edit-user-container,
-.edit-structure-container {
+.edit-structure-container,
+.add-bdc-container {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -1238,6 +1239,12 @@ table tbody tr:last-child td {
   justify-content: center;
   align-content: center;
 }
+.groupe-4 {
+  display: grid;
+  grid-column: 1/-1;
+  justify-content: center;
+  align-content: center;
+}
 #pick-role-options {
   width: 26vw;
   height: 2.5rem;
@@ -1259,7 +1266,8 @@ table tbody tr:last-child td {
 }
 #role-options,
 #structure-add-user-options,
-#consommateur-add-user-options {
+#consommateur-add-user-options,
+#consommateur-edit-user-options {
   width: 20rem;
   height: 2.7rem;
   padding: 0.2rem;

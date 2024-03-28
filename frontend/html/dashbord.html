@@ -1691,7 +1691,7 @@
       </div>
       <!-- fin de section pour ajouter un role -->
       <!-- debut popup pour modifier user  -->
-      <div class="edit-user-container hidden">
+      <div class="edit-user-container">
         <div class="edit-user-cart">
           <div class="blue-backgroud"></div>
           <div class="heading-edit-user">
@@ -1704,6 +1704,22 @@
           </div>
           <!-- for inputs -->
           <form class="inputs-edit">
+            <div class="groupe-4">
+              <div class="dropdown-consumer hidden">
+                <select
+                  name="type"
+                  id="consommateur-add-user-options"
+                  placeholder="Selectionnés Un Type"
+                >
+                  <option value="" selected="" disabled="">
+                    Type du Consommateur
+                  </option>
+                  <option value="Enseignant">Enseignant</option>
+                  <option value="Etudiant">Etudiant</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+            </div>
             <div class="groupe-1">
               <div class="main-input-groupe">
                 <div class="input-text">
@@ -1980,9 +1996,15 @@
       </div>
       <!-- fin section pour supprimer structure  -->
 
+      <!-- debut section pour ajouter un bdc  -->
+      <div class="add-bdc-container hidden">
+        <div class="edit-user-cart"></div>
+      </div>
+      <!-- fin section pour ajouter un bdc  -->
+
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
-      <div class="overlay overlayEdit hidden"></div>
+      <div class="overlay overlayEdit"></div>
       <div class="overlay overlayAddStr hidden"></div>
       <div class="overlay overlayDel hidden"></div>
       <div class="overlay overlayAddRole hidden"></div>
