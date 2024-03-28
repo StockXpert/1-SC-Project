@@ -9,9 +9,6 @@ export class DeleteUserView extends AddUserView {
 
   constructor() {
     super();
-    // this._confirm = document.querySelector('.supp-user-confirmer');
-    // console.log(this._confirm);
-    console.log(document.querySelector('.supp-user-annuler'));
     this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
     this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
     this._overlay.addEventListener('click', this.toggleWindow.bind(this));
@@ -19,14 +16,9 @@ export class DeleteUserView extends AddUserView {
 
   addDeleteController(ctrler) {
     const closeBtn = this._btnClose;
-    console.log(this._confirm);
     this._confirm.addEventListener('click', async function (e) {
-      // e.preventDefault();
-      console.log(e.target);
-      console.log('CONFIRM !');
       closeBtn.click();
       await ctrler();
-      // this.toggleWindow();
     });
   }
 }

@@ -43,6 +43,7 @@ export default class View {
 
   render(data, render = true) {
     //TODO: RenderError()
+    console.log('rendering', this._data);
     // console.log(data);
     // if (!data || (Array.isArray(data) && data.length === 0))
     //   return console.log('something went wrong while trying to render this...');
@@ -56,16 +57,14 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
   renderSpinner = function (message = '') {
+    console.log('rendering spinner');
     const markup = `
     <div class="spinner-parent">
     <b>${!message ? '' : `<div class="spinner"></div>`} ${message}</b>
     ${message ? '' : `<div class="spinner"></div>`}
     </div>
   `;
-    // this._clear();
-    // this._trueClear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
-    // this._trueParentElement?.insertAdjacentHTML('afterbegin', markup);
   };
   unrenderSpinner = function () {
     this._parentElement.querySelector('.spinner-parent').remove();

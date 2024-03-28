@@ -12,23 +12,23 @@ export class EditUserView extends AddUserView {
   _btnClose;
   _parentElement = document.querySelector('.edit-user-cart');
   _form = document.querySelector('.inputs-edit');
-  currTarget;
+  // currTarget;
   // }
 
   constructor() {
     super();
   }
 
+  addEventListenerCallback = e => {
+    this.toggleWindow.bind(this)();
+    // this.currTarget = e.target;
+  };
   addHandlerShowWindow(OpClassName, windowClassName) {
-    const addEventListenerCallback = e => {
-      this.toggleWindow.bind(this)();
-      this.currTarget = e.target;
-    };
     this._window = document.querySelector(windowClassName);
     this._btnOpen = document.querySelectorAll(OpClassName);
     const btnOpenArray = Array.from(this._btnOpen);
     btnOpenArray.forEach((btn, index) => {
-      btn.addEventListener('click', addEventListenerCallback);
+      btn.addEventListener('click', this.addEventListenerCallback);
     });
   }
   handleConsumerChange = () => {};
@@ -53,7 +53,6 @@ export class EditUserView extends AddUserView {
   }
 
   addHandlerEdit(controller) {
-    this._btnOpen = document.querySelectorAll('.details-btn');
     const btnOpenArray = Array.from(this._btnOpen);
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', controller);
