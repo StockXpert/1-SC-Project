@@ -58,12 +58,12 @@ export default class View {
   }
   renderSpinner = function (message = '', isTrueParent = false) {
     console.log('rendering spinner');
-    //   const markup = `
-    //   <div class="spinner-parent">
-    //   <b>${!message ? '' : `<div class="spinner"></div>`} ${message}</b>
-    //   ${message ? '' : `<div class="spinner"></div>`}
-    //   </div>
-    // `;
+    const markup = `
+      <div class="spinner-parent">
+      <b>${!message ? '' : `<div class="spinner"></div>`} ${message}</b>
+      ${message ? '' : `<div class="spinner"></div>`}
+      </div>
+    `;
     if (isTrueParent) {
       this._trueParentElement.insertAdjacentHTML('afterbegin', markup);
     } else {

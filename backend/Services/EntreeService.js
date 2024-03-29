@@ -3,7 +3,6 @@ const googleMiddleware = require('../Middlewares/googleMiddleware');
 const EntreeModel = require('../Models/EntreeModel');
 const nomencaltureModel = require('../Models/NomenclatureModel');
 const numberWord = require('french-numbers-to-words');
-const { promises } = require('nodemailer/lib/xoauth2');
 function getDate() {
   const dateActuelle = new Date();
   const annee = dateActuelle.getFullYear();
@@ -133,10 +132,14 @@ async function genererBondeCommande(
         await googleMiddleware.updateCel(range, true, Id);
         let i = 22;
         for (const produit of produits) {
-          await googleMiddleware.addRow(i, produit, Id);
+          await googleMiddleware.addRow(i, produit, Id, 'commande');
           i++;
         }
-        await googleMiddleware.generatePDF(Id, `commande${num_commande}`);
+        await googleMiddleware.generatePDF(
+          Id,
+          `bonCommande`,
+          `commande${num_commande}`
+        );
         await googleMiddleware.updateCel(range, false, Id);
         await googleMiddleware.deleteRows(22, i - 1, Id);
         const link = `BonCommande/commande${num_commande}.pdf`;
@@ -149,8 +152,232 @@ async function genererBondeCommande(
           });
       })
       .catch(err => {
+        console.log(err);
         reject(err);
       });
   });
 }
-module.exports = { getDate, genererBondeCommande, montantHT, TVA };
+function changeQuantite(numCommande, produits) {
+  return new Promise(async (resolve, reject) => {
+    let response;
+    for (let produit of produits) {
+      await nomencaltureModel
+        .getProductId(produit.designation)
+        .then(async idProduit => {
+          response = await EntreeModel.updateQuantiteCommande(
+            produit.quantite,
+            numCommande,
+            idProduit
+          );
+          if (response != 'success') reject('inetnal error1');
+          response = await EntreeModel.updateQuantite(
+            produit.quantite,
+            idProduit
+          );
+          if (response != 'success') reject('inetnal error2');
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
+    }
+    resolve('success');
+  });
+}
+function uploadvalidity(numCommande) {
+  return new Promise((resolve, reject) => {
+    EntreeModel.checkValidity(numCommande)
+      .then(validity => {
+        console.log({ validity });
+        if (validity === 'valid')
+          EntreeModel.changeStatus('delivrer', numCommande)
+            .then(() => {
+              resolve('quantite updated');
+            })
+            .catch(() => {
+              reject('internal error4');
+            });
+        else
+          EntreeModel.changeStatus('en cours', numCommande)
+            .then(() => {
+              resolve('quantite updated');
+            })
+            .catch(err => {
+              console.log(err);
+              reject(err);
+            });
+      })
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  });
+}
+function changeBonCommande(
+  objet,
+  fournisseur,
+  deletedProducts,
+  addedProducts,
+  date,
+  numCommande
+) {
+  return new Promise(async (resolve, reject) => {
+    let response;
+    if (objet || fournisseur || date) {
+      EntreeModel.updateBonCommande(fournisseur, objet, date, numCommande)
+        .then(async () => {
+          if (addedProducts) {
+            response = await EntreeModel.insertCommander(
+              numCommande,
+              addedProducts
+            );
+            if (response != 'success') reject('internal error');
+          }
+          if (deletedProducts) {
+            response = await EntreeModel.deleteCommander(
+              numCommande,
+              deletedProducts
+            );
+            if (response != 'success') reject('internal error');
+          }
+          resolve('bon commande updated');
+        })
+        .catch(() => {
+          reject('internal error');
+        });
+    } else {
+      if (addedProducts) {
+        response = await EntreeModel.insertCommander(
+          numCommande,
+          addedProducts
+        );
+        if (response != 'success') reject('internal error');
+      }
+      if (deletedProducts) {
+        response = await EntreeModel.deleteCommander(
+          numCommande,
+          deletedProducts
+        );
+        if (response != 'success') reject('internal error');
+      }
+      resolve('bon commande updated');
+    }
+  });
+}
+function createReception(
+  numCommande,
+  produits,
+  numFacture,
+  numLivraison,
+  dateReception,
+  bonLivraisonLink,
+  factureLink
+) {
+  return new Promise((resolve, reject) => {
+    EntreeModel.insertBonReception(
+      numCommande,
+      dateReception,
+      numFacture,
+      numLivraison,
+      bonLivraisonLink,
+      factureLink
+    )
+      .then(numReception => {
+        EntreeModel.insertLivre(numReception, produits)
+          .then(() => {
+            EntreeModel.getCommande(numCommande)
+              .then(commande => {
+                console.log(numCommande);
+                genererBonReception(
+                  produits,
+                  numCommande,
+                  commande.fournisseur,
+                  commande.date_commande,
+                  dateReception,
+                  numReception,
+                  '1CkIm8C3xJloKITIqfm-LsfqMpiZSSrGk1TVG6tzI1_w'
+                )
+                  .then(() => {
+                    resolve('bon reception created');
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    reject(err);
+                  });
+              })
+              .catch(err => {
+                console.log(err);
+                reject(err);
+              });
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  });
+}
+async function genererBonReception(
+  produits,
+  numCommande,
+  fournisseur,
+  dateCommande,
+  dateReception,
+  numReception,
+  Id
+) {
+  return new Promise(async (resolve, reject) => {
+    await googleMiddleware.updateCel('A6', `Fournisseur: ${fournisseur}`, Id);
+    await googleMiddleware.updateCel(
+      'C4',
+      `N° ${numReception} Date ${dateReception}`,
+      Id
+    );
+    await googleMiddleware.updateCel(
+      'A7',
+      `N° du Bon de commande : ${numCommande}`,
+      Id
+    );
+    await googleMiddleware.updateCel(
+      'D7',
+      `Date du Bon de Commande : ${dateCommande}`,
+      Id
+    );
+    let i = 11;
+    for (const produit of produits) {
+      await googleMiddleware.addRow(i, produit, Id, 'reception');
+      await googleMiddleware.addBorder(i, Id, 0, 1);
+      await googleMiddleware.addBorder(i, Id, 1, 5);
+      await googleMiddleware.addBorder(i, Id, 5, 6);
+      i++;
+    }
+    await googleMiddleware.generatePDF(
+      Id,
+      `BonReception`,
+      `reception${numReception}`
+    );
+    await googleMiddleware.deleteRows(11, i - 1, Id);
+    const link = `BonReception/reception${numReception}.pdf`;
+    EntreeModel.insertLink(link, numReception)
+      .then(() => {
+        resolve(link);
+      })
+      .catch(() => {
+        reject('err');
+      });
+  });
+}
+module.exports = {
+  getDate,
+  genererBondeCommande,
+  montantHT,
+  TVA,
+  changeQuantite,
+  changeBonCommande,
+  uploadvalidity,
+  createReception,
+};

@@ -43,12 +43,14 @@ async function login(req, res) {
               userModel
                 .getRolePermissons(response.designation)
                 .then(permissions => {
-                  res.status(200).json({
-                    response: 'succuss of login',
-                    jwt: token,
-                    role: response.designation,
-                    permissions,
-                  });
+                  res
+                    .status(200)
+                    .json({
+                      response: 'succuss of login',
+                      jwt: token,
+                      role: response.designation,
+                      permissions,
+                    });
                 })
                 .catch(() => {
                   res.status(500).json({ response: 'internal error' });
@@ -325,130 +327,7 @@ async function addPermissions(req, res) {
       userModel
         .insertRoleDroit(roleId, permissions)
         .then(() => {
-          res.status(500).json({ response: 'permissions added' });
-        })
-        .catch(() => {
-          res.status(500).json({ response: 'internal error' });
-        });
-    })
-    .catch(() => {
-      res.status(500).json({ response: 'internal error' });
-    });
-}
-async function deletePermissions(req, res) {
-  const { role, permissions } = req.body;
-  let response;
-  for (let permission of permissions) {
-    response = await userModel.deleteRoleDroit(role, permission);
-    if (response != 'success')
-      res.status(500).json({ response: 'internal error' });
-  }
-  res.status(200).json({ response: 'permissions deleted' });
-}
-function showRoles(req, res) {
-  userModel
-    .getRoles()
-    .then(roles => {
-      res.status(200).json({ response: roles });
-    })
-    .catch(() => {
-      res.status(500).json({ response: 'internal error' });
-    });
-}
-function showPermissions(req, res) {
-  userModel
-    .getPermissions()
-    .then(permissions => {
-      res.status(200).json({ response: permissions });
-    })
-    .catch(() => {
-      res.status(500).json({ response: 'internal error' });
-    });
-}
-function deleteStructure(req, res) {
-  const { structure } = req.body;
-  userModel
-    .canDeleteStructure(structure)
-    .then(() => {
-      userModel
-        .deleteStructure(structure)
-        .then(() => {
-          res.status(200).json({ response: 'structure deleted' });
-        })
-        .catch(() => {
-          res.status(500).json({ response: 'internal error' });
-        });
-    })
-    .catch(() => {
-      res.status(200).json({ response: 'prohibited to delete' });
-    });
-}
-function updateStructure(req, res) {
-  const { oldDesignation, newDesignation } = req.body;
-  userModel
-    .updateStructure(oldDesignation, newDesignation)
-    .then(() => {
-      res.status(200).json({ response: 'structure updated' });
-    })
-    .catch(() => {
-      res.status(500).json({ response: 'internal error' });
-    });
-}
-async function addRole(req, res) {
-  const { role, permissions } = req.body;
-
-  try {
-    await userModel.insertRole(role);
-    const roleId = await userModel.getRole(role);
-    const response = await userModel.insertRoleDroit(roleId, permissions);
-
-    if (response === 'success') {
-      res.status(200).json({ response: 'role added' });
-    } else {
-      res.status(500).json({ response: 'internal error' });
-    }
-  } catch (error) {
-    console.error(
-      "Erreur lors de l'ajout du rôle avec les autorisations :",
-      error
-    );
-    res.status(500).json({ response: 'internal error' });
-  }
-}
-function deleteRole(req, res) {
-  const { role } = req.body;
-  userModel
-    .canDeleteRole(role)
-    .then(() => {
-      userModel
-        .deleteRoleDroit(role)
-        .then(() => {
-          userModel
-            .deleteRole(role)
-            .then(() => {
-              res.status(200).json({ response: 'role deleted' });
-            })
-            .then(() => {
-              res.status(500).json({ response: 'internal error' });
-            });
-        })
-        .catch(() => {
-          res.status(500).json({ response: 'internal error' });
-        });
-    })
-    .catch(() => {
-      res.status(500).json({ response: "can't delete" });
-    });
-}
-async function addPermissions(req, res) {
-  const { role, permissions } = req.body;
-  userModel
-    .getRole(role)
-    .then(roleId => {
-      userModel
-        .insertRoleDroit(roleId, permissions)
-        .then(() => {
-          res.status(500).json({ response: 'permissions added' });
+          res.status(200).json({ response: 'permissions added' });
         })
         .catch(() => {
           res.status(500).json({ response: 'internal error' });

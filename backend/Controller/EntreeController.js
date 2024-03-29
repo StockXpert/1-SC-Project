@@ -50,4 +50,133 @@ function genererBondeCommande(req, res) {
       res.status(500).json({ response: 'internal error' });
     });
 }
-module.exports = { genererFicheBesoins, genererBondeCommande };
+function deleteCommande(req, res) {
+  const { numCommande } = req.body;
+  EntreeModel.canDeleteCommande(numCommande)
+    .then(() => {
+      EntreeModel.deleteCommande(numCommande)
+        .then(() => {
+          EntreeModel.deleteBonCommande(numCommande)
+            .then(() => {
+              res.status(200).json({ response: 'commande deleted' });
+            })
+            .catch(() => {
+              res.status(500).json({ response: 'internal error' });
+            });
+        })
+        .catch(() => {
+          res.status(500).json({ response: 'internal error' });
+        });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'prohibited to delete commande' });
+    });
+}
+function cancelCommande(req, res) {
+  const { numCommande } = req.body;
+  EntreeModel.cancelCommande(numCommande)
+    .then(() => {
+      res.status(200).json({ response: 'commande canceled' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+function showCommandes(req, res) {
+  EntreeModel.getCommandes()
+    .then(commandes => {
+      res.status(200).json({ commandes });
+    })
+    .catch(err => {
+      res.status(500).json({ response: err });
+    });
+}
+function updateQuantite(req, res) {
+  const { numCommande, produits, numFacture, numLivraison, dateReception } =
+    req.body;
+  /*const bonLivraisonLink = req.files['bonLivraison'][0].originalname;
+   const factureLink = req.files['facture'][0].originalname;*/
+  EntreeService.changeQuantite(numCommande, produits)
+    .then(response => {
+      EntreeService.uploadvalidity(numCommande).then(response => {
+        EntreeService.createReception(
+          numCommande,
+          produits,
+          numFacture,
+          numLivraison,
+          dateReception
+        )
+          .then(response => {
+            res.status(200).json({ response });
+          })
+          .catch(response => res.status(500).json({ response }));
+      });
+    })
+    .catch(response => res.status(500).json({ response }));
+}
+function updateBonCommande(req, res) {
+  const {
+    objet,
+    fournisseur,
+    deletedProducts,
+    addedProducts,
+    date,
+    numCommande,
+  } = req.body;
+  EntreeService.changeBonCommande(
+    objet,
+    fournisseur,
+    deletedProducts,
+    addedProducts,
+    date,
+    numCommande
+  )
+    .then(() => {
+      res.status(200).json({ response: 'bon de commande updated' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+function showBonReception(req, res) {
+  const { numCommande } = req.body;
+  EntreeModel.getBonReception(numCommande)
+    .then(response => {
+      res.status(500).json({ response });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+function showBonReceptionProducts(req, res) {
+  const { numReception } = req.body;
+  EntreeModel.getBonReceptionProducts(numReception)
+    .then(response => {
+      res.status(500).json({ response });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+function showCommandeProducts(req, res) {
+  const { numCommande } = req.body;
+  EntreeModel.getCommandeProducts(numCommande)
+    .then(response => {
+      res.status(500).json({ response });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+module.exports = {
+  genererFicheBesoins,
+  genererBondeCommande,
+  deleteCommande,
+  cancelCommande,
+  showCommandes,
+  updateQuantite,
+  updateBonCommande,
+  showBonReception,
+  showBonReceptionProducts,
+  showCommandeProducts,
+};
