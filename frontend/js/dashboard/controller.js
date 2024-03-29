@@ -55,23 +55,6 @@ const controlAddUser = async function (newUser) {
   }
 };
 
-const controlUpdateUser = async function (newUser) {
-  try {
-    if (
-      Object.entries(helpers.getUpdateObject(model.state.user, newUser))
-        .length === 0
-    ) {
-      controlSearchResults();
-      return;
-    }
-    usersView.renderSpinner("Mise à jour de l'utilisateur ...");
-    await model.updateUser(newUser);
-    controlSearchResults();
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 const controlEditUser = function () {
   //ONCLICK OF A EDIT BUTTON
   //Get the index of the clicked edit button here
@@ -230,13 +213,13 @@ const controlFuzzySearch = function (
 };
 
 const controlDeleteUsers = function () {
-  function getCheckboxStates(checkboxes) {
-    const checkboxStates = [];
-    checkboxes.forEach(function (checkbox) {
-      checkboxStates.push(checkbox.checked);
-    });
-    return checkboxStates;
-  }
+  // function getCheckboxStates(checkboxes) {
+  //   const checkboxStates = [];
+  //   checkboxes.forEach(function (checkbox) {
+  //     checkboxStates.push(checkbox.checked);
+  //   });
+  //   return checkboxStates;
+  // }
   function filterArrayByBooleans(dataArray, booleanArray) {
     const filteredArray = [];
     for (let i = 0; i < dataArray.length; i++) {
@@ -249,7 +232,7 @@ const controlDeleteUsers = function () {
 
   filterArrayByBooleans(
     model.state.search.queryResults,
-    getCheckboxStates(
+    helpers.getCheckboxStates(
       document
         .querySelector('.results')
         .querySelectorAll('input[type="checkbox"]')
@@ -305,6 +288,7 @@ const userViewAdders = function () {
 const controlAddUserUpdateSelects = async function () {
   addUserView.renderSpinner('Veuillez attendre un moment...');
   const roles = await model.getRoles();
+  console.log(roles);
   addUserView.addToSelection(roles, 'role-options', 'role');
   const structures = await model.getStructures();
   addUserView.addToSelection(
@@ -318,9 +302,10 @@ const controlAddUserUpdateSelects = async function () {
 const controlLoadRoles = async function () {
   rolesView.renderSpinner('');
   const roles = await model.loadRoles();
+
   rolesView.render(roles);
   // SHOW PERM WINDOW
-  editRoleView.addHandlerShowWindow('.role', '');
+  editRoleView.addHandlerShowWindow('.role');
   //on CLICK OF A ROLE : UPDATE PERM VIEW
   editRoleView.addHandlerEdit(controlEditRole);
 };
@@ -331,17 +316,73 @@ const controlEditRole = async function () {
   const target = this;
   const targetIndex = helpers.findNodeIndex(editRoleView._btnOpen, target);
   model.state.roles.selected = model.state.roles.all[targetIndex];
-  // console.log(model.state.roles.selected);
   editPermsView.renderSpinner();
   await model.loadPerms(); // updates model.state.roles.allPermissions
   model.organizePermissionsByGroup(model.state.roles.allPermissions);
   //Use it to extract the input data from the state object
-  // console.log(model.state.roles.wellFormed);
   editPermsView.render(model.state.roles.wellFormed);
-  // console.log(editPermsView._generateMarkup(model.state.roles.wellFormed));
-  // console.log(editPermsView._data);
+  const checkboxes = editPermsView.updateThisCheckboxesPointers();
+  helpers.setCheckboxStates(
+    checkboxes,
+    helpers.checkSpecialArray(checkboxes, model.state.roles.selected.droits)
+  );
+  //on CLICK OF annuler: return to roles:
+  editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlLoadRoles);
   // editPermsView.changeInputs(model.state.roles.selected.droits);
   //
+};
+//Add and Delete Perms from Roles on perm.Submit
+const controlUpdateRole = async function (changesObj) {
+  console.log(model.state);
+  let added = [];
+  added = changesObj.add;
+  let deleted = [];
+  deleted = changesObj.delete;
+
+  let permsAdded = helpers
+    .filterNodeList(editPermsView.updateThisCheckboxesPointers(), added)
+    .map(el => el.name);
+  if (added.some(el => el === true)) {
+    editUserView.renderSpinner('Ajout des permissions en cours...');
+    await model.addPermsToRole(permsAdded, model.state.roles.selected.role);
+  }
+  let permsDeleted = helpers
+    .filterNodeList(editPermsView.updateThisCheckboxesPointers(), deleted)
+    .map(el => el.name);
+  if (deleted.some(el => el === true)) {
+    editUserView.renderSpinner('Suppression des permissions en cours...');
+    await model.delPermsFromRole(permsDeleted, model.state.roles.selected.role);
+  }
+};
+
+const controlUpdateUser = async function (newUser) {
+  try {
+    if (
+      Object.entries(helpers.getUpdateObject(model.state.user, newUser))
+        .length === 0
+    ) {
+      controlSearchResults();
+      return;
+    }
+    usersView.renderSpinner("Mise à jour de l'utilisateur ...");
+    await model.updateUser(newUser);
+    controlSearchResults();
+  } catch (err) {
+    console.error(err);
+  }
+};
+// editPermsView.addHandlerUpload(controlUpdateRole);
+
+const controlAddRole = async function (newRole) {
+  try {
+    console.log(newRole);
+    rolesView.renderSpinner('Ajout du role ' + newRole.roleName + '...');
+    await model.uploadRole(newRole); //new User is going to be in this case here, data received from the upload form's submission (see addUserView.js)
+    //treatment of that data retrieved from the view is delegated to the model - (model.uploadUser(newUser)) (in accordance with the MCV architecture)
+    controlLoadRoles();
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
@@ -357,6 +398,8 @@ const controllers = [
   // controlLoadPerms,
 ];
 
+addRoleView.addHandlerUpload(controlAddRole);
+editPermsView.addHandlerUpload(controlUpdateRole);
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
 searchView.addHandlerSearch(controlSearchResults);
@@ -365,7 +408,7 @@ addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
 
-// controlShowUsersEmail();
+controlShowUsersEmail();
 
 AddStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);

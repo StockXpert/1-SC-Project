@@ -24,7 +24,9 @@ export const state = {
   roles: {
     all: [],
     allPermissions: [],
-    selected: {},
+    selected: {
+      droits: [],
+    },
     wellFormed: [
       {
         groupName: '',
@@ -196,6 +198,21 @@ export const uploadUser = async function (data) {
     console.error(err);
   }
 };
+export const uploadRole = async function (data) {
+  try {
+    console.log(data);
+    const postData = {
+      role: data.roleName,
+      permissions: ['show user', 'change password auth'],
+    };
+    console.log(postData);
+    const resp = await helpers.sendJSON(`${API_URL}/Users/addRole`, postData);
+
+    console.log(resp);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 export const loadStructures = async function () {
   try {
@@ -274,7 +291,7 @@ export const getRoles = async function () {
     const roles = await helpers.getJSON(`${API_URL}/Users/showRoles`);
     // console.log(roles.response);
     const rolesArray = [];
-    roles.response.forEach(role => rolesArray.push(role.designation));
+    roles.response.forEach(role => rolesArray.push(role.role));
     return rolesArray;
   } catch (error) {
     console.error('💥getRoles threw this error :' + error);
@@ -386,23 +403,32 @@ export const loadPerms = async function () {
   }
 };
 
-export const organizePermissionsByGroup = function (permissions) {
+export const organizePermissionsByGroup = function (
+  permissions,
+  isNoDesignation = false
+) {
   const groups = {};
-
+  let designation = '';
   // Define group names and their associated permissions
   const groupDefinitions = GROUP_DEFINITIONS;
+
   permissions.forEach(permission => {
+    if (isNoDesignation) {
+      designation = permission;
+    } else {
+      designation = permission.designation;
+    }
     let assigned = false;
     for (const [groupName, permissionCodes] of Object.entries(
       groupDefinitions
     )) {
-      if (permissionCodes.includes(permission.designation)) {
+      if (permissionCodes.includes(designation)) {
         if (!groups[groupName]) {
           groups[groupName] = [];
         }
         groups[groupName].push({
-          code: permission.designation,
-          name: getPermissionName(permission.designation),
+          code: designation,
+          name: getPermissionName(designation),
         });
         assigned = true;
         break;
@@ -413,8 +439,8 @@ export const organizePermissionsByGroup = function (permissions) {
         groups['Autre'] = [];
       }
       groups['Autre'].push({
-        code: permission.designation,
-        name: getPermissionName(permission.designation),
+        code: designation,
+        name: getPermissionName(designation),
       });
     }
   });
@@ -435,6 +461,16 @@ export const getPermissionName = function (permissionCode) {
   return permissionNames[permissionCode];
 };
 
+export const addPermsToRole = async function (perms, role) {
+  const uploadData = { role: role, permissions: perms };
+  console.log(uploadData);
+  await helpers.putJSON(`${API_URL}/Users/addPermissions`, uploadData);
+};
+export const delPermsFromRole = async function (perms, role) {
+  const uploadData = { role: role, permissions: perms };
+  console.log(uploadData);
+  await helpers.delJSON(`${API_URL}/Users/deletePermissions`, uploadData);
+};
 // // Example usage:
 // const permissions = [
 //   { designation: "register" },

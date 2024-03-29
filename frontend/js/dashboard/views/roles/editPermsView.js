@@ -1,40 +1,45 @@
+import { getCheckboxStates } from '../../helpers.js';
 import { EditUserView } from '../editUserView.js';
+import * as helpers from '../../helpers.js';
+import * as model from '../../model.js';
 
 class EditPermsView extends EditUserView {
   // constructor(){
   _parentElement = document.querySelector('.container-checkboxes-permissions');
   _data;
+  _btnClose = document.querySelector('.cancel-permission-btn');
+  _checkboxes = this._parentElement.querySelectorAll('.input[type=checkbox]');
   _changedSpinnerContainer = document.querySelector('.container-permissions');
+  _form = document.querySelector('.main-container-permissions');
+
+  updateThisCheckboxesPointers() {
+    this._checkboxes = this._parentElement.querySelectorAll(
+      'input[type="checkbox"]'
+    );
+    return this._checkboxes;
+  }
   // }
 
   changeInputs(NewInputValuesObj) {
-    function checkSpecialArray(nodeList, specialArray) {
-      const result = [];
-      nodeList.forEach(checkbox => {
-        result.push(specialArray.includes(checkbox.name));
-      });
-      return result;
-    }
-
     // Example usage:
     const nodeList = document.querySelectorAll('input[type="checkbox"]');
     const specialArray = ['A', 'C'];
-    const booleanArray = checkSpecialArray(nodeList, specialArray);
+    const booleanArray = helpers.checkSpecialArray(nodeList, specialArray);
     console.log(booleanArray); // Output: [true, false, true]
   }
 
   _generateMarkup() {
     //#add DONE
-    console.log(this._data);
     const next = this._generateMarkupPreview;
     return this._data.map(next).join('');
   }
   // _generateMarkupPreviewPreview
   _generateMarkupPreview(group) {
     const next = function (permission) {
+      let permCode = permission.code + '';
       return `
         <div class="checkbox-colomn-permissions">
-          <input type="checkbox" id="checkbox-table-permissions name=${permission.code}">
+          <input type="checkbox" class="checkbox-table-permissions" name="${permCode}">
           <p class="colomn-tags-name-permissions">
             ${permission.name} (${permission.code})
           </p>
@@ -44,6 +49,27 @@ class EditPermsView extends EditUserView {
     return `<p class="heading-permission-text">${group.groupName}</p>
     ${group.permissions.map(next).join('')}
   `;
+  }
+
+  addHandlerUpload(handler) {
+    const closeBtn = this._btnClose;
+    let checkboxes = [];
+    let newStateOfCheckboxes = [];
+    const form = this._form;
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      checkboxes = this.updateThisCheckboxesPointers();
+      newStateOfCheckboxes = helpers.getCheckboxStates(checkboxes);
+      const changesObj = helpers.compareAndGetUpdates(
+        helpers.checkSpecialArray(
+          checkboxes,
+          model.state.roles.selected.droits
+        ),
+        newStateOfCheckboxes
+      );
+      await handler(changesObj);
+      document.querySelector('.roles-btn').click();
+    });
   }
 }
 export default new EditPermsView();

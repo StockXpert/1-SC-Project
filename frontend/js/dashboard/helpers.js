@@ -141,7 +141,8 @@ export const putJSON = async function (url, uploadData) {
       timeout(TIMEOUT_SEC),
     ]);
     const data = await res.json();
-
+    console.log(res);
+    console.log(data);
     if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
@@ -163,7 +164,7 @@ export const delJSON = async function (url, uploadData) {
       timeout(TIMEOUT_SEC),
     ]);
     const data = await res.json();
-
+    console.log(data);
     if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
@@ -294,4 +295,47 @@ export const removeChildrenFromSecond = function (element) {
       element.removeChild(element.children[i]);
     }
   }
+};
+export const getCheckboxStates = function (checkboxes) {
+  const checkboxStates = [];
+  checkboxes.forEach(function (checkbox) {
+    checkboxStates.push(checkbox.checked);
+  });
+  return checkboxStates;
+};
+export const setCheckboxStates = function (nodeList, booleanArray) {
+  nodeList.forEach((checkbox, index) => {
+    checkbox.checked = booleanArray[index];
+  });
+};
+
+export const checkSpecialArray = function (nodeList, specialArray) {
+  const result = [];
+  nodeList.forEach(checkbox => {
+    // console.log(specialArray, checkbox.name);
+    result.push(specialArray.includes(checkbox.name));
+  });
+  return result;
+};
+
+export const compareAndGetUpdates = function (oldArray, newArray) {
+  const resultObj = {
+    add: [],
+    delete: [],
+  };
+  oldArray.forEach((value, index) => {
+    resultObj.add.push(newArray[index] && !value);
+    resultObj.delete.push(!newArray[index] && value);
+  });
+  return resultObj;
+};
+
+export const filterNodeList = function (nodeList, booleanArray) {
+  const filteredArray = [];
+  nodeList.forEach((node, index) => {
+    if (booleanArray[index]) {
+      filteredArray.push(node);
+    }
+  });
+  return filteredArray;
 };

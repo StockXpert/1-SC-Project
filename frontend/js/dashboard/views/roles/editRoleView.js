@@ -6,7 +6,7 @@ class EditRoleView extends EditUserView {
   _window = document.querySelector('.edit-user-container');
   _overlay = document.querySelector('.overlayEdit');
   _btnOpen;
-  _btnClose;
+  _btnClose = document.querySelector('.cancel-permission-btn');
   _parentElement = document.querySelector('.edit-user-cart');
   _form = document.querySelector('.inputs-edit');
   currTarget;
@@ -21,14 +21,22 @@ class EditRoleView extends EditUserView {
     sideView.addHandlerBtns('', 3);
     // this.currTarget = e.target;
   };
+  addEventListenerCallback2 = e => {
+    sideView.addHandlerBtns('', 2);
+  };
 
-  addHandlerShowWindow(OpClassName, windowClassName) {
-    // this._window = document.querySelector(windowClassName);
+  addHandlerShowWindow(OpClassName) {
     this._btnOpen = document.querySelectorAll(OpClassName);
     const btnOpenArray = Array.from(this._btnOpen);
     btnOpenArray.forEach((btn, index) => {
       btn.addEventListener('click', this.addEventListenerCallback);
     });
+  }
+  addHandlerHideWindow(CloserClassName, ctrl = '') {
+    this._btnClose = document.querySelector(CloserClassName);
+    // console.log(document.querySelector(CloserClassName));
+    this._btnClose.addEventListener('click', this.addEventListenerCallback2);
+    ctrl();
   }
 }
 export default new EditRoleView();

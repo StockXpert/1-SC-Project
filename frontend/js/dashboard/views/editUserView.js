@@ -12,8 +12,12 @@ export class EditUserView extends AddUserView {
   _btnClose;
   _parentElement = document.querySelector('.edit-user-cart');
   _form = document.querySelector('.inputs-edit');
+  _role = document.querySelector('#role-options-edit');
   // currTarget;
   // }
+  _typeConsumer = document
+    .querySelector('.groupe-4')
+    .querySelector('.dropdown-consumer');
 
   constructor() {
     super();
@@ -31,11 +35,24 @@ export class EditUserView extends AddUserView {
       btn.addEventListener('click', this.addEventListenerCallback);
     });
   }
-  handleConsumerChange = () => {};
+  handleConsumerChange = e => {
+    {
+      console.log('consumer change !');
+      e.preventDefault();
+      const filterInput = e.target;
+      if (
+        filterInput.options[filterInput.selectedIndex].value == 'Consommateur'
+      )
+        this.toggleTypeConsumer.bind(this)(false);
+      else {
+        this.toggleTypeConsumer.bind(this)(true);
+      }
+    }
+  };
   changeInputs(NewInputValuesObj) {
+    console.log(NewInputValuesObj);
     // Get the form element
     const formElement = this._form;
-
     // Create a new FormData object from the form
     const formData = new FormData(formElement);
 

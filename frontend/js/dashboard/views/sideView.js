@@ -30,7 +30,7 @@ class SideView extends View {
 
   addHandlerBtns(controllers, index = '') {
     this.btns.forEach(el =>
-      el.addEventListener('click', e => {
+      el.addEventListener('click', async e => {
         e.preventDefault();
         const targeto = e.currentTarget;
         // console.log(targeto.h3);
@@ -44,8 +44,8 @@ class SideView extends View {
           'hidden'
         );
         targeto.classList.add('active');
-        console.log(helpers.findNodeIndex(this.btns, targeto));
-        controllers[helpers.findNodeIndex(this.btns, targeto)]();
+        console.log(controllers[helpers.findNodeIndex(this.btns, targeto)]);
+        await controllers[helpers.findNodeIndex(this.btns, targeto)]();
       })
     );
     if (index !== '') {

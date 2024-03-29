@@ -66,9 +66,10 @@ export class AddUserView extends View {
       }
     }
   };
-  async addHandlerUpload(handler) {
+  async addHandlerUpload(handler, hasConsumer = true) {
     const closeBtn = this._btnClose;
-    this._role.addEventListener('change', this.handleConsumerChange);
+    if (hasConsumer)
+      this._role.addEventListener('change', this.handleConsumerChange);
 
     // const form = document.getElementById('myForm');
     // form.addEventListener('submit', event => {

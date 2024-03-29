@@ -11,15 +11,16 @@ class RolesView extends UsersView {
     // const id = window.location.hash.slice(1);
     return `
     <div class="role">
-      <div class="blue-backgroud-role"></div>
+    <div class="blue-backgroud-role"></div>
       <div class="heading-role-user">
+        <input type="checkbox"/>
         <h1 class="heading-primary-roles">${result.role}</h1>
       </div>
       <div class="text-permissions">
           ${result.droits
             .map(
               droit => `
-            <p>${droit}</p>
+            <p>- ${droit}</p>
             `
             )
             .join('')}
