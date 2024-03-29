@@ -52,7 +52,7 @@ class SideView extends View {
       this.divs.forEach(div => {
         div.classList.add('hidden');
       });
-      this.divs[index];
+      this.divs[index].classList.remove('hidden');
     }
   }
 }

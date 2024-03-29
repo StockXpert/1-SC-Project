@@ -5,15 +5,9 @@ export class UsersView extends View {
   _trueParentElement = document.querySelector('.table-container');
 
   _generateMarkup() {
-    //TODO: Refactoring
-    // return this._data.map(result => previewView.render(result, false)).join('');
-    // console.log(`${this._data.map(this._generateMarkupPreview).join('')}`);
     return this._data.map(this._generateMarkupPreview).join('');
   }
   _generateMarkupPreview(result) {
-    // TODO: console.log(result);
-    // console.log(result.active);
-    // const id = window.location.hash.slice(1);
     return `
     <tr>
     <td>
@@ -42,3 +36,30 @@ export class UsersView extends View {
   }
 }
 export default new UsersView();
+// <p class="heading-permission-text">Utilisateurs</p>
+// <div class="checkboxes-permission">
+//   <div class="checkbox-colomn-permissions">
+//     <input type="checkbox" id="checkbox-table-permissions">
+//     <p class="colomn-tags-name-permissions">
+//       Ajouter Utilisateur
+//     </p>
+//   </div>
+//   <div class="checkbox-colomn-permissions">
+//     <input type="checkbox" id="checkbox-table-permissions">
+//     <p class="colomn-tags-name-permissions">
+//       Modifier Utilisateur
+//     </p>
+//   </div>
+//   <div class="checkbox-colomn-permissions">
+//     <input type="checkbox" id="checkbox-table-permissions">
+//     <p class="colomn-tags-name-permissions">
+//       Supprimer Utilisateur
+//     </p>
+//   </div>
+//   <div class="checkbox-colomn-permissions">
+//     <input type="checkbox" id="checkbox-table-permissions">
+//     <p class="colomn-tags-name-permissions">
+//       Voir Utilisateur
+//     </p>
+//   </div>
+// </div>

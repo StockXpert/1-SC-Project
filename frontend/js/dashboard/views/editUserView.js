@@ -35,12 +35,15 @@ export class EditUserView extends AddUserView {
   changeInputs(NewInputValuesObj) {
     // Get the form element
     const formElement = this._form;
+
     // Create a new FormData object from the form
     const formData = new FormData(formElement);
+
     // TODO:
     // formData.forEach(function (value, key) {
     //   console.log(key + ': ' + value);
     // });
+
     // Update form fields with new values
     for (const key in NewInputValuesObj) {
       if (NewInputValuesObj.hasOwnProperty(key)) {
@@ -54,8 +57,8 @@ export class EditUserView extends AddUserView {
 
   addHandlerEdit(controller) {
     const btnOpenArray = Array.from(this._btnOpen);
-    btnOpenArray.forEach(btn => {
-      btn.addEventListener('click', controller);
+    btnOpenArray.forEach(async btn => {
+      btn.addEventListener('click', await controller);
     });
   }
 

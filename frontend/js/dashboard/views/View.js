@@ -43,7 +43,7 @@ export default class View {
 
   render(data, render = true) {
     //TODO: RenderError()
-    console.log('rendering', this._data);
+    // console.log('rendering', this._data);
     // console.log(data);
     // if (!data || (Array.isArray(data) && data.length === 0))
     //   return console.log('something went wrong while trying to render this...');

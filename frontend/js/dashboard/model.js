@@ -1,6 +1,11 @@
 // import { async } from 'regenerator-runtime';
-// import { config } from 'dotenv';
-import { API_URL, FUSE_OPTIONS, TIMEOUT_SEC } from './config.js';
+import {
+  API_URL,
+  FUSE_OPTIONS,
+  TIMEOUT_SEC,
+  GROUP_DEFINITIONS,
+  PERM_NAMES,
+} from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
 export const state = {
@@ -15,6 +20,26 @@ export const state = {
       filterValues: [],
     },
     filteredResults: [],
+  },
+  roles: {
+    all: [],
+    allPermissions: [],
+    selected: {},
+    wellFormed: [
+      {
+        groupName: '',
+        permissions: [
+          {
+            code: '',
+            name: '',
+          },
+          {
+            code: '',
+            name: '',
+          },
+        ],
+      },
+    ],
   },
   displayed: {
     role: 'all',
@@ -344,8 +369,80 @@ export const loadRoles = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showRoles`);
     console.log(data);
+    state.roles.all = data.response;
     return data.response;
   } catch (err) {
     console.error(`💢 loadRoles got this error:, ${err}`);
   }
 };
+export const loadPerms = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Users/showPermissions`);
+    console.log(data);
+    state.roles.allPermissions = data.response;
+    return data.response;
+  } catch (err) {
+    console.error(`💢 loadPerms got this error:, ${err}`);
+  }
+};
+
+export const organizePermissionsByGroup = function (permissions) {
+  const groups = {};
+
+  // Define group names and their associated permissions
+  const groupDefinitions = GROUP_DEFINITIONS;
+  permissions.forEach(permission => {
+    let assigned = false;
+    for (const [groupName, permissionCodes] of Object.entries(
+      groupDefinitions
+    )) {
+      if (permissionCodes.includes(permission.designation)) {
+        if (!groups[groupName]) {
+          groups[groupName] = [];
+        }
+        groups[groupName].push({
+          code: permission.designation,
+          name: getPermissionName(permission.designation),
+        });
+        assigned = true;
+        break;
+      }
+    }
+    if (!assigned) {
+      if (!groups['Autre']) {
+        groups['Autre'] = [];
+      }
+      groups['Autre'].push({
+        code: permission.designation,
+        name: getPermissionName(permission.designation),
+      });
+    }
+  });
+
+  // Convert groups object into the desired array format
+  const result = Object.entries(groups).map(([groupName, permissions]) => ({
+    groupName,
+    permissions,
+  }));
+  state.roles.wellFormed = result;
+  return result;
+};
+
+// Helper function to get the permission name in French
+export const getPermissionName = function (permissionCode) {
+  // Define mapping of permission codes to their French names
+  const permissionNames = PERM_NAMES;
+  return permissionNames[permissionCode];
+};
+
+// // Example usage:
+// const permissions = [
+//   { designation: "register" },
+//   { designation: "show users" },
+//   // Add more permissions here
+//   { designation: "unknown_permission_1" }, // This will be put in "Autre"
+//   { designation: "unknown_permission_2" }  // This will be put in "Autre"
+// ];
+
+// const organizedPermissions = organizePermissionsByGroup(permissions);
+// console.log(organizedPermissions);

@@ -18,6 +18,7 @@ import structuresView from './views/structuresView.js';
 import rolesView from './views/roles/rolesView.js';
 import addRoleView from './views/roles/addRoleView.js';
 import editRoleView from './views/roles/editRoleView.js';
+import editPermsView from './views/roles/editPermsView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -31,6 +32,7 @@ const controlSearchResults = async function () {
     searchView.addHandlerSearchV2(controlFuzzySearch);
     usersView.render(model.state.search.results);
     controlAddUserUpdateSelects();
+    userViewAdders();
     // D Y N A M I C   S E A R C H   A C T I V A T I O N :
     numberView.addHandlerNumber(controlNumber);
     return;
@@ -298,6 +300,7 @@ const userViewAdders = function () {
   //Updates the state of the masterCheeck box to match the searchResults
   numberView.updateMasterCheckbox();
 };
+
 // addUserView.addHandlerUpdateSelects(controlAddUserUpdateSelects);
 const controlAddUserUpdateSelects = async function () {
   addUserView.renderSpinner('Veuillez attendre un moment...');
@@ -316,14 +319,36 @@ const controlLoadRoles = async function () {
   rolesView.renderSpinner('');
   const roles = await model.loadRoles();
   rolesView.render(roles);
-  editRoleView.addHandlerShowWindow('role');
+  // SHOW PERM WINDOW
+  editRoleView.addHandlerShowWindow('.role', '');
+  //on CLICK OF A ROLE : UPDATE PERM VIEW
+  editRoleView.addHandlerEdit(controlEditRole);
+};
+
+//ONCLICK OF A ROLE
+const controlEditRole = async function () {
+  //Get the index of the clicked ROLE here
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(editRoleView._btnOpen, target);
+  model.state.roles.selected = model.state.roles.all[targetIndex];
+  // console.log(model.state.roles.selected);
+  editPermsView.renderSpinner();
+  await model.loadPerms(); // updates model.state.roles.allPermissions
+  model.organizePermissionsByGroup(model.state.roles.allPermissions);
+  //Use it to extract the input data from the state object
+  // console.log(model.state.roles.wellFormed);
+  editPermsView.render(model.state.roles.wellFormed);
+  // console.log(editPermsView._generateMarkup(model.state.roles.wellFormed));
+  // console.log(editPermsView._data);
+  // editPermsView.changeInputs(model.state.roles.selected.droits);
+  //
 };
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
 // addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
-// controlSearchResults();
+controlSearchResults();
 // userViewAdders();
 const controllers = [
   controlSearchResults,

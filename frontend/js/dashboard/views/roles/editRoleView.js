@@ -18,8 +18,17 @@ class EditRoleView extends EditUserView {
   addEventListenerCallback = e => {
     // this.toggleWindow.bind(this)();
     //SWITCH WINDOWS TO PERM (3 on the index)
-    sideView.addHandlerBtns(_, 3);
+    sideView.addHandlerBtns('', 3);
     // this.currTarget = e.target;
   };
+
+  addHandlerShowWindow(OpClassName, windowClassName) {
+    // this._window = document.querySelector(windowClassName);
+    this._btnOpen = document.querySelectorAll(OpClassName);
+    const btnOpenArray = Array.from(this._btnOpen);
+    btnOpenArray.forEach((btn, index) => {
+      btn.addEventListener('click', this.addEventListenerCallback);
+    });
+  }
 }
 export default new EditRoleView();

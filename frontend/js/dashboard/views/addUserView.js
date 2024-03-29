@@ -152,7 +152,6 @@ export class AddUserView extends View {
     this._overlay.classList.toggle('hidden');
     this._window.classList.toggle('hidden');
   }
-
   _generateMarkup() {}
 }
 
