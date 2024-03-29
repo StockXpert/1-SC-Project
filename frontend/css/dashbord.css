@@ -1089,8 +1089,8 @@ table tbody tr:last-child td {
   /* z-index: 900; */
 }
 .heading-role-user input {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.3rem;
+  height: 1.3rem;
 }
 .heading-primary-add-user {
   font-size: 1.8rem;
@@ -1099,7 +1099,7 @@ table tbody tr:last-child td {
   color: #477ce2;
 }
 .heading-primary-roles {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   line-height: 1.2;
   color: white;
@@ -1270,7 +1270,7 @@ table tbody tr:last-child td {
   );
   left: -0px;
   right: -0px;
-  top: -25px;
+  top: -40px;
   z-index: 200;
   /* border-radius: 30%; */
 }
@@ -1310,7 +1310,6 @@ table tbody tr:last-child td {
 .heading-role-user {
   width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   padding: 0.4rem;
   z-index: 900;
