@@ -1999,7 +1999,41 @@
 
       <!-- debut section pour ajouter un bdc  -->
       <div class="big-container">
-        <div class="add-product-bdc-container">
+        <div class="edit-product-bdc-container">
+          <div class="edit-product-bdc-cart">
+            <div class="heading-edit-product-bdc">
+              <p>Modifier</p>
+            </div>
+            <form class="inputs-edit-product-bdc">
+              <div class="input-product-bdc-edit">
+                <input
+                  type="text"
+                  placeholder="Modifier la Designation"
+                  value="Pc Gamer"
+                />
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  type="text"
+                  placeholder="Modifier la Quantité"
+                  value="4"
+                />
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  type="text"
+                  placeholder="Modifier le Prix Unitaire"
+                  value="20.000 DA"
+                />
+              </div>
+              <div class="btn-product-bdc-edit">
+                <button class="cancel-btn-edit-bdc">Annuler</button>
+                <button class="add-btn-edit-bdc">Ajouter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-product-bdc-container hidden">
           <div class="add-product-bdc-cart">
             <div class="heading-add-product-bdc">
               <p>Produit</p>
@@ -2064,11 +2098,11 @@
                   </p>
                 </div>
                 <div class="heading-table-btns-add-bdc">
-                  <button
+                  <!-- <button
                     class="heading-table-btn btn-edit btn-edit-produits-bdc"
                   >
                     Modifier
-                  </button>
+                  </button> -->
                   <button
                     class="heading-table-btn btn-delete btn-delete-produits-bdc"
                   >
@@ -2100,7 +2134,11 @@
                   <tr>
                     <td>
                       <div class="checkbox-colomn-bdc-add">
-                        <input type="checkbox" id="checkbox-table-bdc-add" />
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdc-add"
+                        />
                         <p class="colomn-tags-name-bdc">1</p>
                       </div>
                     </td>
