@@ -1705,6 +1705,22 @@
           </div>
           <!-- for inputs -->
           <form class="inputs-edit">
+            <div class="groupe-4">
+              <div class="dropdown-consumer hidden">
+                <select
+                  name="type"
+                  id="consommateur-add-user-options"
+                  placeholder="Selectionnés Un Type"
+                >
+                  <option value="" selected="" disabled="">
+                    Type du Consommateur
+                  </option>
+                  <option value="Enseignant">Enseignant</option>
+                  <option value="Etudiant">Etudiant</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+            </div>
             <div class="groupe-1">
               <div class="main-input-groupe">
                 <div class="input-text">
@@ -1980,6 +1996,230 @@
         </form>
       </div>
       <!-- fin section pour supprimer structure  -->
+
+      <!-- debut section pour ajouter un bdc  -->
+      <div class="big-container hidden">
+        <div class="edit-product-bdc-container">
+          <div class="edit-product-bdc-cart">
+            <div class="heading-edit-product-bdc">
+              <p>Modifier</p>
+            </div>
+            <form class="inputs-edit-product-bdc">
+              <div class="input-product-bdc-edit">
+                <input
+                  type="text"
+                  placeholder="Modifier la Designation"
+                  value="Pc Gamer"
+                />
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  type="text"
+                  placeholder="Modifier la Quantité"
+                  value="4"
+                />
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  type="text"
+                  placeholder="Modifier le Prix Unitaire"
+                  value="20.000 DA"
+                />
+              </div>
+              <div class="btn-product-bdc-edit">
+                <button class="cancel-btn-edit-bdc">Annuler</button>
+                <button class="add-btn-edit-bdc">Ajouter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-product-bdc-container hidden">
+          <div class="add-product-bdc-cart">
+            <div class="heading-add-product-bdc">
+              <p>Produit</p>
+            </div>
+            <form class="inputs-add-product-bdc">
+              <div class="input-product-bdc">
+                <input type="text" placeholder="Entrez la Designation" />
+              </div>
+              <div class="input-product-bdc">
+                <input type="text" placeholder="Entrez la Quantité" />
+              </div>
+              <div class="input-product-bdc">
+                <input type="text" placeholder="Entrez le Prix Unitaire" />
+              </div>
+              <div class="btn-product-bdc">
+                <button class="cancel-btn-add-bdc">Annuler</button>
+                <button class="add-btn-add-bdc">Ajouter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-bdc-container">
+          <div class="add-bdc-cart">
+            <div class="container-select-bdc">
+              <div class="dropbtn dropbtn-fournisseurs">
+                <span class="material-icons-sharp"> search </span>
+                <select
+                  name="fournisseur"
+                  class="filters-fournisseur"
+                  id="fournisseur-options"
+                  placeholder="Fournisseur"
+                  required
+                >
+                  <option value="">Frounisseurs</option>
+                </select>
+              </div>
+              <div class="dropbtn dropbtn-Article">
+                <span class="material-icons-sharp"> search </span>
+                <select
+                  name="fournisseur"
+                  class="filters-fournisseur"
+                  id="fournisseur-options"
+                  placeholder="Fournisseur"
+                  required
+                >
+                  <option value="" disabled="" selected="">Articles</option>
+                </select>
+              </div>
+              <div class="btn-add-product">
+                <button>Ajouter Produit</button>
+                <span class="material-icons-sharp"> add </span>
+              </div>
+            </div>
+            <div class="heading-table-add-bdc">
+              <div class="container-heading-table-add-bdc">
+                <div class="heading-table-text-add-bdc">
+                  <p class="table-text-add-bdc">
+                    Tout les Produits (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text-add-bdc">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns-add-bdc">
+                  <!-- <button
+                    class="heading-table-btn btn-edit btn-edit-produits-bdc"
+                  >
+                    Modifier
+                  </button> -->
+                  <button
+                    class="heading-table-btn btn-delete btn-delete-produits-bdc"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-bdc-produits">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Designation</th>
+                    <th>Quantité</th>
+                    <th>Prix.U</th>
+                    <th>Montant</th>
+                    <th>Modifier</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdc-produits">
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdc-add">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdc-add"
+                        />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit">
+                      <input type="text" placeholder="8" />
+                    </td>
+                    <td class="input-changeble price-produit">
+                      <input type="text" placeholder="10.000" />
+                    </td>
+                    <td class="price-produit-montant">80.000</td>
+                    <td>
+                      <button class="details-btn-bdc-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-bdc-add">
+                        <input type="checkbox" id="checkbox-table-bdc-add" />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit">
+                      <input type="text" placeholder="8" />
+                    </td>
+                    <td class="input-changeble price-produit">
+                      <input type="text" placeholder="10.000" />
+                    </td>
+
+                    <td class="price-produit-montant">80.000</td>
+                    <td>
+                      <button class="details-btn-bdc-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdc-add">
+                        <input type="checkbox" id="checkbox-table-bdc-add" />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit">
+                      <input type="text" placeholder="8" />
+                    </td>
+                    <td class="input-changeble price-produit">
+                      <input type="text" placeholder="10.000" />
+                    </td>
+                    <td class="price-produit-montant">80.000</td>
+                    <td>
+                      <button class="details-btn-bdc-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin section pour ajouter un bdc  -->
 
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
