@@ -1169,10 +1169,10 @@ table tbody tr:last-child td {
   background-color: transparent;
   pointer-events: none;
 }
-
+/*
 .input-changeble input::placeholder {
-  /* color: #4b4b4b; */
-}
+   color: #4b4b4b; 
+}*/
 .edit-user-cart {
   width: 53rem;
   margin: 0 auto;
@@ -1201,9 +1201,9 @@ table tbody tr:last-child td {
   position: relative;
   overflow: hidden;
 }
-.roles-cart-container {
-  /* padding: 0.4rem; */
-}
+/* .roles-cart-container {
+   padding: 0.4rem; 
+} */
 
 /* .container-checkboxes-permissions::-webkit-scrollbar {
   width: 5px;
