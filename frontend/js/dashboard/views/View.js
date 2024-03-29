@@ -56,7 +56,7 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
-  renderSpinner = function (message = '') {
+  renderSpinner = function (message = '', isTrueParent = false) {
     console.log('rendering spinner');
     const markup = `
     <div class="spinner-parent">
@@ -64,9 +64,17 @@ export default class View {
     ${message ? '' : `<div class="spinner"></div>`}
     </div>
   `;
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    if (isTrueParent) {
+      this._trueParentElement.insertAdjacentHTML('afterbegin', markup);
+    } else {
+      this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
   };
-  unrenderSpinner = function () {
-    this._parentElement.querySelector('.spinner-parent').remove();
+  unrenderSpinner = function (isTrueParent = false) {
+    if (isTrueParent) {
+      this._trueParentElement.querySelector('.spinner-parent').remove();
+    } else {
+      this._parentElement.querySelector('.spinner-parent').remove();
+    }
   };
 }

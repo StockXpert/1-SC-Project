@@ -6,6 +6,8 @@ import * as model from '../../model.js';
 class EditPermsView extends EditUserView {
   // constructor(){
   _parentElement = document.querySelector('.container-checkboxes-permissions');
+  _trueParentElement = document.querySelector('.container-pick-role');
+  _role = document.querySelector('#pick-role-options');
   _data;
   _btnClose = document.querySelector('.cancel-permission-btn');
   _checkboxes = this._parentElement.querySelectorAll('.input[type=checkbox]');
@@ -69,6 +71,18 @@ class EditPermsView extends EditUserView {
       );
       await handler(changesObj);
       document.querySelector('.roles-btn').click();
+    });
+  }
+
+  setSelector(targetIndex) {
+    this._role.selectedIndex = targetIndex;
+  }
+
+  addHandlerSwitch(handler) {
+    this._role.addEventListener('change', e => {
+      const { selectedIndex: selectedValue } = e.target;
+      console.log(selectedValue);
+      handler(e, selectedValue);
     });
   }
 }

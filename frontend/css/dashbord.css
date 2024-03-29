@@ -1080,7 +1080,17 @@ table tbody tr:last-child td {
   color: #477ce2;
 }
 .heading-role-user {
-  z-index: 600;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.4rem;
+  /* z-index: 900; */
+}
+.heading-role-user input {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 .heading-primary-add-user {
   font-size: 1.8rem;
@@ -1260,7 +1270,7 @@ table tbody tr:last-child td {
   );
   left: -0px;
   right: -0px;
-  top: -40px;
+  top: -25px;
   z-index: 200;
   /* border-radius: 30%; */
 }

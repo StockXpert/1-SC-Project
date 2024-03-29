@@ -66,35 +66,16 @@ export class AddUserView extends View {
       }
     }
   };
-  async addHandlerUpload(handler, hasConsumer = true) {
+  addHandlerUpload(handler, hasConsumer = true) {
     const closeBtn = this._btnClose;
     if (hasConsumer)
       this._role.addEventListener('change', this.handleConsumerChange);
-
-    // const form = document.getElementById('myForm');
-    // form.addEventListener('submit', event => {
-    //   event.preventDefault();
-
-    //   const inputs = Array.from(form.getElementsByTagName('input'));
-
-    //   const allFilled = inputs.every(input => input.value.trim() !== '');
-
-    //   if (allFilled) {
-    //     form.submit();
-    //   } else {
-    //     alert('Please fill in all fields before submitting.');
-    //     // You can also show an error message or take any other action here
-    //   }
-    // });
-
     this._form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const form = this;
       let inputs = Array.from(form.getElementsByTagName('input'));
       const select = Array.from(form.getElementsByTagName('select'));
       inputs = inputs.concat(select);
-      // console.log(inputs);
-
       const allFilled = inputs.every(input => {
         const isRequired = input.required;
         if (isRequired) {

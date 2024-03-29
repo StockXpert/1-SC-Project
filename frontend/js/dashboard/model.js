@@ -386,7 +386,7 @@ export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
 export const loadRoles = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showRoles`);
-    console.log(data);
+    console.log('loadRoles', data);
     state.roles.all = data.response;
     return data.response;
   } catch (err) {

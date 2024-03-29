@@ -14,9 +14,19 @@ class NumberRoleView extends NumberView {
   _generateMarkup() {
     return `
       <p class="table-text">
-        Tout les Roles (<b class="number-users">${this._data.length}</b>)
+        Tout les Roles (<b class="number-users">${
+          this._data.roles.all.length
+        }</b>)
       </p>
       <p class="table-text">
+      ${
+        this._data.displayed.selectedRoles
+          ? this._data.displayed.selectedRoles === this._data.roles.all.length
+            ? `Tous Selectionnés (<b class="number-users">${this._data.displayed.selectedRoles}</b>) `
+            : `Selectionnés (<b class="number-users">${this._data.displayed.selectedRoles}</b>)`
+          : ''
+      }
+      </p>
   `;
   }
 }

@@ -49,7 +49,6 @@ export class NumberView extends View {
         }</b>)
       </p>
       <p class="table-text">
-
       ${
         this._data.displayed.selected
           ? this._data.displayed.selected === this._data.search.results.length
@@ -57,14 +56,13 @@ export class NumberView extends View {
             : `Selectionnés (<b class="number-users">${this._data.displayed.selected}</b>)`
           : ''
       }
-
-      ${true ? '' : 'nothing'}
       </p>
   `;
   }
 
-  selectionUpdater() {
-    this._table = document.querySelector('.results');
+  selectionUpdater(customTableClass = '.results') {
+    console.log('selectionUpdater');
+    this._table = document.querySelector(customTableClass);
     const checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
     this._checkboxes = checkboxes;
     return checkboxes;

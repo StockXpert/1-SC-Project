@@ -104,7 +104,36 @@ const controlNumber = function () {
 const controlNumberRoles = function () {
   numberRoleView._clear();
   model.state.displayed.selectedRoles = numberRoleView.calculateCheckboxes();
-  numberRoleView.render(model.state.roles.all);
+  numberRoleView.render(model.state);
+};
+
+const controlDeleteRoles = function (containerClass = '.results') {
+  helpers
+    .filterNodeList(
+      model.state.roles.all,
+      helpers.getCheckboxStates(
+        document
+          .querySelector(containerClass)
+          .querySelectorAll('input[type="checkbox"]')
+      )
+    )
+    .forEach(async el => {
+      console.log(el);
+      // usersView.renderSpinner(
+      //   "Suppression de l'utilisateur " + el.nom + ' ' + el.prenom + '...'
+      // );
+      // console.log({
+      //   email: el.email,
+      // });
+      // await helpers.delJSON(`${API_URL}/Users/deleteUser`, {
+      //   email: el.email,
+      // });
+      // back to main menu
+      // controlSearchResults();
+    });
+
+  // console.log(model.state.search.queryResults);
+  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
 };
 
 const controleSelectStructures = function () {
@@ -219,7 +248,7 @@ const controlFuzzySearch = function (
   return model.state.search.queryResults;
 };
 
-const controlDeleteUsers = function () {
+const controlDeleteUsers = function (containerClass = '.results') {
   // function getCheckboxStates(checkboxes) {
   //   const checkboxStates = [];
   //   checkboxes.forEach(function (checkbox) {
@@ -241,7 +270,7 @@ const controlDeleteUsers = function () {
     model.state.search.queryResults,
     helpers.getCheckboxStates(
       document
-        .querySelector('.results')
+        .querySelector(containerClass)
         .querySelectorAll('input[type="checkbox"]')
     )
   ).forEach(async el => {
@@ -307,13 +336,22 @@ const controlAddUserUpdateSelects = async function () {
   );
   addUserView.unrenderSpinner();
 };
+const controlEditRoleUpdateSelects = async function () {
+  editPermsView.renderSpinner('Veuillez attendre un moment...', true);
+  const roles = await model.getRoles();
+  editPermsView.unrenderSpinner(true);
+  editPermsView.addToSelection(roles, 'pick-role-options', 'role');
+};
 
 const controlLoadRoles = async function () {
   rolesView.renderSpinner('');
   const roles = await model.loadRoles();
+  // console.log("roles");
   // numberRoleView.addHandlerNumber(controlNumberRoles);
-  controlNumberRoles();
+  // controlNumberRoles();
   rolesView.render(roles);
+  numberRoleView.selectionUpdater('.roles-cart');
+  numberRoleView.addHandlerNumber(controlNumberRoles);
   // SHOW PERM WINDOW
   editRoleView.addHandlerShowWindow('.role');
   //on CLICK OF A ROLE : UPDATE PERM VIEW
@@ -321,32 +359,53 @@ const controlLoadRoles = async function () {
 };
 
 //ONCLICK OF A ROLE
-const controlEditRole = async function (event) {
+const controlEditRole = async function (
+  event,
+  usedRoleSelector = false,
+  selectorIndex = undefined
+) {
   if (event.target.type === 'checkbox') {
     return;
   }
-  const container = this;
-  const checkbox = container.querySelector('input[type="checkbox"]');
-  // console.log(this);
-  // if (event.target === checkbox) {
-  //   // Clicked on the checkbox, do nothing
-  //   return;
-  // }
+
   //Get the index of the clicked ROLE here
   const target = this;
-  const targetIndex = helpers.findNodeIndex(editRoleView._btnOpen, target);
+  let targetIndex = helpers.findNodeIndex(editRoleView._btnOpen, target);
+
+  if (usedRoleSelector) {
+    targetIndex = selectorIndex;
+  }
+
+  if (!usedRoleSelector) {
+    //update the roleSelector from backend
+    await controlEditRoleUpdateSelects();
+    //set its value to reflect clicked role
+    editPermsView.setSelector(targetIndex + 1);
+  }
+
+  //update state to reflect clicked role
   model.state.roles.selected = model.state.roles.all[targetIndex];
-  // editPermsView.renderSpinner();
-  await model.loadPerms(); // updates model.state.roles.allPermissions
+
+  editPermsView.renderSpinner();
+  // update model.state.roles.allPermissions from backend
+  await model.loadPerms();
+
+  //update state.roles.wellFormed
   model.organizePermissionsByGroup(model.state.roles.allPermissions);
+
   //Use it to extract the input data from the state object
   editPermsView.render(model.state.roles.wellFormed);
+
+  //reselect the perms checkboxes
   const checkboxes = editPermsView.updateThisCheckboxesPointers();
+
+  //update them to reflect currently selected role
   helpers.setCheckboxStates(
     checkboxes,
     helpers.checkSpecialArray(checkboxes, model.state.roles.selected.droits)
   );
 };
+
 //Add and Delete Perms from Roles on perm.Submit
 const controlUpdateRole = async function (changesObj) {
   console.log(model.state);
@@ -414,8 +473,14 @@ const controllers = [
   // controlLoadPerms,
 ];
 
+const controlRoleSwitch = (e, selectedIndex) => {
+  controlEditRole(e, true, selectedIndex - 1);
+  console.log(selectedIndex - 1);
+};
+
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
+editPermsView.addHandlerSwitch(controlRoleSwitch);
 sideView.addHandlerBtns(controllers);
 numberView.addHandlerMasterCheckbox(controlNumber);
 searchView.addHandlerSearch(controlSearchResults);
