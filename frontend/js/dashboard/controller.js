@@ -107,6 +107,15 @@ const controlNumberRoles = function () {
   numberRoleView.render(model.state);
 };
 
+const controlDeleteCancelBtns = function (checkboxes) {
+  let newStates = helpers.getCheckboxStates(checkboxes);
+  let oldState = helpers.checkSpecialArray(
+    checkboxes,
+    model.state.roles.selected.droits
+  );
+  return helpers.compareBooleanArrays(newStates, oldState);
+};
+
 const controlDeleteRoles = function (containerClass = '.results') {
   helpers
     .filterNodeList(
@@ -358,10 +367,10 @@ const controlLoadRoles = async function () {
   editRoleView.addHandlerEdit(controlEditRole);
 };
 const controlLoadPerms = async function () {
-  //update the roleSelector from backend
-  await controlEditRoleUpdateSelects();
   editPermsView.render('');
   editPermsView.setSelector(0);
+  //update the roleSelector from backend
+  await controlEditRoleUpdateSelects();
 };
 
 //ONCLICK OF A ROLE
@@ -401,9 +410,10 @@ const controlEditRole = async function (
 
   //Use it to extract the input data from the state object
   editPermsView.render(model.state.roles.wellFormed);
-
   //reselect the perms checkboxes
   const checkboxes = editPermsView.updateThisCheckboxesPointers();
+
+  editPermsView.addHandlerDeleteCancelBtns(controlDeleteCancelBtns);
 
   //update them to reflect currently selected role
   helpers.setCheckboxStates(

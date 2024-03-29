@@ -91,5 +91,24 @@ class EditPermsView extends EditUserView {
       handler(e, selectedValue);
     });
   }
+
+  addHandlerDeleteCancelBtns(fn) {
+    let newState = fn(this._checkboxes);
+    this._checkboxes.forEach(el =>
+      el.addEventListener('change', e => {
+        // console.log('CHANGED?', !newState);
+        newState = fn(this._checkboxes);
+        if (newState) {
+          document
+            .querySelector('.permissions-save-btns')
+            .classList.add('hidden');
+        } else {
+          document
+            .querySelector('.permissions-save-btns')
+            .classList.remove('hidden');
+        }
+      })
+    );
+  }
 }
 export default new EditPermsView();

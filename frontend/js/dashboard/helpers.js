@@ -312,7 +312,6 @@ export const setCheckboxStates = function (nodeList, booleanArray) {
 export const checkSpecialArray = function (nodeList, specialArray) {
   const result = [];
   nodeList.forEach(checkbox => {
-    // console.log(specialArray, checkbox.name);
     result.push(specialArray.includes(checkbox.name));
   });
   return result;
@@ -338,4 +337,10 @@ export const filterNodeList = function (nodeList, booleanArray) {
     }
   });
   return filteredArray;
+};
+export const compareBooleanArrays = function (array1, array2) {
+  return (
+    array1.length === array2.length &&
+    array1.every((value, index) => value === array2[index])
+  );
 };
