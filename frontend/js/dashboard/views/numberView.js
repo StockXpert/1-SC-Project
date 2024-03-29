@@ -1,6 +1,6 @@
 import View from './view.js';
 
-class NumberView extends View {
+export class NumberView extends View {
   _parentElement = document.querySelector('.heading-table-text');
   _table = document.querySelector('.results');
   _checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
@@ -41,7 +41,6 @@ class NumberView extends View {
   // };
 
   _generateMarkup() {
-    //TODO: displayed, change the Tout les utilisateurs dynamically
     return `
       <p class="table-text">
       

@@ -28,31 +28,33 @@ class SideView extends View {
     document.getElementById('main-table-bdc'),
   ];
 
-  addHandlerBtns(controllers, index = '') {
-    this.btns.forEach(el =>
-      el.addEventListener('click', async e => {
-        e.preventDefault();
-        const targeto = e.currentTarget;
-        // console.log(targeto.h3);
-        this.btns.forEach(btn => {
-          btn.classList.remove('active');
-        });
-        this.divs.forEach(btn => {
-          btn.classList.add('hidden');
-        });
-        this.divs[helpers.findNodeIndex(this.btns, targeto)].classList.remove(
-          'hidden'
-        );
-        targeto.classList.add('active');
-        console.log(controllers[helpers.findNodeIndex(this.btns, targeto)]);
-        await controllers[helpers.findNodeIndex(this.btns, targeto)]();
-      })
-    );
-    if (index !== '') {
+  addHandlerBtns(controllers, index = '', isDisplay = false) {
+    if (index !== '' && isDisplay) {
       this.divs.forEach(div => {
         div.classList.add('hidden');
       });
       this.divs[index].classList.remove('hidden');
+    } else {
+      this.btns.forEach(el =>
+        el.addEventListener('click', async e => {
+          e.preventDefault();
+          const targeto = e.currentTarget;
+          // console.log(targeto.h3);
+          this.btns.forEach(btn => {
+            btn.classList.remove('active');
+          });
+          this.divs.forEach(btn => {
+            btn.classList.add('hidden');
+          });
+          this.divs[helpers.findNodeIndex(this.btns, targeto)].classList.remove(
+            'hidden'
+          );
+          targeto.classList.add('active');
+          // console.log([helpers.findNodeIndex(this.btns, targeto)]);
+          console.log(controllers);
+          await controllers[helpers.findNodeIndex(this.btns, targeto)]();
+        })
+      );
     }
   }
 }

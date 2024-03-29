@@ -19,6 +19,7 @@ import rolesView from './views/roles/rolesView.js';
 import addRoleView from './views/roles/addRoleView.js';
 import editRoleView from './views/roles/editRoleView.js';
 import editPermsView from './views/roles/editPermsView.js';
+import numberRoleView from './views/roles/numberRoleView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -98,6 +99,12 @@ const controlNumber = function () {
   numberView._clear();
   model.state.displayed.selected = numberView.calculateCheckboxes();
   numberView.render(model.state);
+};
+
+const controlNumberRoles = function () {
+  numberRoleView._clear();
+  model.state.displayed.selectedRoles = numberRoleView.calculateCheckboxes();
+  numberRoleView.render(model.state.roles.all);
 };
 
 const controleSelectStructures = function () {
@@ -264,6 +271,7 @@ const userViewAdders = function () {
   numberView.selectionUpdater();
   // adds to each of them an EL.onclick that re-renders the selected-number-of-users amount (to keep up with the changes in the checkboxes)
   numberView.addHandlerNumber(controlNumber);
+  numberRoleView.addHandlerNumber(controlNumberRoles);
   //Re-Adds the eventListenner to the "Ajouter un User" btn:
   addUserView.addHandlerShowWindow('.add-users-btn', '.add-user-container');
   //Re-Adds the eventListenner to the "x" btn:
@@ -282,6 +290,7 @@ const userViewAdders = function () {
 
   //Updates the state of the masterCheeck box to match the searchResults
   numberView.updateMasterCheckbox();
+  controlNumberRoles();
 };
 
 // addUserView.addHandlerUpdateSelects(controlAddUserUpdateSelects);
@@ -302,7 +311,8 @@ const controlAddUserUpdateSelects = async function () {
 const controlLoadRoles = async function () {
   rolesView.renderSpinner('');
   const roles = await model.loadRoles();
-
+  // numberRoleView.addHandlerNumber(controlNumberRoles);
+  controlNumberRoles();
   rolesView.render(roles);
   // SHOW PERM WINDOW
   editRoleView.addHandlerShowWindow('.role');
@@ -311,12 +321,22 @@ const controlLoadRoles = async function () {
 };
 
 //ONCLICK OF A ROLE
-const controlEditRole = async function () {
+const controlEditRole = async function (event) {
+  if (event.target.type === 'checkbox') {
+    return;
+  }
+  const container = this;
+  const checkbox = container.querySelector('input[type="checkbox"]');
+  // console.log(this);
+  // if (event.target === checkbox) {
+  //   // Clicked on the checkbox, do nothing
+  //   return;
+  // }
   //Get the index of the clicked ROLE here
   const target = this;
   const targetIndex = helpers.findNodeIndex(editRoleView._btnOpen, target);
   model.state.roles.selected = model.state.roles.all[targetIndex];
-  editPermsView.renderSpinner();
+  // editPermsView.renderSpinner();
   await model.loadPerms(); // updates model.state.roles.allPermissions
   model.organizePermissionsByGroup(model.state.roles.allPermissions);
   //Use it to extract the input data from the state object
@@ -326,10 +346,6 @@ const controlEditRole = async function () {
     checkboxes,
     helpers.checkSpecialArray(checkboxes, model.state.roles.selected.droits)
   );
-  //on CLICK OF annuler: return to roles:
-  editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlLoadRoles);
-  // editPermsView.changeInputs(model.state.roles.selected.droits);
-  //
 };
 //Add and Delete Perms from Roles on perm.Submit
 const controlUpdateRole = async function (changesObj) {
@@ -407,9 +423,11 @@ searchView.addHandlerFilter(controlFilterring);
 addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
+editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlLoadRoles);
 
 controlShowUsersEmail();
 
+numberRoleView.addHandlerNumber(controlNumberRoles);
 AddStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);

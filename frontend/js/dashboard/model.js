@@ -47,6 +47,7 @@ export const state = {
     role: 'all',
     status: 'all',
     selected: 0,
+    selectedRoles: 0,
   },
   structures: {
     results: [],
