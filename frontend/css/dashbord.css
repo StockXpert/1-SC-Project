@@ -435,7 +435,8 @@ aside .sidebar a:hover span {
 .add-articles-btn:hover,
 .add-produits-btn:hover,
 .add-bdc-btn:hover,
-.print-bdc-btn:hover {
+.print-bdc-btn:hover,
+.add-btn-add-bdc:hover {
   background-color: #3963b5;
   /* transform: translateY(-2px); */
   transform: translateY(-2px);
@@ -446,7 +447,8 @@ aside .sidebar a:hover span {
 .add-articles-btn:active,
 .add-produits-btn:active,
 .add-bdc-btn:active,
-.print-bdc-btn:active {
+.print-bdc-btn:active,
+.add-btn-add-bdc:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -455,17 +457,26 @@ aside .sidebar a:hover span {
   display: flex;
   flex-direction: column;
 }
+.heading-table-add-bdc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.2rem;
+}
 .container-heading-table,
 .container-heading-table-roles,
-.container-heading-table-bdc {
+.container-heading-table-bdc,
+.container-heading-table-add-bdc {
   display: flex;
   justify-content: space-between;
 }
+
 .heading-table-btns,
 .heading-table-btns-chapitres,
 .heading-table-btns-articles,
 .heading-table-btns-produits,
-.heading-table-btns-bdc {
+.heading-table-btns-bdc,
+.heading-table-btns-add-bdc {
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -507,6 +518,15 @@ aside .sidebar a:hover span {
   background-color: white;
   transition: all 0.3s ease-in-out;
 }
+.add-btn-add-bdc {
+  color: white;
+  background: #477ce2;
+}
+.cancel-btn-add-bdc {
+  color: #000000;
+  background: white;
+  border: 1px solid #929292;
+}
 .btn-edit:hover,
 .btn-edit-chapitres:hover,
 .btn-edit-articles:hover {
@@ -514,9 +534,14 @@ aside .sidebar a:hover span {
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
+.cancel-btn-add-bdc:hover {
+  transform: translateY(-4px);
+  transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
 .btn-edit:active,
 .btn-edit-chapitres:active,
-.btn-edit-articles:active {
+.btn-edit-articles:active,
+.cancel-btn-add-bdc:hover {
   background-color: #e6e6e6;
   /* box-shadow: 0px 0px 16px rgba(0, 0, 0, 1); */
 }
@@ -553,12 +578,14 @@ aside .sidebar a:hover span {
 .heading-table-text-chapitres,
 .heading-table-text-articles,
 .heading-table-text-produits,
-.heading-table-text-bdc {
+.heading-table-text-bdc,
+.heading-table-text-add-bdc {
   display: flex;
   gap: 1rem;
 }
 .table-text,
-.table-text-bdc {
+.table-text-bdc,
+.table-text-add-bdc {
   font-size: 1rem;
   font-weight: 600;
   line-height: 3rem;
@@ -638,6 +665,17 @@ aside .sidebar a:hover span {
   box-shadow: 0px 2px 10px 0px #00000066;
   transition: all 0.3s ease;
 }
+.table-container-bdc-produits {
+  width: auto;
+  max-height: 49.6vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  box-shadow: 0px 2px 10px 0px #00000066;
+  transition: all 0.3s ease;
+}
+.table-container-bdc-produits table th {
+  width: 22rem;
+}
 
 table {
   width: 100%;
@@ -707,7 +745,8 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
-#checkbox-table-all {
+#checkbox-table-all,
+#checkbox-table-add-bdc {
   -webkit-appearance: none;
   appearance: none;
   width: 1.2rem;
@@ -718,7 +757,8 @@ table tbody tr:last-child td {
 #checkbox-table,
 #checkbox-table-chapitres,
 #checkbox-table-articles,
-#checkbox-table-produits {
+#checkbox-table-produits,
+#checkbox-table-bdc-add {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -751,7 +791,8 @@ table tbody tr:last-child td {
 .details-btn-structures,
 .details-btn-chapitres,
 .details-btn-articles,
-.details-btn-produits {
+.details-btn-produits,
+.details-btn-bdc-add {
   background-color: transparent;
   color: #4b4b4b;
   cursor: pointer;
@@ -774,12 +815,61 @@ table tbody tr:last-child td {
   line-height: 3rem;
   color: #000000;
 }
-.colomn-tags-name {
+.colomn-tags-name,
+.colomn-tags-name-bdc {
   /* width: 5rem; */
   padding: 0.4rem;
   font-size: 1.2rem;
   color: #4b4b4b;
   font-weight: 400;
+}
+.add-bdc-container {
+  color: #477ce2;
+}
+.add-product-bdc-container {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: calc(50% + 36rem);
+  /* left: 89.5%; */
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.input-product-bdc {
+  width: 15rem;
+  border: 1px solid #477ce2;
+  border-radius: 15px;
+  padding: 0.4rem;
+}
+.input-product-bdc input {
+  width: 100%;
+}
+.add-product-bdc-cart {
+  width: 18rem;
+  height: 19rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column !important;
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+  position: relative;
+  overflow: hidden;
+}
+.price-produit input {
+  width: 8rem;
+}
+.quantity-produit input {
+  width: 2rem;
+}
+.price-produit input::placeholder {
+  color: #477ce2;
+}
+.quantity-produit input::placeholder {
+  color: #4b4b4b;
 }
 .colomn-tags-name-permissions {
   padding: 0.2rem;
@@ -792,10 +882,14 @@ table tbody tr:last-child td {
 .checkbox-colomn-articles,
 .checkbox-colomn-produits,
 .checkbox-colomn-permissions,
-.checkbox-colomn-bdc {
+.checkbox-colomn-bdc,
+.checkbox-colomn-bdc-add {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  margin-left: 0.8rem;
+}
+.first-col {
   margin-left: 0.8rem;
 }
 .heading-permission-text {
@@ -1010,6 +1104,49 @@ table tbody tr:last-child td {
   transform: translate(-50%, -50%);
 }
 
+.big-container {
+  margin: 0 auto;
+}
+.add-product-bdc-cart {
+  display: flex;
+  gap: 1.6rem;
+  flex-direction: column;
+  padding: 0.6rem;
+}
+.inputs-add-product-bdc {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.btn-product-bdc {
+  display: flex;
+  gap: 1rem;
+}
+.btn-product-bdc button {
+  width: 6rem;
+  height: 2rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 20px;
+}
+.heading-add-product-bdc p {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #477ce2;
+}
+.input-changeble input {
+  /* width: 5rem; */
+  font-size: 1.2rem;
+  font-family: 'Poppins';
+  padding: 0.4rem;
+  background-color: transparent;
+  pointer-events: none;
+}
+
+.input-changeble input::placeholder {
+  /* color: #4b4b4b; */
+}
 .edit-user-cart {
   width: 53rem;
   margin: 0 auto;
@@ -1018,6 +1155,20 @@ table tbody tr:last-child td {
   gap: 2rem;
   align-items: center;
   padding: 0.6rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+  position: relative;
+  overflow: hidden;
+}
+.add-bdc-cart {
+  width: 53rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column !important;
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem;
   background-color: white;
   border-radius: 3rem;
   box-shadow: 0px 10px 10px 10px #00000040;
@@ -1662,10 +1813,52 @@ a.password-icon:active {
 .results,
 .results-chapitres,
 .results-articles,
-.results-produits {
+.results-produits,
+.results-bdc-produits {
   position: relative;
 }
+.container-select-bdc {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+  padding: 0.6rem;
+  align-items: center;
+}
 
+.dropbtn {
+  display: flex;
+  gap: 0.4rem;
+  width: auto;
+  height: 2.3rem;
+  padding: 0.2rem;
+}
+.btn-add-product {
+  display: flex;
+  align-items: center;
+  background-color: #477ce2;
+  border-radius: 15px;
+}
+.btn-add-product button {
+  width: 8rem;
+  height: 2.3rem;
+  padding: 0.4rem;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+}
+.btn-add-product span {
+  font-size: 1.2rem;
+  padding: 0.2rem;
+  color: white;
+  cursor: pointer;
+}
+.dropbtn select {
+  background-color: transparent;
+  color: #4b4b4b;
+}
+.dropbtn span {
+  font-size: 1.4rem;
+}
 .spinner {
   /* margin: 5rem 15rem; */
   align-self: center;
