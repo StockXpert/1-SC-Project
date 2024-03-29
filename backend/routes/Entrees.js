@@ -10,4 +10,7 @@ router.put('/updateQuantite',multer,authMiddleware('update quantite'),EntreeCont
 router.post('/cancelCommande',authMiddleware('cancel commande'),EntreeController.cancelCommande)
 router.get('/showCommandes',authMiddleware('show commandes'),EntreeController.showCommandes);
 router.put('/updateBonCommande',authMiddleware('update bon commande'),EntreeController.updateBonCommande)
+router.get('/showBonReception',authMiddleware('show bon reception'),EntreeController.showBonReception)
+router.get('showCommandeProducts',authMiddleware('show commande products'),EntreeController.showCommandeProducts)
+router.get('showBonReceptionProducts',authMiddleware('show bon reception products'),EntreeController.showBonReceptionProducts)
 module.exports=router;

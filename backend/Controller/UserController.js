@@ -267,7 +267,7 @@ async function addPermissions(req,res)
   const {role,permissions}=req.body;
   userModel.getRole(role).then((roleId)=>{
     userModel.insertRoleDroit(roleId,permissions).then(()=>{
-      res.status(500).json({response:"permissions added"})
+      res.status(200).json({response:"permissions added"})
     }).catch(()=>{res.status(500).json({response:"internal error"})})
   }).catch(()=>{res.status(500).json({response:"internal error"})})
 }

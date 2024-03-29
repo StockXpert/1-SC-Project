@@ -3,7 +3,6 @@ const googleMiddleware= require('../Middlewares/googleMiddleware');
 const EntreeModel= require('../Models/EntreeModel');
 const nomencaltureModel=require('../Models/NomenclatureModel')
 const numberWord=require('french-numbers-to-words');
-const { promises } = require('nodemailer/lib/xoauth2');
 function getDate()
 {
     const dateActuelle = new Date();
@@ -65,17 +64,17 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tv
             await googleMiddleware.updateCel(range,true,Id);
             let i = 22;
             for (const produit of produits) {
-                await googleMiddleware.addRow(i, produit,Id);
+                await googleMiddleware.addRow(i, produit,Id,'commande');
                 i++;
             }
-            await googleMiddleware.generatePDF(Id,`commande${num_commande}`);
+            await googleMiddleware.generatePDF(Id,`bonCommande`,`commande${num_commande}`);
             await googleMiddleware.updateCel(range,false,Id);
             await googleMiddleware.deleteRows(22,i-1,Id);
             const link=`BonCommande/commande${num_commande}.pdf`
             EntreeModel.insertLink(link,num_commande).then(()=>{
                 resolve(link)
             }).catch(()=>{reject("err")})
-        }).catch((err)=>{reject(err)})
+        }).catch((err)=>{console.log(err);reject(err)})
     })
 }
 function changeQuantite(numCommande,produits)
@@ -100,7 +99,7 @@ function uploadvalidity(numCommande)
         EntreeModel.checkValidity(numCommande).then((validity)=>{
             console.log({validity})
             if(validity==='valid')
-               EntreeModel.changeStatus('delivré',numCommande).then(()=>{resolve('quantite updated')}).catch(()=>{reject('internal error4')})
+               EntreeModel.changeStatus('delivrer',numCommande).then(()=>{resolve('quantite updated')}).catch(()=>{reject('internal error4')})
             else 
             EntreeModel.changeStatus('en cours',numCommande).then(()=>{resolve('quantite updated')}).catch((err)=>{console.log(err);reject(err)})   
         }).catch((err)=>{
@@ -146,20 +145,21 @@ function changeBonCommande(objet,fournisseur,deletedProducts,addedProducts,date,
     }
    })
 }
-function createReception(numCommande,produits,numFacture,numLivraison,bonLivraisonLink,factureLink,dateReception)
+function createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink)
 {
   return new Promise ((resolve,reject)=>{
-    EntreeModel.insertBonReception(numCommande, dateReception,bonLivraisonLink,factureLink,numFacture,numLivraison)
+    EntreeModel.insertBonReception(numCommande, dateReception,numFacture,numLivraison,bonLivraisonLink,factureLink)
     .then((numReception)=>{
         EntreeModel.insertLivre(numReception,produits).then(()=>{
             EntreeModel.getCommande(numCommande).then((commande)=>{
+                console.log(numCommande)
                 genererBonReception(produits,numCommande,commande.fournisseur,commande.date_commande,
                     dateReception,numReception,'1CkIm8C3xJloKITIqfm-LsfqMpiZSSrGk1TVG6tzI1_w').then(()=>{
                         resolve('bon reception created');
-                    }).catch(()=>{reject('internal error')})
-            }).catch(()=>{reject('internal error')})
-        }).catch(()=>{reject('internal error')})
-    }).catch(()=>{reject('internal error')})
+                    }).catch((err)=>{console.log(err);reject(err)})
+            }).catch((err)=>{console.log(err);reject(err)})
+        }).catch((err)=>{console.log(err);reject(err)})
+    }).catch((err)=>{console.log(err);reject(err)})
   })
 }
 async function genererBonReception(produits,numCommande,fournisseur,dateCommande,dateReception,numReception,Id)
@@ -168,12 +168,16 @@ async function genererBonReception(produits,numCommande,fournisseur,dateCommande
     await googleMiddleware.updateCel('A6',`Fournisseur: ${fournisseur}`,Id)
     await googleMiddleware.updateCel('C4',`N° ${numReception} Date ${dateReception}`,Id)
     await googleMiddleware.updateCel('A7',`N° du Bon de commande : ${numCommande}`,Id)
-    await googleMiddleware.updateCel('A7',`Date du Bon de Commande : ${dateCommande}`,Id)
+    await googleMiddleware.updateCel('D7',`Date du Bon de Commande : ${dateCommande}`,Id)
     let i = 11;
     for (const produit of produits) {
-        await googleMiddleware.addRow(i, produit,Id);
+        await googleMiddleware.addRow(i, produit,Id,'reception');
+        await googleMiddleware.addBorder(i,Id,0,1);
+        await googleMiddleware.addBorder(i,Id,1,5);
+        await googleMiddleware.addBorder(i,Id,5,6);
         i++;
     }
+    await googleMiddleware.generatePDF(Id,`BonReception`,`reception${numReception}`);
     await googleMiddleware.deleteRows(11,i-1,Id);
     const link=`BonReception/reception${numReception}.pdf`
     EntreeModel.insertLink(link,numReception).then(()=>{

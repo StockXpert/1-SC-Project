@@ -39,9 +39,9 @@ function insertBonReception(numCommande, date,livraisonLink,factureLink,numFactu
   return new Promise((resolve, reject) => {
       const connection = mysql.createConnection(connectionConfig);
       
-      const query = `INSERT INTO bon_de_commande (date_ajout, num_commande,link_livraison,
-         link_facture, num_facture,num_livraison,date_bon) 
-      values (now(),?,?,?,)
+      const query = `INSERT INTO bon_de_reception (date_ajout, num_commande,link_livraison,
+         link_facture, num_facture,num_livraison,date_reception) 
+      values (now(),?,?,?,?,?,?)
       `;
       const values = [numCommande,livraisonLink,factureLink,numFacture,numLivraison,date];
       connection.connect((err) => {
@@ -421,7 +421,7 @@ function getCommande(numCommande)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select b.num_commande,b.type,b.link,b.date_commande,b.etat,a.designation as objet,
+    const query = `select b.num_commande,b.type,b.link,DATE_FORMAT(b.date_commande, '%Y-%m-%d') as date_commande,b.etat,a.designation as objet,
                    f.raison_sociale as fournisseur from bon_de_commande b,fournisseur f,
                    article a where a.num_article=b.id_article and f.id_fournisseur=b.id_fournisseur and b.num_commande=? `;           
     connection.connect((err) => {
@@ -648,7 +648,86 @@ function deleteCommander(n_commande, produits) {
       });
   });
 }
+function getBonReception(numCommande)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select num_bon,date_bon,num_facture,num_livraison,link_livraison,link_facture from bon_de_reception
+                   where num_commande=? `;           
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,[numCommande],(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})  
+}
+function getBonReceptionProducts(numReception)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select p.designation ,l.quantite from livre l,produit p
+                   where l.num_reception=?,and p.id_produit=l.id_produit `;           
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,[numReception],(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})  
+}
+function getCommandeProducts(numReception)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select p.designation ,c.quantite from commande c,produit p
+                   where c.num_commande=?,and p.id_produit=c.id_produit `;           
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,[numReception],(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})  
+}
 module.exports={insertBonCommande,insertLink,getLink,insertCommander,canDeleteCommande,
                 deleteBonCommande,deleteCommande,cancelCommande,getCommandes
                 ,updateQuantiteCommande,updateQuantite,checkValidity,changeStatus,updateBonCommande,
-                deleteCommander,insertBonReception,insertLivre,insertBonReception,getCommande}
+                deleteCommander,insertBonReception,insertLivre,
+                insertBonReception,getCommande,getBonReception,getBonReceptionProducts,getCommandeProducts}
