@@ -31,7 +31,13 @@ class EditPermsView extends EditUserView {
   }
 
   _generateMarkup() {
-    //#add DONE
+    if (this._data === '')
+      return `
+    <div class="no-role-selected">
+      <p>Les Permissions s’afficherons ici !</p>
+      <p>Selectionnez un rôle pour afficher ses permissions</p>
+    </div>
+    `;
     const next = this._generateMarkupPreview;
     return this._data.map(next).join('');
   }

@@ -357,6 +357,12 @@ const controlLoadRoles = async function () {
   //on CLICK OF A ROLE : UPDATE PERM VIEW
   editRoleView.addHandlerEdit(controlEditRole);
 };
+const controlLoadPerms = async function () {
+  //update the roleSelector from backend
+  await controlEditRoleUpdateSelects();
+  editPermsView.render('');
+  editPermsView.setSelector(0);
+};
 
 //ONCLICK OF A ROLE
 const controlEditRole = async function (
@@ -470,7 +476,7 @@ const controllers = [
   controlSearchResults,
   controlLoadStructures,
   controlLoadRoles,
-  // controlLoadPerms,
+  controlLoadPerms,
 ];
 
 const controlRoleSwitch = (e, selectedIndex) => {
