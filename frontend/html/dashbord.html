@@ -572,22 +572,50 @@
                     <h1 class="heading-primary-roles">Directeur</h1>
                   </div>
                   <div class="text-permissions">
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
-                    <p>ajouter utilisateur</p>
-                    <p>supprimer utillisateur</p>
+                    <div class="groupe-role-container">
+                      <div class="groupe-role-title">
+                        <p>Utilisateur</p>
+                      </div>
+                      <div class="groupe-permissions">
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                      </div>
+                    </div>
+                    <div class="groupe-role-container">
+                      <div class="groupe-role-title">
+                        <p>Utilisateur</p>
+                      </div>
+                      <div class="groupe-permissions">
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                      </div>
+                    </div>
+                    <div class="groupe-role-container">
+                      <div class="groupe-role-title">
+                        <p>Utilisateur</p>
+                      </div>
+                      <div class="groupe-permissions">
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                      </div>
+                    </div>
+                    <div class="groupe-role-container">
+                      <div class="groupe-role-title">
+                        <p>Utilisateur</p>
+                      </div>
+                      <div class="groupe-permissions">
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                        <p>ajouter utilisateur</p>
+                        <p>supprimer utillisateur</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -1211,7 +1239,8 @@
                     <th>Article</th>
                     <th>Date</th>
                     <th>Statut</th>
-                    <th>Produits</th>
+                    <th class="view-bdc">Bon de commande</th>
+                    <th class="view-bdr hidden">Bon de reception</th>
                   </tr>
                 </thead>
                 <tbody class="results">
@@ -1227,9 +1256,14 @@
                     <td>21.11</td>
                     <td>21/12/2023</td>
                     <td><p class="status encour-status">En Cour</p></td>
-                    <td>
+                    <td class="td-view-bdc">
                       <button class="view-btc-btn">
-                        <p>Voir Produits</p>
+                        <p>Voir Bon de commande</p>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
                   </tr>
@@ -1247,11 +1281,14 @@
                     <td>21.11</td>
                     <td>21/12/2023</td>
                     <td><p class="status finish-status">Terminé</p></td>
-                    <td>
-                      <button class="details-btn">
-                        <button class="view-btc-btn">
-                          <p>Voir Produits</p>
-                        </button>
+                    <td class="td-view-bdc">
+                      <button class="view-btc-btn">
+                        <p>Voir Bon de commande</p>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
                   </tr>
@@ -1267,11 +1304,14 @@
                     <td>21.11</td>
                     <td>21/12/2023</td>
                     <td><p class="status canceled-status">Annulé</p></td>
-                    <td>
-                      <button class="details-btn">
-                        <button class="view-btc-btn">
-                          <p>Voir Produits</p>
-                        </button>
+                    <td class="td-view-bdc">
+                      <button class="view-btc-btn">
+                        <p>Voir Bon de commande</p>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
                   </tr>
@@ -2052,7 +2092,170 @@
         </div>
       </div>
       <!-- fin section pour ajouter un bdc  -->
+      <!-- debut seciton pour ajouter un bdr -->
+      <div class="big-container-bdr hidden">
+        <div class="add-bdr-container">
+          <div class="add-bdr-cart">
+            <div class="heading-table-add-bdr">
+              <div class="container-heading-table-add-bdr">
+                <div class="heading-table-text-add-bdr">
+                  <p class="table-text-add-bdr">
+                    Tout les Bons de Receptions (<b class="number-users">245</b
+                    >)
+                  </p>
+                  <p class="table-text-add-bdr">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns-add-bdr">
+                  <button
+                    class="heading-table-btn-bdr btn-delete btn-delete-bdr"
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    class="heading-table-btn-bdr add-users-btn btn-print-bdr"
+                  >
+                    Imprimer
+                  </button>
+                  <button
+                    class="heading-table-btn-bdr add-users-btn btn-add-bdr"
+                  >
+                    Ajouter un Bon
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-bdr-produits">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Magasinier</th>
+                    <th>Date de Réception</th>
+                    <th>Bon de livraison</th>
+                    <th>Bon de Facture</th>
+                    <th>Informations</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdr-produits">
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdr-add"
+                        />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
 
+                    <td>14/04/2008</td>
+                    <td class="td-view-bdl">
+                      <button class="view-bdl-btn">
+                        <p>Voir Bon de livraison</p>
+                      </button>
+                    </td>
+                    <td class="td-view-fac">
+                      <button class="view-fac-btn">
+                        <p>Voir Facture</p>
+                      </button>
+                    </td>
+                    <td>
+                      <button class="details-btn-bdr-add">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdr-add"
+                        />
+                        <p class="colomn-tags-name-bdr">1</p>
+                      </div>
+                    </td>
+                    <td>Oussama Manini</td>
+
+                    <td>12/02/2024</td>
+                    <td class="td-view-bdl">
+                      <button class="view-bdl-btn">
+                        <p>Voir Bon de livraison</p>
+                      </button>
+                    </td>
+                    <td class="td-view-fac">
+                      <button class="view-fac-btn">
+                        <p>Voir Facture</p>
+                      </button>
+                    </td>
+                    <td>
+                      <button class="details-btn-bdr-add">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdr-add"
+                        />
+                        <p class="colomn-tags-name-bdr">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit">
+                      <input type="text" placeholder="8" />
+                    </td>
+                    <td class="td-view-bdl">
+                      <button class="view-bdl-btn">
+                        <p>Voir Bon de livraison</p>
+                      </button>
+                    </td>
+                    <td class="td-view-fac">
+                      <button class="view-fac-btn">
+                        <p>Voir Facture</p>
+                      </button>
+                    </td>
+                    <td>
+                      <button class="details-btn-bdr-add">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin seciton pour ajouter un bdr -->
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
