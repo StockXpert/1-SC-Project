@@ -36,8 +36,9 @@
         </div>
         <div class="sidebar">
           <a href="" class="sidebar-btns dashbord-btn">
-            <span class="material-icons-sharp"> dashboard </span>
-            <h3>Dashboard</h3>
+            <span class="material-icons-sharp"> account_circle </span>
+
+            <h3>Mon Profile</h3>
           </a>
           <a href="" class="sidebar-btns active utilisateurs utilisateurs-btn">
             <span class="material-icons-sharp"> person_outline</span>
@@ -119,6 +120,172 @@
             </div>
           </div>
         </div>
+        <!------ debut de default page : 0 - profile tables----- -->
+        <div class="main-default-table hidden" id="main-profile-table">
+          <div class="heading-default">
+            <h1>Mon Profile</h1>
+            <hr class="line-style" />
+          </div>
+          <form class="inputs-profile">
+            <div class="groupe-5-profile">
+              <p>Vos Informations</p>
+            </div>
+            <div class="groupe-4-profile">
+              <div
+                class="main-input-groupe-profile type-consumer-profile hidden"
+              >
+                <div class="input-text-profile">
+                  <p>Type:</p>
+                </div>
+                <div class="input-groupe-profile input-profile-type">
+                  <input
+                    name="type"
+                    type="text"
+                    class="input name input-profile-type"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="Enseignant"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            <div class="groupe-1-profile">
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Nom:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="nom"
+                    type="text"
+                    class="input name input-profile-name"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="BAGHDADLI"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Statut:</p>
+                </div>
+                <div class="input-groupe-profile input-profile-statut">
+                  <input
+                    name="status"
+                    type="text"
+                    class="input name input-profile-status"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="active"
+                  />
+                  <span class="material-icons-sharp input-icon status-on">
+                    check_circle_outline
+                  </span>
+                  <span
+                    class="material-icons-sharp input-icon status-off hidden"
+                  >
+                    highlight_off
+                  </span>
+                </div>
+              </div>
+              <div class="main-input-groupe-profile">
+                <div class="input-text">
+                  <p>Rôle:</p>
+                </div>
+                <div class="input-groupe-profile input-profile-role">
+                  <input
+                    name="role"
+                    type="text"
+                    class="input name input-profile-role"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="Magasinier"
+                  />
+                  <span class="material-icons-sharp input-icon">
+                    work_outline
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="groupe-2-profile">
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Prénom:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="prenom"
+                    type="text"
+                    class="input name input-profile-prenom"
+                    placeholder="Prénom"
+                    value="Abdelhadi"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Date de naissance:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="date_naissance"
+                    type="date"
+                    class="input input-profile-date"
+                    id="profile-date"
+                    placeholder="Entrez la date de naissance"
+                    value="2004-04-19"
+                  />
+                  <ion-icon
+                    class="input-icon"
+                    name="calendar-number-outline"
+                  ></ion-icon>
+                </div>
+              </div>
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Structure:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="structure"
+                    type="text"
+                    class="input input-profile-structure"
+                    id="profile-structure"
+                    placeholder="Entrez la date de naissance"
+                    value="Classe préparatoire"
+                  />
+                  <ion-icon class="input-icon" name="school-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            <div class="groupe-3-profile">
+              <div
+                class="main-input-groupe-profile main-input-groupe-3-profile"
+              >
+                <div class="input-text-profile">
+                  <p>Email:</p>
+                </div>
+                <div class="input-groupe-3-profile">
+                  <input
+                    name="email"
+                    type="email"
+                    class="input email-profile"
+                    required
+                    autocomplete="email"
+                    value="a.baghdadli@esi-sba.dz"
+                  />
+                  <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!------ fin de default page : 0 - profile tables----- -->
+
         <!------ debut de content for Admin : 1 - Users tables----- -->
         <div class="main-table" id="main-table-users">
           <div class="heading">
