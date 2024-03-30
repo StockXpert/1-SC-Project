@@ -20,6 +20,7 @@ import addRoleView from './views/roles/addRoleView.js';
 import editRoleView from './views/roles/editRoleView.js';
 import editPermsView from './views/roles/editPermsView.js';
 import numberRoleView from './views/roles/numberRoleView.js';
+import deleteStructureView from './views/deleteStructureView.js';
 
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
@@ -164,6 +165,7 @@ const controlLoadStructures = async function () {
     editStructureView.addHandlerShowWindow();
     editStructureView.addHandlerHideWindow();
     editStructureView.addHandlerEdit(controlEditStructure);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
   } catch (error) {
     console.error(error);
   }
@@ -265,15 +267,6 @@ const controlDeleteUsers = function (containerClass = '.results') {
   //   });
   //   return checkboxStates;
   // }
-  function filterArrayByBooleans(dataArray, booleanArray) {
-    const filteredArray = [];
-    for (let i = 0; i < dataArray.length; i++) {
-      if (booleanArray[i]) {
-        filteredArray.push(dataArray[i]);
-      }
-    }
-    return filteredArray;
-  }
 
   filterArrayByBooleans(
     model.state.search.queryResults,
@@ -476,6 +469,33 @@ const controlAddRole = async function (newRole) {
   }
 };
 
+const controlDeleteStructure = function () {
+  filterArrayByBooleans(
+    model.state.structures.results,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.table-structures')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
+    await model.deleteStructure(el);
+    // back to main menu
+    await controlLoadStructures();
+  });
+};
+
+function filterArrayByBooleans(dataArray, booleanArray) {
+  const filteredArray = [];
+  for (let i = 0; i < dataArray.length; i++) {
+    if (booleanArray[i]) {
+      filteredArray.push(dataArray[i]);
+    }
+  }
+  return filteredArray;
+}
+
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
@@ -515,3 +535,4 @@ numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
 
 // editStructureView.addHandlerShowWindow();
 // editStructureView.addHandlerEdit(controlEditStructure);
+deleteStructureView.addDeleteController(controlDeleteStructure);
