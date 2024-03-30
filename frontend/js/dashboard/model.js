@@ -273,7 +273,8 @@ export const getResponsiblesEmail = async function () {
 
     return data.response
       .filter(
-        user => user.role === 'Admin' || user.role === 'Administrateur System'
+        user =>
+          user.role !== 'Consommateur' || user.role !== 'Administrateur System'
       )
       .map(user => {
         return {
@@ -483,3 +484,12 @@ export const delPermsFromRole = async function (perms, role) {
 
 // const organizedPermissions = organizePermissionsByGroup(permissions);
 // console.log(organizedPermissions);
+
+export const deleteStructure = async function (structure) {
+  try {
+    const uploadData = { structure: structure.designation };
+    await helpers.delJSON(`${API_URL}/Users/deleteStructure`, uploadData);
+  } catch (error) {
+    console.error(error);
+  }
+};
