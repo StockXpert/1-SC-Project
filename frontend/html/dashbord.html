@@ -2092,22 +2092,22 @@
         </div>
       </div>
       <!-- fin section pour ajouter un bdc  -->
-      <!-- debut seciton pour ajouter un bdr -->
+      <!-- debut seciton pour voir tt les bdr -->
       <div class="big-container-bdr hidden">
-        <div class="add-bdr-container">
-          <div class="add-bdr-cart">
-            <div class="heading-table-add-bdr">
-              <div class="container-heading-table-add-bdr">
-                <div class="heading-table-text-add-bdr">
-                  <p class="table-text-add-bdr">
+        <div class="show-bdr-container">
+          <div class="show-bdr-cart">
+            <div class="heading-table-show-bdr">
+              <div class="container-heading-table-show-bdr">
+                <div class="heading-table-text-show-bdr">
+                  <p class="table-text-show-bdr">
                     Tout les Bons de Receptions (<b class="number-users">245</b
                     >)
                   </p>
-                  <p class="table-text-add-bdr">
+                  <p class="table-text-show-bdr">
                     Selectionnés (<b class="number-users">245</b>)
                   </p>
                 </div>
-                <div class="heading-table-btns-add-bdr">
+                <div class="heading-table-btns-show-bdr">
                   <button
                     class="heading-table-btn-bdr btn-delete btn-delete-bdr"
                   >
@@ -2129,7 +2129,7 @@
                 <hr class="line-style-table" />
               </div>
             </div>
-            <div class="table-container-bdr-produits">
+            <div class="table-container-show-bdr">
               <table>
                 <thead>
                   <tr>
@@ -2141,18 +2141,18 @@
                     <th>Magasinier</th>
                     <th>Date de Réception</th>
                     <th>Bon de livraison</th>
-                    <th>Bon de Facture</th>
+                    <th>Facture</th>
                     <th>Informations</th>
                   </tr>
                 </thead>
-                <tbody class="results-bdr-produits">
+                <tbody class="results-bdrs">
                   <tr>
                     <td>
-                      <div class="checkbox-colomn-bdr-add">
+                      <div class="checkbox-colomn-bdr-show">
                         <input
                           class=""
                           type="checkbox"
-                          id="checkbox-table-bdr-add"
+                          id="checkbox-table-bdr-show"
                         />
                         <p class="colomn-tags-name-bdc">1</p>
                       </div>
@@ -2171,7 +2171,7 @@
                       </button>
                     </td>
                     <td>
-                      <button class="details-btn-bdr-add">
+                      <button class="details-btn-bdr-show">
                         <span class="material-icons-sharp info-icon">
                           info
                         </span>
@@ -2183,18 +2183,18 @@
                   <tr class="selected-row">
                     <!--ajoute selected-row for selected lines-->
                     <td>
-                      <div class="checkbox-colomn-bdr-add">
+                      <div class="checkbox-colomn-bdr-show">
                         <input
                           class=""
                           type="checkbox"
-                          id="checkbox-table-bdr-add"
+                          id="checkbox-table-bdr-show"
                         />
-                        <p class="colomn-tags-name-bdr">1</p>
+                        <p class="colomn-tags-name-bdc">1</p>
                       </div>
                     </td>
-                    <td>Oussama Manini</td>
+                    <td>Pc dell xps</td>
 
-                    <td>12/02/2024</td>
+                    <td>14/04/2008</td>
                     <td class="td-view-bdl">
                       <button class="view-bdl-btn">
                         <p>Voir Bon de livraison</p>
@@ -2206,7 +2206,7 @@
                       </button>
                     </td>
                     <td>
-                      <button class="details-btn-bdr-add">
+                      <button class="details-btn-bdr-show">
                         <span class="material-icons-sharp info-icon">
                           info
                         </span>
@@ -2215,20 +2215,18 @@
                   </tr>
                   <tr>
                     <td>
-                      <div class="checkbox-colomn-bdr-add">
+                      <div class="checkbox-colomn-bdr-show">
                         <input
                           class=""
                           type="checkbox"
-                          id="checkbox-table-bdr-add"
+                          id="checkbox-table-bdr-show"
                         />
-                        <p class="colomn-tags-name-bdr">1</p>
+                        <p class="colomn-tags-name-bdc">1</p>
                       </div>
                     </td>
                     <td>Pc dell xps</td>
 
-                    <td class="input-changeble quantity-produit">
-                      <input type="text" placeholder="8" />
-                    </td>
+                    <td>14/04/2008</td>
                     <td class="td-view-bdl">
                       <button class="view-bdl-btn">
                         <p>Voir Bon de livraison</p>
@@ -2240,7 +2238,7 @@
                       </button>
                     </td>
                     <td>
-                      <button class="details-btn-bdr-add">
+                      <button class="details-btn-bdr-show">
                         <span class="material-icons-sharp info-icon">
                           info
                         </span>
@@ -2255,7 +2253,138 @@
           </div>
         </div>
       </div>
-      <!-- fin seciton pour ajouter un bdr -->
+      <!-- fin seciton pour voir tt les bdr -->
+      <!-- debut section pour add un nv bdr -->
+      <div class="big-container-bdr-add hidden">
+        <div class="add-bdr-container">
+          <div class="add-bdr-cart">
+            <div class="heading-table-add-bdr">
+              <div class="container-heading-table-add-bdr">
+                <div class="heading-table-text-add-bdr">
+                  <p class="table-text-add-bdr">
+                    Tout les Produits (<b class="number-users">245</b>)
+                  </p>
+                  <!-- <p class="table-text-add-bdr">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p> -->
+                </div>
+                <div class="container-fac-bon">
+                  <div class="heading-table-file-add-1-bdr">
+                    <p>Entez le Bon de Livraison :</p>
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      title="Sélectionner une facture"
+                    />
+                  </div>
+                  <div class="heading-table-file-add-2-bdr">
+                    <p>Entez la Facture :</p>
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      title="Sélectionner une facture"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-add-bdr">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Designation</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                    <th>Qt Recue</th>
+                    <th>Reste a Livrer</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdr-produits">
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <p class="colomn-tags-name-bdr-qt">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14</td>
+                    <td class="blue-price">72.000 Da</td>
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="red-reste">32</td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <p class="colomn-tags-name-bdr-qt">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14</td>
+                    <td class="blue-price">72.000 Da</td>
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="red-reste">32</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <p class="colomn-tags-name-bdr-qt">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14</td>
+                    <td class="blue-price">72.000 Da</td>
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="red-reste">32</td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-add-bdr">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdc btn-add-bdr-qt"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdr add-users-btn btn-save-bdr-qt"
+              >
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin section pour add un nv bdr -->
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
