@@ -476,6 +476,10 @@ aside .sidebar a:hover span {
   display: flex;
   justify-content: space-between;
 }
+.heading-table-text-add-bdc {
+  display: flex;
+  gap: 1rem;
+}
 
 .heading-table-btns,
 .heading-table-btns-chapitres,
@@ -636,7 +640,8 @@ aside .sidebar a:hover span {
 }
 .table-text,
 .table-text-bdc,
-.table-text-add-bdc .table-text-show-bdr {
+.table-text-add-bdc,
+.table-text-show-bdr {
   font-size: 1rem;
   font-weight: 600;
   line-height: 3rem;
@@ -995,6 +1000,7 @@ table tbody tr:last-child td {
 .checkbox-colomn-produits,
 .checkbox-colomn-permissions,
 .checkbox-colomn-bdc,
+.checkbox-colomn-bdc-add,
 .checkbox-colomn-bdr-add,
 .checkbox-colomn-bdr-show {
   display: flex;
