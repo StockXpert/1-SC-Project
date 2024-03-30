@@ -1847,6 +1847,7 @@ a.password-icon:active {
 }
 .inputs-profile {
   height: auto;
+  width: auto;
   background-color: white;
   border-radius: 20px;
   padding: 1.8rem;
@@ -1897,7 +1898,7 @@ a.password-icon:active {
   transition: all 0.3s ease;
 }
 .input-groupe-profile {
-  width: 35rem;
+  width: 32vw;
   display: flex;
   padding: 0.1rem;
   justify-content: space-between;
