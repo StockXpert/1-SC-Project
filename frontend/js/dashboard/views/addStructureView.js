@@ -57,6 +57,8 @@ class addStructureView extends View {
   // }
 
   _generateMarkup() {}
+
+  _restricted = [[this._btnOpen, 'add structure'], 'none'];
 }
 
 export default new addStructureView();

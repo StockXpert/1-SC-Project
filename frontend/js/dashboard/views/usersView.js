@@ -43,6 +43,6 @@ export class UsersView extends View {
     </tr>
     `;
   }
-  _restricted = [[this._parentElement, 'show users'], 'none'];
+  _restricted = [, 'none'];
 }
 export default new UsersView();

@@ -83,8 +83,8 @@ export default class View {
   restrict(perms) {
     this._restricted.forEach(btnNPerm => {
       if (btnNPerm != 'none') {
-        // console.log(btnNPerm);
-        if (perms.all.includes(btnNPerm[1])) {
+        console.log(btnNPerm);
+        if (perms.includes(btnNPerm[1])) {
           btnNPerm[0].classList.remove('hidden');
         } else {
           btnNPerm[0].classList.add('hidden');

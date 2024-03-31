@@ -50,21 +50,22 @@ await controlUpdateMyPerms();
 const controlSearchResults = async function () {
   try {
     usersView.renderSpinner('');
-    deleteUserView.restrict(model.state.me.permissions);
-    addUserView.restrict(model.state.me.permissions);
-    usersView.restrict(model.state.me.permissions);
+    deleteUserView.restrict(model.state.me.permissions.all);
+    addUserView.restrict(model.state.me.permissions.all);
+    usersView.restrict(model.state.me.permissions.all);
+    numberView._clear();
     await model.loadSearchResults();
+    numberView.addHandlerNumber(controlNumber);
     searchView.addHandlerSearchV2(controlFuzzySearch);
     usersView.render(
       model.state.search.results,
       true,
       model.state.me.permissions.all
     );
-    editUserView.restrict(model.state.me.permissions);
+    editUserView.restrict(model.state.me.permissions.all);
     controlAddUserUpdateSelects();
     userViewAdders();
     // D Y N A M I C   S E A R C H   A C T I V A T I O N :
-    numberView.addHandlerNumber(controlNumber);
     return;
   } catch (err) {
     console.error(err);
@@ -182,10 +183,18 @@ const controleSelectStructures = function () {
 
 const controlLoadStructures = async function () {
   try {
+    structuresView.restrict(model.state.me.permissions.all);
+    AddStructureView.restrict(model.state.me.permissions.all);
     structuresView.renderSpinner('Loading Structures');
     await model.loadStructures();
-    console.log('LOADED !');
-    structuresView.render(model.state.structures.results);
+    const emails = await model.getResponsiblesEmail();
+    AddStructureView.addToSelection(emails, 'search-responsable');
+    editStructureView.addToSelection(emails, 'search-structure-edit');
+    structuresView.render(
+      model.state.structures.results,
+      true,
+      model.state.me.permissions
+    );
     numberStructuresView.render(model.state.structures);
     numberStructuresView.updateMasterCheckbox();
     numberStructuresView.addHandlerNumber(controleSelectStructures);
@@ -579,7 +588,6 @@ addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
 editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
-// editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlLoadRoles);
 
 // controlShowUsersEmail();
 
@@ -589,5 +597,5 @@ numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
 
 // editStructureView.addHandlerShowWindow();
-// editStructureView.addHandlerEdit(controlEditStructure);
+editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
