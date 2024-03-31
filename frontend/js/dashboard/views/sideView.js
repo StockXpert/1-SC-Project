@@ -18,7 +18,7 @@ class SideView extends View {
     document.querySelector('.bon-de-commandes-btn'),
   ];
   divs = [
-    ,
+    document.getElementById('main-profile-table'),
     document.getElementById('main-table-users'),
     document.getElementById('main-table-structures'),
     document.getElementById('main-table-roles'),

@@ -2150,3 +2150,7 @@ a.password-icon:active {
     transform: rotate(360deg);
   }
 }
+
+.sidebar {
+  overflow: hidden;
+}

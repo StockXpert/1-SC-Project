@@ -111,11 +111,11 @@ export const PERM_NAMES = {
 };
 
 export const GROUP_BTNS = {
-  'Par Defaut': `<a href="" class="sidebar-btns dashbord-btn" name="Par Defaut">
+  'Par Defaut': `<a href="" class="sidebar-btns dashbord-btn active " name="Par Defaut">
   <span class="material-icons-sharp"> dashboard </span>
   <h3>Dashboard</h3>
 </a>`,
-  Utilisateurs: `<a href="" class="sidebar-btns active utilisateurs utilisateurs-btn" name="Utilisateurs">
+  Utilisateurs: `<a href="" class="sidebar-btns utilisateurs utilisateurs-btn" name="Utilisateurs">
   <span class="material-icons-sharp"> person_outline</span>
   <h3>Utilisateurs</h3>
 </a>`,
