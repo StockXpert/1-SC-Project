@@ -62,11 +62,11 @@ function showCommandes(req,res)
 function updateQuantite(req,res)
 {
    const {numCommande,produits,numFacture,numLivraison,dateReception}=req.body;
-   /*const bonLivraisonLink = req.files['bonLivraison'][0].originalname;
-   const factureLink = req.files['facture'][0].originalname;*/
+   const bonLivraisonLink = req.files['bonLivraison'][0].originalname;
+   const factureLink = req.files['facture'][0].originalname;
    EntreeService.changeQuantite(numCommande,produits).then((response)=>{
       EntreeService.uploadvalidity(numCommande).then((response)=>{
-          EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception).then((response)=>{
+          EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink).then((response)=>{
             res.status(200).json({response})
           }).catch((response)=>res.status(500).json({response}))
       })
@@ -111,14 +111,14 @@ function showCommandeProducts(req,res)
 }
 function updateReception(req,res)
 {
-   let {numCommande,numReception,deletedProducts,addedProducts,numLivraison,numFacture}=req.body;
+   let {numCommande,numReception,deletedProducts,addedProducts,numLivraison,numFacture,dateReception}=req.body;
    if(!deletedProducts)deletedProducts=1;
    EntreeService.restoreQuantite(numReception,numCommande,deletedProducts).then(()=>{
       EntreeModel.insertLivre(numReception,addedProducts).then(()=>{
          EntreeService.changeQuantite(numCommande,addedProducts).then(()=>{
             EntreeService.uploadvalidity(numCommande).then(()=>{
 
-               if(numFacture||numLivraison)
+               if(numFacture||numLivraison||dateReception)
          {
             EntreeModel.updateReception(numReception,numLivraison,numFacture).then(()=>{
                res.status(200).json({response:'Reception updated'})

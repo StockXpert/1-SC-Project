@@ -805,16 +805,19 @@ function getCommandeProducts(numReception)
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });})  
 }
-function updateReception(numReception,numLivraison,numFacture)
+function updateReception(numReception,numLivraison,numFacture,dateReception)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query = `update bon_de_reception set ${numLivraison?'num_livraison=?':''}
                   ${(numLivraison&&numFacture)?',':''} ${numFacture?'num_facture=?':''} 
+                  ${((numLivraison&&dateReception)||(numFacture&&dateReception))?',':''}
+                  ${dateReception?'date_reception=?':''}
                   where num_bon=?` ;
     const values=[]
     if(numLivraison) values.push(numLivraison);
-    if(numFacture) values.push(numFacture)
+    if(numFacture) values.push(numFacture);
+    if(dateReception) values.push(dateReception)
     values.push(numReception)
     connection.connect((err) => {
       if (err) {
