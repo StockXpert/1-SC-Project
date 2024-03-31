@@ -61,8 +61,14 @@ class EditStructureView extends View {
     // console.log('🚀 ~ EditStructureView ~ changeInputs ~ formData:', formData);
     formElement.querySelector('#name-structure-edit').value =
       inputValuesObj.designation;
-    formElement.querySelector('#search-structure-edit').value =
-      inputValuesObj.responsible;
+    const options = formElement.querySelector('#search-structure-edit').options;
+    for (let i = 0; i < options.length; i++) {
+      console.log(options[i].innerText, inputValuesObj.responsible);
+      if (options[i].innerText === inputValuesObj.responsible) {
+        options[i].selected = true;
+        return;
+      }
+    }
   }
 
   addHandlerUpdate(controller) {

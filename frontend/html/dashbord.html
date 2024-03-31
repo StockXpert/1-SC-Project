@@ -36,8 +36,9 @@
         </div>
         <div class="sidebar">
           <a href="" class="sidebar-btns dashbord-btn">
-            <span class="material-icons-sharp"> dashboard </span>
-            <h3>Dashboard</h3>
+            <span class="material-icons-sharp"> account_circle </span>
+
+            <h3>Mon Profile</h3>
           </a>
           <a
             href=""
@@ -127,8 +128,174 @@
             </div>
           </div>
         </div>
+        <!------ debut de default page : 0 - profile tables----- -->
+        <div class="main-default-table" id="main-profile-table">
+          <div class="heading-default">
+            <h1>Mon Profile</h1>
+            <hr class="line-style" />
+          </div>
+          <form class="inputs-profile">
+            <div class="groupe-5-profile">
+              <p>Vos Informations</p>
+            </div>
+            <div class="groupe-4-profile">
+              <div
+                class="main-input-groupe-profile type-consumer-profile hidden"
+              >
+                <div class="input-text-profile">
+                  <p>Type:</p>
+                </div>
+                <div class="input-groupe-profile input-profile-type">
+                  <input
+                    name="type"
+                    type="text"
+                    class="input name input-profile-type"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="Enseignant"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            <div class="groupe-1-profile">
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Nom:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="nom"
+                    type="text"
+                    class="input name input-profile-name"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="BAGHDADLI"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Statut:</p>
+                </div>
+                <div class="input-groupe-profile input-profile-statut">
+                  <input
+                    name="status"
+                    type="text"
+                    class="input name input-profile-status"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="active"
+                  />
+                  <span class="material-icons-sharp input-icon status-on">
+                    check_circle_outline
+                  </span>
+                  <span
+                    class="material-icons-sharp input-icon status-off hidden"
+                  >
+                    highlight_off
+                  </span>
+                </div>
+              </div>
+              <div class="main-input-groupe-profile">
+                <div class="input-text">
+                  <p>Rôle:</p>
+                </div>
+                <div class="input-groupe-profile input-profile-role">
+                  <input
+                    name="role"
+                    type="text"
+                    class="input name input-profile-role"
+                    autocomplete="name"
+                    placeholder="Nom"
+                    value="Magasinier"
+                  />
+                  <span class="material-icons-sharp input-icon">
+                    work_outline
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="groupe-2-profile">
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Prénom:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="prenom"
+                    type="text"
+                    class="input name input-profile-prenom"
+                    placeholder="Prénom"
+                    value="Abdelhadi"
+                  />
+                  <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                </div>
+              </div>
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Date de naissance:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="date_naissance"
+                    type="date"
+                    class="input input-profile-date"
+                    id="profile-date"
+                    placeholder="Entrez la date de naissance"
+                    value="2004-04-19"
+                  />
+                  <ion-icon
+                    class="input-icon"
+                    name="calendar-number-outline"
+                  ></ion-icon>
+                </div>
+              </div>
+              <div class="main-input-groupe-profile">
+                <div class="input-text-profile">
+                  <p>Structure:</p>
+                </div>
+                <div class="input-groupe-profile">
+                  <input
+                    name="structure"
+                    type="text"
+                    class="input input-profile-structure"
+                    id="profile-structure"
+                    placeholder="Entrez la date de naissance"
+                    value="Classe préparatoire"
+                  />
+                  <ion-icon class="input-icon" name="school-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            <div class="groupe-3-profile">
+              <div
+                class="main-input-groupe-profile main-input-groupe-3-profile"
+              >
+                <div class="input-text-profile">
+                  <p>Email:</p>
+                </div>
+                <div class="input-groupe-3-profile">
+                  <input
+                    name="email"
+                    type="email"
+                    class="input email-profile"
+                    required
+                    autocomplete="email"
+                    value="a.baghdadli@esi-sba.dz"
+                  />
+                  <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!------ fin de default page : 0 - profile tables----- -->
+
         <!------ debut de content for Admin : 1 - Users tables----- -->
-        <div class="main-table" id="main-table-users">
+        <div class="main-table hidden" id="main-table-users">
           <div class="heading">
             <h1>Utilisateurs</h1>
             <hr class="line-style" />
@@ -1254,7 +1421,8 @@
                     <th>Article</th>
                     <th>Date</th>
                     <th>Statut</th>
-                    <th>Produits</th>
+                    <th class="view-bdc">Bon de commande</th>
+                    <th class="view-bdr hidden">Bon de reception</th>
                   </tr>
                 </thead>
                 <tbody class="results">
@@ -1270,9 +1438,14 @@
                     <td>21.11</td>
                     <td>21/12/2023</td>
                     <td><p class="status encour-status">En Cour</p></td>
-                    <td>
+                    <td class="td-view-bdc">
                       <button class="view-btc-btn">
-                        <p>Voir Produits</p>
+                        <p>Voir Bon de commande</p>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
                   </tr>
@@ -1290,11 +1463,14 @@
                     <td>21.11</td>
                     <td>21/12/2023</td>
                     <td><p class="status finish-status">Terminé</p></td>
-                    <td>
-                      <button class="details-btn">
-                        <button class="view-btc-btn">
-                          <p>Voir Produits</p>
-                        </button>
+                    <td class="td-view-bdc">
+                      <button class="view-btc-btn">
+                        <p>Voir Bon de commande</p>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
                   </tr>
@@ -1310,11 +1486,14 @@
                     <td>21.11</td>
                     <td>21/12/2023</td>
                     <td><p class="status canceled-status">Annulé</p></td>
-                    <td>
-                      <button class="details-btn">
-                        <button class="view-btc-btn">
-                          <p>Voir Produits</p>
-                        </button>
+                    <td class="td-view-bdc">
+                      <button class="view-btc-btn">
+                        <p>Voir Bon de commande</p>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
                   </tr>
@@ -1814,7 +1993,7 @@
       </div>
       <!-- fin section for supprimer user -->
       <!-- debut section pour supprimer structure  -->
-      <div class="container-supp-user hidden">
+      <div class="container-supp-structure hidden">
         <form class="supp-user-cart">
           <p class="supp-user-text">
             Êtes-vous sûr de vouloir supprimer cet Structure ? Cette action est
@@ -1830,7 +2009,7 @@
 
       <!-- debut section pour ajouter un bdc  -->
       <div class="big-container hidden">
-        <div class="edit-product-bdc-container">
+        <div class="edit-product-bdc-container hidden">
           <div class="edit-product-bdc-cart">
             <div class="heading-edit-product-bdc">
               <p>Modifier</p>
@@ -2051,13 +2230,307 @@
         </div>
       </div>
       <!-- fin section pour ajouter un bdc  -->
+      <!-- debut seciton pour voir tt les bdr -->
+      <div class="big-container-bdr hidden">
+        <div class="show-bdr-container">
+          <div class="show-bdr-cart">
+            <div class="heading-table-show-bdr">
+              <div class="container-heading-table-show-bdr">
+                <div class="heading-table-text-show-bdr">
+                  <p class="table-text-show-bdr">
+                    Tout les Bons de Receptions (<b class="number-users">245</b
+                    >)
+                  </p>
+                  <p class="table-text-show-bdr">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p>
+                </div>
+                <div class="heading-table-btns-show-bdr">
+                  <button
+                    class="heading-table-btn-bdr btn-delete btn-delete-bdr"
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    class="heading-table-btn-bdr add-users-btn btn-print-bdr"
+                  >
+                    Imprimer
+                  </button>
+                  <button
+                    class="heading-table-btn-bdr add-users-btn btn-add-bdr"
+                  >
+                    Ajouter un Bon
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-show-bdr">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Magasinier</th>
+                    <th>Date de Réception</th>
+                    <th>Bon de livraison</th>
+                    <th>Facture</th>
+                    <th>Informations</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdrs">
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-show">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdr-show"
+                        />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
 
+                    <td>14/04/2008</td>
+                    <td class="td-view-bdl">
+                      <button class="view-bdl-btn">
+                        <p>Voir Bon de livraison</p>
+                      </button>
+                    </td>
+                    <td class="td-view-fac">
+                      <button class="view-fac-btn">
+                        <p>Voir Facture</p>
+                      </button>
+                    </td>
+                    <td>
+                      <button class="details-btn-bdr-show">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-bdr-show">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdr-show"
+                        />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14/04/2008</td>
+                    <td class="td-view-bdl">
+                      <button class="view-bdl-btn">
+                        <p>Voir Bon de livraison</p>
+                      </button>
+                    </td>
+                    <td class="td-view-fac">
+                      <button class="view-fac-btn">
+                        <p>Voir Facture</p>
+                      </button>
+                    </td>
+                    <td>
+                      <button class="details-btn-bdr-show">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-show">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdr-show"
+                        />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14/04/2008</td>
+                    <td class="td-view-bdl">
+                      <button class="view-bdl-btn">
+                        <p>Voir Bon de livraison</p>
+                      </button>
+                    </td>
+                    <td class="td-view-fac">
+                      <button class="view-fac-btn">
+                        <p>Voir Facture</p>
+                      </button>
+                    </td>
+                    <td>
+                      <button class="details-btn-bdr-show">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin seciton pour voir tt les bdr -->
+      <!-- debut section pour add un nv bdr -->
+      <div class="big-container-bdr-add hidden">
+        <div class="add-bdr-container">
+          <div class="add-bdr-cart">
+            <div class="heading-table-add-bdr">
+              <div class="container-heading-table-add-bdr">
+                <div class="heading-table-text-add-bdr">
+                  <p class="table-text-add-bdr">
+                    Tout les Produits (<b class="number-users">245</b>)
+                  </p>
+                  <!-- <p class="table-text-add-bdr">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p> -->
+                </div>
+                <div class="container-fac-bon">
+                  <div class="heading-table-file-add-1-bdr">
+                    <p>Entez le Bon de Livraison :</p>
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      title="Sélectionner une facture"
+                    />
+                  </div>
+                  <div class="heading-table-file-add-2-bdr">
+                    <p>Entez la Facture :</p>
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      title="Sélectionner une facture"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-add-bdr">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Designation</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                    <th>Qt Recue</th>
+                    <th>Reste a Livrer</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdr-produits">
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <p class="colomn-tags-name-bdr-qt">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14</td>
+                    <td class="blue-price">72.000 Da</td>
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="red-reste">32</td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <p class="colomn-tags-name-bdr-qt">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14</td>
+                    <td class="blue-price">72.000 Da</td>
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="red-reste">32</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdr-add">
+                        <p class="colomn-tags-name-bdr-qt">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td>14</td>
+                    <td class="blue-price">72.000 Da</td>
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="red-reste">32</td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-add-bdr">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdc btn-add-bdr-qt"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdr add-users-btn btn-save-bdr-qt"
+              >
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin section pour add un nv bdr -->
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
       <div class="overlay overlayAddStr hidden"></div>
       <div class="overlay overlayDel hidden"></div>
       <div class="overlay overlayAddRole hidden"></div>
+      <div class="overlay overlayEditStr hidden"></div>
+      <div class="overlay overlayDelStr hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->
