@@ -1,6 +1,9 @@
 import View from './view.js';
 import * as helpers from '../helpers.js';
+import * as model from '../model.js';
+import { GROUP_BTNS } from '../config.js';
 class SideView extends View {
+  _parentElement = document.querySelector('.sidebar');
   btns = [
     document.querySelector('.utilisateurs'),
     document.querySelector('.structures-btn'),
@@ -15,6 +18,7 @@ class SideView extends View {
     document.querySelector('.bon-de-commandes-btn'),
   ];
   divs = [
+    ,
     document.getElementById('main-table-users'),
     document.getElementById('main-table-structures'),
     document.getElementById('main-table-roles'),
@@ -28,18 +32,36 @@ class SideView extends View {
     document.getElementById('main-table-bdc'),
   ];
 
-  addHandlerBtns(controllers, index = '', isDisplay = false) {
-    if (index !== '' && isDisplay) {
+  reselectBtns() {
+    this.btns = [...this._parentElement.children];
+  }
+
+  hideBtns(perms = []) {
+    this.btns.forEach(btn => {
+      if (perms.includes(btn.name)) {
+        btn.classList.remove('hidden');
+      } else {
+        btn.classList.add('hidden');
+      }
+    });
+  }
+
+  addHandlerBtns(controllers, index = '', myPerms = []) {
+    if (index !== '') {
+      // console.log(this.divs);
       this.divs.forEach(div => {
         div.classList.add('hidden');
       });
       this.divs[index].classList.remove('hidden');
     } else {
-      this.btns.forEach(el =>
+      //TODO: STOP THE JS FROM ADDING EVENT LISTNNERS TO BTNS
+      // if error: 'Acces refusé' : display a poppup saying "you lack permisssions to perform this act" (in model error handling probably)
+      this.btns.forEach(el => {
+        // if (!myPerms.includes(el.name)) return;
         el.addEventListener('click', async e => {
           e.preventDefault();
           const targeto = e.currentTarget;
-          // console.log(targeto.h3);
+
           this.btns.forEach(btn => {
             btn.classList.remove('active');
           });
@@ -50,12 +72,26 @@ class SideView extends View {
             'hidden'
           );
           targeto.classList.add('active');
-          // console.log([helpers.findNodeIndex(this.btns, targeto)]);
-          console.log(controllers);
+          // console.log(controllers[helpers.findNodeIndex(this.btns, targeto)]);
           await controllers[helpers.findNodeIndex(this.btns, targeto)]();
-        })
-      );
+        });
+      });
     }
+  }
+
+  // TODO: MAKE A CONFIG ARRAY THAT HAS: KEY(PERM GROUP) VALUE(HTML)
+  _generateMarkup() {
+    return `
+    ${this._data.map(el => this._generateMarkupPerview(el.groupName)).join('')} 
+    <a class="sidebar-btns" href="">
+      <span class="material-icons-sharp"> logout </span>
+      <h3>Se deconnecter</h3>
+    </a>`;
+  }
+  _generateMarkupPerview(group) {
+    return `
+      ${GROUP_BTNS[group]}
+    `;
   }
 }
 export default new SideView();

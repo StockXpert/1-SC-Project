@@ -21,6 +21,26 @@ import editRoleView from './views/roles/editRoleView.js';
 import editPermsView from './views/roles/editPermsView.js';
 import numberRoleView from './views/roles/numberRoleView.js';
 
+const controlUpdateMyPerms = async function () {
+  // document.addEventListener('DOMContentLoaded', () => {
+  sideView.renderSpinner();
+  await model.getMyPerms();
+  // sideView.hideBtns(model.state.me.permissions.all);
+  // console.log(
+  //   model.organizePermissionsByGroup(
+  //     model.state.me.permissions.all,
+  //     true,
+  //     false
+  //   )
+  // );
+  sideView.render(model.state.me.permissions.wellFormed);
+  sideView.reselectBtns();
+  // sideView.unrenderSpinner();
+};
+// console.log(model.state);
+// };
+await controlUpdateMyPerms();
+
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 // let editUserView = new EditUserView();
@@ -29,9 +49,17 @@ import numberRoleView from './views/roles/numberRoleView.js';
 const controlSearchResults = async function () {
   try {
     usersView.renderSpinner('');
+    deleteUserView.restrict(model.state.me.permissions);
+    addUserView.restrict(model.state.me.permissions);
+    usersView.restrict(model.state.me.permissions);
     await model.loadSearchResults();
     searchView.addHandlerSearchV2(controlFuzzySearch);
-    usersView.render(model.state.search.results);
+    usersView.render(
+      model.state.search.results,
+      true,
+      model.state.me.permissions.all
+    );
+    editUserView.restrict(model.state.me.permissions);
     controlAddUserUpdateSelects();
     userViewAdders();
     // D Y N A M I C   S E A R C H   A C T I V A T I O N :
@@ -201,6 +229,7 @@ const controlFilterring = function (filterValues, isFilterring) {
   // use controlFuzzySearch to update model.state.search.filteredResults
   // console.log('controlFilterring executed');
   controlFuzzySearch(filterValues[0], false, true);
+  console.log('ctrl filterring');
   const filteredResults = controlFuzzySearch(filterValues[1], true, true);
   //updating filteredResults
   // console.log(filteredResults);
@@ -237,6 +266,7 @@ const controlFuzzySearch = function (
     model.state.search.queryResults = extractItems(filteredList);
     usersView.render(model.state.search.queryResults);
     userViewAdders();
+    console.log('controlFuzzySearch');
     //        Q U E R Y        I S        E M P T Y
   } else {
     if (isGettingfGR) {
@@ -251,7 +281,8 @@ const controlFuzzySearch = function (
       }
     }
     usersView.render(model.state.search.queryResults);
-    userViewAdders(model.state.search.queryResults);
+    userViewAdders();
+    console.log('controlFuzzySearch');
   }
   // console.log(model.state.search.queryResults);
   return model.state.search.queryResults;
@@ -303,6 +334,7 @@ const controlDeleteUsers = function (containerClass = '.results') {
 
 // deleteUserView.addDeleteController(controlDeleteUsers);
 const userViewAdders = function () {
+  console.log('userViewAdders');
   // console.log('userViewAdders');
   // updates the checkboxes selectors
   numberView.masterSelectionUpdater();
@@ -355,15 +387,20 @@ const controlEditRoleUpdateSelects = async function () {
 const controlLoadRoles = async function () {
   rolesView.renderSpinner('');
   const roles = await model.loadRoles();
-  // console.log("roles");
-  // numberRoleView.addHandlerNumber(controlNumberRoles);
-  // controlNumberRoles();
-  rolesView.render(roles);
+  const wellFormedPermsWithinRoles = roles.map(role => {
+    return {
+      droits: model.organizePermissionsByGroup(role.droits, true, false),
+      role: role.role,
+    };
+  });
+  rolesView.render(wellFormedPermsWithinRoles);
   numberRoleView.selectionUpdater('.roles-cart');
+  // numberRoleView.addHandlerNumber(controlNumberRoles);
   numberRoleView.addHandlerNumber(controlNumberRoles);
+  controlNumberRoles();
   // SHOW PERM WINDOW
   editRoleView.addHandlerShowWindow('.role');
-  //on CLICK OF A ROLE : UPDATE PERM VIEW
+  //adding EL for: on CLICK OF A ROLE : UPDATE PERM VIEW
   editRoleView.addHandlerEdit(controlEditRole);
 };
 const controlLoadPerms = async function () {
@@ -385,13 +422,14 @@ const controlEditRole = async function (
 
   //Get the index of the clicked ROLE here
   const target = this;
-  let targetIndex = helpers.findNodeIndex(editRoleView._btnOpen, target);
+  let targetIndex;
 
   if (usedRoleSelector) {
     targetIndex = selectorIndex;
   }
 
   if (!usedRoleSelector) {
+    targetIndex = helpers.findNodeIndex(editRoleView._btnOpen, target);
     //update the roleSelector from backend
     await controlEditRoleUpdateSelects();
     //set its value to reflect clicked role
@@ -413,6 +451,7 @@ const controlEditRole = async function (
   //reselect the perms checkboxes
   const checkboxes = editPermsView.updateThisCheckboxesPointers();
 
+  //adding EL for DELETE/CANCEL BTNS TOGGLING ACCORDING TO IF USER HAS MADE A CHANGE OR NOT
   editPermsView.addHandlerDeleteCancelBtns(controlDeleteCancelBtns);
 
   //update them to reflect currently selected role
@@ -429,7 +468,7 @@ const controlUpdateRole = async function (changesObj) {
   added = changesObj.add;
   let deleted = [];
   deleted = changesObj.delete;
-
+  document.querySelector('.permissions-save-btns').classList.add('hidden');
   let permsAdded = helpers
     .filterNodeList(editPermsView.updateThisCheckboxesPointers(), added)
     .map(el => el.name);
@@ -444,6 +483,20 @@ const controlUpdateRole = async function (changesObj) {
     editUserView.renderSpinner('Suppression des permissions en cours...');
     await model.delPermsFromRole(permsDeleted, model.state.roles.selected.role);
   }
+};
+
+const controlReloadPerms = e => {
+  e.preventDefault();
+  const checkboxes = document
+    .querySelector('.container-checkboxes-permissions')
+    .querySelectorAll('input[type=checkbox]');
+  console.log(checkboxes);
+
+  helpers.setCheckboxStates(
+    checkboxes,
+    helpers.checkSpecialArray(checkboxes, model.state.roles.selected.droits)
+  );
+  document.querySelector('.permissions-save-btns').classList.add('hidden');
 };
 
 const controlUpdateUser = async function (newUser) {
@@ -480,9 +533,10 @@ const controlAddRole = async function (newRole) {
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
 // addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
-controlSearchResults();
+// controlSearchResults();
 // userViewAdders();
 const controllers = [
+  '',
   controlSearchResults,
   controlLoadStructures,
   controlLoadRoles,
@@ -497,16 +551,17 @@ const controlRoleSwitch = (e, selectedIndex) => {
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
 editPermsView.addHandlerSwitch(controlRoleSwitch);
-sideView.addHandlerBtns(controllers);
+sideView.addHandlerBtns(controllers, '', model.state.me.permissions.all);
 numberView.addHandlerMasterCheckbox(controlNumber);
 searchView.addHandlerSearch(controlSearchResults);
 searchView.addHandlerFilter(controlFilterring);
 addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
-editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlLoadRoles);
+editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
+// editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlLoadRoles);
 
-controlShowUsersEmail();
+// controlShowUsersEmail();
 
 numberRoleView.addHandlerNumber(controlNumberRoles);
 AddStructureView.addHandlerUpload(controlAddStructure);

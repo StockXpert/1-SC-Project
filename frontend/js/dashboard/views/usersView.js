@@ -5,61 +5,44 @@ export class UsersView extends View {
   _trueParentElement = document.querySelector('.table-container');
 
   _generateMarkup() {
-    return this._data.map(this._generateMarkupPreview).join('');
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
   }
-  _generateMarkupPreview(result) {
+  _generateMarkupPreview(result, perms = []) {
     return `
-    <tr>
-    <td>
-      <div class="checkbox-colomn">
-        <input type="checkbox" id="checkbox-table">
-        <p class="colomn-tags-name">${result.nom + ' ' + result.prenom} </p>
-      </div>
-    </td>
-    <td>${result.email}</td>
-    <td class="table-status ${
-      result.active === 'Activé' ? 'active-status' : 'inactif-status'
-    }">${result.active}</td>
-    <td><p class="admin-role">${
-      result.role ? helpers.roleTranslator(result.role) : 'Aucun'
-    }</p></td>
-    <td class="table-structure">${result.structure}</td>
-    <td>
-      <button class="details-btn">
-        <span class="material-icons-sharp info-icon">
-          edit
-        </span>
-      </button>
-    </td>
-  </tr>
-  `;
+      <tr>
+      <td>
+        <div class="checkbox-colomn">
+          <input type="checkbox" id="checkbox-table">
+          <p class="colomn-tags-name">${result.nom + ' ' + result.prenom} </p>
+        </div>
+      </td>
+      <td>${result.email}</td>
+      <td class="table-status ${
+        result.active === 'Activé' ? 'active-status' : 'inactif-status'
+      }">${result.active}</td>
+      <td><p class="admin-role">${
+        result.role ? helpers.roleTranslator(result.role) : 'Aucun'
+      }</p></td>
+      <td class="table-structure">${result.structure}</td>
+      <td>
+        ${
+          perms.includes('update user') ||
+          perms.includes('change status') ||
+          perms.includes('rattacher')
+            ? `
+                    <button class="details-btn">
+                      <span class="material-icons-sharp info-icon">
+                        edit
+                      </span>
+                    </button>`
+            : ``
+        }
+      </td>
+    </tr>
+    `;
   }
+  _restricted = [[this._parentElement, 'show users'], 'none'];
 }
 export default new UsersView();
-// <p class="heading-permission-text">Utilisateurs</p>
-// <div class="checkboxes-permission">
-//   <div class="checkbox-colomn-permissions">
-//     <input type="checkbox" id="checkbox-table-permissions">
-//     <p class="colomn-tags-name-permissions">
-//       Ajouter Utilisateur
-//     </p>
-//   </div>
-//   <div class="checkbox-colomn-permissions">
-//     <input type="checkbox" id="checkbox-table-permissions">
-//     <p class="colomn-tags-name-permissions">
-//       Modifier Utilisateur
-//     </p>
-//   </div>
-//   <div class="checkbox-colomn-permissions">
-//     <input type="checkbox" id="checkbox-table-permissions">
-//     <p class="colomn-tags-name-permissions">
-//       Supprimer Utilisateur
-//     </p>
-//   </div>
-//   <div class="checkbox-colomn-permissions">
-//     <input type="checkbox" id="checkbox-table-permissions">
-//     <p class="colomn-tags-name-permissions">
-//       Voir Utilisateur
-//     </p>
-//   </div>
-// </div>

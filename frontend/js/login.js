@@ -8,6 +8,8 @@ const btns = document.querySelector('.btns-container');
 const passwordIcon = document.querySelector('.password-icon');
 paragraphElement.className = 'text-err';
 
+import * as model from './dashboard/model.js';
+
 passwordIcon.addEventListener('click', function (e) {
   e.preventDefault();
   if (!password.value) return;
@@ -21,6 +23,7 @@ passwordIcon.addEventListener('click', function (e) {
     child.classList.toggle('hidden');
   });
 });
+
 /**
  *
  * @param {* 'show': to display error message or 'hide' (by default): to hide the error message} action
@@ -62,7 +65,9 @@ async function login() {
       console.log('Login successful');
       // Store the JWT
       localStorage.setItem('JWT', data.jwt);
-      //redirect the user
+      const me = await model.getMyPerms();
+      localStorage.setItem('me', JSON.stringify(me));
+      // redirect the user
       if (data.role === 'Admin') window.location.href = '../html/dashbord.html';
       else window.location.href = '../html/dashbord.html';
     } else {

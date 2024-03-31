@@ -21,5 +21,13 @@ export class DeleteUserView extends AddUserView {
       await ctrler();
     });
   }
+
+  // restrict(perms = []) {
+  //   if (perms.all.includes('delete user')) {
+  //     this._btnOpen.classList.remove('hidden');
+  //   } else {
+  //     this._btnOpen.classList.add('hidden');
+  //   }
+  _restricted = [[this._btnOpen, 'delete user'], 'none'];
 }
 export default new DeleteUserView();

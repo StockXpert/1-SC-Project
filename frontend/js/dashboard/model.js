@@ -5,10 +5,17 @@ import {
   TIMEOUT_SEC,
   GROUP_DEFINITIONS,
   PERM_NAMES,
+  ORDER_OF_GROUPS,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
 export const state = {
+  me: {
+    permissions: {
+      all: [],
+      wellFormed: [],
+    },
+  },
   user: {},
   search: {
     // query: '',
@@ -54,6 +61,23 @@ export const state = {
     selected: 0,
   },
 };
+export const getMyPerms = async function () {
+  const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
+  state.me = { ...result.response[0] };
+  const roles = await loadRoles();
+  // console.log(state);
+  state.me.permissions = {
+    all: helpers.getPermissions(roles, state.me.role),
+    wellFormed: organizePermissionsByGroup(
+      helpers.getPermissions(roles, state.me.role),
+      true,
+      false
+    ),
+  };
+  // console.log(state.me);
+  return state.me;
+};
+
 export const updateFilters = function (filterValues, isFilterring) {
   state.search.filters.isFilterring = isFilterring;
   state.search.filters.filterValues = filterValues;
@@ -386,7 +410,7 @@ export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
 export const loadRoles = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showRoles`);
-    console.log('loadRoles', data);
+    // console.log('loadRoles', data);
     state.roles.all = data.response;
     return data.response;
   } catch (err) {
@@ -396,7 +420,6 @@ export const loadRoles = async function () {
 export const loadPerms = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showPermissions`);
-    console.log(data);
     state.roles.allPermissions = data.response;
     return data.response;
   } catch (err) {
@@ -406,7 +429,8 @@ export const loadPerms = async function () {
 
 export const organizePermissionsByGroup = function (
   permissions,
-  isNoDesignation = false
+  isNoDesignation = false,
+  updateState = true
 ) {
   const groups = {};
   let designation = '';
@@ -451,8 +475,28 @@ export const organizePermissionsByGroup = function (
     groupName,
     permissions,
   }));
-  state.roles.wellFormed = result;
-  return result;
+
+  function reorderPermissions(groups, ordering) {
+    // Create a map to hold group names and their corresponding objects
+    const groupsMap = new Map(groups.map(group => [group.groupName, group]));
+
+    // Reorder groups based on the ordering array
+    const reorderedGroups = ordering
+      .map(groupName => groupsMap.get(groupName))
+      .filter(Boolean);
+
+    return reorderedGroups;
+  }
+
+  // Example usage:
+  // const permissions = [/* Your permissions object here */];
+  // const orderingObject = ["Par Defaut", "Utilisateurs", "Structures", "Roles", "Permissions", "Chapitres", "Produits et Articles", "Commandes", "Autre"];
+
+  // const reorderedPermissions = reorderPermissions(permissions, orderingObject);
+  // console.log(reorderedPermissions);
+  const results = reorderPermissions(result, ORDER_OF_GROUPS);
+  if (updateState) state.roles.wellFormed = results;
+  return results;
 };
 
 // Helper function to get the permission name in French

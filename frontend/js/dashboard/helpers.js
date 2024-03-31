@@ -344,3 +344,12 @@ export const compareBooleanArrays = function (array1, array2) {
     array1.every((value, index) => value === array2[index])
   );
 };
+
+export const getPermissions = function (roles = [], designation) {
+  const role = roles.find(role => role.role === designation);
+  if (role) {
+    return role.droits;
+  } else {
+    return 'Role not found';
+  }
+};
