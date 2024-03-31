@@ -1,9 +1,5 @@
 const {google} =require('googleapis');
 const fs = require('fs');
-const readline = require('readline');
-const { promisify } = require('util');
-
-const readFileAsync = promisify(fs.readFile);
 const path=require('path')
 const credentialsPath = path.join(__dirname,'credentials.json');
 async function updateCel(pos,content,spreadsheetId)

@@ -29,15 +29,22 @@ function genererBondeCommande(req,res)
 function deleteCommande(req,res)
 {
    const {numCommande}=req.body;
-   EntreeModel.canDeleteCommande(numCommande).then(()=>{
-      EntreeModel.deleteCommande(numCommande).then(()=>{
-         EntreeModel.deleteBonCommande(numCommande).then(()=>{
-            res.status(200).json({response:'commande deleted'})
-         }).catch(()=>{res.status(500).json({response:'internal error'})})
-      }).catch(()=>{res.status(500).json({response:'internal error'})})
-   }).catch(()=>{
-      res.status(500).json({response:'prohibited to delete commande'});
-   })
+   EntreeModel.getBonReception(numCommande).then((response)=>{
+      if(response.length==0)
+         res.status(500).json({response:'prohibited to delete commande'});
+      else
+      {
+         EntreeModel.canDeleteCommande(numCommande).then(()=>{
+            EntreeModel.deleteCommande(numCommande).then(()=>{
+               EntreeModel.deleteBonCommande(numCommande).then(()=>{
+                  res.status(200).json({response:'commande deleted'})
+               }).catch(()=>{res.status(500).json({response:'internal error'})})
+            }).catch(()=>{res.status(500).json({response:'internal error'})})
+         }).catch(()=>{
+            res.status(500).json({response:'prohibited to delete commande'});
+         })
+      }
+   }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 function cancelCommande(req,res)
 {
@@ -68,11 +75,18 @@ function updateQuantite(req,res)
 function updateBonCommande(req,res)
 {
   const {objet,fournisseur,deletedProducts,addedProducts,date,numCommande}=req.body;
-  EntreeService.changeBonCommande(objet,fournisseur,deletedProducts,addedProducts,date,numCommande).then(()=>{
-   res.status(200).json({response:'bon de commande updated'})
-  }).catch(()=>{
-   res.status(500).json({response:'internal error'})
-  })
+  EntreeModel.getBonReception(numCommande).then((response)=>{
+   if(response.length==0)
+      res.status(500).json({response:'prohibited to update'})
+   else
+   {
+      EntreeService.changeBonCommande(objet,fournisseur,deletedProducts,addedProducts,date,numCommande).then(()=>{
+         res.status(200).json({response:'bon de commande updated'})
+        }).catch(()=>{
+         res.status(500).json({response:'internal error'})
+        })
+   }
+  }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 function showBonReception(req,res)
 {
@@ -92,9 +106,43 @@ function showCommandeProducts(req,res)
 {
    const {numCommande}=req.body;
    EntreeModel.getCommandeProducts(numCommande).then((response)=>{
-      res.status(500).json({response})
+      res.status(200).json({response})
+   }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
+function updateReception(req,res)
+{
+   let {numCommande,numReception,deletedProducts,addedProducts,numLivraison,numFacture}=req.body;
+   if(!deletedProducts)deletedProducts=1;
+   EntreeService.restoreQuantite(numReception,numCommande,deletedProducts).then(()=>{
+      EntreeModel.insertLivre(numReception,addedProducts).then(()=>{
+         EntreeService.changeQuantite(numCommande,addedProducts).then(()=>{
+            EntreeService.uploadvalidity(numCommande).then(()=>{
+
+               if(numFacture||numLivraison)
+         {
+            EntreeModel.updateReception(numReception,numLivraison,numFacture).then(()=>{
+               res.status(200).json({response:'Reception updated'})
+            }).catch(()=>{res.status(500).json({response:'internal error'})})
+         }
+         else res.status(200).json({response:'Reception updated'}) 
+            }).catch(()=>{res.status(500).json({response:'internal error'})})
+         }).catch(()=>{res.status(500).json({response:'internal error'})})
+      }).catch(()=>{res.status(500).json({response:'internal error'})})
+   }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
+function deleteReception(req,res)
+{
+   const {numReception,numCommande}=req.body;
+   EntreeService.restoreQuantite(numReception,numCommande,null).then(()=>{
+       EntreeService.uploadvalidity(numCommande).then(()=>{
+         EntreeModel.deleteReception(numReception).then(()=>{
+            EntreeModel.deleteLivre(numReception).then((response)=>{
+               res.status(200).json({response})
+            }).catch(()=>{res.status(500).json({response:'internal error'})})
+         }).catch(()=>{res.status(500).json({response:'internal error'})})
+       }).catch(()=>{res.status(500).json({response:'internal error'})})
    }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 module.exports={genererFicheBesoins,genererBondeCommande,deleteCommande,cancelCommande,
             showCommandes,updateQuantite,updateBonCommande,showBonReception,
-            showBonReceptionProducts,showCommandeProducts};
+            showBonReceptionProducts,showCommandeProducts,updateReception,deleteReception};
