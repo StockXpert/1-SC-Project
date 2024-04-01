@@ -37,7 +37,7 @@ class StructuresView extends View {
     </tr>
     `;
   }
-  _restricted = [[this._parentElement, 'show structure'], 'none'];
+  _restricted = ['none'];
 }
 
 export default new StructuresView();
