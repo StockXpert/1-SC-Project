@@ -19,17 +19,20 @@ export class AddUserView extends View {
   _role = document.querySelector('#role-options');
   constructor() {
     super();
+  }
+  _boundToggleWindow = e => {
+    e.preventDefault();
+    this.toggleWindow.bind(this)();
+  };
+  addpasswordIconsEL() {
     this._passwordIcons.forEach(icon => {
+      console.log(icon);
       icon.addEventListener('click', e => {
         e.preventDefault();
         this.togglePasswordVisibility();
       });
     });
   }
-  _boundToggleWindow = e => {
-    e.preventDefault();
-    this.toggleWindow.bind(this)();
-  };
   //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
   addHandlerShowWindow(OpClassName, windowClassName) {
     this._window = document.querySelector(windowClassName);
@@ -86,7 +89,7 @@ export class AddUserView extends View {
       if (allFilled) {
         const dataArr = [...new FormData(form)];
         const data = Object.fromEntries(dataArr);
-        // console.log(data);
+        console.log(closeBtn);
         closeBtn.click();
         await handler(data);
       } else {
@@ -100,7 +103,7 @@ export class AddUserView extends View {
       this._password.type === 'password' ? 'text' : 'password';
     const confirmPasswordType =
       this._confirmPassword.type === 'password' ? 'text' : 'password';
-
+    console.log(this._password);
     this._password.type = this._confirmPassword.type = passwordType;
     this._passwordIcons.forEach(icon =>
       icon.querySelectorAll('.input-icon').forEach(child => {
