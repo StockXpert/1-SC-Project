@@ -353,3 +353,6 @@ export const getPermissions = function (roles = [], designation) {
     return 'Role not found';
   }
 };
+
+export const includesDesignation = (objectsArray, searchString) =>
+  objectsArray.some(obj => obj.designation.includes(searchString));

@@ -28,9 +28,9 @@ export class UsersView extends View {
       <td class="table-structure">${result.structure}</td>
       <td>
         ${
-          perms.includes('update user') ||
-          perms.includes('change status') ||
-          perms.includes('rattacher')
+          helpers.includesDesignation(perms, 'update user') ||
+          helpers.includesDesignation(perms, 'change status') ||
+          helpers.includesDesignation(perms, 'rattacher')
             ? `
                     <button class="details-btn">
                       <span class="material-icons-sharp info-icon">

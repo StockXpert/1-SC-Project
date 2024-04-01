@@ -53,6 +53,7 @@ await controlUpdateMyPerms();
 const controlSearchResults = async function () {
   try {
     usersView.renderSpinner('');
+    console.log(model.state.me.permissions.all);
     deleteUserView.restrict(model.state.me.permissions.all);
     addUserView.restrict(model.state.me.permissions.all);
     usersView.restrict(model.state.me.permissions.all);

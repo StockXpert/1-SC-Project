@@ -88,7 +88,7 @@ export const PERM_NAMES = {
   'delete fournisseur': 'Supprimer le fournisseur',
   'show fournisseurs': 'Afficher les fournisseurs',
   'show chapters': 'Afficher les chapitres',
-  'bon commande': 'Bon de commande',
+  'bon commande': 'Ajouter un bon de commande',
   'delete commande': 'Supprimer la commande',
   'update quantite': 'Mettre à jour la quantité',
   'cancel commande': 'Annuler la commande',

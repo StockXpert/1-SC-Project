@@ -12,6 +12,7 @@ export default class View {
   }
   // ["DJEZIRI Oussama", "KAZI Kamil"]
   addToSelection(options, selectClassName, type = 'responsable') {
+    console.log(document.getElementById(selectClassName));
     helpers.removeChildrenFromSecond(document.getElementById(selectClassName));
     options.forEach((option, index) => {
       const optionElement = document.createElement('option');
@@ -83,8 +84,7 @@ export default class View {
   restrict(perms) {
     this._restricted.forEach(btnNPerm => {
       if (btnNPerm != 'none') {
-        console.log(btnNPerm);
-        if (perms.includes(btnNPerm[1])) {
+        if (helpers.includesDesignation(perms, btnNPerm[1])) {
           btnNPerm[0].classList.remove('hidden');
         } else {
           btnNPerm[0].classList.add('hidden');
