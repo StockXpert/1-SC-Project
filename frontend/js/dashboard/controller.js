@@ -21,7 +21,7 @@ import editRoleView from './views/roles/editRoleView.js';
 import editPermsView from './views/roles/editPermsView.js';
 import numberRoleView from './views/roles/numberRoleView.js';
 import deleteStructureView from './views/deleteStructureView.js';
-import cmdsView from './views/commandes/cmdView.js';
+import cmdsView from './views/commandes/cmdsView.js';
 import addStructureView from './views/addStructureView.js';
 
 const controlUpdateMyPerms = async function () {

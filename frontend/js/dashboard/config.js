@@ -140,6 +140,11 @@ export const GROUP_BTNS = {
   <h3>Bon de Commande</h3>
 </a>
   `,
+  Autre: `<a class="sidebar-btns bon-de-commandes-btn" href="">
+  <span class="material-icons-sharp"> pending </span>
+  <h3>Autres</h3>
+</a>
+  `,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',
