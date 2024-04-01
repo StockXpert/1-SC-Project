@@ -1757,7 +1757,10 @@ a.password-icon:active {
 
 /* css pour btn supprimer esq vous etes sure */
 .container-supp-user,
-.container-supp-structure {
+.container-supp-structure,
+.container-supp-role,
+.container-supp-bdc,
+.container-supp-bdr {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -1765,7 +1768,10 @@ a.password-icon:active {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.supp-user-cart {
+.supp-user-cart,
+.supp-role-cart,
+.supp-bdc-cart,
+.supp-bdr-cart {
   width: 35rem;
   height: 18rem;
   margin: 0 auto;
@@ -1779,7 +1785,10 @@ a.password-icon:active {
   border-radius: 3rem;
   box-shadow: 0px 10px 10px 10px #00000040;
 }
-.supp-user-text {
+.supp-user-text,
+.supp-role-text,
+.supp-bdc-text,
+.supp-bdr-text {
   text-align: center;
   color: #4b4b4b;
   font-size: 1.2rem;
@@ -1790,7 +1799,10 @@ a.password-icon:active {
   display: flex;
   gap: 1rem;
 }
-.supp-structure-btns {
+.supp-structure-btns,
+.supp-role-btns,
+.supp-bdc-btns,
+.supp-bdr-btns {
   display: flex;
   gap: 1rem;
 }
@@ -1804,21 +1816,33 @@ a.password-icon:active {
   border: 2px solid #4b4b4b;
 }
 .supp-user-confirmer,
-.supp-str-confirmer {
+.supp-str-confirmer,
+.supp-role-confirmer,
+.supp-bdc-confirmer,
+.supp-bdr-confirmer {
   background-color: #e24747;
   color: white;
 }
 .supp-user-confirmer:hover,
-.supp-str-confirmer:hover {
+.supp-str-confirmer:hover,
+.supp-role-confirmer:hover,
+.supp-bdc-confirmer:hover,
+.supp-bdr-confirmer:hover {
   background-color: #9e3232;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 .supp-user-annuler,
-.supp-str-annuler {
+.supp-str-annuler,
+.supp-role-annuler,
+.supp-bdc-annuler,
+.supp-bdr-annuler {
   color: #4b4b4b;
 }
 .supp-user-annuler:hover,
-.supp-str-annuler:hover {
+.supp-str-annuler:hover,
+.supp-role-annuler:hover,
+.supp-bdc-annuler:hover,
+.supp-bdr-annuler:hover {
   background-color: #cccccc;
 }
 /* pour flou */
