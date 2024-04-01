@@ -135,6 +135,11 @@ export const GROUP_BTNS = {
   <span class="material-icons-sharp"> menu_book </span>
   <h3>Chapitres</h3>
 </a>`,
+  Commandes: `<a class="sidebar-btns bon-de-commandes-btn" href="">
+  <span class="material-icons-sharp"> description </span>
+  <h3>Bon de Commande</h3>
+</a>
+  `,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',

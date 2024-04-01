@@ -41,6 +41,7 @@ class addStructureView extends View {
       }
       console.log(data);
       handler(data);
+      console.log(this);
     });
   }
 

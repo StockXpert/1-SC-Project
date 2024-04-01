@@ -21,6 +21,7 @@ import editRoleView from './views/roles/editRoleView.js';
 import editPermsView from './views/roles/editPermsView.js';
 import numberRoleView from './views/roles/numberRoleView.js';
 import deleteStructureView from './views/deleteStructureView.js';
+import addStructureView from './views/addStructureView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -216,9 +217,9 @@ const controlAddStructure = async function (newStructure) {
     await controlLoadStructures();
     AddStructureView.clearForm();
     //Close Window
-    // setTimeout(function () {
-    //   AddStructureView.toggleWindow();
-    // }, MODAL_CLOSE_SEC * 1000);
+    setTimeout(function () {
+      AddStructureView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
   } catch (error) {
     console.error(error);
   }
@@ -478,6 +479,7 @@ const controlUpdateRole = async function (changesObj) {
   if (added.some(el => el === true)) {
     editUserView.renderSpinner('Ajout des permissions en cours...');
     await model.addPermsToRole(permsAdded, model.state.roles.selected.role);
+    await controlUpdateMyPerms();
   }
   let permsDeleted = helpers
     .filterNodeList(editPermsView.updateThisCheckboxesPointers(), deleted)
@@ -485,6 +487,7 @@ const controlUpdateRole = async function (changesObj) {
   if (deleted.some(el => el === true)) {
     editUserView.renderSpinner('Suppression des permissions en cours...');
     await model.delPermsFromRole(permsDeleted, model.state.roles.selected.role);
+    await controlUpdateMyPerms();
   }
 };
 
@@ -590,6 +593,8 @@ sideView.addHandlerBtns(controllers, '', model.state.me.permissions.all);
 numberView.addHandlerMasterCheckbox(controlNumber);
 searchView.addHandlerSearch(controlSearchResults);
 searchView.addHandlerFilter(controlFilterring);
+addUserView.addpasswordIconsEL();
+addUserView.addHandlerHideWindow('.close-btn', '.add-user-container');
 addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
