@@ -93,7 +93,6 @@ class SideView extends View {
       // if error: 'Acces refusé' : display a poppup saying "you lack permisssions to perform this act" (in model error handling probably)
       this.btns.forEach(el => {
         // if (!myPerms.includes(el.name)) return;
-        console.log(el);
         if (el !== null)
           el.addEventListener('click', async e => {
             e.preventDefault();
@@ -105,10 +104,6 @@ class SideView extends View {
             this.divs.forEach(btn => {
               if (btn !== null) btn.classList.add('hidden');
             });
-            console.log(helpers.findNodeIndex(this.btns, targeto));
-            console.log(targeto);
-            console.log(this.btns);
-            console.log(this.divs[helpers.findNodeIndex(this.btns, targeto)]);
             this.divs[
               helpers.findNodeIndex(this.btns, targeto)
             ].classList.remove('hidden');

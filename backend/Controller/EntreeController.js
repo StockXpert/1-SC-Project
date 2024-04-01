@@ -184,7 +184,85 @@ function showCommandeProducts(req, res) {
   const { numCommande } = req.body;
   EntreeModel.getCommandeProducts(numCommande)
     .then(response => {
-      res.status(500).json({ response });
+      res.status(200).json({ response });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+function updateReception(req, res) {
+  let {
+    numCommande,
+    numReception,
+    deletedProducts,
+    addedProducts,
+    numLivraison,
+    numFacture,
+    dateReception,
+  } = req.body;
+  if (!deletedProducts) deletedProducts = 1;
+  EntreeService.restoreQuantite(numReception, numCommande, deletedProducts)
+    .then(() => {
+      EntreeModel.insertLivre(numReception, addedProducts)
+        .then(() => {
+          EntreeService.changeQuantite(numCommande, addedProducts)
+            .then(() => {
+              EntreeService.uploadvalidity(numCommande)
+                .then(() => {
+                  if (numFacture || numLivraison || dateReception) {
+                    EntreeModel.updateReception(
+                      numReception,
+                      numLivraison,
+                      numFacture
+                    )
+                      .then(() => {
+                        res.status(200).json({ response: 'Reception updated' });
+                      })
+                      .catch(() => {
+                        res.status(500).json({ response: 'internal error' });
+                      });
+                  } else
+                    res.status(200).json({ response: 'Reception updated' });
+                })
+                .catch(() => {
+                  res.status(500).json({ response: 'internal error' });
+                });
+            })
+            .catch(() => {
+              res.status(500).json({ response: 'internal error' });
+            });
+        })
+        .catch(() => {
+          res.status(500).json({ response: 'internal error' });
+        });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+function deleteReception(req, res) {
+  const { numReception, numCommande } = req.body;
+  EntreeService.restoreQuantite(numReception, numCommande, null)
+    .then(() => {
+      EntreeService.uploadvalidity(numCommande)
+        .then(() => {
+          EntreeModel.deleteReception(numReception)
+            .then(() => {
+              EntreeModel.deleteLivre(numReception)
+                .then(response => {
+                  res.status(200).json({ response });
+                })
+                .catch(() => {
+                  res.status(500).json({ response: 'internal error' });
+                });
+            })
+            .catch(() => {
+              res.status(500).json({ response: 'internal error' });
+            });
+        })
+        .catch(() => {
+          res.status(500).json({ response: 'internal error' });
+        });
     })
     .catch(() => {
       res.status(500).json({ response: 'internal error' });

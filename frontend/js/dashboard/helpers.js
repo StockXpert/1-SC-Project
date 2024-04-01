@@ -103,6 +103,37 @@ export const getJSON = async function (url) {
     throw err;
   }
 };
+export const getJSONBody = async function (url, uploadData) {
+  try {
+    console.log('getJSON');
+    const res = await Promise.race([
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: localStorage.getItem('JWT'),
+          'content-Type': 'application/json',
+        },
+        body: JSON.stringify(uploadData),
+      }),
+      timeout(TIMEOUT_SEC),
+    ]);
+
+    // const res = await fetch(url, {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: localStorage.getItem('JWT'),
+    //     'content-Type': 'application/json',
+    //   },
+    // });
+    const data = await res.json();
+    // console.log(data);
+    // console.log(res);
+    if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
 
 export const sendJSON = async function (url, uploadData) {
   try {
@@ -354,5 +385,6 @@ export const getPermissions = function (roles = [], designation) {
   }
 };
 
-export const includesDesignation = (objectsArray, searchString) =>
-  objectsArray.some(obj => obj.designation.includes(searchString));
+export const includesDesignation = (objectsArray, searchString) => {
+  return objectsArray.some(obj => obj.designation.includes(searchString));
+};

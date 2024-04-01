@@ -159,48 +159,34 @@ async function genererBondeCommande(
 function changeQuantite(numCommande, produits) {
   return new Promise(async (resolve, reject) => {
     let response;
-    for (let produit of produits) {
-      await nomencaltureModel
-        .getProductId(produit.designation)
-        .then(async idProduit => {
-          response = await EntreeModel.updateQuantiteCommande(
-            produit.quantite,
-            numCommande,
-            idProduit
-          );
-          if (response != 'success') reject('inetnal error1');
-          response = await EntreeModel.updateQuantite(
-            produit.quantite,
-            idProduit
-          );
-          if (response != 'success') reject('inetnal error2');
-        })
-        .catch(err => {
-          console.log(err);
-          reject(err);
-        });
+    console.log('change');
+    console.log({ produits });
+    if (produits) {
+      for (let produit of produits) {
+        await nomencaltureModel
+          .getProductId(produit.designation)
+          .then(async idProduit => {
+            console.log({ produit });
+            response = await EntreeModel.updateQuantiteCommande(
+              produit.quantite,
+              numCommande,
+              idProduit
+            );
+            if (response != 'success') reject('inetnal error1');
+            response = await EntreeModel.updateQuantite(
+              produit.quantite,
+              idProduit
+            );
+            if (response != 'success') reject('inetnal error2');
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      }
     }
     resolve('success');
   });
-function changeQuantite(numCommande,produits)
-{
-    return new Promise(async(resolve,reject)=>{
-        let response
-        console.log('change')
-        console.log({produits})
-        if(produits){
-        for(let produit of produits)
-        {
-          await nomencaltureModel.getProductId(produit.designation).then(async(idProduit)=>{
-            console.log({produit})
-            response =await EntreeModel.updateQuantiteCommande(produit.quantite,numCommande,idProduit)
-            if(response!='success') reject('inetnal error1');
-            response =await EntreeModel.updateQuantite(produit.quantite,idProduit);
-            if(response!='success') reject('inetnal error2');
-          }).catch((err)=>{console.log(err); reject(err)})
-        }}
-        resolve('success')
-    })
 }
 function uploadvalidity(numCommande) {
   return new Promise((resolve, reject) => {
@@ -389,6 +375,73 @@ async function genererBonReception(
       });
   });
 }
+function restoreQuantite(numReception, numCommande, products) {
+  return new Promise(async (resolve, reject) => {
+    let response;
+
+    if (products == null) {
+      console.log(products);
+      console.log('hi');
+      EntreeModel.getBonReceptionProducts(numReception)
+        .then(async products => {
+          console.log(products);
+          for (let product of products) {
+            await nomencaltureModel
+              .getProductId(product.designation)
+              .then(async productId => {
+                response = await EntreeModel.updateQuantiteCommande(
+                  '-' + product.quantite,
+                  numCommande,
+                  productId
+                );
+                if (response != 'success') {
+                  console.log('erreur');
+                  reject('internal error');
+                }
+                response = await EntreeModel.updateQuantite(
+                  -parseInt('-' + product.quantite),
+                  productId
+                );
+                if (response != 'success') {
+                  console.log('erreur');
+                  reject('internal error');
+                }
+              });
+          }
+          resolve('quantite updated');
+        })
+        .catch(err => {
+          console.log(err);
+          reject('internal error');
+        });
+    } else if (products == 1) resolve('success');
+    else {
+      for (let product of products) {
+        await nomencaltureModel
+          .getProductId(product.designation)
+          .then(async productId => {
+            response = await EntreeModel.updateQuantiteCommande(
+              '-' + product.quantite,
+              numCommande,
+              productId
+            );
+            if (response != 'success') reject('internal error');
+            response = await EntreeModel.updateQuantite(
+              '-' + product.quantite,
+              productId
+            );
+            if (response != 'success') reject('internal error');
+            response = await EntreeModel.deleteProduitLivre(
+              numReception,
+              productId
+            );
+            if (response != 'success') reject('internal error');
+          });
+      }
+      resolve('quantite updated');
+    }
+  });
+}
 module.exports = {
   getDate,
   genererBondeCommande,
@@ -398,47 +451,5 @@ module.exports = {
   changeBonCommande,
   uploadvalidity,
   createReception,
+  restoreQuantite,
 };
-
-function restoreQuantite(numReception,numCommande,products)
-{
-  return new Promise(async(resolve,reject)=>{
-    let response
-    
-    if(products==null){
-    console.log(products)
-    console.log('hi')    
-    EntreeModel.getBonReceptionProducts(numReception).then(async(products)=>{
-        console.log(products)
-        for(let product of products)
-        {
-            await nomencaltureModel.getProductId(product.designation).then(async(productId)=>{
-                response=await EntreeModel.updateQuantiteCommande('-'+product.quantite,numCommande,productId)
-                if(response!='success'){console.log('erreur');  reject('internal error')}
-                response=await EntreeModel.updateQuantite(-parseInt('-'+product.quantite),productId)
-                if(response!='success'){console.log('erreur');  reject('internal error')}
-            })
-        }
-        resolve('quantite updated')
-      }).catch((err)=>{console.log(err);reject('internal error')})
-    }
-    else if (products==1) resolve('success')
-    else
-    {
-        for(let product of products)
-        {
-            await nomencaltureModel.getProductId(product.designation).then(async(productId)=>{
-                response=await EntreeModel.updateQuantiteCommande('-'+product.quantite,numCommande,productId)
-                if(response!='success') reject('internal error')
-                response=await EntreeModel.updateQuantite('-'+product.quantite,productId)
-                if(response!='success') reject('internal error')
-                response=await EntreeModel.deleteProduitLivre(numReception,productId)
-                if(response!='success') reject('internal error')
-            })
-        }
-        resolve('quantite updated')
-    }
-  })
-}
-module.exports={getDate,genererBondeCommande,montantHT,TVA,
-    changeQuantite,changeBonCommande,uploadvalidity,createReception,restoreQuantite}

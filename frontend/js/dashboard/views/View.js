@@ -12,7 +12,6 @@ export default class View {
   }
   // ["DJEZIRI Oussama", "KAZI Kamil"]
   addToSelection(options, selectClassName, type = 'responsable') {
-    console.log(document.getElementById(selectClassName));
     helpers.removeChildrenFromSecond(document.getElementById(selectClassName));
     options.forEach((option, index) => {
       const optionElement = document.createElement('option');
@@ -68,7 +67,6 @@ export default class View {
     }
   }
   renderSpinner = function (message = '', isTrueParent = false) {
-    console.log('rendering spinner');
     const markup = `
       <div class="spinner-parent">
       <b>${!message ? '' : `<div class="spinner"></div>`} ${message}</b>

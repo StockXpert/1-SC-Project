@@ -55,7 +55,6 @@ await controlUpdateMyPerms();
 const controlSearchResults = async function () {
   try {
     usersView.renderSpinner('');
-    console.log(model.state.me.permissions.all);
     deleteUserView.restrict(model.state.me.permissions.all);
     addUserView.restrict(model.state.me.permissions.all);
     usersView.restrict(model.state.me.permissions.all);
@@ -281,9 +280,12 @@ const controlFuzzySearch = function (
   //        Q U E R Y        A I N ' T        E M P T Y
   if (!(searchKeyword.trim() === '')) {
     model.state.search.queryResults = extractItems(filteredList);
-    usersView.render(model.state.search.queryResults);
+    usersView.render(
+      model.state.search.queryResults,
+      true,
+      model.state.me.permissions.all
+    );
     userViewAdders();
-    console.log('controlFuzzySearch');
     //        Q U E R Y        I S        E M P T Y
   } else {
     if (isGettingfGR) {
@@ -297,9 +299,12 @@ const controlFuzzySearch = function (
         model.state.search.queryResults = model.state.search.results;
       }
     }
-    usersView.render(model.state.search.queryResults);
+    usersView.render(
+      model.state.search.queryResults,
+      true,
+      model.state.me.permissions.all
+    );
     userViewAdders();
-    console.log('controlFuzzySearch');
   }
   // console.log(model.state.search.queryResults);
   return model.state.search.queryResults;
@@ -342,7 +347,6 @@ const controlDeleteUsers = function (containerClass = '.results') {
 
 // deleteUserView.addDeleteController(controlDeleteUsers);
 const userViewAdders = function () {
-  console.log('userViewAdders');
   // console.log('userViewAdders');
   // updates the checkboxes selectors
   numberView.masterSelectionUpdater();
@@ -375,7 +379,6 @@ const userViewAdders = function () {
 const controlAddUserUpdateSelects = async function () {
   addUserView.renderSpinner('Veuillez attendre un moment...');
   const roles = await model.getRoles();
-  console.log(roles);
   addUserView.addToSelection(roles, 'role-options', 'role');
   const structures = await model.getStructures();
   addUserView.addToSelection(
@@ -570,14 +573,12 @@ function filterArrayByBooleans(dataArray, booleanArray) {
   return filteredArray;
 }
 const controlProfile = function () {
-  console.log(sideView.divs);
   sideView.divs.forEach(div => div.classList.add('hidden'));
   sideView.divs[0].classList.remove('hidden');
 };
 
 const controlRoleSwitch = (e, selectedIndex) => {
   controlEditRole(e, true, selectedIndex - 1);
-  console.log(selectedIndex - 1);
 };
 
 const controlLoadCmds = async function () {
@@ -587,11 +588,67 @@ const controlLoadCmds = async function () {
 };
 
 const controlLoadCommandeproducts = async function () {
-  // addCmdsView.renderSpinner();
-  const products = await model.loadCommandeproducts();
-  // productsView.render(products);
+  const products = await model.loadCommandeproducts(8);
 };
-controlLoadCommandeproducts();
+
+//FOURNISSEURS
+const controlUpdateFournisseurs = async () => {
+  //fetch all fournisseurs to model.state.fournisseurs
+  const fournisseurs = await model.loadFournisseurs();
+  model.state.fournisseurs.all = fournisseurs;
+};
+
+//ON INPUT FOURNISSEURS:
+const controlSearchFournisseurs = input => {
+  const fuze = model.fuseMakerFournisseurs(model.state.fournisseurs.all);
+  const results = fuze.search(input);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  addCmdsView.addToSuggestionsFournisseursAndEL(
+    extractItems(results),
+    controlSelectFournisseur
+  );
+};
+
+const controlSelectFournisseur = fournisseurName => {
+  model.state.fournisseurs.selected = fournisseurName;
+};
+
+//ARTICLES
+
+const controlUpdateArticles = async () => {
+  //fetch all fournisseurs to model.state.fournisseurs
+  const articles = await model.loadArticles();
+  model.state.articles.all = articles;
+};
+
+const controlSearchArticles = input => {
+  //ON INPUT:
+  //get search input
+  // input
+  //get search results
+  const fuze = model.fuseMakerArticles(model.state.articles.all);
+  const results = fuze.search(input);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  //add results to html
+  addCmdsView.addToSuggestionsArticlesAndEL(
+    extractItems(results),
+    controlSelectArticles
+  );
+  //update search result refrencers
+
+  //re-add EL to the search results
+};
+
+//in addCmdsView:
+//add EL ONINPUT TO #input-box
+
+const controlSelectArticles = articleName => {
+  model.state.articles.selected = articleName;
+};
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
@@ -615,8 +672,6 @@ const controllers = [
   controlLoadCmds,
 ];
 
-// controlLoadCmds();
-
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
 editPermsView.addHandlerSwitch(controlRoleSwitch);
@@ -630,18 +685,17 @@ addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
 editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
-
-// addCmdsView.addHandlerShowWindow();
-
 // controlShowUsersEmail();
-
 numberRoleView.addHandlerNumber(controlNumberRoles);
 AddStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
-
 // editStructureView.addHandlerShowWindow();
 editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
-
 sideView.hideAllDivs();
+
+controlUpdateFournisseurs();
+addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
+controlUpdateArticles();
+addCmdsView.addHandlerArticleSearch(controlSearchArticles);

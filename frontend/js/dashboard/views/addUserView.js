@@ -26,7 +26,6 @@ export class AddUserView extends View {
   };
   addpasswordIconsEL() {
     this._passwordIcons.forEach(icon => {
-      console.log(icon);
       icon.addEventListener('click', e => {
         e.preventDefault();
         this.togglePasswordVisibility();

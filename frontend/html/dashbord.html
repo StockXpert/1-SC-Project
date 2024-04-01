@@ -2126,27 +2126,47 @@
             <div class="container-select-bdc">
               <div class="dropbtn dropbtn-fournisseurs">
                 <span class="material-icons-sharp"> search </span>
-                <select
+                <input
                   name="fournisseur"
                   class="filters-fournisseur"
-                  id="fournisseur-options"
+                  id="filter-fournisseur"
                   placeholder="Fournisseur"
                   required
-                >
-                  <option value="">Frounisseurs</option>
-                </select>
+                  autocomplete="off"
+                />
+                <div class="search-results">
+                  <ul class="four-search-results-container">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
               </div>
-              <div class="dropbtn dropbtn-Article">
+              <!-- <div class="dropbtn dropbtn-Article">
                 <span class="material-icons-sharp"> search </span>
                 <select
                   name="fournisseur"
                   class="filters-fournisseur"
-                  id="fournisseur-options"
                   placeholder="Fournisseur"
                   required
                 >
                   <option value="" disabled="" selected="">Articles</option>
                 </select>
+              </div> -->
+              <div class="dropbtn dropbtn-articles">
+                <span class="material-icons-sharp"> search </span>
+                <input
+                  name="article"
+                  class="filters-article"
+                  id="filter-article"
+                  placeholder="Article"
+                  required
+                  autocomplete="off"
+                />
+                <div class="search-results">
+                  <ul class="article-search-results-container"></ul>
+                </div>
               </div>
               <div class="btn-add-product">
                 <button>Ajouter Produit</button>

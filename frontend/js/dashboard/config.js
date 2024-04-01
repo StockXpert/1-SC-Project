@@ -16,6 +16,20 @@ export const FUSE_OPTIONS = {
     'active',
   ],
 };
+export const FUSE_OPTIONS_FOURNISSEURS = {
+  isCaseSensitive: false,
+  includeScore: true,
+  shouldSort: true,
+  threshold: 0.3,
+  keys: ['raison_sociale', 'adresse', 'telephone', 'fax', 'num_registre'],
+};
+export const FUSE_OPTIONS_ARTICLES = {
+  isCaseSensitive: false,
+  includeScore: true,
+  shouldSort: true,
+  threshold: 0.3,
+  keys: ['designation'],
+};
 
 export const GROUP_DEFINITIONS = {
   'Par Defaut': ['show user', 'change password auth'],

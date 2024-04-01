@@ -42,7 +42,6 @@ class EditRoleView extends EditUserView {
   }
   addHandlerHideWindow(CloserClassName, ctrl = '') {
     this._btnClose = document.querySelector(CloserClassName);
-    console.log(this._btnClose);
     if (ctrl != '') this._btnClose.addEventListener('click', ctrl);
   }
 }

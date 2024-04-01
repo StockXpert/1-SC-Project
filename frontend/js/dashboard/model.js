@@ -6,6 +6,8 @@ import {
   GROUP_DEFINITIONS,
   PERM_NAMES,
   ORDER_OF_GROUPS,
+  FUSE_OPTIONS_FOURNISSEURS,
+  FUSE_OPTIONS_ARTICLES,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -15,6 +17,14 @@ export const state = {
       all: [],
       wellFormed: [],
     },
+  },
+  fournisseurs: {
+    all: [],
+    selected: '',
+  },
+  articles: {
+    all: [],
+    selected: '',
   },
   user: {},
   search: {
@@ -65,12 +75,10 @@ export const getMyPerms = async function () {
   const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
   state.me = { ...result.response[0] };
   const myPerms = JSON.parse(localStorage.getItem('permissions'));
-  console.log(myPerms);
   state.me.permissions = {
     all: myPerms,
     wellFormed: organizePermissionsByGroup(myPerms, false, false),
   };
-  console.log(state.me);
   return state.me;
 };
 
@@ -131,10 +139,7 @@ export const updateUser = async function (newUser) {
 };
 export const loadSearchResults = async function (query) {
   try {
-    console.log('loading users from db...');
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
-    // console.log(data);
-    console.log('users loaded!');
     state.search.results = data.response.map(usr => {
       // usr:
       // "email": "o.djeziri@esi-sba.dz",
@@ -403,6 +408,9 @@ export const getStructures = async function () {
 //   },
 // ];
 export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
+export const fuseMakerFournisseurs = data =>
+  new Fuse(data, FUSE_OPTIONS_FOURNISSEURS);
+export const fuseMakerArticles = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
 
 export const loadRoles = async function () {
   try {
@@ -539,11 +547,25 @@ export const loadCmds = async function () {
   commandes = commandes.commandes;
   return commandes;
 };
-export const loadCommandeproducts = async function () {
-  let produits = await helpers.getJSON(
-    `${API_URL}/Entrees/showCommandeProducts`
+export const loadCommandeproducts = async function (numCommande) {
+  let products = await helpers.getJSONBody(
+    `${API_URL}/Entrees/showCommandeProducts`,
+    { numCommande: `${numCommande}` }
   );
-  console.log(produits);
+  console.log(products);
   // produits = produits.produits;
   // return produits;
+};
+
+export const loadFournisseurs = async function () {
+  let fournisseurs = await helpers.getJSON(
+    `${API_URL}/Nomenclatures/showFournisseurs`
+  );
+  // console.log(fournisseurs);
+  return fournisseurs.response;
+};
+
+export const loadArticles = async function () {
+  let articles = await helpers.getJSON(`${API_URL}/Nomenclatures/showArticles`);
+  return articles.response;
 };
