@@ -153,7 +153,8 @@ function deleteUser(req, res) {
   if (req.email === req.body.email)
     res.status(400).json({ response: 'prohibited to delete admin' });
   let { email } = req.body;
-  userService
+  userModel.isResponsable(email).then(()=>{
+    userService
     .deleteUser(email)
     .then(() => {
       res.status(200).json({ response: 'user deleted' });
@@ -161,6 +162,7 @@ function deleteUser(req, res) {
     .catch((error) => {
       res.status(500).json({ response: error });
     });
+  }).catch(()=>{res.status(403).json({response:'prohibited'})})
 }
 function addStructure(req, res) {
   const { designation, email } = req.body;
@@ -254,13 +256,15 @@ async function addRole(req, res) {
 function deleteRole(req,res)
 {
   const {role}=req.body;
-  userModel.canDeleteRole(role).then(()=>{
-    userModel.deleteRoleDroit(role).then(()=>{
-      userModel.deleteRole(role).then(()=>{
-        res.status(200).json({response:'role deleted'})
-      }).then(()=>{res.status(500).json({response:"internal error"})})
-    }).catch(()=>{res.status(500).json({response:"internal error"})})
-  }).catch(()=>{res.status(500).json({response:"can't delete"})})
+  userModel.isUsedRole(role).then(()=>{
+    userModel.canDeleteRole(role).then(()=>{
+      userModel.deleteRoleDroit(role).then(()=>{
+        userModel.deleteRole(role).then(()=>{
+          res.status(200).json({response:'role deleted'})
+        }).then(()=>{res.status(500).json({response:"internal error"})})
+      }).catch(()=>{res.status(500).json({response:"internal error"})})
+    }).catch(()=>{res.status(500).json({response:"can't delete"})})
+  }).catch(()=>{res.status(500).json({response:"forbidden"})})
 }
 async function addPermissions(req,res)
 {
@@ -298,11 +302,13 @@ function showPermissions(req,res)
 function deleteStructure(req,res)
 {
   const {structure}=req.body
-  userModel.canDeleteStructure(structure).then(()=>{
-    userModel.deleteStructure(structure).then(()=>{
-      res.status(200).json({response:'structure deleted'})
-    }).catch(()=>{res.status(500).json({response:'internal error'})})
-  }).catch(()=>{res.status(200).json({response:'prohibited to delete'})})
+  userModel.HaveConsumers(structure).then(()=>{
+    userModel.canDeleteStructure(structure).then(()=>{
+      userModel.deleteStructure(structure).then(()=>{
+        res.status(200).json({response:'structure deleted'})
+      }).catch(()=>{res.status(500).json({response:'internal error'})})
+    }).catch(()=>{res.status(403).json({response:'prohibited to delete'})})
+  }).catch(()=>{res.status(403).json({response:'forbidden'})})
 }
 function updateStructure(req,res)
 {

@@ -5,6 +5,95 @@ const connectionConfig = {
   password: 'w7Xaq1AwW42V3jvOiTgb',
   database: 'bibznsnq8nf1q3j7r74o'
 };
+function isResponsable(email)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select id_structure from structure where id_resp=?`;
+    const values = [email];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length==0)
+           resolve('')
+        else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function HaveConsumers(structure)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select email from utilisateur where id_structure in
+    (select id_structure from structure where designation=?)`;
+    const values = [structure];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length==0)
+           resolve('')
+        else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function isUsedRole(role)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select email from utilisateur where id_role in
+    (select id_role from role where designation=?)`;
+    const values = [role];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length==0)
+           resolve('')
+        else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function getRolePermissons(role)
 {
   return new Promise((resolve, reject) => {
@@ -805,7 +894,7 @@ module.exports={insertUser,verifyUser,getPassword,getUsers,getUser,changePasswor
                  getRole,updateStatus,canDeletePerson,
                  getRolePermissons,getRoles,getPermissions,
                  insertRole,insertRoleDroit,deleteRoleDroit,deleteRole,canDeleteRole,updateStructure,canDeleteStructure,
-                rattacher,deleteStructure,getRolePermissons};
+                rattacher,deleteStructure,getRolePermissons,HaveConsumers,isResponsable,isUsedRole};
 
 
 
