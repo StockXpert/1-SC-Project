@@ -5,6 +5,7 @@ import { GROUP_BTNS } from '../config.js';
 class SideView extends View {
   _parentElement = document.querySelector('.sidebar');
   btns = [
+    document.querySelector('.dashbord-btn'),
     document.querySelector('.utilisateurs'),
     document.querySelector('.structures-btn'),
     document.querySelector('.roles-btn'),

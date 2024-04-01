@@ -535,6 +535,7 @@ export const deleteStructure = async function (structure) {
 };
 
 export const loadCmds = async function () {
-  const commandes = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
-  console.log(commandes);
+  let commandes = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
+  commandes = commandes.commandes;
+  return commandes;
 };

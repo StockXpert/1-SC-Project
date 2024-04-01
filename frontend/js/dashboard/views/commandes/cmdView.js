@@ -1,4 +1,5 @@
 import { UsersView } from '../usersView.js';
+import * as helpers from '../../helpers.js';
 
 class CmdsView extends UsersView {
   _parentElement = document
@@ -10,13 +11,19 @@ class CmdsView extends UsersView {
           <td>
             <div class="checkbox-colomn">
               <input type="checkbox" id="checkbox-table" />
-              <p class="colomn-tags-name">24299</p>
+              <p class="colomn-tags-name">${result.num_commande}</p>
             </div>
           </td>
-          <td>Frounisseur1</td>
-          <td>21.11</td>
-          <td>21/12/2023</td>
-          <td><p class="status encour-status">En Cour</p></td>
+          <td>${result.fournisseur}</td>
+          <td>${result.objet}</td>
+          <td>${helpers.formatDate(result.date_commande)}</td>
+          <td><p class="status ${
+            result.etat == 'en cours'
+              ? 'encour-status'
+              : result.etat == 'termine'
+              ? 'finish-status'
+              : 'canceled-status'
+          }">${result.etat}</p></td>
           <td class="td-view-bdc">
             <button class="view-btc-btn">
               <p>Voir Bon de commande</p>

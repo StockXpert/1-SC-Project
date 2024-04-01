@@ -572,31 +572,40 @@ const controlProfile = function () {
   sideView.divs[0].classList.remove('hidden');
 };
 
-// REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
-//TODO: TEMPORARY
-// await controlAddUserUpdateSelects();
-// addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
-// controlSearchResults();
-// userViewAdders();
-const controllers = [
-  controlProfile,
-  controlSearchResults,
-  controlLoadStructures,
-  controlLoadRoles,
-  controlLoadPerms,
-];
-
 const controlRoleSwitch = (e, selectedIndex) => {
   controlEditRole(e, true, selectedIndex - 1);
   console.log(selectedIndex - 1);
 };
 
 const controlLoadCmds = async function () {
+  cmdsView.renderSpinner();
   const cmds = await model.loadCmds();
-  // cmdsView.render(cmds);
+  cmdsView.render(cmds);
 };
 
-controlLoadCmds();
+// REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
+//TODO: TEMPORARY
+// await controlAddUserUpdateSelects();
+// addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
+// controlSearchResults();
+// userViewAdders();
+
+const controllers = [
+  controlProfile,
+  controlSearchResults,
+  controlLoadStructures,
+  controlLoadRoles,
+  controlLoadPerms,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  controlLoadCmds,
+];
+
+// controlLoadCmds();
 
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
