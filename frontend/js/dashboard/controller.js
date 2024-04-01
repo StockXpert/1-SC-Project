@@ -24,6 +24,7 @@ import deleteStructureView from './views/deleteStructureView.js';
 import cmdsView from './views/commandes/cmdsView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
+import productsView from './views/commandes/productsView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -584,6 +585,13 @@ const controlLoadCmds = async function () {
   const cmds = await model.loadCmds();
   cmdsView.render(cmds);
 };
+
+const controlLoadCommandeproducts = async function () {
+  // addCmdsView.renderSpinner();
+  const products = await model.loadCommandeproducts();
+  // productsView.render(products);
+};
+controlLoadCommandeproducts();
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY

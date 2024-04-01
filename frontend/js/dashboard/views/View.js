@@ -43,7 +43,7 @@ export default class View {
   //   });
   // }
 
-  render(data, render = true, perms = '') {
+  render(data, render = true, perms = '', containerClass = '') {
     this._perms = perms;
     //TODO: RenderError()
     // console.log('rendering', this._data);
@@ -58,7 +58,14 @@ export default class View {
     if (!render) return markup;
     // console.log('rendering', markup);
     this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    if (containerClass == '') {
+      this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    } else {
+      document.querySelector(containerClass).innerHTML = '';
+      document
+        .querySelector(containerClass)
+        .insertAdjacentHTML('afterbegin', markup);
+    }
   }
   renderSpinner = function (message = '', isTrueParent = false) {
     console.log('rendering spinner');

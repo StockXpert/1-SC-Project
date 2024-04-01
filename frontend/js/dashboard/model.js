@@ -539,3 +539,11 @@ export const loadCmds = async function () {
   commandes = commandes.commandes;
   return commandes;
 };
+export const loadCommandeproducts = async function () {
+  let produits = await helpers.getJSON(
+    `${API_URL}/Entrees/showCommandeProducts`
+  );
+  console.log(produits);
+  // produits = produits.produits;
+  // return produits;
+};
