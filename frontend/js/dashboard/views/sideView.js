@@ -32,6 +32,12 @@ class SideView extends View {
     document.getElementById('main-table-bdc'),
   ];
 
+  hideAllDivs() {
+    // console.log('hideAllDivs', this.divs);
+    this.divs.forEach(div => div.classList.add('hidden'));
+    this.divs[0].classList.remove('hidden');
+  }
+
   reselectBtns() {
     this.btns = [...this._parentElement.children];
   }
@@ -68,6 +74,7 @@ class SideView extends View {
           this.divs.forEach(btn => {
             btn.classList.add('hidden');
           });
+          console.log(this.divs[helpers.findNodeIndex(this.btns, targeto)]);
           this.divs[helpers.findNodeIndex(this.btns, targeto)].classList.remove(
             'hidden'
           );

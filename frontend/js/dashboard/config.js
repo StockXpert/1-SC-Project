@@ -131,6 +131,10 @@ export const GROUP_BTNS = {
   <span class="material-icons-sharp"> manage_accounts </span>
   <h3>Permissions</h3>
 </a>`,
+  Chapitres: `<a class="sidebar-btns chapitres-btn" href="" name="show chapters">
+  <span class="material-icons-sharp"> menu_book </span>
+  <h3>Chapitres</h3>
+</a>`,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',

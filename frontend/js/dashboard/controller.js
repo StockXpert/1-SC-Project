@@ -40,6 +40,7 @@ const controlUpdateMyPerms = async function () {
 };
 // console.log(model.state);
 // };
+
 await controlUpdateMyPerms();
 
 //controller is the mastermind behind the applciation
@@ -557,6 +558,11 @@ function filterArrayByBooleans(dataArray, booleanArray) {
   }
   return filteredArray;
 }
+const controlProfile = function () {
+  console.log(sideView.divs);
+  sideView.divs.forEach(div => div.classList.add('hidden'));
+  sideView.divs[0].classList.remove('hidden');
+};
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
@@ -565,7 +571,7 @@ function filterArrayByBooleans(dataArray, booleanArray) {
 // controlSearchResults();
 // userViewAdders();
 const controllers = [
-  '',
+  controlProfile,
   controlSearchResults,
   controlLoadStructures,
   controlLoadRoles,
@@ -599,3 +605,5 @@ numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
 // editStructureView.addHandlerShowWindow();
 editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
+
+sideView.hideAllDivs();
