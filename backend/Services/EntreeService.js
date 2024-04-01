@@ -183,7 +183,7 @@ async function genererBonReception(produits,numCommande,fournisseur,dateCommande
     await googleMiddleware.generatePDF(Id,`BonReception`,`reception${numReception}`);
     await googleMiddleware.deleteRows(11,i-1,Id);
     const link=`BonReception/reception${numReception}.pdf`
-    EntreeModel.insertLink(link,numReception).then(()=>{
+    EntreeModel.insertReceptionLink(link,numReception).then(()=>{
                 resolve(link)
      }).catch(()=>{reject("err")})
     })

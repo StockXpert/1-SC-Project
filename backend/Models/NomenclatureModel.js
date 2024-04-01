@@ -5,7 +5,7 @@ const connectionConfig = {
   password: 'w7Xaq1AwW42V3jvOiTgb',
   database: 'bibznsnq8nf1q3j7r74o'
 };
-function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, nis, raisonSocial) {
+function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, nis, raisonSociale) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query = `
@@ -29,7 +29,7 @@ function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, 
     if (rip) values.push(rip);
     if (nif) values.push(nif);
     if (nis) values.push(nis);
-    values.push(raisonSocial);
+    values.push(raisonSociale);
 
     connection.connect((err) => {
       if (err) {

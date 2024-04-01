@@ -779,7 +779,7 @@ function getBonReceptionProducts(numReception)
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });})  
 }
-function getCommandeProducts(numReception)
+function getCommandeProducts(numCommande)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
@@ -793,7 +793,7 @@ function getCommandeProducts(numReception)
         return;
       }
       
-      connection.query(query,[numReception],(error, results, fields) => {
+      connection.query(query,[numCommande],(error, results, fields) => {
         if (error) {
           console.error('Erreur lors de l\'exécution de la requête :', error);
           reject("request error");
@@ -844,4 +844,4 @@ module.exports={insertBonCommande,insertLink,getLink,insertCommander,canDeleteCo
                 deleteCommander,insertBonReception,insertLivre,
                 insertBonReception,getCommande,
                 getBonReception,getBonReceptionProducts,getCommandeProducts,
-                deleteLivre,deleteReception,updateReception,deleteProduitLivre}
+                deleteLivre,deleteReception,updateReception,deleteProduitLivre,insertReceptionLink}
