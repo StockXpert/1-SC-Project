@@ -40,18 +40,28 @@ router.put(
   EntreeController.updateBonCommande
 );
 router.get(
-  '/showBonReception',
-  authMiddleware('show bon reception'),
-  EntreeController.showBonReception
-);
-router.get(
-  'showCommandeProducts',
+  '/showCommandeProducts',
   authMiddleware('show commande products'),
   EntreeController.showCommandeProducts
 );
 router.get(
-  'showBonReceptionProducts',
+  '/showBonReceptionProducts',
   authMiddleware('show bon reception products'),
   EntreeController.showBonReceptionProducts
+);
+router.put(
+  '/updateReception',
+  authMiddleware('update reception'),
+  EntreeController.updateReception
+);
+router.delete(
+  '/deleteReception',
+  authMiddleware('delete reception'),
+  EntreeController.deleteReception
+);
+router.get(
+  '/showBonReception',
+  authMiddleware('show bon reception'),
+  EntreeController.showBonReception
 );
 module.exports = router;

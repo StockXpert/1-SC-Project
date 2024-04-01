@@ -1,11 +1,5 @@
-const { get } = require('http');
 const userModel = require('../Models/UserModel');
 const crypto = require('crypto');
-const { response } = require('express');
-const { resolve } = require('path');
-const { rejects } = require('assert');
-const { error } = require('console');
-const { use } = require('../routes/Users');
 async function createUser(email, role, password,prenom,nom,date_naissance,type,structure) {
   return new Promise((resolve,reject)=>{
     userModel.verifyUser(email).then(()=>{

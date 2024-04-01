@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     if (file.fieldname === 'facture') {
       destinationFolder = 'factures';
     } else if (file.fieldname === 'bonLivraison') {
-      destinationFolder = 'bons_de_livraison';
+      destinationFolder = 'bonLivraison';
     } else {
       destinationFolder = ''; // Dossier par défaut si le champ n'est pas reconnu
     }

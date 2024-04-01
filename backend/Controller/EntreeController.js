@@ -52,24 +52,34 @@ function genererBondeCommande(req, res) {
 }
 function deleteCommande(req, res) {
   const { numCommande } = req.body;
-  EntreeModel.canDeleteCommande(numCommande)
-    .then(() => {
-      EntreeModel.deleteCommande(numCommande)
-        .then(() => {
-          EntreeModel.deleteBonCommande(numCommande)
-            .then(() => {
-              res.status(200).json({ response: 'commande deleted' });
-            })
-            .catch(() => {
-              res.status(500).json({ response: 'internal error' });
-            });
-        })
-        .catch(() => {
-          res.status(500).json({ response: 'internal error' });
-        });
+  EntreeModel.getBonReception(numCommande)
+    .then(response => {
+      if (response.length == 0)
+        res.status(500).json({ response: 'prohibited to delete commande' });
+      else {
+        EntreeModel.canDeleteCommande(numCommande)
+          .then(() => {
+            EntreeModel.deleteCommande(numCommande)
+              .then(() => {
+                EntreeModel.deleteBonCommande(numCommande)
+                  .then(() => {
+                    res.status(200).json({ response: 'commande deleted' });
+                  })
+                  .catch(() => {
+                    res.status(500).json({ response: 'internal error' });
+                  });
+              })
+              .catch(() => {
+                res.status(500).json({ response: 'internal error' });
+              });
+          })
+          .catch(() => {
+            res.status(500).json({ response: 'prohibited to delete commande' });
+          });
+      }
     })
     .catch(() => {
-      res.status(500).json({ response: 'prohibited to delete commande' });
+      res.status(500).json({ response: 'internal error' });
     });
 }
 function cancelCommande(req, res) {
@@ -94,8 +104,8 @@ function showCommandes(req, res) {
 function updateQuantite(req, res) {
   const { numCommande, produits, numFacture, numLivraison, dateReception } =
     req.body;
-  /*const bonLivraisonLink = req.files['bonLivraison'][0].originalname;
-   const factureLink = req.files['facture'][0].originalname;*/
+  const bonLivraisonLink = req.files['bonLivraison'][0].originalname;
+  const factureLink = req.files['facture'][0].originalname;
   EntreeService.changeQuantite(numCommande, produits)
     .then(response => {
       EntreeService.uploadvalidity(numCommande).then(response => {
@@ -104,7 +114,9 @@ function updateQuantite(req, res) {
           produits,
           numFacture,
           numLivraison,
-          dateReception
+          dateReception,
+          bonLivraisonLink,
+          factureLink
         )
           .then(response => {
             res.status(200).json({ response });
@@ -123,16 +135,26 @@ function updateBonCommande(req, res) {
     date,
     numCommande,
   } = req.body;
-  EntreeService.changeBonCommande(
-    objet,
-    fournisseur,
-    deletedProducts,
-    addedProducts,
-    date,
-    numCommande
-  )
-    .then(() => {
-      res.status(200).json({ response: 'bon de commande updated' });
+  EntreeModel.getBonReception(numCommande)
+    .then(response => {
+      if (response.length == 0)
+        res.status(500).json({ response: 'prohibited to update' });
+      else {
+        EntreeService.changeBonCommande(
+          objet,
+          fournisseur,
+          deletedProducts,
+          addedProducts,
+          date,
+          numCommande
+        )
+          .then(() => {
+            res.status(200).json({ response: 'bon de commande updated' });
+          })
+          .catch(() => {
+            res.status(500).json({ response: 'internal error' });
+          });
+      }
     })
     .catch(() => {
       res.status(500).json({ response: 'internal error' });
@@ -179,4 +201,6 @@ module.exports = {
   showBonReception,
   showBonReceptionProducts,
   showCommandeProducts,
+  updateReception,
+  deleteReception,
 };
