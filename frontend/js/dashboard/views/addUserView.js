@@ -39,6 +39,7 @@ export class AddUserView extends View {
     this._btnOpen = document.querySelector(OpClassName);
     this._btnOpen.addEventListener('click', this._boundToggleWindow);
   }
+  //COMMENTED IN CONTROLLER.JS
   addHandlerOpenWindowAndUpdateSelect(handler) {
     this._btnOpen.addEventListener('click', handler);
   }

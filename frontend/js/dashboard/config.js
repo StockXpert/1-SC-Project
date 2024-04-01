@@ -33,18 +33,23 @@ export const GROUP_DEFINITIONS = {
     'update chapter',
     'show chapters',
   ],
-  'Produits et Articles': [
-    'show products',
-    'show articles',
+  Produits: [
     'show commande products',
+    'show products',
     'add product',
     'delete product',
-    'add article',
-    'update article',
-    'delete article',
+  ],
+  Fournisseurs: [
     'add fournisseur',
     'delete fournisseur',
     'show fournisseurs',
+    'update fournisseur',
+  ],
+  Articles: [
+    'show articles',
+    'add article',
+    'update article',
+    'delete article',
   ],
   Commandes: [
     'show commandes',
@@ -53,7 +58,6 @@ export const GROUP_DEFINITIONS = {
     'update quantite',
     'cancel commande',
     'update bon commande',
-    'update fournisseur',
     'update raison sociale',
   ],
   Roles: ['show roles', 'add role', 'delete role'],
@@ -135,6 +139,10 @@ export const GROUP_BTNS = {
   <span class="material-icons-sharp"> menu_book </span>
   <h3>Chapitres</h3>
 </a>`,
+  Fournisseurs: `<a class="sidebar-btns fournisseurs-btn hidden" href="">
+  <span class="material-icons-sharp"> local_shipping </span>
+  <h3>Fournisseurs</h3>
+</a>`,
   Commandes: `<a class="sidebar-btns bon-de-commandes-btn" href="">
   <span class="material-icons-sharp"> description </span>
   <h3>Bon de Commande</h3>
@@ -145,6 +153,18 @@ export const GROUP_BTNS = {
   <h3>Autres</h3>
 </a>
   `,
+  Produits: `<a class="sidebar-btns produits-btn" href="">
+  <span class="material-icons-sharp produits-btn">
+    shopping_cart
+  </span>
+  <h3>Produits</h3>
+</a>
+  `,
+  Articles: `<a class="sidebar-btns articles-btn" href="" name="show articles">
+  <span class="material-icons-sharp"> article </span>
+  <h3>Articles</h3>
+</a>
+  `,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',
@@ -152,8 +172,9 @@ export const ORDER_OF_GROUPS = [
   'Structures',
   'Roles',
   'Permissions',
-  'Chapitres',
-  'Produits et Articles',
   'Commandes',
+  'Chapitres',
+  'Produits',
+  'Articles',
   'Autre',
 ];

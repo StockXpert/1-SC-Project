@@ -23,6 +23,7 @@ import numberRoleView from './views/roles/numberRoleView.js';
 import deleteStructureView from './views/deleteStructureView.js';
 import cmdsView from './views/commandes/cmdsView.js';
 import addStructureView from './views/addStructureView.js';
+import addCmdsView from './views/commandes/addCmdsView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -621,6 +622,8 @@ addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
 editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
+
+// addCmdsView.addHandlerShowWindow();
 
 // controlShowUsersEmail();
 
