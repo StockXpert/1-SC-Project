@@ -22,6 +22,7 @@ import editPermsView from './views/roles/editPermsView.js';
 import numberRoleView from './views/roles/numberRoleView.js';
 import deleteStructureView from './views/deleteStructureView.js';
 import cmdsView from './views/commandes/cmdView.js';
+import addStructureView from './views/addStructureView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -217,9 +218,9 @@ const controlAddStructure = async function (newStructure) {
     await controlLoadStructures();
     AddStructureView.clearForm();
     //Close Window
-    // setTimeout(function () {
-    //   AddStructureView.toggleWindow();
-    // }, MODAL_CLOSE_SEC * 1000);
+    setTimeout(function () {
+      AddStructureView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
   } catch (error) {
     console.error(error);
   }
