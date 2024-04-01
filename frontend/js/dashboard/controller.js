@@ -197,7 +197,7 @@ const controlLoadStructures = async function () {
     structuresView.render(
       model.state.structures.results,
       true,
-      model.state.me.permissions
+      model.state.me.permissions.all
     );
     numberStructuresView.render(model.state.structures);
     numberStructuresView.updateMasterCheckbox();

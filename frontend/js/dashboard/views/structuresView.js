@@ -1,5 +1,5 @@
 import View from './view.js';
-
+import * as helpers from '../helpers.js';
 class StructuresView extends View {
   _parentElement = document.querySelector('.table-structures');
 
@@ -24,7 +24,7 @@ class StructuresView extends View {
       <td>
       ${
         //TODO:
-        perms.all.includes('update structure')
+        helpers.includesDesignation(perms, 'update structure')
           ? `
         <button class="details-btn-structures">
            <span class="material-icons-sharp info-icon">
