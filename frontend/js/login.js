@@ -65,8 +65,9 @@ async function login() {
       console.log('Login successful');
       // Store the JWT
       localStorage.setItem('JWT', data.jwt);
-      const me = await model.getMyPerms();
-      localStorage.setItem('me', JSON.stringify(me));
+      localStorage.setItem('permissions', JSON.stringify(data.permissions));
+      localStorage.setItem('role', data.role);
+      console.log(localStorage);
       // redirect the user
       if (data.role === 'Admin') window.location.href = '../html/dashbord.html';
       else window.location.href = '../html/dashbord.html';

@@ -64,17 +64,13 @@ export const state = {
 export const getMyPerms = async function () {
   const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
   state.me = { ...result.response[0] };
-  const roles = await loadRoles();
-  // console.log(state);
+  const myPerms = JSON.parse(localStorage.getItem('permissions'));
+  console.log(myPerms);
   state.me.permissions = {
-    all: helpers.getPermissions(roles, state.me.role),
-    wellFormed: organizePermissionsByGroup(
-      helpers.getPermissions(roles, state.me.role),
-      true,
-      false
-    ),
+    all: myPerms,
+    wellFormed: organizePermissionsByGroup(myPerms, false, false),
   };
-  // console.log(state.me);
+  console.log(state.me);
   return state.me;
 };
 
@@ -536,4 +532,9 @@ export const deleteStructure = async function (structure) {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const loadCmds = async function () {
+  const commandes = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
+  console.log(commandes);
 };

@@ -21,6 +21,7 @@ import editRoleView from './views/roles/editRoleView.js';
 import editPermsView from './views/roles/editPermsView.js';
 import numberRoleView from './views/roles/numberRoleView.js';
 import deleteStructureView from './views/deleteStructureView.js';
+import cmdsView from './views/commandes/cmdView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -409,6 +410,7 @@ const controlLoadRoles = async function () {
 const controlLoadPerms = async function () {
   editPermsView.render('');
   editPermsView.setSelector(0);
+  await model.loadRoles();
   //update the roleSelector from backend
   await controlEditRoleUpdateSelects();
 };
@@ -440,7 +442,10 @@ const controlEditRole = async function (
   }
 
   //update state to reflect clicked role
+  console.log(model.state.roles.all);
+  console.log(model.state);
   model.state.roles.selected = model.state.roles.all[targetIndex];
+  console.log(model.state.roles.selected);
 
   editPermsView.renderSpinner();
   // update model.state.roles.allPermissions from backend
@@ -584,6 +589,13 @@ const controlRoleSwitch = (e, selectedIndex) => {
   controlEditRole(e, true, selectedIndex - 1);
   console.log(selectedIndex - 1);
 };
+
+const controlLoadCmds = async function () {
+  const cmds = await model.loadCmds();
+  // cmdsView.render(cmds);
+};
+
+controlLoadCmds();
 
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
