@@ -12,12 +12,18 @@ export class EditUserView extends AddUserView {
   _btnClose;
   _parentElement = document.querySelector('.edit-user-cart');
   _form = document.querySelector('.inputs-edit');
-  _role = document.querySelector('#role-options-edit');
-  // currTarget;
-  // }
+
   _typeConsumer = document
     .querySelector('.groupe-4')
     .querySelector('.dropdown-consumer');
+  _nom = document.querySelector('.groupe-1').children[0];
+  _statut = document.querySelector('.groupe-1').children[1];
+  _roleContainer = document.querySelector('.groupe-1').children[2];
+  _role = document.querySelector('#role-options-edit');
+  _prenom = document.querySelector('.groupe-2').children[0];
+  _ddn = document.querySelector('.groupe-2').children[1];
+  _str = document.querySelector('.groupe-2').children[2];
+  _email = document.querySelector('.groupe-3');
 
   constructor() {
     super();
@@ -80,6 +86,17 @@ export class EditUserView extends AddUserView {
   }
 
   _generateMarkup() {}
+
+  _restricted = [
+    [this._nom, 'update user'],
+    [this._statut, 'change status'],
+    [this._prenom, 'update user'],
+    [this._ddn, 'update user'],
+    [this._str, 'rattacher'],
+    [this._email, 'update user'],
+    [this._roleContainer, 'update user'],
+    'none',
+  ];
 }
 
 export default new EditUserView();

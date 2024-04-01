@@ -135,6 +135,8 @@ export class AddUserView extends View {
     this._window.classList.toggle('hidden');
   }
   _generateMarkup() {}
+
+  _restricted = [[this._btnOpen, 'register'], 'none'];
 }
 
 export default new AddUserView();

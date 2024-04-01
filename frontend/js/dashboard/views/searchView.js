@@ -25,8 +25,8 @@ class SearchView extends View {
   addHandlerSearchV2(Controller) {
     this.#searchInput.addEventListener('input', () => {
       const searchKeyword = this.getQuery();
-      Controller(searchKeyword);
       console.log('addHandlerSearchV2(Controller) executed');
+      Controller(searchKeyword);
     });
   }
 
@@ -38,10 +38,10 @@ class SearchView extends View {
         1,
         filterInput.options[filterInput.selectedIndex].value
       );
-      Controller(
-        newFilterValues,
-        newFilterValues.some(el => el !== '')
-      );
+      // Controller(
+      //   newFilterValues,
+      //   newFilterValues.some(el => el !== '')
+      // );
       filterInput.addEventListener('change', e => {
         newFilterValues.splice(
           index,

@@ -85,7 +85,7 @@ export class NumberView extends View {
     });
   }
   addHandlerMasterCheckbox(controller) {
-    const checkboxes = this.selectionUpdater();
+    // const checkboxes = this.selectionUpdater();
     // console.log(checkboxes);
     // this._masterCheckbox = document.getElementById('checkbox-table-all');
     const masterCheckbox = this._masterCheckbox;

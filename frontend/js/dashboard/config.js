@@ -18,22 +18,27 @@ export const FUSE_OPTIONS = {
 };
 
 export const GROUP_DEFINITIONS = {
-  Utilisateur: [
-    'register',
+  'Par Defaut': ['show user', 'change password auth'],
+  Utilisateurs: [
     'show users',
-    'show user',
+    'register',
     'update user',
     'delete user',
     'change status',
-    'change password auth',
     'rattacher',
   ],
-  Chapitres: ['add chapter', 'delete chapter', 'update chapter'],
-  Produits_et_Articles: [
-    'add product',
-    'delete product',
+  Chapitres: [
+    'add chapter',
+    'delete chapter',
+    'update chapter',
+    'show chapters',
+  ],
+  'Produits et Articles': [
     'show products',
     'show articles',
+    'show commande products',
+    'add product',
+    'delete product',
     'add article',
     'update article',
     'delete article',
@@ -42,40 +47,33 @@ export const GROUP_DEFINITIONS = {
     'show fournisseurs',
   ],
   Commandes: [
-    'show chapters',
+    'show commandes',
     'bon commande',
     'delete commande',
     'update quantite',
     'cancel commande',
-    'show commandes',
     'update bon commande',
     'update fournisseur',
     'update raison sociale',
   ],
-  Roles_et_Permissions: [
-    'add role',
-    'show roles',
-    'delete role',
-    'show permissions',
-    'add permissions',
-    'delete permissions',
-  ],
-  Structure: [
+  Roles: ['show roles', 'add role', 'delete role'],
+  Permissions: ['show permissions', 'add permissions', 'delete permissions'],
+  Structures: [
+    'show structure',
     'update structure',
     'delete structure',
     'add structure',
-    'show structure',
   ],
 };
 export const PERM_NAMES = {
-  register: 'Enregistrer',
+  register: 'Inscrire un nouvel utilisateur',
   'show users': 'Afficher les utilisateurs',
-  'show user': "Afficher l'utilisateur",
-  'update user': "Mettre à jour l'utilisateur",
-  'delete user': "Supprimer l'utilisateur",
-  'change status': 'Changer le statut',
-  'change password auth': "Modifier le mot de passe d'authentification",
-  rattacher: 'Raattacher',
+  'show user': 'Voir ses Informations',
+  'update user': 'Mettre à jour un utilisateur',
+  'delete user': 'Supprimer un utilisateur',
+  'change status': "Changer le statut d'un utilisateur",
+  'change password auth': "Changer le mot de passe d'authentification",
+  rattacher: 'Raattacher un utilisateur à une structure',
   'add chapter': 'Ajouter un chapitre',
   'delete chapter': 'Supprimer le chapitre',
   'update chapter': 'Mettre à jour le chapitre',
@@ -108,4 +106,44 @@ export const PERM_NAMES = {
   'delete structure': 'Supprimer la structure',
   'add structure': 'Ajouter une structure',
   'show structure': 'Afficher la structure',
+  'show commande products': 'Afficher les produits commandés.',
+  'show bon reception products': 'Afficher les produits de bon de réception',
 };
+
+export const GROUP_BTNS = {
+  'Par Defaut': `<a href="" class="sidebar-btns dashbord-btn active " name="Par Defaut">
+  <span class="material-icons-sharp"> dashboard </span>
+  <h3>Dashboard</h3>
+</a>`,
+  Utilisateurs: `<a href="" class="sidebar-btns utilisateurs utilisateurs-btn" name="Utilisateurs">
+  <span class="material-icons-sharp"> person_outline</span>
+  <h3>Utilisateurs</h3>
+</a>`,
+  Roles: `<a href="" class="sidebar-btns roles-btn" name="Roles">
+  <span class="material-icons-sharp"> work </span>
+  <h3>Rôles</h3>
+</a>`,
+  Structures: `<a href="" class="sidebar-btns structures-btn" name="Structures">
+  <span class="material-icons-sharp"> school </span>
+  <h3>Structures</h3>
+</a>`,
+  Permissions: `<a class="sidebar-btns permissions-btn" href="" name="Permissions">
+  <span class="material-icons-sharp"> manage_accounts </span>
+  <h3>Permissions</h3>
+</a>`,
+  Chapitres: `<a class="sidebar-btns chapitres-btn" href="" name="show chapters">
+  <span class="material-icons-sharp"> menu_book </span>
+  <h3>Chapitres</h3>
+</a>`,
+};
+export const ORDER_OF_GROUPS = [
+  'Par Defaut',
+  'Utilisateurs',
+  'Structures',
+  'Roles',
+  'Permissions',
+  'Chapitres',
+  'Produits et Articles',
+  'Commandes',
+  'Autre',
+];

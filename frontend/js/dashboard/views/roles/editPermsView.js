@@ -96,7 +96,7 @@ class EditPermsView extends EditUserView {
     let newState = fn(this._checkboxes);
     this._checkboxes.forEach(el =>
       el.addEventListener('change', e => {
-        // console.log('CHANGED?', !newState);
+        console.log('CHANGE');
         newState = fn(this._checkboxes);
         if (newState) {
           document

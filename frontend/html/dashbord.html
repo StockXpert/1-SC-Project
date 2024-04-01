@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script defer type="module" src="../js/dashboard/controller.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
@@ -17,7 +18,6 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
     <link rel="stylesheet" href="../css/dashbord.css" />
-    <script type="module" src="../js/dashboard/controller.js"></script>
   </head>
   <body>
     <div class="container">
@@ -35,24 +35,53 @@
           </div>
         </div>
         <div class="sidebar">
-          <a href="" class="sidebar-btns dashbord-btn">
+          <!--TODO: DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW-->
+          <!-- DONT REMOVE THIS COMMENT BELOW TODO:-->
+
+          <!-- <a href="" class="sidebar-btns dashbord-btn">
             <span class="material-icons-sharp"> account_circle </span>
 
             <h3>Mon Profile</h3>
           </a>
-          <a href="" class="sidebar-btns active utilisateurs utilisateurs-btn">
+          <a
+            href=""
+            class="sidebar-btns active utilisateurs utilisateurs-btn"
+            name="show users"
+          >
             <span class="material-icons-sharp"> person_outline</span>
             <h3>Utilisateurs</h3>
           </a>
-          <a class="sidebar-btns structures-btn" href="">
+          <a href="" class="sidebar-btns structures-btn" name="show structure">
             <span class="material-icons-sharp"> school </span>
             <h3>Structures</h3>
           </a>
-          <a class="sidebar-btns roles-btn" href="">
+          <a href="" class="sidebar-btns roles-btn" name="show roles">
             <span class="material-icons-sharp"> work </span>
             <h3>Rôles</h3>
           </a>
-          <a class="sidebar-btns permissions-btn" href="">
+          <a
+            class="sidebar-btns permissions-btn"
+            href=""
+            name="show permissions"
+          >
             <span class="material-icons-sharp"> manage_accounts </span>
             <h3>Permissions</h3>
           </a>
@@ -61,11 +90,11 @@
             <span class="material-icons-sharp"> app_registration </span>
             <h3>Modification</h3>
           </a>
-          <a class="sidebar-btns chapitres-btn" href="">
+          <a class="sidebar-btns chapitres-btn" href="" name="show chapters">
             <span class="material-icons-sharp"> menu_book </span>
             <h3>Chapitres</h3>
           </a>
-          <a class="sidebar-btns articles-btn" href="">
+          <a class="sidebar-btns articles-btn" href="" name="show articles">
             <span class="material-icons-sharp"> article </span>
             <h3>Articles</h3>
           </a>
@@ -96,7 +125,7 @@
           <a class="sidebar-btns" href="">
             <span class="material-icons-sharp"> logout </span>
             <h3>Se deconnecter</h3>
-          </a>
+          </a> -->
         </div>
       </aside>
       <!-- fin of sidebar -->
@@ -352,7 +381,9 @@
               </div>
             </div>
             <div class="add-users">
-              <button class="add-users-btn">Ajouter Un Utilisateur</button>
+              <button class="add-users-btn hidden">
+                Ajouter Un Utilisateur
+              </button>
             </div>
           </div>
 
@@ -363,15 +394,17 @@
             <div class="heading-table">
               <div class="container-heading-table">
                 <div class="heading-table-text">
-                  <p class="table-text">
+                  <!-- <p class="table-text">
                     Tout les Utilisateurs (<b class="number-users">245</b>)
                   </p>
                   <p class="table-text">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns">
-                  <button class="heading-table-btn btn-delete btn-delete-user">
+                  <button
+                    class="heading-table-btn btn-delete btn-delete-user hidden"
+                  >
                     Supprimer
                   </button>
                 </div>
@@ -398,7 +431,7 @@
                     <th>Statut</th>
                     <th>Rôles</th>
                     <th>Structure</th>
-                    <th>Modifier</th>
+                    <th><p class="hidden">Modifier</p></th>
                   </tr>
                 </thead>
                 <tbody class="results">
@@ -587,7 +620,7 @@
         <!------ fin de content for Admin : 1 - Users tables----- -->
         <!------ debut de content for Admin : 2 - Structure tables----- -->
 
-        <div class="main-table hidden" id="main-table-structures">
+        <div class="main-table" id="main-table-structures">
           <div class="heading">
             <h1>Structures</h1>
             <hr class="line-style" />
@@ -602,12 +635,12 @@
                   class="heading-table-text"
                   id="heading-table-text-structures"
                 >
-                  <p class="table-text">
+                  <!-- <p class="table-text">
                     Tout les Structures (<b class="number-users">245</b>)
                   </p>
                   <p class="table-text">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns">
                   <button
@@ -617,7 +650,7 @@
                     Supprimer
                   </button>
                   <button
-                    class="heading-table-btn btn-add"
+                    class="heading-table-btn btn-add hidden"
                     id="add-btn-structure"
                   >
                     Ajouter
@@ -707,9 +740,9 @@
             <div class="heading-table">
               <div class="container-heading-table-roles">
                 <div class="heading-table-text" id="heading-table-text-roles">
-                  <p class="table-text">
+                  <!-- <p class="table-text">
                     Tout les Rôles (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns">
                   <button
@@ -924,7 +957,10 @@
                 </div>
               </div>
               <div class="permissions-save-btns hidden">
-                <button class="heading-table-btn cancel-permission-btn">
+                <button
+                  type="button"
+                  class="heading-table-btn cancel-permission-btn"
+                >
                   Annuler
                 </button>
                 <button class="heading-table-btn save-permission-btn">
@@ -969,12 +1005,12 @@
             <div class="heading-table">
               <div class="container-heading-table">
                 <div class="heading-table-text-chapitres">
-                  <p class="table-text">
+                  <!-- <p class="table-text">
                     Tout les Utilisateurs (<b class="number-users">245</b>)
                   </p>
                   <p class="table-text">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns-chapitres">
                   <button class="heading-table-btn btn-delete-chapitres">
@@ -1220,12 +1256,12 @@
             <div class="heading-table">
               <div class="container-heading-table">
                 <div class="heading-table-text-produits">
-                  <p class="table-text">
+                  <!-- <p class="table-text">
                     Tout les Articles (<b class="number-users">245</b>)
                   </p>
                   <p class="table-text">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns-produits">
                   <button class="heading-table-btn btn-delete-produits">
@@ -1375,9 +1411,9 @@
             <div class="heading-table-bdc">
               <div class="container-heading-table-bdc">
                 <div class="heading-table-text-bdc">
-                  <p class="table-text-bdc">
+                  <!-- <p class="table-text-bdc">
                     Tout les Bons (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns-bdc">
                   <button class="heading-table-btn btn-delete-bdc">
@@ -1761,7 +1797,7 @@
               </div>
             </div>
             <div class="groupe-1">
-              <div class="main-input-groupe">
+              <div class="main-input-groupe hidden">
                 <div class="input-text">
                   <p>Nom:</p>
                 </div>
@@ -1777,51 +1813,7 @@
                   <ion-icon class="input-icon" name="person-outline"></ion-icon>
                 </div>
               </div>
-              <!-- <div class="main-input-groupe">
-                <div class="input-text">
-                  <p>Mot de passe:</p>
-                </div>
-                <div class="input-groupe-edit">
-                  <input
-                    name="password"
-                    type="password"
-                    class="input password"
-                    placeholder="Entrez le mot de passe"
-                    autocomplete="new-password"
-                    required
-                  />
-                  <a class="password-icon" href="#">
-                    <ion-icon class="input-icon" name="eye-outline"></ion-icon>
-                    <ion-icon
-                      class="input-icon hidden"
-                      name="eye-off-outline"
-                    ></ion-icon>
-                  </a>
-                </div>
-              </div>
-              <div class="main-input-groupe">
-                <div class="input-text">
-                  <p>Confirmer mot de passe:</p>
-                </div>
-                <div class="input-groupe-edit">
-                  <input
-                    name="passwordConfirm"
-                    type="password"
-                    class="input password-confirm"
-                    placeholder="Confirmer le mot de passe"
-                    autocomplete="new-password"
-                    required
-                  />
-                  <a class="password-icon" href="#">
-                    <ion-icon class="input-icon" name="eye-outline"></ion-icon>
-                    <ion-icon
-                      class="input-icon hidden"
-                      name="eye-off-outline"
-                    ></ion-icon>
-                  </a>
-                </div>
-              </div> -->
-              <div class="main-input-groupe">
+              <div class="main-input-groupe hidden">
                 <div class="input-text">
                   <p>Statut:</p>
                 </div>
@@ -1842,7 +1834,7 @@
                   </select>
                 </div>
               </div>
-              <div class="main-input-groupe">
+              <div class="main-input-groupe hidden">
                 <div class="input-text">
                   <p>Rôle:</p>
                 </div>
@@ -1870,7 +1862,7 @@
               </div>
             </div>
             <div class="groupe-2">
-              <div class="main-input-groupe">
+              <div class="main-input-groupe hidden">
                 <div class="input-text">
                   <p>Prénom:</p>
                 </div>
@@ -1885,7 +1877,7 @@
                   <ion-icon class="input-icon" name="person-outline"></ion-icon>
                 </div>
               </div>
-              <div class="main-input-groupe">
+              <div class="main-input-groupe hidden">
                 <div class="input-text">
                   <p>Date de naissance:</p>
                 </div>
@@ -1904,7 +1896,7 @@
                   ></ion-icon>
                 </div>
               </div>
-              <div class="main-input-groupe">
+              <div class="main-input-groupe hidden">
                 <div class="input-text">
                   <p>Structure:</p>
                 </div>
@@ -1925,7 +1917,7 @@
                 </div>
               </div>
             </div>
-            <div class="groupe-3">
+            <div class="groupe-3 hidden">
               <div class="main-input-groupe main-input-groupe-3">
                 <div class="input-text">
                   <p>Email:</p>
@@ -2171,12 +2163,12 @@
             <div class="heading-table-add-bdc">
               <div class="container-heading-table-add-bdc">
                 <div class="heading-table-text-add-bdc">
-                  <p class="table-text-add-bdc">
+                  <!-- <p class="table-text-add-bdc">
                     Tout les Produits (<b class="number-users">245</b>)
                   </p>
                   <p class="table-text-add-bdc">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns-add-bdc">
                   <!-- <button
@@ -2308,13 +2300,13 @@
             <div class="heading-table-show-bdr">
               <div class="container-heading-table-show-bdr">
                 <div class="heading-table-text-show-bdr">
-                  <p class="table-text-show-bdr">
+                  <!-- <p class="table-text-show-bdr">
                     Tout les Bons de Receptions (<b class="number-users">245</b
                     >)
                   </p>
                   <p class="table-text-show-bdr">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                 </div>
                 <div class="heading-table-btns-show-bdr">
                   <button
@@ -2470,9 +2462,9 @@
             <div class="heading-table-add-bdr">
               <div class="container-heading-table-add-bdr">
                 <div class="heading-table-text-add-bdr">
-                  <p class="table-text-add-bdr">
+                  <!-- <p class="table-text-add-bdr">
                     Tout les Produits (<b class="number-users">245</b>)
-                  </p>
+                  </p> -->
                   <!-- <p class="table-text-add-bdr">
                     Selectionnés (<b class="number-users">245</b>)
                   </p> -->

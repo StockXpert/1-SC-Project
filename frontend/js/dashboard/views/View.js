@@ -2,6 +2,7 @@
 import * as helpers from '../helpers.js';
 
 export default class View {
+  _restricted;
   _data;
   _clear() {
     this._parentElement.innerHTML = '';
@@ -41,7 +42,8 @@ export default class View {
   //   });
   // }
 
-  render(data, render = true) {
+  render(data, render = true, perms = '') {
+    this._perms = perms;
     //TODO: RenderError()
     // console.log('rendering', this._data);
     // console.log(data);
@@ -53,6 +55,7 @@ export default class View {
     this._data = data; // updating the _data field that child classes use in their _generateMarkup functions
     const markup = this._generateMarkup(); // to each child class its _generateMarkup
     if (!render) return markup;
+    // console.log('rendering', markup);
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
@@ -77,4 +80,16 @@ export default class View {
       this._parentElement.querySelector('.spinner-parent').remove();
     }
   };
+  restrict(perms) {
+    this._restricted.forEach(btnNPerm => {
+      if (btnNPerm != 'none') {
+        console.log(btnNPerm);
+        if (perms.includes(btnNPerm[1])) {
+          btnNPerm[0].classList.remove('hidden');
+        } else {
+          btnNPerm[0].classList.add('hidden');
+        }
+      }
+    });
+  }
 }

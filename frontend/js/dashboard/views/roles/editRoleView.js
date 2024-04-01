@@ -1,6 +1,7 @@
 import { AddUserView } from '../addUserView.js';
 import { EditUserView } from '../editUserView.js';
 import sideView from '../sideView.js';
+import * as helpers from '../../helpers.js';
 
 class EditRoleView extends EditUserView {
   _window = document.querySelector('.edit-user-container');
@@ -25,26 +26,24 @@ class EditRoleView extends EditUserView {
     // e.stopPropagation();
     // console.log(e.target);
     // this.toggleWindow.bind(this)();
-    //SWITCH WINDOWS TO PERM (3 on the index, isDisplay == true)
-    sideView.addHandlerBtns(() => {}, 3, true);
+    //SWITCH WINDOWS TO PERM (3 on the index (index is set))
+    sideView.addHandlerBtns('', 4);
+    console.log('callback1');
     // this.currTarget = e.target;
-  };
-  addEventListenerCallback2 = e => {
-    sideView.addHandlerBtns('', 2);
   };
 
   addHandlerShowWindow(OpClassName, Controller = () => {}) {
     this._btnOpen = document.querySelectorAll(OpClassName);
     const btnOpenArray = Array.from(this._btnOpen);
+
     btnOpenArray.forEach((btn, index) => {
       btn.addEventListener('click', this.addEventListenerCallback);
     });
   }
   addHandlerHideWindow(CloserClassName, ctrl = '') {
     this._btnClose = document.querySelector(CloserClassName);
-    // console.log(document.querySelector(CloserClassName));
-    this._btnClose.addEventListener('click', this.addEventListenerCallback2);
-    ctrl();
+    console.log(this._btnClose);
+    if (ctrl != '') this._btnClose.addEventListener('click', ctrl);
   }
 }
 export default new EditRoleView();
