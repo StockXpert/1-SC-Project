@@ -26,6 +26,10 @@ export const state = {
     all: [],
     selected: '',
   },
+  products: {
+    all: [],
+    selected: '',
+  },
   type: {
     all: [],
     selected: '',
@@ -416,6 +420,7 @@ export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
 export const fuseMakerFournisseurs = data =>
   new Fuse(data, FUSE_OPTIONS_FOURNISSEURS);
 export const fuseMakerArticles = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
+export const fuseMakerProducts = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
 
 export const loadRoles = async function () {
   try {
@@ -582,4 +587,10 @@ export const loadFournisseurs = async function () {
 export const loadArticles = async function () {
   let articles = await helpers.getJSON(`${API_URL}/Nomenclatures/showArticles`);
   return articles.response;
+};
+
+export const loadProducts = async function (article) {
+  let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+  console.log(helpers.filterByArticle(products.response, article));
+  return helpers.filterByArticle(products.response, article);
 };

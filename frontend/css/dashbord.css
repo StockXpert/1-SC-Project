@@ -2195,6 +2195,9 @@ a.password-icon:active {
   z-index: 99999;
   border-radius: 15px;
 }
+.add-product-search-results {
+  top: 6.5rem !important;
+}
 .search-results ul {
   width: 100%;
   display: flex;

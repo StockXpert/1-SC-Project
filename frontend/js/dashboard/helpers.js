@@ -388,3 +388,7 @@ export const getPermissions = function (roles = [], designation) {
 export const includesDesignation = (objectsArray, searchString) => {
   return objectsArray.some(obj => obj.designation.includes(searchString));
 };
+
+export const filterByArticle = (array, articleName) => {
+  return array.filter(obj => obj.article === articleName);
+};

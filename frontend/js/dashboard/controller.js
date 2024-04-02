@@ -636,11 +636,36 @@ const controlSearchArticles = input => {
   //re-add EL to the search results
 };
 
+//PRODUCTS
+
+const controlUpdateProducts = async () => {
+  const products = await model.loadProducts(model.state.articles.selected);
+  model.state.products.all = products;
+};
+
+const controlSearchProducts = input => {
+  //ON INPUT:
+  const fuze = model.fuseMakerProducts(model.state.products.all);
+  const results = fuze.search(input);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  addCmdsView.addToSuggestionsProductsAndEL(
+    extractItems(results),
+    controlSelectProducts
+  );
+};
+
 //in addCmdsView:
 //add EL ONINPUT TO #input-box
 
 const controlSelectArticles = articleName => {
   model.state.articles.selected = articleName;
+  controlUpdateProducts();
+};
+
+const controlSelectProducts = productName => {
+  model.state.products.selected = productName;
 };
 
 const controlTypeSelection = typeName => {
@@ -699,3 +724,5 @@ addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 controlUpdateArticles();
 addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
+
+addCmdsView.addHandlerProductSearch(controlSearchProducts);

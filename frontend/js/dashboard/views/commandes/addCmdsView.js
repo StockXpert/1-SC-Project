@@ -11,12 +11,17 @@ class AddCmdsView extends AddUserView {
   _restricted = [[this._btnOpen, 'bon commande'], 'none'];
   _four = document.querySelector('#filter-fournisseur');
   _article = document.querySelector('#filter-article');
+  _product = document.querySelector('#bdc-product');
   _resultsContainer = document.querySelector('.four-search-results-container');
   _resultsContainerArticle = document.querySelector(
     '.article-search-results-container'
   );
+  _resultsContainerProduct = document.querySelector(
+    '.product-search-results-container'
+  );
   _fourResults;
   _articleResults;
+  _productResults;
   _type = document.querySelector('#type-options');
   _ajouterProduitbtn = document.querySelector('.btn-add-product');
   _ajouterProduitWindow = document.querySelector('.add-product-bdc-container');
@@ -105,6 +110,32 @@ class AddCmdsView extends AddUserView {
       });
     });
   }
+
+  addHandlerProductSearch(productSearchHandler) {
+    this._product.addEventListener('input', e => {
+      productSearchHandler(e.target.value);
+    });
+  }
+  addToSuggestionsProductsAndEL(results = [], controlSelectProduct) {
+    this._resultsContainerProduct.innerHTML = '';
+    const markup = results
+      .map(result => `<li>${result.designation}</li>`)
+      .slice(0, 10)
+      .join('');
+    this._resultsContainerProduct.insertAdjacentHTML('afterbegin', markup);
+    this._productResults = document
+      .querySelector('.product-search-results-container')
+      .querySelectorAll('li');
+    console.log(this._productResults);
+    this._productResults.forEach(el => {
+      return el.addEventListener('click', e => {
+        controlSelectProduct(e.currentTarget.innerHTML);
+        this._product.value = e.currentTarget.innerHTML;
+        this._resultsContainerProduct.innerHTML = '';
+      });
+    });
+  }
+
   addTypeSelectHandler(selectHandler) {
     this._type.addEventListener('change', e => selectHandler(e.target.value));
   }
