@@ -676,9 +676,25 @@ const controlTypeSelection = typeName => {
 const controlAddProduct = newProduct => {
   model.state.products.added.push(newProduct);
   addCmdsView.render(model.state.products.added);
+  addCmdsView._checkboxesAddProduct =
+    addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
+  addCmdsView.AddHandlerAddProductsCheckboxes();
+};
+
+const controlDeleteAddedProducts = () => {
+  const addedProductsAfterRemoval = helpers.removeArrayByBooleans(
+    model.state.products.added,
+    helpers.getCheckboxStates(addCmdsView._checkboxesAddProduct)
+  );
+  model.state.products.added = addedProductsAfterRemoval;
+  addCmdsView.render(model.state.products.added);
+  addCmdsView._checkboxesAddProduct =
+    addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
+  addCmdsView.AddHandlerAddProductsCheckboxes();
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
+addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY

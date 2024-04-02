@@ -392,3 +392,20 @@ export const includesDesignation = (objectsArray, searchString) => {
 export const filterByArticle = (array, articleName) => {
   return array.filter(obj => obj.article === articleName);
 };
+
+export const removeElements = (originalArray, partialArray) => {
+  // Create a set of unique identifiers from the partial array
+  const partialSet = new Set(partialArray.map(obj => JSON.stringify(obj)));
+
+  // Filter out elements from the original array that exist in the partial array
+  return originalArray.filter(obj => !partialSet.has(JSON.stringify(obj)));
+};
+export const removeArrayByBooleans = (dataArray, booleanArray) => {
+  const filteredArray = [];
+  for (let i = 0; i < dataArray.length; i++) {
+    if (!booleanArray[i]) {
+      filteredArray.push(dataArray[i]);
+    }
+  }
+  return filteredArray;
+};

@@ -6,9 +6,9 @@ class AddCmdsView extends AddUserView {
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
   _btnClose;
-  _btnOpenAddProduct; //TODO:
-  _btnCloseAddProduct; //TODO:
-  _windowAddProduct; //TODO:
+  _btnOpenAddProduct;
+  _btnCloseAddProduct;
+  _windowAddProduct;
   _restricted = [[this._btnOpen, 'bon commande'], 'none'];
   _four = document.querySelector('#filter-fournisseur');
   _article = document.querySelector('#filter-article');
@@ -27,6 +27,9 @@ class AddCmdsView extends AddUserView {
   _ajouterProduitbtn = document.querySelector('.btn-add-product');
   _ajouterProduitWindow = document.querySelector('.add-product-bdc-container');
   _productForm = document.querySelector('.inputs-add-product-bdc');
+  _btnDeleteProducts = document.querySelector('.btn-delete-produits-bdc');
+  // _btnModifyProducts = document.querySelector('.btn-edit-produits-bdc');
+  _checkboxesAddProduct;
   constructor() {
     super();
     //INITIALZR
@@ -140,7 +143,7 @@ class AddCmdsView extends AddUserView {
     console.log(this._productResults);
     this._productResults.forEach(el => {
       return el.addEventListener('click', e => {
-        controlSelectProduct(e.currentTarget.innerHTML);
+        // controlSelectProduct(e.currentTarget.innerHTML);
         this._product.value = e.currentTarget.innerHTML;
         this._resultsContainerProduct.innerHTML = '';
       });
@@ -172,7 +175,54 @@ class AddCmdsView extends AddUserView {
       this.toggleAddProductWindow.bind(this)();
     });
   }
-  // this._generateMarkup();
+  //TODO:
+  AddHandlerAddProductsCheckboxes() {
+    this._checkboxesAddProduct = this._parentElement.querySelectorAll(
+      'input[type="checkbox"]'
+    );
+    const handleCheckboxChange = () => {
+      const checkedCheckboxes = this._parentElement.querySelectorAll(
+        'input[type="checkbox"]:checked'
+      );
+
+      if (checkedCheckboxes.length === 0) {
+        // this._btnModifyProducts.disabled = true;
+        this._btnDeleteProducts.disabled = true;
+        // this._btnModifyProducts.classList.add('disabled-button'); // Apply disabled appearance
+        this._btnDeleteProducts.classList.add('disabled-delete-button'); // Apply disabled appearance
+      } else if (checkedCheckboxes.length === 1) {
+        // this._btnModifyProducts.disabled = false;
+        this._btnDeleteProducts.disabled = false;
+        // this._btnModifyProducts.classList.remove('disabled-button'); // Remove disabled appearance
+        this._btnDeleteProducts.classList.remove('disabled-delete-button'); // Remove disabled appearance
+      } else {
+        // this._btnModifyProducts.disabled = true;
+        this._btnDeleteProducts.disabled = false;
+        // this._btnModifyProducts.classList.add('disabled-button'); // Apply disabled appearance
+        this._btnDeleteProducts.classList.remove('disabled-delete-button'); // Remove disabled appearance
+      }
+    };
+    handleCheckboxChange();
+    console.log(this._checkboxesAddProduct);
+    this._checkboxesAddProduct.forEach(cbx =>
+      cbx.addEventListener('change', handleCheckboxChange)
+    );
+  }
+  _generateMarkup() {
+    if (this._data.length == 0) {
+      return `<td colspan="6" class="empty-table--products">
+      Les produits que vous ajouterez apparaîtront ici !
+    </td>`;
+    } else {
+      return this._data
+        .map(result => this._generateMarkupPreview(result, this._perms))
+        .join('');
+    }
+  }
+  addHandlerDeleteAddedProducts(handler) {
+    this._btnDeleteProducts.addEventListener('click', handler);
+  }
+
   _generateMarkupPreview(result, perms = []) {
     return `
     <tr>

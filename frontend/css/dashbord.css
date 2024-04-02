@@ -2225,3 +2225,13 @@ a.password-icon:active {
   font-weight: 600;
   padding: 2rem;
 }
+.disabled-button {
+  background-color: #999; /* Darker background color */
+  color: #000000; /* Darker text color */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}
+.disabled-delete-button {
+  background-color: #8a2727; /* Darker background color */
+  color: #949494; /* Darker text color */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}
