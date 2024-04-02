@@ -60,8 +60,17 @@ class AddCmdsView extends AddUserView {
   toggleAddProductWindow() {
     this._windowAddProduct.classList.toggle('hidden');
   }
+
+  clearAddProductForm() {
+    const inputs = this._productForm.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.value = '';
+    });
+  }
+
   _boundToggleAddProductWindow = e => {
     e.preventDefault();
+    this.clearAddProductForm();
     this.toggleAddProductWindow.bind(this)();
   };
 
@@ -143,6 +152,7 @@ class AddCmdsView extends AddUserView {
   }
 
   addHandlerAddProduct(handler) {
+    let numero = 1;
     this._productForm.addEventListener('submit', e => {
       e.preventDefault();
       const formElement = this._productForm;
@@ -156,7 +166,10 @@ class AddCmdsView extends AddUserView {
       formData.forEach(function (value, key) {
         formDataObj[key] = value;
       });
+      formDataObj.numero = numero++;
       handler(formDataObj);
+      this.clearAddProductForm();
+      this.toggleAddProductWindow.bind(this)();
     });
   }
   // this._generateMarkup();
@@ -170,7 +183,7 @@ class AddCmdsView extends AddUserView {
           type="checkbox"
           id="checkbox-table-bdc-add"
         />
-        <p class="colomn-tags-name-bdc">64209</p>
+        <p class="colomn-tags-name-bdc">${result.numero}</p>
       </div>
     </td>
     <td>${result.designation}</td>

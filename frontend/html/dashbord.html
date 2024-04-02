@@ -2111,6 +2111,7 @@
                   type="text"
                   placeholder="Entrez la Designation"
                   id="bdc-product"
+                  autocomplete="off"
                 />
                 <div class="search-results add-product-search-results">
                   <ul class="product-search-results-container">
@@ -2127,6 +2128,7 @@
                   type="text"
                   placeholder="Entrez la Quantité"
                   id="bdc-quantity"
+                  autocomplete="off"
                 />
               </div>
               <div class="input-product-bdc">
@@ -2135,6 +2137,7 @@
                   type="text"
                   placeholder="Entrez le Prix Unitaire"
                   id="bdc-price"
+                  autocomplete="off"
                 />
               </div>
               <div class="btn-product-bdc">
@@ -2255,7 +2258,7 @@
                   </tr>
                 </thead>
                 <tbody class="results-bdc-produits">
-                  <tr>
+                  <!-- <tr>
                     <td>
                       <div class="checkbox-colomn-bdc-add">
                         <input
@@ -2283,10 +2286,7 @@
                       </button>
                     </td>
                   </tr>
-                  <!-- fin  d'une ligne nrml  -->
-                  <!--une ligne selected  -->
                   <tr class="selected-row">
-                    <!--ajoute selected-row for selected lines-->
                     <td>
                       <div class="checkbox-colomn-bdc-add">
                         <input type="checkbox" id="checkbox-table-bdc-add" />
@@ -2334,9 +2334,10 @@
                         </span>
                       </button>
                     </td>
-                  </tr>
-
-                  <!--fin d'une ligne selected  -->
+                  </tr> -->
+                  <td colspan="6" class="empty-table--products">
+                    Les produits que vous ajouterez apparaîtront ici !
+                  </td>
                 </tbody>
               </table>
             </div>

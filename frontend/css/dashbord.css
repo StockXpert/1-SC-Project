@@ -1233,6 +1233,7 @@ table tbody tr:last-child td {
   display: block;
   position: fixed;
   z-index: 1000;
+  max-width: 76rem;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -1324,7 +1325,7 @@ table tbody tr:last-child td {
   overflow: hidden;
 }
 .add-bdc-cart {
-  /* width: 53rem; */
+  max-width: 55.5rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -2218,4 +2219,9 @@ a.password-icon:active {
 }
 .search-results ul li:hover {
   background-color: #ccc;
+}
+.empty-table--products {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 2rem;
 }
