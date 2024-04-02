@@ -25,6 +25,7 @@ import cmdsView from './views/commandes/cmdsView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
+import deleteRoleView from './views/roles/deleteRoleView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -152,31 +153,23 @@ const controlDeleteCancelBtns = function (checkboxes) {
   return helpers.compareBooleanArrays(newStates, oldState);
 };
 
-const controlDeleteRoles = function (containerClass = '.results') {
+const controlDeleteRoles = async function () {
+  rolesView.renderSpinner('Suppression des Roles ...');
   helpers
     .filterNodeList(
       model.state.roles.all,
       helpers.getCheckboxStates(
         document
-          .querySelector(containerClass)
+          .querySelector('.roles-cart')
           .querySelectorAll('input[type="checkbox"]')
       )
     )
     .forEach(async el => {
-      console.log(el);
-      // usersView.renderSpinner(
-      //   "Suppression de l'utilisateur " + el.nom + ' ' + el.prenom + '...'
-      // );
-      // console.log({
-      //   email: el.email,
-      // });
-      // await helpers.delJSON(`${API_URL}/Users/deleteUser`, {
-      //   email: el.email,
-      // });
+      console.log(el.role);
+      await model.deleteRole(el.role);
       // back to main menu
-      // controlSearchResults();
     });
-
+  await controlLoadRoles();
   // console.log(model.state.search.queryResults);
   // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
 };
@@ -645,3 +638,4 @@ editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
 
 sideView.hideAllDivs();
+deleteRoleView.addDeleteController(controlDeleteRoles);

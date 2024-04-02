@@ -534,6 +534,15 @@ export const deleteStructure = async function (structure) {
   }
 };
 
+export const deleteRole = async function (role) {
+  try {
+    const uploadData = { role };
+    await helpers.delJSON(`${API_URL}/Users/deleteRole`, uploadData);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const loadCmds = async function () {
   let commandes = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
   commandes = commandes.commandes;
