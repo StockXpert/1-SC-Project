@@ -366,7 +366,7 @@ async function genererBonReception(
     );
     await googleMiddleware.deleteRows(11, i - 1, Id);
     const link = `BonReception/reception${numReception}.pdf`;
-    EntreeModel.insertLink(link, numReception)
+    EntreeModel.insertReceptionLink(link, numReception)
       .then(() => {
         resolve(link);
       })

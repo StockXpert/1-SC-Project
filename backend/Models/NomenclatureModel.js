@@ -5,7 +5,134 @@ const connectionConfig = {
   password: 'w7Xaq1AwW42V3jvOiTgb',
   database: 'bibznsnq8nf1q3j7r74o'
 };
-function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, nis, raisonSocial) {
+function isUsedchapter(chapitre)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select num_chap from chapitre where designation=?
+    and num_chap in
+    (select num_chap from article)`;
+    const values = [chapitre];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        console.log(results)
+        if(results.length==0)
+           resolve('')
+        else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function isUsedArticle(article)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select num_article from article where designation=?
+    and (num_article in
+      (select id_article from bon_de_commande) or num_article in
+      (select id_article from contient) )`;
+    const values = [article];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length==0)
+           resolve('')
+        else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function isUsedProduct(produit)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select id_produit from produit where designation=?
+    and (id_produit in
+      (select id_produit from commande) or id_produit in
+      (select id_produit from livre) )`;
+    const values = [article];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length==0)
+           resolve('')
+        else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function isUsedFournisseur(fournisseur)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select id_fournisseur from fournisseur where raison_sociale=?
+    and id_fournisseur in
+      (select id_fournisseur from bon_de_commande)`;
+    const values = [article];
+
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        if(results.length==0)
+           resolve('')
+        else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, nis, raisonSociale) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query = `
@@ -29,7 +156,7 @@ function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, 
     if (rip) values.push(rip);
     if (nif) values.push(nif);
     if (nis) values.push(nis);
-    values.push(raisonSocial);
+    values.push(raisonSociale);
 
     connection.connect((err) => {
       if (err) {
@@ -603,7 +730,7 @@ function getProducts()
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query = `select p.designation,p.quantite,p.description,a.designation as article from produit p , contient c ,article a 
-                   where p.id_produit=c.id_produit and c.id_article=a.id_article`;
+                   where p.id_produit=c.id_produit and c.id_article=a.num_article`;
     
   
     connection.connect((err) => {
@@ -747,4 +874,5 @@ module.exports={getChapterId,addArticle,addProduct,getArticleIdTva,getProductId,
                 deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
                 ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
-              ,deleteChapter,updateArticle,canDeletefourn,updateFournisseur,updateRaisonSociale}
+              ,deleteChapter,updateArticle,canDeletefourn,updateFournisseur,updateRaisonSociale,
+               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter}

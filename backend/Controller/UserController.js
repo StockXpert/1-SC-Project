@@ -43,14 +43,12 @@ async function login(req, res) {
               userModel
                 .getRolePermissons(response.designation)
                 .then(permissions => {
-                  res
-                    .status(200)
-                    .json({
-                      response: 'succuss of login',
-                      jwt: token,
-                      role: response.designation,
-                      permissions,
-                    });
+                  res.status(200).json({
+                    response: 'succuss of login',
+                    jwt: token,
+                    role: response.designation,
+                    permissions,
+                  });
                 })
                 .catch(() => {
                   res.status(500).json({ response: 'internal error' });
@@ -189,13 +187,20 @@ function deleteUser(req, res) {
   if (req.email === req.body.email)
     res.status(400).json({ response: 'prohibited to delete admin' });
   let { email } = req.body;
-  userService
-    .deleteUser(email)
+  userModel
+    .isResponsable(email)
     .then(() => {
-      res.status(200).json({ response: 'user deleted' });
+      userService
+        .deleteUser(email)
+        .then(() => {
+          res.status(200).json({ response: 'user deleted' });
+        })
+        .catch(error => {
+          res.status(500).json({ response: error });
+        });
     })
-    .catch(error => {
-      res.status(500).json({ response: error });
+    .catch(() => {
+      res.status(403).json({ response: 'prohibited' });
     });
 }
 function addStructure(req, res) {
@@ -297,26 +302,33 @@ async function addRole(req, res) {
 function deleteRole(req, res) {
   const { role } = req.body;
   userModel
-    .canDeleteRole(role)
+    .isUsedRole(role)
     .then(() => {
       userModel
-        .deleteRoleDroit(role)
+        .canDeleteRole(role)
         .then(() => {
           userModel
-            .deleteRole(role)
+            .deleteRoleDroit(role)
             .then(() => {
-              res.status(200).json({ response: 'role deleted' });
+              userModel
+                .deleteRole(role)
+                .then(() => {
+                  res.status(200).json({ response: 'role deleted' });
+                })
+                .then(() => {
+                  res.status(500).json({ response: 'internal error' });
+                });
             })
-            .then(() => {
+            .catch(() => {
               res.status(500).json({ response: 'internal error' });
             });
         })
         .catch(() => {
-          res.status(500).json({ response: 'internal error' });
+          res.status(500).json({ response: "can't delete" });
         });
     })
     .catch(() => {
-      res.status(500).json({ response: "can't delete" });
+      res.status(500).json({ response: 'forbidden' });
     });
 }
 async function addPermissions(req, res) {
@@ -370,19 +382,26 @@ function showPermissions(req, res) {
 function deleteStructure(req, res) {
   const { structure } = req.body;
   userModel
-    .canDeleteStructure(structure)
+    .HaveConsumers(structure)
     .then(() => {
       userModel
-        .deleteStructure(structure)
+        .canDeleteStructure(structure)
         .then(() => {
-          res.status(200).json({ response: 'structure deleted' });
+          userModel
+            .deleteStructure(structure)
+            .then(() => {
+              res.status(200).json({ response: 'structure deleted' });
+            })
+            .catch(() => {
+              res.status(500).json({ response: 'internal error' });
+            });
         })
         .catch(() => {
-          res.status(500).json({ response: 'internal error' });
+          res.status(403).json({ response: 'prohibited to delete' });
         });
     })
     .catch(() => {
-      res.status(200).json({ response: 'prohibited to delete' });
+      res.status(403).json({ response: 'forbidden' });
     });
 }
 function updateStructure(req, res) {

@@ -5,6 +5,89 @@ const connectionConfig = {
   password: 'w7Xaq1AwW42V3jvOiTgb',
   database: 'bibznsnq8nf1q3j7r74o',
 };
+function isResponsable(email) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select id_structure from structure where id_resp=?`;
+    const values = [email];
+
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        if (results.length == 0) resolve('');
+        else reject('prohibited');
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function HaveConsumers(structure) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select email from utilisateur where id_structure in
+    (select id_structure from structure where designation=?)`;
+    const values = [structure];
+
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        if (results.length == 0) resolve('');
+        else reject('prohibited');
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function isUsedRole(role) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select email from utilisateur where id_role in
+    (select id_role from role where designation=?)`;
+    const values = [role];
+
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        if (results.length == 0) resolve('');
+        else reject('prohibited');
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function getRolePermissons(role) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
@@ -406,32 +489,6 @@ function deletePerson(email) {
     });
   });
 }
-function deleteStructure(structure) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(connectionConfig);
-
-    const query = `delete  from structure where designation=? `;
-    const values = [structure];
-    connection.connect(err => {
-      if (err) {
-        console.error('Erreur de connexion :', err);
-        reject('connexion erreur');
-        return;
-      }
-
-      connection.query(query, values, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'exécution de la requête :", error);
-          reject('request error');
-          return;
-        }
-        resolve('success');
-      });
-
-      connection.end(); // Fermer la connexion après l'exécution de la requête
-    });
-  });
-}
 function getStructurId(structure) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
@@ -453,40 +510,6 @@ function getStructurId(structure) {
         }
         console.log(results[0]);
         resolve(results[0].id_structure);
-      });
-
-      connection.end(); // Fermer la connexion après l'exécution de la requête
-    });
-  });
-}
-function createConsommateur(
-  email,
-  nom,
-  prenom,
-  date_naissance,
-  structureId,
-  type
-) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(connectionConfig);
-
-    const query =
-      'insert into consommateur (email,nom,prenom,date_naissance,id_structure,type) values (?,?,?,?,?,?)';
-    const values = [email, nom, prenom, date_naissance, structureId, type];
-    connection.connect(err => {
-      if (err) {
-        console.error('Erreur de connexion :', err);
-        reject('connexion erreur');
-        return;
-      }
-
-      connection.query(query, values, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'exécution de la requête :", error);
-          reject('request error');
-          return;
-        }
-        resolve('success');
       });
 
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -600,34 +623,6 @@ function addStructure(designation, email) {
     });
   });
 }
-function afficherConsommateurs() {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(connectionConfig);
-
-    const query = `SELECT C.email, C.prenom, C.nom, S.designation As structure, C.date_naissance, C.type 
-      FROM consommateur C
-      INNER JOIN structure S ON S.id_structure = C.id_structure`;
-
-    connection.connect(err => {
-      if (err) {
-        console.error('Erreur de connexion :', err);
-        reject('connexion erreur');
-        return;
-      }
-
-      connection.query(query, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'exécution de la requête :", error);
-          reject('request error');
-          return;
-        }
-        resolve(results);
-      });
-
-      connection.end(); // Fermer la connexion après l'exécution de la requête
-    });
-  });
-}
 function rattacher(structureId, email) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
@@ -649,59 +644,6 @@ function rattacher(structureId, email) {
           return;
         }
         resolve('success');
-      });
-
-      connection.end(); // Fermer la connexion après l'exécution de la requête
-    });
-  });
-}
-function responsable(designation, consommateurId) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(connectionConfig);
-
-    const query = 'update structure set id_consommateur=? where designation=?';
-    const values = [consommateurId, designation];
-
-    connection.connect(err => {
-      if (err) {
-        console.error('Erreur de connexion :', err);
-        reject('connexion erreur');
-        return;
-      }
-
-      connection.query(query, values, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'exécution de la requête :", error);
-          reject('request error');
-          return;
-        }
-        resolve('success');
-      });
-
-      connection.end(); // Fermer la connexion après l'exécution de la requête
-    });
-  });
-}
-function getconsommateurId(email) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(connectionConfig);
-
-    const query = 'select id_consommateur from consommateur where email=?';
-    const values = [email];
-    connection.connect(err => {
-      if (err) {
-        console.error('Erreur de connexion :', err);
-        reject('connexion erreur');
-        return;
-      }
-
-      connection.query(query, values, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'exécution de la requête :", error);
-          reject('request error');
-          return;
-        }
-        resolve(results[0].id_consommateur);
       });
 
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -731,57 +673,6 @@ function getStructures() {
         resolve(results);
       });
 
-      connection.end(); // Fermer la connexion après l'exécution de la requête
-    });
-  });
-}
-function addResponsable(email, nom, prenom, date_naissance) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(connectionConfig);
-
-    const query =
-      'insert into responsable (email,nom,prenom,date_naissance) values(?,?,?,?)';
-    const values = [email, nom, prenom, date_naissance];
-
-    connection.connect(err => {
-      if (err) {
-        console.error('Erreur de connexion :', err);
-        reject('connexion erreur');
-        return;
-      }
-
-      connection.query(query, values, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'exécution de la requête :", error);
-          reject('request error');
-          return;
-        }
-        resolve('success');
-      });
-      connection.end(); // Fermer la connexion après l'exécution de la requête
-    });
-  });
-}
-function showResp() {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(connectionConfig);
-
-    const query = 'select nom,prenom,date_naissance from responsable';
-    connection.connect(err => {
-      if (err) {
-        console.error('Erreur de connexion :', err);
-        reject('connexion erreur');
-        return;
-      }
-
-      connection.query(query, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'exécution de la requête :", error);
-          reject('request error');
-          return;
-        }
-        resolve(results);
-      });
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });
   });
@@ -1028,14 +919,8 @@ module.exports = {
   updateInformations,
   deletePerson,
   getStructurId,
-  createConsommateur,
   addStructure,
-  afficherConsommateurs,
-  responsable,
-  getconsommateurId,
   getStructures,
-  addResponsable,
-  showResp,
   getRole,
   updateStatus,
   canDeletePerson,
@@ -1052,4 +937,7 @@ module.exports = {
   rattacher,
   deleteStructure,
   getRolePermissons,
+  HaveConsumers,
+  isResponsable,
+  isUsedRole,
 };

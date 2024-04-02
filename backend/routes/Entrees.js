@@ -39,12 +39,12 @@ router.put(
   authMiddleware('update bon commande'),
   EntreeController.updateBonCommande
 );
-router.get(
+router.post(
   '/showCommandeProducts',
   authMiddleware('show commande products'),
   EntreeController.showCommandeProducts
 );
-router.get(
+router.post(
   '/showBonReceptionProducts',
   authMiddleware('show bon reception products'),
   EntreeController.showBonReceptionProducts
