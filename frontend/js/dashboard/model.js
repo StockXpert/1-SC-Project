@@ -29,6 +29,7 @@ export const state = {
   products: {
     all: [],
     selected: '',
+    added: [],
   },
   type: {
     all: [],
@@ -591,6 +592,5 @@ export const loadArticles = async function () {
 
 export const loadProducts = async function (article) {
   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
-  console.log(helpers.filterByArticle(products.response, article));
   return helpers.filterByArticle(products.response, article);
 };

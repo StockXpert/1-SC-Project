@@ -1,6 +1,7 @@
 import { AddUserView } from '../addUserView.js';
 
 class AddCmdsView extends AddUserView {
+  _parentElement = document.querySelector('.results-bdc-produits');
   _window = document.querySelector('.big-container');
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
@@ -25,6 +26,7 @@ class AddCmdsView extends AddUserView {
   _type = document.querySelector('#type-options');
   _ajouterProduitbtn = document.querySelector('.btn-add-product');
   _ajouterProduitWindow = document.querySelector('.add-product-bdc-container');
+  _productForm = document.querySelector('.inputs-add-product-bdc');
   constructor() {
     super();
     //INITIALZR
@@ -140,7 +142,58 @@ class AddCmdsView extends AddUserView {
     this._type.addEventListener('change', e => selectHandler(e.target.value));
   }
 
-  addHandlerShowAddProd(handler) {}
+  addHandlerAddProduct(handler) {
+    this._productForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const formElement = this._productForm;
+      const formData = new FormData(formElement);
+      formData.forEach(function (value, key) {
+        console.log(key + ': ' + value);
+      });
+      console.log(formData);
+      // Convert FormData object to object with key-value pairs
+      const formDataObj = {};
+      formData.forEach(function (value, key) {
+        formDataObj[key] = value;
+      });
+      handler(formDataObj);
+    });
+  }
+  // this._generateMarkup();
+  _generateMarkupPreview(result, perms = []) {
+    return `
+    <tr>
+    <td>
+      <div class="checkbox-colomn-bdc-add">
+        <input
+          class=""
+          type="checkbox"
+          id="checkbox-table-bdc-add"
+        />
+        <p class="colomn-tags-name-bdc">64209</p>
+      </div>
+    </td>
+    <td>${result.designation}</td>
+
+    <td class="input-changeble quantity-produit">
+      <input type="text" placeholder="${result.quantite}" />
+    </td>
+    <td class="input-changeble price-produit">
+      <input type="text" placeholder="${result.prix_unitaire}" />
+    </td>
+    <td class="price-produit-montant">${
+      result.prix_unitaire * result.quantite
+    }</td>
+    <td>
+      <button class="details-btn-bdc-add">
+        <span class="material-icons-sharp info-icon">
+          edit
+        </span>
+      </button>
+    </td>
+  </tr>
+    `;
+  }
 }
 
 export default new AddCmdsView();

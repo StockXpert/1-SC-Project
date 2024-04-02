@@ -136,7 +136,11 @@ export class AddUserView extends View {
     this._overlay.classList.toggle('hidden');
     this._window.classList.toggle('hidden');
   }
-  _generateMarkup() {}
+  _generateMarkup() {
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
+  }
 
   _restricted = [[this._btnOpen, 'register'], 'none'];
 }

@@ -637,7 +637,7 @@ const controlSearchArticles = input => {
 };
 
 //PRODUCTS
-
+//products.all are filtered by the selected article
 const controlUpdateProducts = async () => {
   const products = await model.loadProducts(model.state.articles.selected);
   model.state.products.all = products;
@@ -672,6 +672,13 @@ const controlTypeSelection = typeName => {
   model.state.type.selected = typeName;
   console.log(model.state);
 };
+
+const controlAddProduct = newProduct => {
+  model.state.products.added.push(newProduct);
+  addCmdsView.render(model.state.products.added);
+};
+
+addCmdsView.addHandlerAddProduct(controlAddProduct);
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY

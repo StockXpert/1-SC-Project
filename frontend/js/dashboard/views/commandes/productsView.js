@@ -1,6 +1,7 @@
 import { UsersView } from '../usersView.js';
 
 class ProductsView extends UsersView {
+  // _parentElement=
   constructor() {
     super();
   }
