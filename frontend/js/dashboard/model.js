@@ -30,6 +30,7 @@ export const state = {
     all: [],
     selected: '',
     added: [],
+    changed: {},
   },
   type: {
     all: [],

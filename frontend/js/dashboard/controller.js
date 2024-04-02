@@ -678,7 +678,15 @@ const controlAddProduct = newProduct => {
   addCmdsView.render(model.state.products.added);
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
-  addCmdsView.AddHandlerAddProductsCheckboxes();
+  addCmdsView.AddHandlerAddedProductsCheckboxes();
+  //TODO: edit btns
+  addCmdsView.addHandlerShowEditProductWindow(
+    '.details-btn-bdc-add',
+    '.edit-product-bdc-container'
+  );
+  // editUserView.addHandlerEdit(controlEditUser);
+  //TODO: hide btn
+  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
 };
 
 const controlDeleteAddedProducts = () => {
@@ -690,7 +698,28 @@ const controlDeleteAddedProducts = () => {
   addCmdsView.render(model.state.products.added);
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
-  addCmdsView.AddHandlerAddProductsCheckboxes();
+  addCmdsView.AddHandlerAddedProductsCheckboxes();
+  //TODO: edit btns
+  addCmdsView.addHandlerShowEditProductWindow(
+    '.details-btn-bdc-add',
+    '.edit-product-bdc-container'
+  );
+  //TODO: hide btn
+  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
+};
+
+//TODO:
+const controlEditProductBtns = function () {
+  //ONCLICK OF A EDIT BUTTON
+  //Get the index of the clicked edit button here
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    addCmdsView._btnsOpenEditProduct,
+    target
+  );
+  //Use it to extract the input data from the state object
+  addCmdsView.changeInputs(model.state.products.added[targetIndex]);
+  model.state.products.changed = model.state.products.added[targetIndex];
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
@@ -749,3 +778,21 @@ addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
 addCmdsView.addHandlerProductSearch(controlSearchProducts);
+const controlChangeProduct = function (editedProduct) {
+  model.state.products.added[model.state.products.changed.numero - 1] =
+    editedProduct;
+  model.state.products.added[model.state.products.changed.numero - 1].numero =
+    model.state.products.changed.numero;
+  addCmdsView.render(model.state.products.added);
+  addCmdsView._checkboxesAddProduct =
+    addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
+  addCmdsView.AddHandlerAddedProductsCheckboxes();
+  //TODO: edit btns
+  addCmdsView.addHandlerShowEditProductWindow(
+    '.details-btn-bdc-add',
+    '.edit-product-bdc-container'
+  );
+  //TODO: hide btn
+  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
+};
+addCmdsView.addHandlerChangeProduct(controlChangeProduct);
