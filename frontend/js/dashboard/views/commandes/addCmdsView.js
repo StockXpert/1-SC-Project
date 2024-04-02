@@ -4,6 +4,10 @@ class AddCmdsView extends AddUserView {
   _window = document.querySelector('.big-container');
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
+  _btnClose;
+  _btnOpenAddProduct; //TODO:
+  _btnCloseAddProduct; //TODO:
+  _windowAddProduct; //TODO:
   _restricted = [[this._btnOpen, 'bon commande'], 'none'];
   _four = document.querySelector('#filter-fournisseur');
   _article = document.querySelector('#filter-article');
@@ -13,10 +17,46 @@ class AddCmdsView extends AddUserView {
   );
   _fourResults;
   _articleResults;
+  _type = document.querySelector('#type-options');
+  _ajouterProduitbtn = document.querySelector('.btn-add-product');
+  _ajouterProduitWindow = document.querySelector('.add-product-bdc-container');
   constructor() {
     super();
+    //INITIALZR
     this.addHandlerShowWindow('.add-bdc-btn', '.big-container');
+    this.addHandlerHideWindow('#add-bdc-close', '.big-container');
+    this.addHandlerHideAddProductWindow(
+      '.cancel-btn-add-bdc',
+      '.add-product-bdc-container'
+    );
+    this.addHandlerShowAddProductWindow(
+      '.btn-add-product',
+      '.add-product-bdc-container'
+    );
   }
+  addHandlerHideAddProductWindow(CloserClassName, windowClassName) {
+    this._windowAddProduct = document.querySelector(windowClassName);
+    this._btnCloseAddProduct = document.querySelector(CloserClassName);
+    this._btnCloseAddProduct.addEventListener(
+      'click',
+      this._boundToggleAddProductWindow
+    );
+  }
+  addHandlerShowAddProductWindow(OpClassName, windowClassName) {
+    this._windowAddProduct = document.querySelector(windowClassName);
+    this._btnOpenAddProduct = document.querySelector(OpClassName);
+    this._btnOpenAddProduct.addEventListener(
+      'click',
+      this._boundToggleAddProductWindow
+    );
+  }
+  toggleAddProductWindow() {
+    this._windowAddProduct.classList.toggle('hidden');
+  }
+  _boundToggleAddProductWindow = e => {
+    e.preventDefault();
+    this.toggleAddProductWindow.bind(this)();
+  };
 
   addHandlerFournisseurSearch(fournisseurSearchHandler) {
     this._four.addEventListener('input', e => {
@@ -65,6 +105,11 @@ class AddCmdsView extends AddUserView {
       });
     });
   }
+  addTypeSelectHandler(selectHandler) {
+    this._type.addEventListener('change', e => selectHandler(e.target.value));
+  }
+
+  addHandlerShowAddProd(handler) {}
 }
 
 export default new AddCmdsView();

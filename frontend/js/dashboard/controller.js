@@ -650,6 +650,11 @@ const controlSelectArticles = articleName => {
   model.state.articles.selected = articleName;
 };
 
+const controlTypeSelection = typeName => {
+  model.state.type.selected = typeName;
+  console.log(model.state);
+};
+
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
@@ -699,3 +704,4 @@ controlUpdateFournisseurs();
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 controlUpdateArticles();
 addCmdsView.addHandlerArticleSearch(controlSearchArticles);
+addCmdsView.addTypeSelectHandler(controlTypeSelection);

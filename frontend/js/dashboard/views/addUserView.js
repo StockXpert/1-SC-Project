@@ -128,7 +128,6 @@ export class AddUserView extends View {
   addHandlerHideWindow(CloserClassName, windowClassName) {
     this._window = document.querySelector(windowClassName);
     this._btnClose = document.querySelector(CloserClassName);
-    // console.log(document.querySelector(CloserClassName));
     this._btnClose.addEventListener('click', this._boundToggleWindow);
     this._overlay.addEventListener('click', this._boundToggleWindow);
   }

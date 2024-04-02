@@ -2064,7 +2064,7 @@
       </div>
       <!-- fin section pour supprimer bdr  -->
       <!-- debut section pour ajouter un bdc  -->
-      <div class="big-container">
+      <div class="big-container hidden">
         <div class="edit-product-bdc-container hidden">
           <div class="edit-product-bdc-cart">
             <div class="heading-edit-product-bdc">
@@ -2178,9 +2178,9 @@
                   required
                 >
                   <option value="" disabled="" selected="">Types</option>
-                  <option value="">Matérielles</option>
-                  <option value="">Fournitures</option>
-                  <option value="">Services</option>
+                  <option value="materiel">Matérielles</option>
+                  <option value="fourniture">Fournitures</option>
+                  <option value="service">Services</option>
                 </select>
               </div>
               <div class="btn-add-product">
@@ -2316,6 +2316,19 @@
                   <!--fin d'une ligne selected  -->
                 </tbody>
               </table>
+            </div>
+            <div class="heading-table-btns-add-bdr">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdc btn-add-bdr-qt"
+                id="add-bdc-close"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdr add-users-btn btn-save-bdr-qt"
+              >
+                Sauvegarder
+              </button>
             </div>
           </div>
         </div>

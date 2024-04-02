@@ -26,6 +26,11 @@ export const state = {
     all: [],
     selected: '',
   },
+  type: {
+    all: [],
+    selected: '',
+  },
+
   user: {},
   search: {
     // query: '',
