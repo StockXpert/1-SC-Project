@@ -13,6 +13,7 @@ class AddCmdsView extends AddUserView {
   _four = document.querySelector('#filter-fournisseur');
   _article = document.querySelector('#filter-article');
   _product = document.querySelector('#bdc-product');
+  _productEdit = document.querySelector('#bdc-product-edit');
   _resultsContainer = document.querySelector('.four-search-results-container');
   _resultsContainerArticle = document.querySelector(
     '.article-search-results-container'
@@ -26,10 +27,55 @@ class AddCmdsView extends AddUserView {
   _type = document.querySelector('#type-options');
   _ajouterProduitbtn = document.querySelector('.btn-add-product');
   _ajouterProduitWindow = document.querySelector('.add-product-bdc-container');
-  _productForm = document.querySelector('.inputs-add-product-bdc');
+  _addProductForm = document.querySelector('.inputs-add-product-bdc');
+  _editProductForm = document.querySelector('.inputs-edit-product-bdc');
   _btnDeleteProducts = document.querySelector('.btn-delete-produits-bdc');
   // _btnModifyProducts = document.querySelector('.btn-edit-produits-bdc');
   _checkboxesAddProduct;
+  _btnsOpenEditProduct;
+  _btnCloseEditProduct;
+  // toggleDivVisibility(inputClass, divClass) {
+  // const input = document.querySelector(inputClass);
+  // const div = document.querySelector(divClass);
+  // // input.addEventListener('focus', () => {
+  // //   div.classList.remove('hidden');
+  // // });
+  // // Add event listener for blur event on input
+  // input.addEventListener('blur', e => {
+  //   // Check if the blur event originated from a click on the div
+  //   if (!div.contains(e.target)) {
+  //     div.classList.add('hidden'); // Add the 'hidden' class to hide the div
+  //     console.log(div.contains(e.target));
+  //   }
+  // });
+  // // Add event listener for click event on the div
+  // div.addEventListener('click', () => {
+  //   input.focus(); // Focus the input when the div is clicked
+  // });
+  // document.addEventListener('click', function (event) {
+  //   const isClickedInside = div.contains(event.target);
+  //   if (!isClickedInside) {
+  //     console.log('clicked outside');
+  //     div.classList.add('hidden');
+  //   }
+  // });
+  // }
+  toggleDivVisibility(inputClass, divClass) {
+    const input = document.querySelector(inputClass);
+    const div = document.querySelector(divClass);
+    document.addEventListener('click', function (event) {
+      console.log();
+      const isClickedInside =
+        div.contains(event.target) || input.contains(event.target);
+
+      if (!isClickedInside) {
+        div.classList.add('hidden');
+      } else {
+        div.classList.remove('hidden');
+      }
+    });
+  }
+
   constructor() {
     super();
     //INITIALZR
@@ -43,6 +89,23 @@ class AddCmdsView extends AddUserView {
       '.btn-add-product',
       '.add-product-bdc-container'
     );
+    this.addHandlerHideEditProductWindow(
+      '.cancel-btn-edit-bdc',
+      '.edit-product-bdc-container'
+    );
+    this.addHandlerShowEditProductWindow(
+      '.details-btn-bdc-add',
+      '.edit-product-bdc-container'
+    );
+  }
+  resultVisibilityTogglers() {
+    this.toggleDivVisibility('#bdc-product', '.add-product-search-results');
+    this.toggleDivVisibility(
+      '#bdc-product-edit',
+      '.edit-product-search-results'
+    );
+    this.toggleDivVisibility('#filter-fournisseur', '.four-search-results');
+    this.toggleDivVisibility('#filter-article', '.article-search-results');
   }
   addHandlerHideAddProductWindow(CloserClassName, windowClassName) {
     this._windowAddProduct = document.querySelector(windowClassName);
@@ -63,20 +126,17 @@ class AddCmdsView extends AddUserView {
   toggleAddProductWindow() {
     this._windowAddProduct.classList.toggle('hidden');
   }
-
   clearAddProductForm() {
-    const inputs = this._productForm.querySelectorAll('input');
+    const inputs = this._addProductForm.querySelectorAll('input');
     inputs.forEach(input => {
       input.value = '';
     });
   }
-
   _boundToggleAddProductWindow = e => {
     e.preventDefault();
     this.clearAddProductForm();
     this.toggleAddProductWindow.bind(this)();
   };
-
   addHandlerFournisseurSearch(fournisseurSearchHandler) {
     this._four.addEventListener('input', e => {
       fournisseurSearchHandler(e.target.value);
@@ -115,7 +175,6 @@ class AddCmdsView extends AddUserView {
     this._articleResults = document
       .querySelector('.article-search-results-container')
       .querySelectorAll('li');
-    console.log(this._articleResults);
     this._articleResults.forEach(el => {
       return el.addEventListener('click', e => {
         controlSelectArticle(e.currentTarget.innerHTML);
@@ -127,25 +186,34 @@ class AddCmdsView extends AddUserView {
 
   addHandlerProductSearch(productSearchHandler) {
     this._product.addEventListener('input', e => {
-      productSearchHandler(e.target.value);
+      productSearchHandler(e.target.value, 'add');
+    });
+    //TODO: ALSO ADD THE EL TO the modifier search
+    this._productEdit.addEventListener('input', e => {
+      productSearchHandler(e.target.value, 'edit');
     });
   }
-  addToSuggestionsProductsAndEL(results = [], controlSelectProduct) {
-    this._resultsContainerProduct.innerHTML = '';
+  addToSuggestionsProductsAndEL(
+    results = [],
+    resultsContainerClass = '.product-search-results-container'
+  ) {
+    document.querySelector(resultsContainerClass).innerHTML = '';
     const markup = results
       .map(result => `<li>${result.designation}</li>`)
       .slice(0, 10)
       .join('');
-    this._resultsContainerProduct.insertAdjacentHTML('afterbegin', markup);
+    document
+      .querySelector(resultsContainerClass)
+      .insertAdjacentHTML('afterbegin', markup);
     this._productResults = document
-      .querySelector('.product-search-results-container')
+      .querySelector(resultsContainerClass)
       .querySelectorAll('li');
-    console.log(this._productResults);
     this._productResults.forEach(el => {
       return el.addEventListener('click', e => {
         // controlSelectProduct(e.currentTarget.innerHTML);
         this._product.value = e.currentTarget.innerHTML;
-        this._resultsContainerProduct.innerHTML = '';
+        this._productEdit.value = e.currentTarget.innerHTML;
+        document.querySelector(resultsContainerClass).innerHTML = '';
       });
     });
   }
@@ -153,17 +221,15 @@ class AddCmdsView extends AddUserView {
   addTypeSelectHandler(selectHandler) {
     this._type.addEventListener('change', e => selectHandler(e.target.value));
   }
-
   addHandlerAddProduct(handler) {
     let numero = 1;
-    this._productForm.addEventListener('submit', e => {
+    this._addProductForm.addEventListener('submit', e => {
       e.preventDefault();
-      const formElement = this._productForm;
+      const formElement = this._addProductForm;
       const formData = new FormData(formElement);
-      formData.forEach(function (value, key) {
-        console.log(key + ': ' + value);
-      });
-      console.log(formData);
+      // formData.forEach(function (value, key) {
+      //   console.log(key + ': ' + value);
+      // });
       // Convert FormData object to object with key-value pairs
       const formDataObj = {};
       formData.forEach(function (value, key) {
@@ -175,8 +241,7 @@ class AddCmdsView extends AddUserView {
       this.toggleAddProductWindow.bind(this)();
     });
   }
-  //TODO:
-  AddHandlerAddProductsCheckboxes() {
+  AddHandlerAddedProductsCheckboxes() {
     this._checkboxesAddProduct = this._parentElement.querySelectorAll(
       'input[type="checkbox"]'
     );
@@ -184,7 +249,6 @@ class AddCmdsView extends AddUserView {
       const checkedCheckboxes = this._parentElement.querySelectorAll(
         'input[type="checkbox"]:checked'
       );
-
       if (checkedCheckboxes.length === 0) {
         // this._btnModifyProducts.disabled = true;
         this._btnDeleteProducts.disabled = true;
@@ -203,7 +267,6 @@ class AddCmdsView extends AddUserView {
       }
     };
     handleCheckboxChange();
-    console.log(this._checkboxesAddProduct);
     this._checkboxesAddProduct.forEach(cbx =>
       cbx.addEventListener('change', handleCheckboxChange)
     );
@@ -222,7 +285,6 @@ class AddCmdsView extends AddUserView {
   addHandlerDeleteAddedProducts(handler) {
     this._btnDeleteProducts.addEventListener('click', handler);
   }
-
   _generateMarkupPreview(result, perms = []) {
     return `
     <tr>
@@ -256,6 +318,91 @@ class AddCmdsView extends AddUserView {
     </td>
   </tr>
     `;
+  }
+  // addHandlerEditProductsBtns() {}
+
+  addHandlerHideEditProductWindow(CloserClassName, windowClassName) {
+    this._windowEditProduct = document.querySelector(windowClassName);
+    this._btnCloseEditProduct = document.querySelector(CloserClassName);
+    this._btnCloseEditProduct.addEventListener(
+      'click',
+      this._boundToggleEditProductWindow
+    );
+  }
+  addHandlerShowEditProductWindow(OpClassName, windowClassName) {
+    this._windowEditProduct = document.querySelector(windowClassName);
+    this._btnsOpenEditProduct = document.querySelectorAll(OpClassName);
+    this._btnsOpenEditProduct.forEach(btn =>
+      btn.addEventListener('click', this._boundToggleEditProductWindow)
+    );
+  }
+  toggleEditProductWindow() {
+    this._windowEditProduct.classList.toggle('hidden');
+  }
+  clearEditProductForm() {
+    const inputs = this._editProductForm.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.value = '';
+    });
+  }
+  _boundToggleEditProductWindow = e => {
+    e.preventDefault();
+    this.clearEditProductForm();
+    this.toggleEditProductWindow.bind(this)();
+  };
+  addHandlerEditProductBtns(controller) {
+    const btnOpenArray = Array.from(this._btnsOpenEditProduct);
+    btnOpenArray.forEach(async btn => {
+      btn.addEventListener('click', await controller);
+    });
+  }
+
+  changeInputs(NewInputValuesObj) {
+    // Get the form element
+    const formElement = this._editProductForm;
+    // Create a new FormData object from the form
+    const formData = new FormData(formElement);
+    // TODO:
+    // formData.forEach(function (value, key) {
+    //   console.log(key + ': ' + value);
+    // });
+    // Update form fields with new values
+    for (const key in NewInputValuesObj) {
+      if (NewInputValuesObj.hasOwnProperty(key)) {
+        const input = formElement.elements[key];
+        if (input) {
+          input.value = NewInputValuesObj[key];
+        }
+      }
+    }
+  }
+
+  addHandlerChangeProduct(handler, hasConsumer = true) {
+    const closeBtn = this._btnCloseEditProduct;
+    // if (hasConsumer)
+    //   this._role.addEventListener('change', this.handleConsumerChange);
+    this._editProductForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = this;
+      let inputs = Array.from(form.getElementsByTagName('input'));
+      // const select = Array.from(form.getElementsByTagName('select'));
+      // inputs = inputs.concat(select);
+      const allFilled = inputs.every(input => {
+        const isRequired = input.required;
+        if (isRequired) {
+          return input.value.trim() !== '';
+        }
+        return true;
+      });
+      if (allFilled) {
+        const dataArr = [...new FormData(form)];
+        const data = Object.fromEntries(dataArr);
+        closeBtn.click();
+        handler(data);
+      } else {
+        alert('Please fill in all fields before submitting.');
+      }
+    });
   }
 }
 

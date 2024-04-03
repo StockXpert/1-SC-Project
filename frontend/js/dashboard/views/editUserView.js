@@ -61,12 +61,10 @@ export class EditUserView extends AddUserView {
     const formElement = this._form;
     // Create a new FormData object from the form
     const formData = new FormData(formElement);
-
     // TODO:
     // formData.forEach(function (value, key) {
     //   console.log(key + ': ' + value);
     // });
-
     // Update form fields with new values
     for (const key in NewInputValuesObj) {
       if (NewInputValuesObj.hasOwnProperty(key)) {
