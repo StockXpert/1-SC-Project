@@ -13,6 +13,7 @@ class AddCmdsView extends AddUserView {
   _four = document.querySelector('#filter-fournisseur');
   _article = document.querySelector('#filter-article');
   _product = document.querySelector('#bdc-product');
+  _productEdit = document.querySelector('#bdc-product-edit');
   _resultsContainer = document.querySelector('.four-search-results-container');
   _resultsContainerArticle = document.querySelector(
     '.article-search-results-container'
@@ -33,6 +34,48 @@ class AddCmdsView extends AddUserView {
   _checkboxesAddProduct;
   _btnsOpenEditProduct;
   _btnCloseEditProduct;
+  // toggleDivVisibility(inputClass, divClass) {
+  // const input = document.querySelector(inputClass);
+  // const div = document.querySelector(divClass);
+  // // input.addEventListener('focus', () => {
+  // //   div.classList.remove('hidden');
+  // // });
+  // // Add event listener for blur event on input
+  // input.addEventListener('blur', e => {
+  //   // Check if the blur event originated from a click on the div
+  //   if (!div.contains(e.target)) {
+  //     div.classList.add('hidden'); // Add the 'hidden' class to hide the div
+  //     console.log(div.contains(e.target));
+  //   }
+  // });
+  // // Add event listener for click event on the div
+  // div.addEventListener('click', () => {
+  //   input.focus(); // Focus the input when the div is clicked
+  // });
+  // document.addEventListener('click', function (event) {
+  //   const isClickedInside = div.contains(event.target);
+  //   if (!isClickedInside) {
+  //     console.log('clicked outside');
+  //     div.classList.add('hidden');
+  //   }
+  // });
+  // }
+  toggleDivVisibility(inputClass, divClass) {
+    const input = document.querySelector(inputClass);
+    const div = document.querySelector(divClass);
+    document.addEventListener('click', function (event) {
+      console.log();
+      const isClickedInside =
+        div.contains(event.target) || input.contains(event.target);
+
+      if (!isClickedInside) {
+        div.classList.add('hidden');
+      } else {
+        div.classList.remove('hidden');
+      }
+    });
+  }
+
   constructor() {
     super();
     //INITIALZR
@@ -54,6 +97,15 @@ class AddCmdsView extends AddUserView {
       '.details-btn-bdc-add',
       '.edit-product-bdc-container'
     );
+  }
+  resultVisibilityTogglers() {
+    this.toggleDivVisibility('#bdc-product', '.add-product-search-results');
+    this.toggleDivVisibility(
+      '#bdc-product-edit',
+      '.edit-product-search-results'
+    );
+    this.toggleDivVisibility('#filter-fournisseur', '.four-search-results');
+    this.toggleDivVisibility('#filter-article', '.article-search-results');
   }
   addHandlerHideAddProductWindow(CloserClassName, windowClassName) {
     this._windowAddProduct = document.querySelector(windowClassName);
@@ -131,29 +183,41 @@ class AddCmdsView extends AddUserView {
       });
     });
   }
+
   addHandlerProductSearch(productSearchHandler) {
     this._product.addEventListener('input', e => {
-      productSearchHandler(e.target.value);
+      productSearchHandler(e.target.value, 'add');
+    });
+    //TODO: ALSO ADD THE EL TO the modifier search
+    this._productEdit.addEventListener('input', e => {
+      productSearchHandler(e.target.value, 'edit');
     });
   }
-  addToSuggestionsProductsAndEL(results = [], controlSelectProduct) {
-    this._resultsContainerProduct.innerHTML = '';
+  addToSuggestionsProductsAndEL(
+    results = [],
+    resultsContainerClass = '.product-search-results-container'
+  ) {
+    document.querySelector(resultsContainerClass).innerHTML = '';
     const markup = results
       .map(result => `<li>${result.designation}</li>`)
       .slice(0, 10)
       .join('');
-    this._resultsContainerProduct.insertAdjacentHTML('afterbegin', markup);
+    document
+      .querySelector(resultsContainerClass)
+      .insertAdjacentHTML('afterbegin', markup);
     this._productResults = document
-      .querySelector('.product-search-results-container')
+      .querySelector(resultsContainerClass)
       .querySelectorAll('li');
     this._productResults.forEach(el => {
       return el.addEventListener('click', e => {
         // controlSelectProduct(e.currentTarget.innerHTML);
         this._product.value = e.currentTarget.innerHTML;
-        this._resultsContainerProduct.innerHTML = '';
+        this._productEdit.value = e.currentTarget.innerHTML;
+        document.querySelector(resultsContainerClass).innerHTML = '';
       });
     });
   }
+
   addTypeSelectHandler(selectHandler) {
     this._type.addEventListener('change', e => selectHandler(e.target.value));
   }

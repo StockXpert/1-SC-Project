@@ -9,7 +9,6 @@ export class NumberView extends View {
   calculateCheckboxes() {
     let checkedCount = 0;
     const func = checkbox => {
-      // console.log(this._data);
       if (checkbox.checked) {
         checkedCount++;
         checkbox.parentElement.parentElement.parentElement.classList.add(
@@ -21,7 +20,6 @@ export class NumberView extends View {
         );
       }
     };
-    // console.log(this._checkboxes.length);
     this._checkboxes.forEach(func);
     return checkedCount;
   }
@@ -61,7 +59,6 @@ export class NumberView extends View {
   }
 
   selectionUpdater(customTableClass = '.results') {
-    console.log('selectionUpdater');
     this._table = document.querySelector(customTableClass);
     const checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
     this._checkboxes = checkboxes;

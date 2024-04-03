@@ -26,7 +26,7 @@ export const state = {
     all: [],
     selected: '',
   },
-  products: {
+  bdc_products: {
     all: [],
     selected: '',
     added: [],
@@ -76,6 +76,7 @@ export const state = {
     status: 'all',
     selected: 0,
     selectedRoles: 0,
+    selectedAddProductsNumber: 0,
   },
   structures: {
     results: [],

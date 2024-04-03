@@ -26,6 +26,7 @@ import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
+// import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -602,6 +603,7 @@ const controlSearchFournisseurs = input => {
     extractItems(results),
     controlSelectFournisseur
   );
+  addCmdsView.resultVisibilityTogglers();
 };
 
 const controlSelectFournisseur = fournisseurName => {
@@ -631,6 +633,7 @@ const controlSearchArticles = input => {
     extractItems(results),
     controlSelectArticles
   );
+  addCmdsView.resultVisibilityTogglers();
   //update search result refrencers
 
   //re-add EL to the search results
@@ -640,20 +643,29 @@ const controlSearchArticles = input => {
 //products.all are filtered by the selected article
 const controlUpdateProducts = async () => {
   const products = await model.loadProducts(model.state.articles.selected);
-  model.state.products.all = products;
+  model.state.bdc_products.all = products;
 };
 
-const controlSearchProducts = input => {
+const controlSearchProducts = (input, type) => {
   //ON INPUT:
-  const fuze = model.fuseMakerProducts(model.state.products.all);
+  const fuze = model.fuseMakerProducts(model.state.bdc_products.all);
   const results = fuze.search(input);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
-  addCmdsView.addToSuggestionsProductsAndEL(
-    extractItems(results),
-    controlSelectProducts
-  );
+  switch (type) {
+    case 'add':
+      addCmdsView.addToSuggestionsProductsAndEL(extractItems(results));
+      addCmdsView.resultVisibilityTogglers();
+      break;
+    case 'edit':
+      addCmdsView.addToSuggestionsProductsAndEL(
+        extractItems(results),
+        '.product-search-results-container-edit'
+      );
+      addCmdsView.resultVisibilityTogglers();
+      break;
+  }
 };
 
 //in addCmdsView:
@@ -665,7 +677,7 @@ const controlSelectArticles = articleName => {
 };
 
 const controlSelectProducts = productName => {
-  model.state.products.selected = productName;
+  model.state.bdc_products.selected = productName;
 };
 
 const controlTypeSelection = typeName => {
@@ -674,8 +686,8 @@ const controlTypeSelection = typeName => {
 };
 
 const controlAddProduct = newProduct => {
-  model.state.products.added.push(newProduct);
-  addCmdsView.render(model.state.products.added);
+  model.state.bdc_products.added.push(newProduct);
+  addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
   addCmdsView.AddHandlerAddedProductsCheckboxes();
@@ -691,11 +703,11 @@ const controlAddProduct = newProduct => {
 
 const controlDeleteAddedProducts = () => {
   const addedProductsAfterRemoval = helpers.removeArrayByBooleans(
-    model.state.products.added,
+    model.state.bdc_products.added,
     helpers.getCheckboxStates(addCmdsView._checkboxesAddProduct)
   );
-  model.state.products.added = addedProductsAfterRemoval;
-  addCmdsView.render(model.state.products.added);
+  model.state.bdc_products.added = addedProductsAfterRemoval;
+  addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
   addCmdsView.AddHandlerAddedProductsCheckboxes();
@@ -718,8 +730,29 @@ const controlEditProductBtns = function () {
     target
   );
   //Use it to extract the input data from the state object
-  addCmdsView.changeInputs(model.state.products.added[targetIndex]);
-  model.state.products.changed = model.state.products.added[targetIndex];
+  addCmdsView.changeInputs(model.state.bdc_products.added[targetIndex]);
+  model.state.bdc_products.changed =
+    model.state.bdc_products.added[targetIndex];
+};
+
+const controlChangeProduct = function (editedProduct) {
+  model.state.bdc_products.added[model.state.bdc_products.changed.numero - 1] =
+    editedProduct;
+  model.state.bdc_products.added[
+    model.state.bdc_products.changed.numero - 1
+  ].numero = model.state.bdc_products.changed.numero;
+  addCmdsView.render(model.state.bdc_products.added);
+  addCmdsView._checkboxesAddProduct =
+    addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
+  addCmdsView.AddHandlerAddedProductsCheckboxes();
+  //TODO: edit btns
+  addCmdsView.addHandlerShowEditProductWindow(
+    '.details-btn-bdc-add',
+    '.edit-product-bdc-container'
+  );
+  //TODO: hide btn
+  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
+  // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
@@ -778,21 +811,13 @@ addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
 addCmdsView.addHandlerProductSearch(controlSearchProducts);
-const controlChangeProduct = function (editedProduct) {
-  model.state.products.added[model.state.products.changed.numero - 1] =
-    editedProduct;
-  model.state.products.added[model.state.products.changed.numero - 1].numero =
-    model.state.products.changed.numero;
-  addCmdsView.render(model.state.products.added);
-  addCmdsView._checkboxesAddProduct =
-    addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
-  addCmdsView.AddHandlerAddedProductsCheckboxes();
-  //TODO: edit btns
-  addCmdsView.addHandlerShowEditProductWindow(
-    '.details-btn-bdc-add',
-    '.edit-product-bdc-container'
-  );
-  //TODO: hide btn
-  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
-};
+
 addCmdsView.addHandlerChangeProduct(controlChangeProduct);
+
+//TODO: add after every render
+// const controlNumberAddProducts = function () {
+//   numberRoleView._clear();
+//   model.state.bdc_products.selectedProducts =
+//     numberAddProductsView.calculateCheckboxes();
+//   numberRoleView.render(model.state);
+// };
