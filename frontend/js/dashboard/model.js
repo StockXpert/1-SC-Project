@@ -596,3 +596,15 @@ export const loadProducts = async function (article) {
   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
   return helpers.filterByArticle(products.response, article);
 };
+
+export const createBDC = async function () {
+  const postBDCOBJ = {
+    produits: state.bdc_products.added,
+    objet: state.articles.selected,
+    type: state.fournisseurs.selected,
+    fournisseurs: state.fournisseurs.selected,
+    date: helpers.getFormattedDate(),
+  };
+  // console.log(postBDCOBJ);
+  await helpers.sendJSON(`${API_URL}/Entrees/bonCommande`, postBDCOBJ);
+};

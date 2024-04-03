@@ -409,3 +409,15 @@ export const removeArrayByBooleans = (dataArray, booleanArray) => {
   }
   return filteredArray;
 };
+export const getFormattedDate = () => {
+  const today = new Date();
+
+  const year = today.getFullYear();
+
+  // JavaScript months are zero-based, so we add 1 to get the correct month
+  const month = (today.getMonth() + 1).toString().padStart(2, '0');
+
+  const day = today.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};

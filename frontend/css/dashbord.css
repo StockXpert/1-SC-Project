@@ -2232,6 +2232,11 @@ a.password-icon:active {
   color: #000000; /* Darker text color */
   cursor: not-allowed; /* Change cursor to not-allowed */
 }
+.disabled-save-button {
+  background-color: #0d3070; /* Darker background color */
+  color: #a8a8a8; /* Darker text color */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}
 .disabled-delete-button {
   background-color: #8a2727; /* Darker background color */
   color: #949494; /* Darker text color */

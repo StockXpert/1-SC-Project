@@ -2078,6 +2078,7 @@
                   value="Pc Gamer"
                   name="designation"
                   id="bdc-product-edit"
+                  required
                 />
                 <div class="search-results edit-product-search-results">
                   <ul class="product-search-results-container-edit">
@@ -2094,6 +2095,7 @@
                   placeholder="Modifier la Quantité"
                   value="4"
                   name="quantite"
+                  required
                 />
               </div>
               <div class="input-product-bdc">
@@ -2101,7 +2103,8 @@
                   type="text"
                   placeholder="Modifier le Prix Unitaire"
                   value="20.000 DA"
-                  name="prix_unitaire"
+                  name="prixUnitaire"
+                  required
                 />
               </div>
               <div class="btn-product-bdc-edit">
@@ -2124,6 +2127,7 @@
                   placeholder="Entrez la Designation"
                   id="bdc-product"
                   autocomplete="off"
+                  required
                 />
                 <div class="search-results add-product-search-results">
                   <ul class="product-search-results-container">
@@ -2137,16 +2141,16 @@
               <div class="input-product-bdc">
                 <input
                   name="quantite"
-                  type="text"
                   placeholder="Entrez la Quantité"
                   id="bdc-quantity"
                   autocomplete="off"
+                  type="number"
                 />
               </div>
               <div class="input-product-bdc">
                 <input
-                  name="prix_unitaire"
-                  type="text"
+                  name="prixUnitaire"
+                  type="number"
                   placeholder="Entrez le Prix Unitaire"
                   id="bdc-price"
                   autocomplete="off"
@@ -2201,6 +2205,7 @@
                   placeholder="Article"
                   required
                   autocomplete="off"
+                  required
                 />
                 <div class="search-results article-search-results">
                   <ul class="article-search-results-container"></ul>
@@ -2361,7 +2366,7 @@
                 Annuler
               </button>
               <button
-                class="heading-table-btn-bdr add-users-btn btn-save-bdr-qt"
+                class="heading-table-btn-bdr add-users-btn btn-save-bdc-qt"
               >
                 Sauvegarder
               </button>
@@ -2550,14 +2555,16 @@
                   <div class="heading-table-file-add-1-bdr">
                     <p>Entez le Bon de Livraison :</p>
                     <input
+                      name="bonLivraison"
                       type="file"
                       accept="application/pdf"
-                      title="Sélectionner une facture"
+                      title="Sélectionner un bon Livraison"
                     />
                   </div>
                   <div class="heading-table-file-add-2-bdr">
                     <p>Entez la Facture :</p>
                     <input
+                      name="facture"
                       type="file"
                       accept="application/pdf"
                       title="Sélectionner une facture"

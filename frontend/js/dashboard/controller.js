@@ -599,8 +599,13 @@ const controlSearchFournisseurs = input => {
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
+  let displayedResults = extractItems(results);
+  // displayedResults.push({
+  //   raison_sociale: input,
+  // });
+  console.log(displayedResults);
   addCmdsView.addToSuggestionsFournisseursAndEL(
-    extractItems(results),
+    displayedResults,
     controlSelectFournisseur
   );
   addCmdsView.resultVisibilityTogglers();
@@ -686,6 +691,8 @@ const controlTypeSelection = typeName => {
 };
 
 const controlAddProduct = newProduct => {
+  //TODO:
+  // newProduct.numero = model.state.bdc_products.added.length + 1;
   model.state.bdc_products.added.push(newProduct);
   addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
@@ -731,16 +738,13 @@ const controlEditProductBtns = function () {
   );
   //Use it to extract the input data from the state object
   addCmdsView.changeInputs(model.state.bdc_products.added[targetIndex]);
-  model.state.bdc_products.changed =
-    model.state.bdc_products.added[targetIndex];
+  model.state.bdc_products.changed = targetIndex;
 };
 
 const controlChangeProduct = function (editedProduct) {
-  model.state.bdc_products.added[model.state.bdc_products.changed.numero - 1] =
+  //TODO:
+  model.state.bdc_products.added[model.state.bdc_products.changed] =
     editedProduct;
-  model.state.bdc_products.added[
-    model.state.bdc_products.changed.numero - 1
-  ].numero = model.state.bdc_products.changed.numero;
   addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
@@ -779,6 +783,13 @@ const controllers = [
   ,
   controlLoadCmds,
 ];
+
+const controlSavingBDC = async function () {
+  console.log(model.state);
+  await model.createBDC();
+};
+
+addCmdsView.addHandlerSavingBDC(controlSavingBDC);
 
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
