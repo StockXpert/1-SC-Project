@@ -94,6 +94,11 @@ class CmdsView extends UsersView {
               <p>Voir Bons de Receptions</p>
             </button>
           </td>
+          <button class="details-btn">
+          <span class="material-icons-sharp info-icon">
+            edit
+          </span>
+        </button>
         </tr>
       `;
   }
