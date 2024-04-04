@@ -2074,7 +2074,7 @@
               <div class="input-product-bdc-edit">
                 <input
                   type="text"
-                  placeholder="Designation du Produit"
+                  placeholder="Chercher la Designation du Produit"
                   value="Pc Gamer"
                   name="designation"
                   id="bdc-product-edit"
@@ -2091,7 +2091,7 @@
               </div>
               <div class="input-product-bdc">
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Modifier la Quantité"
                   value="4"
                   name="quantite"
@@ -2100,7 +2100,7 @@
               </div>
               <div class="input-product-bdc">
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Modifier le Prix Unitaire"
                   value="20.000 DA"
                   name="prixUnitaire"
@@ -2124,7 +2124,7 @@
                 <input
                   name="designation"
                   type="text"
-                  placeholder="Entrez la Designation"
+                  placeholder="Chercher la Designation du Produit"
                   id="bdc-product"
                   autocomplete="off"
                   required
@@ -2145,6 +2145,7 @@
                   id="bdc-quantity"
                   autocomplete="off"
                   type="number"
+                  required
                 />
               </div>
               <div class="input-product-bdc">
@@ -2154,6 +2155,7 @@
                   placeholder="Entrez le Prix Unitaire"
                   id="bdc-price"
                   autocomplete="off"
+                  required
                 />
               </div>
               <div class="btn-product-bdc">
@@ -2164,15 +2166,17 @@
           </div>
         </div>
         <div class="add-bdc-container">
-          <div class="add-bdc-cart">
+          <form class="add-bdc-cart">
             <div class="container-select-bdc">
               <div class="dropbtn dropbtn-fournisseurs">
-                <span class="material-icons-sharp"> search </span>
+                <span class="material-icons-sharp">
+                  arrow_drop_down_circle
+                </span>
                 <input
                   name="fournisseur"
                   class="filters-fournisseur"
                   id="filter-fournisseur"
-                  placeholder="Fournisseur"
+                  placeholder="Cherchez le fournisseur..."
                   required
                   autocomplete="off"
                 />
@@ -2197,12 +2201,14 @@
                 </select>
               </div> -->
               <div class="dropbtn dropbtn-articles">
-                <span class="material-icons-sharp"> search </span>
+                <span class="material-icons-sharp">
+                  arrow_drop_down_circle
+                </span>
                 <input
                   name="article"
                   class="filters-article"
                   id="filter-article"
-                  placeholder="Article"
+                  placeholder="Cherchez l'article..."
                   required
                   autocomplete="off"
                   required
@@ -2212,12 +2218,14 @@
                 </div>
               </div>
               <div class="dropbtn dropbtn-type">
-                <span class="material-icons-sharp"> search </span>
+                <span class="material-icons-sharp">
+                  arrow_drop_down_circle
+                </span>
                 <select
                   name="types-article"
                   class="types-article"
                   id="type-options"
-                  placeholder="Types"
+                  placeholder="Choisissez le chapitre"
                   required
                 >
                   <option value="" disabled="" selected="">Types</option>
@@ -2371,7 +2379,7 @@
                 Sauvegarder
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- fin section pour ajouter un bdc  -->
@@ -2670,6 +2678,35 @@
         </div>
       </div>
       <!-- fin section pour add un nv bdr -->
+      <div class="add-user-container error-message-container hidden">
+        <div class="add-user-cart error-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-user">
+            <h1 class="heading-primary-add-user heading-error-message">
+              <!-- Erreur lors de la saisie d'informations -->
+            </h1>
+          </div>
+          <div class="error-content error-message">
+            <!-- <p class="error-message">
+              Les entrées suivantes n'ont pas été sélectionnées ou remplies :
+            </p>
+            <ul class="error-message">
+              <li>Article</li>
+              <li>Fournisseur</li>
+              <li>Chapitre</li>
+              <li>Produits</li>
+            </ul>
+            <p class="error-message">
+              Veuillez remplir ces paramètres en sélectionnant le choix désiré
+              dans leurs menus déroulants respectifs.
+            </p> -->
+          </div>
+        </div>
+      </div>
+
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>
@@ -2679,6 +2716,7 @@
       <div class="overlay overlayEditStr hidden"></div>
       <div class="overlay overlayDelStr hidden"></div>
       <div class="overlay overlayAddCmd hidden"></div>
+      <div class="overlay overlayError hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

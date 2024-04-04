@@ -2242,3 +2242,36 @@ a.password-icon:active {
   color: #949494; /* Darker text color */
   cursor: not-allowed; /* Change cursor to not-allowed */
 }
+.errored-input {
+  border: 3px solid #f13a3a;
+  background-color: #f13a3a28;
+  /* box-sizing: content-box; */
+  padding: 5px;
+}
+.error-message {
+  max-width: 85%;
+  font-size: 1.15rem;
+  justify-content: center;
+}
+.error-cart {
+  padding: 1.2rem;
+  width: 40rem;
+}
+.heading-error-message {
+  color: #eb5555;
+  font-size: 1.3rem;
+}
+.error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.2rem;
+}
+.error-message-container {
+  z-index: 1111;
+}
+.overlayError {
+  z-index: 1011;
+}

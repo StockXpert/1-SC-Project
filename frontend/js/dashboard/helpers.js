@@ -421,3 +421,23 @@ export const getFormattedDate = () => {
 
   return `${year}-${month}-${day}`;
 };
+export const renderError = function (heading, content) {
+  console.log('RENDING AN ERROR');
+  const container = document.querySelector('.error-message-container');
+  const hideWindow = () => {
+    container.classList.add('hidden');
+    document.querySelector('.overlayError').classList.add('hidden');
+  };
+  //reset the window
+  document.querySelector('.heading-error-message').innerHTML = '';
+  document.querySelector('.error-content').innerHTML = '';
+  //show the window (somehow)
+  container.classList.remove('hidden');
+  document.querySelector('.overlayError').classList.remove('hidden');
+  //adding content
+  document.querySelector('.heading-error-message').innerHTML = heading;
+  document.querySelector('.error-content').innerHTML = content;
+  //add closing ELs
+  container.querySelector('.close-btn').addEventListener('click', hideWindow);
+  document.querySelector('.overlayError').addEventListener('click', hideWindow);
+};

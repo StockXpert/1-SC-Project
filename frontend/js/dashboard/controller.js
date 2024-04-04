@@ -785,11 +785,34 @@ const controllers = [
 ];
 
 const controlSavingBDC = async function () {
-  console.log(model.state);
-  await model.createBDC();
+  if (model.state.fournisseurs.selected == '') {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun fournisseur n'a été sélectionné.</b></p>
+      <p>Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
+    );
+  } else if (model.state.articles.selected == '') {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun article n'a été sélectionné. </b></p>
+      <p class="error-message">Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
+    );
+  } else if (model.state.type.selected == '') {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun chapitre n'a été sélectionné. </b></p>
+      <p class="error-message">Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
+    );
+  } else if (model.state.bdc_products.added.length == 0) {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun produit n'a été ajouté au bon de commande.</b></p>
+      <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
+    );
+  } else await model.createBDC();
 };
 
-addCmdsView.addHandlerSavingBDC(controlSavingBDC);
+addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);
 
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);

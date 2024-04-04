@@ -1,7 +1,9 @@
 // import icons from '../../../img/icons.svg';
 import * as helpers from '../helpers.js';
+import * as model from '../model.js';
 
 export default class View {
+  _permissions = model.state.me.permissions.all;
   _restricted;
   _data;
   _clear() {
