@@ -20,6 +20,15 @@ class CmdsView extends UsersView {
     this._btnDeleteBdc.disabled = true;
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
+        // console.log(this);
+        const tthis = e.currentTarget;
+        if (tthis.checked) {
+          this._checkboxes.forEach(otherCheckbox => {
+            if (otherCheckbox !== tthis) {
+              otherCheckbox.checked = false;
+            }
+          });
+        }
         this._checkedCheckboxes = this._parentElement.querySelectorAll(
           'input[type="checkbox"]:checked'
         );

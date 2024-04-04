@@ -202,6 +202,29 @@ export const delJSON = async function (url, uploadData) {
     throw err;
   }
 };
+export const delJSONReturnResResp = async function (url, uploadData) {
+  // try {
+  console.log('delJSONReturn');
+  const res = await Promise.race([
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(uploadData),
+    }),
+    timeout(TIMEOUT_SEC),
+  ]);
+  const data = await res.json();
+  // console.log(data);
+  return [res, data];
+  // if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+  // return data;
+  // } catch (err) {
+  // throw err;
+  // }
+};
 
 // export const sendJSON = async function (url, uploadData) {
 //   try {

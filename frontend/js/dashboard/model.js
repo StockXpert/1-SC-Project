@@ -613,3 +613,11 @@ export const createBDC = async function () {
   console.log(postBDCOBJ);
   await helpers.sendJSON(`${API_URL}/Entrees/bonCommande`, postBDCOBJ);
 };
+export const deleteCmd = async function (numCommande) {
+  return await helpers.delJSONReturnResResp(
+    `${API_URL}/Entrees/deleteCommande`,
+    {
+      numCommande: numCommande,
+    }
+  );
+};

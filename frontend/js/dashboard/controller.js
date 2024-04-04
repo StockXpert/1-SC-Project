@@ -784,28 +784,49 @@ const controlChangeProduct = function (editedProduct) {
 };
 
 const controlDeleteCmds = async function () {
-  cmdsView.renderSpinner('Suppression des Commandes ...');
-  helpers
-    .filterNodeList(
-      model.state.roles.all,
+  // cmdsView.renderSpinner('Suppression de la Commandes ...');
+  console.log(
+    helpers.filterNodeList(
+      model.state.bdc.allCommandes,
       helpers.getCheckboxStates(
         document
-          .querySelector('.roles-cart')
+          .querySelector('#main-table-bdc')
+          .querySelector('.results')
           .querySelectorAll('input[type="checkbox"]')
       )
     )
-    .forEach(async el => {
-      console.log(el.role);
-      await model.deleteRole(el.role);
+  );
+
+  helpers
+    .filterNodeList(
+      model.state.bdc.allCommandes,
+      helpers.getCheckboxStates(
+        document
+          .querySelector('#main-table-bdc')
+          .querySelector('.results')
+          .querySelectorAll('input[type="checkbox"]')
+      )
+    )
+    .forEach(async bdc => {
+      // console.log(bdc.role);
+      const responseNData = await model.deleteCmd(bdc.numCommande);
+      console.log(responseNData);
+      if (!responseNData[0].ok) {
+        helpers.renderError(
+          `Erreur lors de la suppression d'un Bon de Commande`,
+          `Le Bon de Commande que vous voulez supprimer contient deja un bon de réception`
+        );
+      } else {
+        await controlLoadCmds();
+      }
       // back to main menu
     });
-  await controlLoadCmds();
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
 
-// deleteCmdsView.addDeleteController(controlDeleteCmds);
+deleteCmdsView.addDeleteController(controlDeleteCmds);
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
