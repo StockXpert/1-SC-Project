@@ -30,8 +30,8 @@ function deleteCommande(req,res)
 {
    const {numCommande}=req.body;
    EntreeModel.getBonReception(numCommande).then((response)=>{
-      if(response.length==0)
-         res.status(500).json({response:'prohibited to delete commande'});
+      if(response.length!=0)
+         res.status(500).json({response:'prohibited to delete commande2'});
       else
       {
          EntreeModel.canDeleteCommande(numCommande).then(()=>{
@@ -41,7 +41,7 @@ function deleteCommande(req,res)
                }).catch(()=>{res.status(500).json({response:'internal error'})})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
          }).catch(()=>{
-            res.status(500).json({response:'prohibited to delete commande'});
+            res.status(500).json({response:'prohibited to delete commande1'});
          })
       }
    }).catch(()=>{res.status(500).json({response:'internal error'})})
