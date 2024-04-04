@@ -493,6 +493,7 @@ aside .sidebar a:hover span {
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  margin-bottom: 0.2rem;
 }
 .container-fac-bon {
   display: flex;

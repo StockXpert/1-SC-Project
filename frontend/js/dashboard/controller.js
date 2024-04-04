@@ -26,6 +26,7 @@ import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
+import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -170,8 +171,6 @@ const controlDeleteRoles = async function () {
       // back to main menu
     });
   await controlLoadRoles();
-  // console.log(model.state.search.queryResults);
-  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
 };
 
 const controleSelectStructures = function () {
@@ -575,15 +574,40 @@ const controlRoleSwitch = (e, selectedIndex) => {
   controlEditRole(e, true, selectedIndex - 1);
 };
 
-const controlLoadCmds = async function () {
-  cmdsView.renderSpinner();
-  const cmds = await model.loadCmds();
-  cmdsView.render(cmds);
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/////// B O N S  D E  C O M M A N D E S #fff
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+const controlCmdsSearch = function (query, filtersState) {};
+const controlCmdsFiltersChanges = function (newFiltersState = {}) {
+  model.state.bdc.filtersState = newFiltersState;
+
+  console.log(model.state.bdc.filtersState);
+  // switch
+  //trigger a new search (with the same current query, but new search pool (according to the new filter state))
 };
 
-const controlLoadCommandeproducts = async function () {
-  const products = await model.loadCommandeproducts(8);
+cmdsView.addHandlerCmdsFiltersChange(controlCmdsFiltersChanges);
+cmdsView.addHandlerCmdsSearch(controlCmdsSearch, model.state.bdc.filtersState);
+// searchView.addHandlerSearchV2(controlFuzzySearch);
+
+const controlLoadCmds = async function () {
+  cmdsView.renderSpinner();
+  await model.loadCmds();
+  const allCommandes = model.state.bdc.allCommandes;
+  console.log(model.state.bdc.allCommandes);
+  cmdsView.render(allCommandes);
+  cmdsView.reSettingDynamicElementsPointersAndELs();
+  // const filter1Obj = {
+
+  // }
+  // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
 };
+
+// const controlLoadCommandeproducts = async function () {
+//   const products = await model.loadCommandeproducts(8);
+// };
 
 //FOURNISSEURS
 const controlUpdateFournisseurs = async () => {
@@ -759,8 +783,29 @@ const controlChangeProduct = function (editedProduct) {
   // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
+const controlDeleteCmds = async function () {
+  cmdsView.renderSpinner('Suppression des Commandes ...');
+  helpers
+    .filterNodeList(
+      model.state.roles.all,
+      helpers.getCheckboxStates(
+        document
+          .querySelector('.roles-cart')
+          .querySelectorAll('input[type="checkbox"]')
+      )
+    )
+    .forEach(async el => {
+      console.log(el.role);
+      await model.deleteRole(el.role);
+      // back to main menu
+    });
+  await controlLoadCmds();
+};
+
 addCmdsView.addHandlerAddProduct(controlAddProduct);
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
+
+// deleteCmdsView.addDeleteController(controlDeleteCmds);
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
