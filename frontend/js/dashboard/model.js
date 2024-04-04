@@ -18,6 +18,10 @@ export const state = {
       wellFormed: [],
     },
   },
+  bdc: {
+    allCommandes: [],
+    filtersState: [],
+  },
   fournisseurs: {
     all: [],
     selected: '',
@@ -567,6 +571,7 @@ export const deleteRole = async function (role) {
 export const loadCmds = async function () {
   let commandes = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
   commandes = commandes.commandes;
+  state.bdc.allCommandes = commandes;
   return commandes;
 };
 export const loadCommandeproducts = async function (numCommande) {
@@ -595,4 +600,16 @@ export const loadArticles = async function () {
 export const loadProducts = async function (article) {
   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
   return helpers.filterByArticle(products.response, article);
+};
+
+export const createBDC = async function () {
+  const postBDCOBJ = {
+    produits: state.bdc_products.added,
+    objet: state.articles.selected,
+    type: state.type.selected,
+    fournisseur: state.fournisseurs.selected,
+    date: helpers.getFormattedDate(),
+  };
+  console.log(postBDCOBJ);
+  await helpers.sendJSON(`${API_URL}/Entrees/bonCommande`, postBDCOBJ);
 };

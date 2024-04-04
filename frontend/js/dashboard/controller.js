@@ -26,6 +26,7 @@ import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
+import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -170,8 +171,6 @@ const controlDeleteRoles = async function () {
       // back to main menu
     });
   await controlLoadRoles();
-  // console.log(model.state.search.queryResults);
-  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
 };
 
 const controleSelectStructures = function () {
@@ -575,15 +574,40 @@ const controlRoleSwitch = (e, selectedIndex) => {
   controlEditRole(e, true, selectedIndex - 1);
 };
 
-const controlLoadCmds = async function () {
-  cmdsView.renderSpinner();
-  const cmds = await model.loadCmds();
-  cmdsView.render(cmds);
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/////// B O N S  D E  C O M M A N D E S #fff
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+const controlCmdsSearch = function (query, filtersState) {};
+const controlCmdsFiltersChanges = function (newFiltersState = {}) {
+  model.state.bdc.filtersState = newFiltersState;
+
+  console.log(model.state.bdc.filtersState);
+  // switch
+  //trigger a new search (with the same current query, but new search pool (according to the new filter state))
 };
 
-const controlLoadCommandeproducts = async function () {
-  const products = await model.loadCommandeproducts(8);
+cmdsView.addHandlerCmdsFiltersChange(controlCmdsFiltersChanges);
+cmdsView.addHandlerCmdsSearch(controlCmdsSearch, model.state.bdc.filtersState);
+// searchView.addHandlerSearchV2(controlFuzzySearch);
+
+const controlLoadCmds = async function () {
+  cmdsView.renderSpinner();
+  await model.loadCmds();
+  const allCommandes = model.state.bdc.allCommandes;
+  console.log(model.state.bdc.allCommandes);
+  cmdsView.render(allCommandes);
+  cmdsView.reSettingDynamicElementsPointersAndELs();
+  // const filter1Obj = {
+
+  // }
+  // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
 };
+
+// const controlLoadCommandeproducts = async function () {
+//   const products = await model.loadCommandeproducts(8);
+// };
 
 //FOURNISSEURS
 const controlUpdateFournisseurs = async () => {
@@ -599,8 +623,13 @@ const controlSearchFournisseurs = input => {
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
+  let displayedResults = extractItems(results);
+  // displayedResults.push({
+  //   raison_sociale: input,
+  // });
+  console.log(displayedResults);
   addCmdsView.addToSuggestionsFournisseursAndEL(
-    extractItems(results),
+    displayedResults,
     controlSelectFournisseur
   );
   addCmdsView.resultVisibilityTogglers();
@@ -686,6 +715,8 @@ const controlTypeSelection = typeName => {
 };
 
 const controlAddProduct = newProduct => {
+  //TODO:
+  // newProduct.numero = model.state.bdc_products.added.length + 1;
   model.state.bdc_products.added.push(newProduct);
   addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
@@ -731,16 +762,13 @@ const controlEditProductBtns = function () {
   );
   //Use it to extract the input data from the state object
   addCmdsView.changeInputs(model.state.bdc_products.added[targetIndex]);
-  model.state.bdc_products.changed =
-    model.state.bdc_products.added[targetIndex];
+  model.state.bdc_products.changed = targetIndex;
 };
 
 const controlChangeProduct = function (editedProduct) {
-  model.state.bdc_products.added[model.state.bdc_products.changed.numero - 1] =
+  //TODO:
+  model.state.bdc_products.added[model.state.bdc_products.changed] =
     editedProduct;
-  model.state.bdc_products.added[
-    model.state.bdc_products.changed.numero - 1
-  ].numero = model.state.bdc_products.changed.numero;
   addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
@@ -755,8 +783,29 @@ const controlChangeProduct = function (editedProduct) {
   // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
+const controlDeleteCmds = async function () {
+  cmdsView.renderSpinner('Suppression des Commandes ...');
+  helpers
+    .filterNodeList(
+      model.state.roles.all,
+      helpers.getCheckboxStates(
+        document
+          .querySelector('.roles-cart')
+          .querySelectorAll('input[type="checkbox"]')
+      )
+    )
+    .forEach(async el => {
+      console.log(el.role);
+      await model.deleteRole(el.role);
+      // back to main menu
+    });
+  await controlLoadCmds();
+};
+
 addCmdsView.addHandlerAddProduct(controlAddProduct);
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
+
+// deleteCmdsView.addDeleteController(controlDeleteCmds);
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
@@ -779,6 +828,36 @@ const controllers = [
   ,
   controlLoadCmds,
 ];
+
+const controlSavingBDC = async function () {
+  if (model.state.fournisseurs.selected == '') {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun fournisseur n'a été sélectionné.</b></p>
+      <p>Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
+    );
+  } else if (model.state.articles.selected == '') {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun article n'a été sélectionné. </b></p>
+      <p class="error-message">Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
+    );
+  } else if (model.state.type.selected == '') {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun chapitre n'a été sélectionné. </b></p>
+      <p class="error-message">Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
+    );
+  } else if (model.state.bdc_products.added.length == 0) {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun produit n'a été ajouté au bon de commande.</b></p>
+      <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
+    );
+  } else await model.createBDC();
+};
+
+addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);
 
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);

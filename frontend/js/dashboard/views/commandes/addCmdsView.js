@@ -1,6 +1,8 @@
 import { AddUserView } from '../addUserView.js';
+import * as helpers from '../../helpers.js';
 
 class AddCmdsView extends AddUserView {
+  _save = document.querySelector('.btn-save-bdc-qt');
   _parentElement = document.querySelector('.results-bdc-produits');
   _window = document.querySelector('.big-container');
   _btnOpen = document.querySelector('.add-bdc-btn');
@@ -60,22 +62,68 @@ class AddCmdsView extends AddUserView {
   //   }
   // });
   // }
-  toggleDivVisibility(inputClass, divClass) {
-    const input = document.querySelector(inputClass);
-    const div = document.querySelector(divClass);
-    document.addEventListener('click', function (event) {
-      console.log();
-      const isClickedInside =
-        div.contains(event.target) || input.contains(event.target);
 
-      if (!isClickedInside) {
-        div.classList.add('hidden');
-      } else {
-        div.classList.remove('hidden');
-      }
+  allowSavingBDC(allow = true) {
+    this._btnDeleteProducts.disabled = !allow;
+    allow
+      ? this._btnDeleteProducts.classList.remove('disabled-save-button')
+      : this._btnDeleteProducts.classList.add('disabled-save-button');
+  }
+  addHandlerSavingBDC(handler, state) {
+    const typeInput = this._type;
+    const fourInput = this._four;
+    const articleInput = this._article;
+    // const productInput = this._product;
+    // const productEditInput = this._productEdit;
+    console.log(this._save);
+    this._save.addEventListener('click', e => {
+      e.preventDefault();
+      // articleInput.setCustomValidity('');
+      // typeInput.setCustomValidity('');
+      // fourInput.setCustomValidity('');
+      handler();
     });
   }
 
+  // toggleDivVisibility(inputClass, divClass) {
+  //   const input = document.querySelector(inputClass);
+  //   const div = document.querySelector(divClass);
+  //   document.addEventListener('click', function (event) {
+  //     console.log();
+  //     const isClickedInside =
+  //       div.contains(event.target) || input.contains(event.target);
+
+  //     if (!isClickedInside) {
+  //       div.classList.add('hidden');
+  //     } else {
+  //       div.classList.remove('hidden');
+  //     }
+  //   });
+  // }
+  toggleDivVisibility(inputClass, divClass) {
+    const input = document.querySelector(inputClass);
+    const div = document.querySelector(divClass);
+
+    // // Add event listener for focus event on input
+    // input.addEventListener('focus', () => {
+    //   div.classList.remove('hidden'); // Remove the 'hidden' class to reveal the div
+    // });
+
+    // // Add event listener for blur event on input
+    // input.addEventListener('blur', () => {
+    //   // Delay to ensure the active element is updated after click on the div
+    //   setTimeout(() => {
+    //     if (!div.contains(document.activeElement)) {
+    //       div.classList.add('hidden'); // Add the 'hidden' class to hide the div
+    //     }
+    //   }, 10000);
+    // });
+
+    // // Add event listener for click event on the div
+    // div.addEventListener('click', () => {
+    //   input.focus(); // Focus the input when the div is clicked
+    // });
+  }
   constructor() {
     super();
     //INITIALZR
@@ -144,21 +192,36 @@ class AddCmdsView extends AddUserView {
   }
   addToSuggestionsFournisseursAndEL(results = [], controlSelectFournisseur) {
     this._resultsContainer.innerHTML = '';
-    const markup = results
-      .map(result => `<li>${result.raison_sociale}</li>`)
-      .slice(0, 10)
-      .join('');
+
+    const mappedResults = results.map(
+      (result, index) => `<li>${result.raison_sociale}</li>`
+      // {
+      // if (index === results.length - 1) {
+      //   return `<li>Sélectionner "<i>${result.raison_sociale}</i>" comme fournisseur personnalisé</li>`;
+      // } else {
+      //   return `<li>${result.raison_sociale}</li>`;
+      // }
+      // }
+    );
+    const markup = mappedResults.join('');
     this._resultsContainer.insertAdjacentHTML('afterbegin', markup);
     this._fourResults = document
       .querySelector('.four-search-results-container')
       .querySelectorAll('li');
-    this._fourResults.forEach(el => {
-      return el.addEventListener('click', e => {
-        controlSelectFournisseur(e.currentTarget.innerHTML);
-        this._four.value = e.currentTarget.innerHTML;
+    this._fourResults.forEach(el =>
+      el.addEventListener('click', e => {
+        this._four.setCustomValidity('');
+        controlSelectFournisseur(
+          results[helpers.findNodeIndex(this._fourResults, e.currentTarget)]
+            .raison_sociale
+        );
+        this._four.value =
+          results[
+            helpers.findNodeIndex(this._fourResults, e.currentTarget)
+          ].raison_sociale;
         this._resultsContainer.innerHTML = '';
-      });
-    });
+      })
+    );
   }
   addHandlerArticleSearch(articleSearchHandler) {
     this._article.addEventListener('input', e => {
@@ -176,6 +239,7 @@ class AddCmdsView extends AddUserView {
       .querySelector('.article-search-results-container')
       .querySelectorAll('li');
     this._articleResults.forEach(el => {
+      this._article.setCustomValidity('');
       return el.addEventListener('click', e => {
         controlSelectArticle(e.currentTarget.innerHTML);
         this._article.value = e.currentTarget.innerHTML;
@@ -210,6 +274,7 @@ class AddCmdsView extends AddUserView {
       .querySelectorAll('li');
     this._productResults.forEach(el => {
       return el.addEventListener('click', e => {
+        this._product.setCustomValidity('');
         // controlSelectProduct(e.currentTarget.innerHTML);
         this._product.value = e.currentTarget.innerHTML;
         this._productEdit.value = e.currentTarget.innerHTML;
@@ -222,7 +287,6 @@ class AddCmdsView extends AddUserView {
     this._type.addEventListener('change', e => selectHandler(e.target.value));
   }
   addHandlerAddProduct(handler) {
-    let numero = 1;
     this._addProductForm.addEventListener('submit', e => {
       e.preventDefault();
       const formElement = this._addProductForm;
@@ -235,12 +299,12 @@ class AddCmdsView extends AddUserView {
       formData.forEach(function (value, key) {
         formDataObj[key] = value;
       });
-      formDataObj.numero = numero++;
       handler(formDataObj);
       this.clearAddProductForm();
       this.toggleAddProductWindow.bind(this)();
     });
   }
+
   AddHandlerAddedProductsCheckboxes() {
     this._checkboxesAddProduct = this._parentElement.querySelectorAll(
       'input[type="checkbox"]'
@@ -295,7 +359,7 @@ class AddCmdsView extends AddUserView {
           type="checkbox"
           id="checkbox-table-bdc-add"
         />
-        <p class="colomn-tags-name-bdc">${result.numero}</p>
+        <p class="colomn-tags-name-bdc">${this._data.indexOf(result) + 1}</p>
       </div>
     </td>
     <td>${result.designation}</td>
@@ -304,10 +368,10 @@ class AddCmdsView extends AddUserView {
       <input type="text" placeholder="${result.quantite}" />
     </td>
     <td class="input-changeble price-produit">
-      <input type="text" placeholder="${result.prix_unitaire}" />
+      <input type="text" placeholder="${result.prixUnitaire}" />
     </td>
     <td class="price-produit-montant">${
-      result.prix_unitaire * result.quantite
+      result.prixUnitaire * result.quantite
     }</td>
     <td>
       <button class="details-btn-bdc-add">
@@ -377,12 +441,9 @@ class AddCmdsView extends AddUserView {
     }
   }
 
-  addHandlerChangeProduct(handler, hasConsumer = true) {
+  addHandlerChangeProduct(handler) {
     const closeBtn = this._btnCloseEditProduct;
-    // if (hasConsumer)
-    //   this._role.addEventListener('change', this.handleConsumerChange);
     this._editProductForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
       const form = this;
       let inputs = Array.from(form.getElementsByTagName('input'));
       // const select = Array.from(form.getElementsByTagName('select'));
