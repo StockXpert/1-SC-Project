@@ -1349,7 +1349,7 @@
         </div>
         <!------ fin de content for ServiceAchat : 3 - produits tables----- -->
         <!------ debut de content for ServiceAchat : 4 - eleboration-bon-de-commande----- -->
-        <div class="main-table hidden" id="main-table-bdc">
+        <div class="main-table" id="main-table-bdc">
           <div class="heading">
             <h1>Bons de Commandes</h1>
             <hr class="line-style" />
@@ -1417,6 +1417,11 @@
                 </div>
                 <div class="heading-table-btns-bdc">
                   <button
+                    class="heading-table-btn btn-cancel-bdc disabled-delete-button"
+                  >
+                    Annuler
+                  </button>
+                  <button
                     class="heading-table-btn btn-delete-bdc disabled-delete-button"
                   >
                     Supprimer
@@ -1446,6 +1451,7 @@
                     <th>Statut</th>
                     <th class="view-bdc">Bon de commande</th>
                     <th class="view-bdr hidden">Bon de reception</th>
+                    <th>Imprimer</th>
                   </tr>
                 </thead>
                 <tbody class="results">
@@ -1471,6 +1477,13 @@
                         <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
+                    <td>
+                      <button class="details-btn print-bdc-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
@@ -1491,12 +1504,21 @@
                         <p>Voir Bon de commande</p>
                       </button>
                     </td>
+
                     <td class="td-view-bdr hidden">
                       <button class="view-btr-btn">
                         <p>Voir Bons de Receptions</p>
                       </button>
                     </td>
+                    <td>
+                      <button class="details-btn print-bdc-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
                   </tr>
+
                   <!--fin d'une ligne selected  -->
                   <tr>
                     <td>
@@ -1508,7 +1530,7 @@
                     <td>Frounisseur2</td>
                     <td>21.11</td>
                     <td>21/12/2023</td>
-                    <td><p class="status canceled-status">En Attente</p></td>
+                    <td><p class="status canceled-status">Annulée</p></td>
                     <td class="td-view-bdc">
                       <button class="view-btc-btn">
                         <p>Voir Bon de commande</p>
@@ -1517,6 +1539,13 @@
                     <td class="td-view-bdr hidden">
                       <button class="view-btr-btn">
                         <p>Voir Bons de Receptions</p>
+                      </button>
+                    </td>
+                    <td>
+                      <button class="details-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
                       </button>
                     </td>
                   </tr>
