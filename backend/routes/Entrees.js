@@ -59,7 +59,7 @@ router.delete(
   authMiddleware('delete reception'),
   EntreeController.deleteReception
 );
-router.get(
+router.post(
   '/showBonReception',
   authMiddleware('show bon reception'),
   EntreeController.showBonReception

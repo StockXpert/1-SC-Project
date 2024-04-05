@@ -139,7 +139,7 @@ function updateBonCommande(req, res) {
   } = req.body;
   EntreeModel.getBonReception(numCommande)
     .then(response => {
-      if (response.length == 0)
+      if (response.length != 0)
         res.status(500).json({ response: 'prohibited to update' });
       else {
         EntreeService.changeBonCommande(
@@ -151,14 +151,54 @@ function updateBonCommande(req, res) {
           numCommande
         )
           .then(() => {
-            res.status(200).json({ response: 'bon de commande updated' });
+            EntreeModel.getBonCommande(numCommande)
+              .then(commande => {
+                EntreeModel.getBonCommandeFournisseur(numCommande)
+                  .then(raisonSociale => {
+                    EntreeModel.getCommandeProducts(numCommande)
+                      .then(products => {
+                        getArticleIdTva(commande.objet)
+                          .then(article => {
+                            console.log({ raisonSociale });
+                            EntreeService.genererBondeCommande(
+                              numCommande,
+                              products,
+                              raisonSociale,
+                              commande.objet,
+                              commande.type,
+                              '1KEtktsb0n8ZspuxitPk-8kX1S5OJ6AcJmnlbywh-s98',
+                              article.tva,
+                              commande.date_commande
+                            );
+                          })
+                          .catch(err => {
+                            console.log(err);
+                            res.status(500).json({ response: err });
+                          });
+                      })
+                      .catch(err => {
+                        console.log(err);
+                        res.status(500).json({ response: 'internal error' });
+                      });
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    res.status(500).json({ response: 'internal error' });
+                  });
+              })
+              .catch(err => {
+                console.log(err);
+                res.status(500).json({ response: 'internal error' });
+              });
           })
-          .catch(() => {
+          .catch(err => {
+            console.log(err);
             res.status(500).json({ response: 'internal error' });
           });
       }
     })
-    .catch(() => {
+    .catch(err => {
+      console.log(err);
       res.status(500).json({ response: 'internal error' });
     });
 }

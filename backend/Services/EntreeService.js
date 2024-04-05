@@ -12,10 +12,23 @@ function getDate() {
   return `${annee}-${mois}-${jour}`;
 }
 function montantHT(produits) {
-  let somme;
+  let somme = 0;
   console.log(produits);
-  for (let produit of produits)
-    somme = somme + parseInt(produit.quantite) * parseInt(produit.prixUnitaire);
+  for (let produit of produits) {
+    console.log(
+      parseInt(produit.quantite) *
+        parseInt(
+          produit.prixUnitaire ? produit.prixUnitaire : produit.prix_unitaire
+        )
+    );
+    somme =
+      somme +
+      parseInt(produit.quantite) *
+        parseInt(
+          produit.prixUnitaire ? produit.prixUnitaire : produit.prix_unitaire
+        );
+    console.log({ somme });
+  }
   return somme;
 }
 function TVA(montantHT, tva) {
