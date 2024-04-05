@@ -98,7 +98,7 @@ class CmdsView extends UsersView {
               <p>Voir Bon de commande</p>
             </button>
           </td>
-          <td class="td-view-bdr hidden">
+          <td class="td-view-bdr">
             <button class="view-btr-btn">
               <p>Voir Bons de Receptions</p>
             </button>

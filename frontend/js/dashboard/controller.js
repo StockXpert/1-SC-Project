@@ -27,6 +27,7 @@ import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
+import receptionView from './views/commandes/receptionView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -599,6 +600,7 @@ const controlLoadCmds = async function () {
   console.log(model.state.bdc.allCommandes);
   cmdsView.render(allCommandes);
   cmdsView.reSettingDynamicElementsPointersAndELs();
+  receptionView.f();
   // const filter1Obj = {
 
   // }
