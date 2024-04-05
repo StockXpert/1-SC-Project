@@ -6,6 +6,63 @@ const connectionConfig = {
   password: 'w7Xaq1AwW42V3jvOiTgb',
   database: 'bibznsnq8nf1q3j7r74o'
 };
+function getBonCommande(numCommande)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select b.type,a.designation as objet,b.date_commande from bon_de_commande b,article a
+     where num_commande=? and b.id_article=a.num_article`;
+    const values = [numCommande];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results[0]);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function getBonCommandeFournisseur(numCommande)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select raison_sociale from fournisseur where id_fournisseur in (
+      select id_fournisseur from bon_de_commande where num_commande=?
+    )`;
+    const values = [numCommande];
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results[0].raison_sociale);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function insertBonCommande(fournisseur, id_article, type, date) {
   return new Promise((resolve, reject) => {
       const connection = mysql.createConnection(connectionConfig);
@@ -138,7 +195,7 @@ function getLink(n_commande)
               reject("request error");
               return;
             }
-            resolve(results.link);
+            resolve(results[0].link);
           });
           
           connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -844,4 +901,5 @@ module.exports={insertBonCommande,insertLink,getLink,insertCommander,canDeleteCo
                 deleteCommander,insertBonReception,insertLivre,
                 insertBonReception,getCommande,
                 getBonReception,getBonReceptionProducts,getCommandeProducts,
-                deleteLivre,deleteReception,updateReception,deleteProduitLivre,insertReceptionLink}
+                deleteLivre,deleteReception,updateReception,deleteProduitLivre,insertReceptionLink,
+                getBonCommandeFournisseur,getBonCommande}

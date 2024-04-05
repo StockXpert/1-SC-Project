@@ -72,7 +72,7 @@ async function addRow(ligne,Content,idCopy,type)
         await sheets.spreadsheets.batchUpdate(insertRequest);
         switch (type) {
             case 'commande':
-                valuesToInsert = [rowIndex-21,'',Content.designation,Content.quantite,Content.prixUnitaire+'.00',Content.quantite*Content.prixUnitaire+'.00'];
+                valuesToInsert = [rowIndex-21,'',Content.designation,Content.quantite,Content.prixUnitaire?Content.prixUnitaire:Content.prix_unitaire+'.00',Content.quantite*(Content.prixUnitaire?Content.prixUnitaire:Content.prix_unitaire)+'.00'];
                 sc=0,
                 ec=2
                 break;
