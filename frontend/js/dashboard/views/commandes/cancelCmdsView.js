@@ -32,6 +32,6 @@ export class CancelCmdsView extends DeleteUserView {
   //     this._btnOpen.classList.add('hidden');
   //   }
   //TODO:
-  _restricted = [[this._btnOpen, 'delete user'], 'none'];
+  _restricted = [['.btn-cancel-bdc', 'cancel commande'], 'none'];
 }
 export default new CancelCmdsView();

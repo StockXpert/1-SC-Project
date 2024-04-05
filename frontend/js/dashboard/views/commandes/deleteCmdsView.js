@@ -31,6 +31,6 @@ export class DeleteCmdsView extends DeleteUserView {
   //   } else {
   //     this._btnOpen.classList.add('hidden');
   //   }
-  _restricted = [[this._btnOpen, 'delete user'], 'none'];
+  _restricted = [['.btn-delete-bdc', 'delete commande'], 'none'];
 }
 export default new DeleteCmdsView();

@@ -714,6 +714,8 @@ cmdsView.addHandlerCmdsSearch(controlCmdsSearch, model.state.bdc.filtersState);
 
 const controlLoadCmds = async function () {
   cmdsView.renderSpinner();
+  cancelCmdsView.restrict(model.state.me.permissions.all);
+  deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
   console.log(model.state.bdc.allCommandes);

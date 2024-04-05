@@ -131,7 +131,7 @@ export const PERM_NAMES = {
   'show commande products': 'Afficher les produits commandés.',
   'show bon reception products': 'Afficher les produits de bon de réception',
   'update reception': 'Mettre à jour un bon de réception',
-  'delete reception': 'Mettre à jour un bon de réception',
+  'delete reception': 'Supprimmer un bon de réception',
   'show bon reception': 'Afficher les bons de réception',
 };
 
