@@ -27,6 +27,7 @@ import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
+import cancelCmdsView from './views/commandes/cancelCmdsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -809,7 +810,8 @@ const controlDeleteCmds = async function () {
     )
     .forEach(async bdc => {
       // console.log(bdc.role);
-      const responseNData = await model.deleteCmd(bdc.numCommande);
+      console.log(bdc);
+      const responseNData = await model.deleteCmd(bdc.num_commande);
       console.log(responseNData);
       if (!responseNData[0].ok) {
         helpers.renderError(
@@ -822,11 +824,54 @@ const controlDeleteCmds = async function () {
       // back to main menu
     });
 };
+const controlCancelCmds = async function () {
+  // cmdsView.renderSpinner('Suppression de la Commandes ...');
+  console.log(
+    helpers.filterNodeList(
+      model.state.bdc.allCommandes,
+      helpers.getCheckboxStates(
+        document
+          .querySelector('#main-table-bdc')
+          .querySelector('.results')
+          .querySelectorAll('input[type="checkbox"]')
+      )
+    )
+  );
+
+  helpers
+    .filterNodeList(
+      model.state.bdc.allCommandes,
+      helpers.getCheckboxStates(
+        document
+          .querySelector('#main-table-bdc')
+          .querySelector('.results')
+          .querySelectorAll('input[type="checkbox"]')
+      )
+    )
+    .forEach(async bdc => {
+      // console.log(bdc.role);
+      console.log(bdc);
+      const responseNData = await model.cancelCmd(bdc.num_commande);
+      console.log(responseNData);
+      if (!responseNData[0].ok) {
+        helpers.renderError(
+          `Erreur lors de l'Annulation d'un Bon de Commande`,
+          `Impossible d'annuler le Bon de commande`
+        );
+      } else {
+        // e.preventDefault();
+        // cancelCmdsView.closeBtn.click();
+        await controlLoadCmds();
+      }
+      // back to main menu
+    });
+};
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
 
 deleteCmdsView.addDeleteController(controlDeleteCmds);
+cancelCmdsView.addCancelController(controlCancelCmds);
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY

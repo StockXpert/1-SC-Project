@@ -1449,8 +1449,8 @@
                     <th>Article</th>
                     <th>Date</th>
                     <th>Statut</th>
-                    <th class="view-bdc">Bon de commande</th>
-                    <th class="view-bdr hidden">Bon de reception</th>
+                    <th class="view-bdc">Détails</th>
+                    <!-- <th class="view-bdr hidden">Bon de reception</th> -->
                     <th>Imprimer</th>
                   </tr>
                 </thead>
@@ -2079,6 +2079,23 @@
         </form>
       </div>
       <!-- fin section pour supprimer bdc  -->
+      <!-- debut section pour annuler bdc  -->
+      <div class="container-supp-bdc container-cancel-bdc hidden">
+        <form class="supp-bdc-cart">
+          <p class="supp-bdc-text">
+            Êtes-vous sûr de vouloir annuler ce bon de commande ?
+          </p>
+          <div class="supp-bdc-btns">
+            <button class="btn-supp supp-bdc-annuler cancel-bdc-annuler">
+              Non
+            </button>
+            <button class="btn-supp supp-bdc-confirmer cancel-bdc-confirmer">
+              Oui
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- fin section pour annuler bdc  -->
       <!-- debut section pour supprimer bdr  -->
       <div class="container-supp-bdr hidden">
         <form class="supp-bdr-cart">
@@ -2744,6 +2761,7 @@
       <div class="overlay overlayAddStr hidden"></div>
       <div class="overlay overlayDel hidden"></div>
       <div class="overlay overlayDelBdc hidden"></div>
+      <div class="overlay overlayCancelBdc hidden"></div>
       <div class="overlay overlayAddRole hidden"></div>
       <div class="overlay overlayEditStr hidden"></div>
       <div class="overlay overlayDelStr hidden"></div>

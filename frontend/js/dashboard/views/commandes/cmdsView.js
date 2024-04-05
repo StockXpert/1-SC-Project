@@ -14,10 +14,11 @@ class CmdsView extends UsersView {
   _checkboxes;
   _checkedCheckboxes;
   _btnDeleteBdc = document.querySelector('.btn-delete-bdc');
-  // _btnPrintBdc = document.querySelector('.print-bdc-btn');
+  _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
 
   addEventListenerCheckboxesChange(handler = '') {
     this._btnDeleteBdc.disabled = true;
+    this._btnCancelBdc.disabled = true;
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
         // console.log(this);
@@ -33,19 +34,19 @@ class CmdsView extends UsersView {
           'input[type="checkbox"]:checked'
         );
         if (this._checkedCheckboxes.length === 0) {
-          // this._btnPrintBdc.disabled = true;
+          this._btnCancelBdc.disabled = true;
           this._btnDeleteBdc.disabled = true;
-          // this._btnPrintBdc.classList.add('disabled-button'); // Apply disabled appearance
+          this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
           this._btnDeleteBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
         } else if (this._checkedCheckboxes.length === 1) {
-          // this._btnPrintBdc.disabled = false;
+          this._btnCancelBdc.disabled = false;
           this._btnDeleteBdc.disabled = false;
-          // this._btnPrintBdc.classList.remove('disabled-button'); // Remove disabled appearance
+          this._btnCancelBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
           this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
         } else {
-          // this._btnPrintBdc.disabled = true;
+          this._btnCancelBdc.disabled = false;
           this._btnDeleteBdc.disabled = false;
-          // this._btnPrintBdc.classList.add('disabled-button'); // Apply disabled appearance
+          this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
           this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
         }
       })
@@ -97,17 +98,19 @@ class CmdsView extends UsersView {
             <button class="view-btc-btn">
               <p>Voir Bon de commande</p>
             </button>
-          </td>
-          <td class="td-view-bdr hidden">
             <button class="view-btr-btn">
               <p>Voir Bons de Receptions</p>
             </button>
           </td>
-          <button class="details-btn">
-          <span class="material-icons-sharp info-icon">
-            edit
-          </span>
-        </button>
+          <td>
+            <a target="_blank" class="details-btn print-bdc-btn" href="../../backend/${
+              result.link
+            }" >
+              <span class="material-icons-sharp info-icon">
+                print
+              </span>
+            </a>
+          </td>
         </tr>
       `;
   }

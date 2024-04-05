@@ -621,3 +621,11 @@ export const deleteCmd = async function (numCommande) {
     }
   );
 };
+export const cancelCmd = async function (numCommande) {
+  return await helpers.postJSONReturnResResp(
+    `${API_URL}/Entrees/cancelCommande`,
+    {
+      numCommande: numCommande,
+    }
+  );
+};
