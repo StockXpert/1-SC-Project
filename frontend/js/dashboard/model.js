@@ -22,6 +22,9 @@ export const state = {
     allCommandes: [],
     filtersState: [],
   },
+  bdr: {
+    all: [],
+  },
   fournisseurs: {
     all: [],
     selected: '',
@@ -651,8 +654,10 @@ export const loadBonRec = async function (numCommande) {
   const uploadData = {
     numCommande: numCommande,
   };
-  // return await helpers.getJSONBody(
-  //   `${API_URL}/Entrees/showBonReception`,
-  //   uploadData
-  // );
+  const data = await helpers.sendJSON(
+    `${API_URL}/Entrees/showBonReception`,
+    uploadData
+  );
+  state.bdr.all = data.response;
+  console.log(state.bdr.all);
 };
