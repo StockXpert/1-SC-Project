@@ -92,9 +92,13 @@ export default class View {
     this._restricted.forEach(btnNPerm => {
       if (btnNPerm != 'none') {
         if (helpers.includesDesignation(perms, btnNPerm[1])) {
-          btnNPerm[0].classList.remove('hidden');
+          document
+            .querySelectorAll(btnNPerm[0])
+            .forEach(element => element.classList.remove('hidden'));
         } else {
-          btnNPerm[0].classList.add('hidden');
+          document
+            .querySelectorAll(btnNPerm[0])
+            .forEach(element => element.classList.add('hidden'));
         }
       }
     });

@@ -1,11 +1,18 @@
 import { UsersView } from '../usersView.js';
 import View from '../view.js';
+import * as helpers from '../../helpers.js';
 
 class RolesView extends UsersView {
   _parentElement = document.querySelector('.roles-cart');
   //preview        next      next2
   //result(role)-> groupe -> permission
-  _generateMarkupPreview(result) {
+  _generateMarkup() {
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
+  }
+
+  _generateMarkupPreview(result, perms = []) {
     const next = function (groupe) {
       return `
       <div class="groupe-role-container">
@@ -31,7 +38,11 @@ class RolesView extends UsersView {
         <h1 class="heading-primary-roles">${result.role}</h1>
       </div>
       <div class="text-permissions">
-        ${result.droits.map(next).join('')}
+        ${
+          helpers.includesDesignation(perms, 'show permissions')
+            ? result.droits.map(next).join('')
+            : ''
+        }
       </div>
     </div>
   `;

@@ -95,6 +95,7 @@ export const getMyPerms = async function () {
     all: myPerms,
     wellFormed: organizePermissionsByGroup(myPerms, false, false),
   };
+  console.log(state.me);
   return state.me;
 };
 
@@ -267,7 +268,7 @@ export const loadStructures = async function () {
       };
     });
   } catch (error) {
-    console.error('Shit shit :' + error);
+    console.error('💥💥💢💢 :' + error);
   }
 };
 
@@ -287,7 +288,7 @@ export const uploadStructure = async function (newStructure) {
     });
     console.log(res);
   } catch (error) {
-    console.error('Shit shit :' + error);
+    console.error('💥💥💢💢 :' + error);
   }
 };
 
@@ -325,7 +326,7 @@ export const getResponsiblesEmail = async function () {
         };
       });
   } catch (error) {
-    console.error('Shit shit :' + error);
+    console.error('💥💥💢💢 :' + error);
   }
 };
 
@@ -338,6 +339,22 @@ export const getRoles = async function () {
     return rolesArray;
   } catch (error) {
     console.error('💥getRoles threw this error :' + error);
+  }
+};
+
+export const getRolePerms = async function (roleName) {
+  try {
+    const roles = await helpers.getJSON(`${API_URL}/Users/showRoles`);
+    // console.log(roles.response);
+    // const rolesArray = [];
+    // roles.response.forEach(role => rolesArray.push(role.role));
+    const droitsArray = (
+      roles.response.find(obj => obj.role === roleName) || {}
+    ).droits;
+    if (!droitsArray) return []; // Return empty array if no matching role is found
+    return droitsArray.map(designation => ({ designation }));
+  } catch (error) {
+    console.error('💥getRolePerms threw this error :' + error);
   }
 };
 
@@ -575,11 +592,11 @@ export const loadCmds = async function () {
   return commandes;
 };
 export const loadCommandeproducts = async function (numCommande) {
-  let products = await helpers.getJSONBody(
+  let products = await helpers.postJSONReturnResResp(
     `${API_URL}/Entrees/showCommandeProducts`,
     { numCommande: `${numCommande}` }
   );
-  console.log(products);
+  return products;
   // produits = produits.produits;
   // return produits;
 };

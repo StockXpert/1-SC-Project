@@ -77,6 +77,7 @@ class EditPermsView extends EditUserView {
       );
       await handler(changesObj);
       document.querySelector('.roles-btn').click();
+      // e.preventDefault();
     });
   }
 

@@ -37,6 +37,7 @@ class DeleteStructureView extends View {
       ctrler();
     });
   }
+  _restricted = [['#supp-btn-structure', 'delete structure'], 'none'];
 }
 
 export default new DeleteStructureView();

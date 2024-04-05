@@ -129,10 +129,10 @@ class AddCmdsView extends AddUserView {
     //INITIALZR
     this.addHandlerShowWindow('.add-bdc-btn', '.big-container');
     this.addHandlerHideWindow('#add-bdc-close', '.big-container');
-    this.addHandlerHideAddProductWindow(
-      '.cancel-btn-add-bdc',
-      '.add-product-bdc-container'
-    );
+    // this.addHandlerHideAddProductWindow(
+    // '.cancel-btn-add-bdc',
+    // '.add-product-bdc-container'
+    // );
     this.addHandlerShowAddProductWindow(
       '.btn-add-product',
       '.add-product-bdc-container'
@@ -368,11 +368,11 @@ class AddCmdsView extends AddUserView {
       <input type="text" placeholder="${result.quantite}" />
     </td>
     <td class="input-changeble price-produit">
-      <input type="text" placeholder="${result.prixUnitaire}" />
+      <input type="text" placeholder="${result.prixUnitaire} DA" />
     </td>
     <td class="price-produit-montant">${
       result.prixUnitaire * result.quantite
-    }</td>
+    } DA</td>
     <td>
       <button class="details-btn-bdc-add">
         <span class="material-icons-sharp info-icon">
@@ -444,6 +444,7 @@ class AddCmdsView extends AddUserView {
   addHandlerChangeProduct(handler) {
     const closeBtn = this._btnCloseEditProduct;
     this._editProductForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
       const form = this;
       let inputs = Array.from(form.getElementsByTagName('input'));
       // const select = Array.from(form.getElementsByTagName('select'));

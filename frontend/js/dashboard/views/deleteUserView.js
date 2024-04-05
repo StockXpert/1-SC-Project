@@ -28,6 +28,6 @@ export class DeleteUserView extends AddUserView {
   //   } else {
   //     this._btnOpen.classList.add('hidden');
   //   }
-  _restricted = [[this._btnOpen, 'delete user'], 'none'];
+  _restricted = [['.btn-delete-user', 'delete user'], 'none'];
 }
 export default new DeleteUserView();

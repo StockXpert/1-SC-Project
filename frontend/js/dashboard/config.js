@@ -73,6 +73,10 @@ export const GROUP_DEFINITIONS = {
     'cancel commande',
     'update bon commande',
     'update raison sociale',
+    'update reception',
+    'delete reception',
+    'show bon reception',
+    'show bon reception products',
   ],
   Roles: ['show roles', 'add role', 'delete role'],
   Permissions: ['show permissions', 'add permissions', 'delete permissions'],
@@ -126,6 +130,9 @@ export const PERM_NAMES = {
   'show structure': 'Afficher la structure',
   'show commande products': 'Afficher les produits commandés.',
   'show bon reception products': 'Afficher les produits de bon de réception',
+  'update reception': 'Mettre à jour un bon de réception',
+  'delete reception': 'Mettre à jour un bon de réception',
+  'show bon reception': 'Afficher les bons de réception',
 };
 
 export const GROUP_BTNS = {

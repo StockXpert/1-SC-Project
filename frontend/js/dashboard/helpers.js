@@ -8,6 +8,9 @@ const timeout = function (s) {
     }, s * 1000);
   });
 };
+export const isNodeList = function (obj) {
+  return NodeList.prototype.isPrototypeOf(obj);
+};
 
 export const formatDate = inputDate => {
   // Parse input date string into a Date object
@@ -434,7 +437,7 @@ export const getPermissions = function (roles = [], designation) {
 };
 
 export const includesDesignation = (objectsArray, searchString) => {
-  return objectsArray.some(obj => obj.designation.includes(searchString));
+  return objectsArray.some(obj => obj.designation == searchString);
 };
 
 export const filterByArticle = (array, articleName) => {

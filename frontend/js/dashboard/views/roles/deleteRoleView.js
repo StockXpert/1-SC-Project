@@ -27,5 +27,6 @@ class DeleteRoleView extends DeleteUserView {
     this._overlay.classList.toggle('hidden');
     this._window.classList.toggle('hidden');
   }
+  _restricted = [['#supp-btn-role', 'delete role'], 'none'];
 }
 export default new DeleteRoleView();

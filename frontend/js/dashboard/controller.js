@@ -27,7 +27,9 @@ import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
+import receptionView from './views/commandes/receptionView.js';
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
+import seeCmdsView, { SeeCmdsView } from './views/commandes/seeCmdsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -42,6 +44,7 @@ const controlUpdateMyPerms = async function () {
   //     false
   //   )
   // );
+  console.log(model.state.me.permissions.wellFormed);
   sideView.render(model.state.me.permissions.wellFormed);
   sideView.reselectBtns();
   // sideView.unrenderSpinner();
@@ -58,6 +61,18 @@ await controlUpdateMyPerms();
 // THIS CONTROLLER HAPPENS AT PAGE LANDING :
 const controlSearchResults = async function () {
   try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show users'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
     usersView.renderSpinner('');
     deleteUserView.restrict(model.state.me.permissions.all);
     addUserView.restrict(model.state.me.permissions.all);
@@ -103,6 +118,35 @@ const controlEditUser = function () {
   model.state.user = model.state.search.queryResults[targetIndex];
   //Use it to extract the input data from the state object
   editUserView.changeInputs(model.state.search.queryResults[targetIndex]);
+  //                                                                           TODO:
+};
+const controlViewCmd = async function (target) {
+  //ONCLICK OF A VIEW BUTTON
+  //Get the index of the clicked view button here
+  // const target = this;
+  const targetIndex = helpers.findNodeIndex(seeCmdsView._btnOpen, target);
+  // seeCmdsView.renderSpinner('Récupération des produits de la commande...');
+  seeCmdsView.renderSpinner(
+    'Récupération des produits de la commande...',
+    true
+  );
+  const products = await model.loadCommandeproducts(
+    model.state.bdc.allCommandes[targetIndex].num_commande
+  );
+  seeCmdsView.unrenderSpinner(true);
+  if (!products[0].ok) {
+    helpers.renderError(
+      'Erreur',
+      `Une erreur s'est produite lors de la récupération des produits du bon de commande.`
+    );
+  } else {
+    // model.state.user = model.state.search.queryResults[targetIndex];
+    //Use it to extract the input data from the state object
+    seeCmdsView.changeDetails(
+      model.state.bdc.allCommandes[targetIndex],
+      products[1].response
+    );
+  }
   //                                                                           TODO:
 };
 
@@ -182,8 +226,21 @@ const controleSelectStructures = function () {
 
 const controlLoadStructures = async function () {
   try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show structure'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
     structuresView.restrict(model.state.me.permissions.all);
     AddStructureView.restrict(model.state.me.permissions.all);
+    deleteStructureView.restrict(model.state.me.permissions.all);
     structuresView.renderSpinner('Loading Structures');
     await model.loadStructures();
     const emails = await model.getResponsiblesEmail();
@@ -390,7 +447,21 @@ const controlEditRoleUpdateSelects = async function () {
 };
 
 const controlLoadRoles = async function () {
+  if (
+    !model.state.me.permissions.all.find(
+      perm => perm.designation == 'show roles'
+    )
+  ) {
+    sideView.btns[0].click();
+    helpers.renderError(
+      'Erreur',
+      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+    );
+    return;
+  }
   rolesView.renderSpinner('');
+  deleteRoleView.restrict(model.state.me.permissions.all);
+  addRoleView.restrict(model.state.me.permissions.all);
   const roles = await model.loadRoles();
   const wellFormedPermsWithinRoles = roles.map(role => {
     return {
@@ -398,7 +469,11 @@ const controlLoadRoles = async function () {
       role: role.role,
     };
   });
-  rolesView.render(wellFormedPermsWithinRoles);
+  rolesView.render(
+    wellFormedPermsWithinRoles,
+    true,
+    model.state.me.permissions.all
+  );
   numberRoleView.selectionUpdater('.roles-cart');
   // numberRoleView.addHandlerNumber(controlNumberRoles);
   numberRoleView.addHandlerNumber(controlNumberRoles);
@@ -409,6 +484,30 @@ const controlLoadRoles = async function () {
   editRoleView.addHandlerEdit(controlEditRole);
 };
 const controlLoadPerms = async function () {
+  if (
+    !model.state.me.permissions.all.find(
+      perm => perm.designation == 'show permissions'
+    )
+  ) {
+    sideView.btns[0].click();
+    helpers.renderError(
+      'Erreur',
+      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+    );
+    return;
+  }
+  if (
+    !model.state.me.permissions.all.find(
+      perm => perm.designation == 'show roles'
+    )
+  ) {
+    sideView.btns[0].click();
+    helpers.renderError(
+      'Erreur',
+      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+    );
+    return;
+  }
   editPermsView.render('');
   editPermsView.setSelector(0);
   await model.loadRoles();
@@ -425,7 +524,18 @@ const controlEditRole = async function (
   if (event.target.type === 'checkbox') {
     return;
   }
-
+  if (
+    !model.state.me.permissions.all.find(
+      perm => perm.designation == 'show permissions'
+    )
+  ) {
+    sideView.btns[0].click();
+    helpers.renderError(
+      'Erreur',
+      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+    );
+    return;
+  }
   //Get the index of the clicked ROLE here
   const target = this;
   let targetIndex;
@@ -485,6 +595,10 @@ const controlUpdateRole = async function (changesObj) {
     editUserView.renderSpinner('Ajout des permissions en cours...');
     await model.addPermsToRole(permsAdded, model.state.roles.selected.role);
     await controlUpdateMyPerms();
+    if (model.state.roles.selected.role == model.state.me.role) {
+      const newPerms = await model.getRolePerms(model.state.me.role);
+      localStorage.setItem('permissions', JSON.stringify(newPerms));
+    }
   }
   let permsDeleted = helpers
     .filterNodeList(editPermsView.updateThisCheckboxesPointers(), deleted)
@@ -493,6 +607,10 @@ const controlUpdateRole = async function (changesObj) {
     editUserView.renderSpinner('Suppression des permissions en cours...');
     await model.delPermsFromRole(permsDeleted, model.state.roles.selected.role);
     await controlUpdateMyPerms();
+    if (model.state.roles.selected.role == model.state.me.role) {
+      const newPerms = await model.getRolePerms(model.state.me.role);
+      localStorage.setItem('permissions', JSON.stringify(newPerms));
+    }
   }
 };
 
@@ -598,8 +716,14 @@ const controlLoadCmds = async function () {
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
   console.log(model.state.bdc.allCommandes);
-  cmdsView.render(allCommandes);
-  cmdsView.reSettingDynamicElementsPointersAndELs();
+  console.log(model.state.me.permissions.all);
+  cmdsView.render(allCommandes, true, model.state.me.permissions.all);
+  // cmdsView.reSettingDynamicElementsPointersAndELs();
+  seeCmdsView.resetPointers();
+  seeCmdsView.addSeeController(controlViewCmd);
+  cmdsView.resetPointers();
+  receptionView.f();
+  receptionView.addHandlerShow(controlLoadBRec);
   // const filter1Obj = {
 
   // }
@@ -865,6 +989,15 @@ const controlCancelCmds = async function () {
       }
       // back to main menu
     });
+};
+
+const controlLoadBRec = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.view-btr-btn'),
+    target
+  );
+  console.log(model.state.bdc.allCommandes[targetIndex]);
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);

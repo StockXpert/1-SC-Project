@@ -21,7 +21,6 @@ class CmdsView extends UsersView {
     this._btnCancelBdc.disabled = true;
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
-        // console.log(this);
         const tthis = e.currentTarget;
         if (tthis.checked) {
           this._checkboxes.forEach(otherCheckbox => {
@@ -52,17 +51,13 @@ class CmdsView extends UsersView {
       })
     );
   }
-  reSettingDynamicElementsPointersAndELs(checkboxesHandler = '') {
+
+  resetPointers() {
     //checkboxes
     this._checkboxes = this._parentElement.querySelectorAll(
       'input[type="checkbox"]'
     );
-    this.addEventListenerCheckboxesChange(checkboxesHandler);
-    //voir 1
-
-    //voir 2
-
-    //imprimer
+    this.addEventListenerCheckboxesChange();
   }
 
   _filters = document.querySelectorAll('.filters-bdc');
@@ -74,6 +69,12 @@ class CmdsView extends UsersView {
         handler(newFiltersState);
       });
     });
+  }
+  _generateMarkup() {
+    console.log(this._perms);
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
   }
   _generateMarkupPreview(result, perms = []) {
     return `
@@ -90,17 +91,26 @@ class CmdsView extends UsersView {
           <td><p class="status ${
             result.etat == 'en cours'
               ? 'encour-status'
-              : result.etat == 'termine'
+              : result.etat == 'delivrer'
               ? 'finish-status'
               : 'canceled-status'
           }">${result.etat}</p></td>
           <td class="td-view-bdc">
-            <button class="view-btc-btn">
+            ${
+              helpers.includesDesignation(perms, 'show commandes') &&
+              helpers.includesDesignation(perms, 'show commande products')
+                ? `<button class="view-btc-btn">
               <p>Voir Bon de commande</p>
-            </button>
-            <button class="view-btr-btn">
-              <p>Voir Bons de Receptions</p>
-            </button>
+            </button>`
+                : ``
+            }
+            ${
+              helpers.includesDesignation(perms, 'show bon reception')
+                ? `<button class="view-btr-btn">
+                <p>Voir Bons de Receptions</p>
+</button>`
+                : ``
+            }
           </td>
           <td>
             <a target="_blank" class="details-btn print-bdc-btn" href="../../backend/${

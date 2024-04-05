@@ -13,5 +13,6 @@ class AddRoleView extends AddUserView {
     this.addHandlerShowWindow('#add-btn-role', '.add-role-container');
     this.addHandlerHideWindow('.close-btn-add-role', '.add-role-container');
   }
+  _restricted = [['#add-btn-role', 'add role'], 'none'];
 }
 export default new AddRoleView();

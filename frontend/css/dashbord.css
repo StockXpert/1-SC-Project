@@ -736,7 +736,7 @@ aside .sidebar a:hover span {
 .table-container-bdr-produits,
 .table-container-show-bdr {
   width: auto;
-  max-height: 49.6vh;
+  max-height: 23.6vh;
   overflow-y: auto;
   border-radius: 20px;
   /* box-shadow: 0px 2px 10px 0px #00000066; */
@@ -888,6 +888,7 @@ table tbody tr:last-child td {
   cursor: pointer;
 }
 
+.view-btc-btn,
 .view-btr-btn,
 .view-bdl-btn,
 .view-fac-btn {
@@ -1299,13 +1300,20 @@ table tbody tr:last-child td {
   font-weight: 600;
   color: #477ce2;
 }
+.input-tag {
+  font-size: 1rem;
+  color: #477ce2;
+  margin-left: 0.7rem;
+}
 .input-changeble input {
   /* width: 5rem; */
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
   font-family: 'Poppins';
   padding: 0.4rem;
   background-color: transparent;
   pointer-events: none;
+  cursor: default;
 }
 /*
 .input-changeble input::placeholder {
@@ -2094,6 +2102,7 @@ a.password-icon:active {
   gap: 2rem;
   padding: 0.6rem;
   align-items: center;
+  justify-content: center;
 }
 
 .dropbtn {
@@ -2253,6 +2262,7 @@ a.password-icon:active {
   max-width: 85%;
   font-size: 1.15rem;
   justify-content: center;
+  text-align: center;
 }
 .error-cart {
   padding: 1.2rem;
@@ -2260,7 +2270,7 @@ a.password-icon:active {
 }
 .heading-error-message {
   color: #eb5555;
-  font-size: 1.3rem;
+  font-size: 1.7rem;
 }
 .error-content {
   display: flex;
@@ -2275,4 +2285,9 @@ a.password-icon:active {
 }
 .overlayError {
   z-index: 1011;
+}
+.bdc-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #477ce2;
 }

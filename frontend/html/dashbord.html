@@ -644,7 +644,7 @@
                 </div>
                 <div class="heading-table-btns">
                   <button
-                    class="heading-table-btn btn-delete"
+                    class="heading-table-btn btn-delete hidden"
                     id="supp-btn-structure"
                   >
                     Supprimer
@@ -681,8 +681,8 @@
                   </tr>
                 </thead>
                 <tbody class="table-structures">
-                  <!--une ligne nrml  -->
-                  <tr>
+                  <!-- une ligne nrml  -->
+                  <!-- <tr>
                     <td>
                       <div class="checkbox-colomn">
                         <input type="checkbox" id="checkbox-table" />
@@ -698,11 +698,11 @@
                         </span>
                       </button>
                     </td>
-                  </tr>
+                  </tr> -->
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
-                  <tr class="selected-row">
-                    <!--ajoute selected-row for selected lines-->
+                  <!--ajoute selected-row for selected lines-->
+                  <!-- <tr class="selected-row">
                     <td>
                       <div class="checkbox-colomn">
                         <input type="checkbox" id="checkbox-table" />
@@ -718,7 +718,7 @@
                         </span>
                       </button>
                     </td>
-                  </tr>
+                  </tr> -->
                   <!--fin d'une ligne selected  -->
                 </tbody>
               </table>
@@ -746,12 +746,15 @@
                 </div>
                 <div class="heading-table-btns">
                   <button
-                    class="heading-table-btn btn-delete"
+                    class="heading-table-btn btn-delete hidden"
                     id="supp-btn-role"
                   >
                     Supprimer
                   </button>
-                  <button class="heading-table-btn btn-add" id="add-btn-role">
+                  <button
+                    class="heading-table-btn btn-add hidden"
+                    id="add-btn-role"
+                  >
                     Ajouter
                   </button>
                 </div>
@@ -1349,7 +1352,7 @@
         </div>
         <!------ fin de content for ServiceAchat : 3 - produits tables----- -->
         <!------ debut de content for ServiceAchat : 4 - eleboration-bon-de-commande----- -->
-        <div class="main-table" id="main-table-bdc">
+        <div class="main-table hidden" id="main-table-bdc">
           <div class="heading">
             <h1>Bons de Commandes</h1>
             <hr class="line-style" />
@@ -1828,7 +1831,7 @@
               </div>
             </div>
             <div class="groupe-1">
-              <div class="main-input-groupe hidden">
+              <div class="main-input-groupe hidden edit-nom">
                 <div class="input-text">
                   <p>Nom:</p>
                 </div>
@@ -1844,7 +1847,7 @@
                   <ion-icon class="input-icon" name="person-outline"></ion-icon>
                 </div>
               </div>
-              <div class="main-input-groupe hidden">
+              <div class="main-input-groupe hidden edit-statut">
                 <div class="input-text">
                   <p>Statut:</p>
                 </div>
@@ -1865,7 +1868,7 @@
                   </select>
                 </div>
               </div>
-              <div class="main-input-groupe hidden">
+              <div class="main-input-groupe hidden edit-role">
                 <div class="input-text">
                   <p>Rôle:</p>
                 </div>
@@ -1893,7 +1896,7 @@
               </div>
             </div>
             <div class="groupe-2">
-              <div class="main-input-groupe hidden">
+              <div class="main-input-groupe hidden edit-prenom">
                 <div class="input-text">
                   <p>Prénom:</p>
                 </div>
@@ -1908,7 +1911,7 @@
                   <ion-icon class="input-icon" name="person-outline"></ion-icon>
                 </div>
               </div>
-              <div class="main-input-groupe hidden">
+              <div class="main-input-groupe hidden edit-ddn">
                 <div class="input-text">
                   <p>Date de naissance:</p>
                 </div>
@@ -1927,7 +1930,7 @@
                   ></ion-icon>
                 </div>
               </div>
-              <div class="main-input-groupe hidden">
+              <div class="main-input-groupe hidden edit-str">
                 <div class="input-text">
                   <p>Structure:</p>
                 </div>
@@ -1948,7 +1951,7 @@
                 </div>
               </div>
             </div>
-            <div class="groupe-3 hidden">
+            <div class="groupe-3 hidden edit-email">
               <div class="main-input-groupe main-input-groupe-3">
                 <div class="input-text">
                   <p>Email:</p>
@@ -2430,6 +2433,184 @@
           </form>
         </div>
       </div>
+      <div class="add-bdc-container see-bdc-container hidden">
+        <form class="add-bdc-cart see-bdc-cart">
+          <p class="bdc-title">Commande N°08</p>
+          <div class="container-select-bdc">
+            <div class="tagged-input">
+              <p class="input-tag">Fournisseur :</p>
+              <div class="dropbtn dropbtn-fournisseurs input-changeble">
+                <input
+                  name="fournisseur"
+                  class="filters-fournisseur"
+                  id="view-filter-fournisseur"
+                  value="GCDB BENHAMMED"
+                  required
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="tagged-input">
+              <p class="input-tag">Article :</p>
+              <div class="dropbtn dropbtn-articles input-changeble">
+                <input
+                  name="article"
+                  class="filters-article"
+                  id="view-filter-article"
+                  value="Produits d'enseignement"
+                  required
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+            <div class="tagged-input">
+              <p class="input-tag">Chapitre :</p>
+              <div class="dropbtn dropbtn-type input-changeble">
+                <input
+                  name="types-article"
+                  class="types-article"
+                  id="view-type-options"
+                  value="Fourniture"
+                  placeholder="Choisissez le chapitre"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="container-select-bdc">
+            <div class="tagged-input">
+              <p class="input-tag">Statut :</p>
+              <div class="dropbtn dropbtn-articles input-changeble">
+                <input
+                  name="etat"
+                  class="filters-article"
+                  id="view-filter-etat"
+                  value="En cours"
+                  required
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+            <div class="tagged-input">
+              <p class="input-tag">Date :</p>
+              <div class="dropbtn dropbtn-articles input-changeble">
+                <input
+                  name="date_commande"
+                  class="filters-article"
+                  id="view-filter-date"
+                  value="2004-05-27"
+                  required
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="heading-table-add-bdc">
+            <div class="container-heading-table-add-bdc">
+              <div class="heading-table-text-add-bdc">
+                <p class="table-text-add-bdc">
+                  Tout les Produits de la commande :
+                </p>
+              </div>
+              <div class="heading-table-btns-add-bdc"></div>
+            </div>
+            <div class="heading-table-line">
+              <hr class="line-style-table" />
+            </div>
+          </div>
+          <div class="table-container-bdc-produits">
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    <div class="first-col">
+                      <p class="colomn-tags">N°</p>
+                    </div>
+                  </th>
+                  <th>Designation</th>
+                  <th>Quantité</th>
+                  <th>Prix.U</th>
+                  <th>Montant</th>
+                  <!-- <th>Modifier</th> -->
+                </tr>
+              </thead>
+              <tbody class="results-bdc-produits view-bdc-produits">
+                <tr>
+                  <td>
+                    <div class="checkbox-colomn-bdc-add">
+                      <input
+                        class=""
+                        type="checkbox"
+                        id="checkbox-table-bdc-add"
+                      />
+                      <p class="colomn-tags-name-bdc">1</p>
+                    </div>
+                  </td>
+                  <td>Pc dell xps</td>
+
+                  <td class="input-changeble quantity-produit">
+                    <input type="text" placeholder="8" />
+                  </td>
+                  <td class="input-changeble price-produit">
+                    <input type="text" placeholder="10.000" />
+                  </td>
+                  <td class="price-produit-montant">80.000</td>
+                </tr>
+                <tr class="selected-row">
+                  <td>
+                    <div class="checkbox-colomn-bdc-add">
+                      <input type="checkbox" id="checkbox-table-bdc-add" />
+                      <p class="colomn-tags-name-bdc">1</p>
+                    </div>
+                  </td>
+                  <td>Pc dell xps</td>
+
+                  <td class="input-changeble quantity-produit">
+                    <input type="text" placeholder="8" />
+                  </td>
+                  <td class="input-changeble price-produit">
+                    <input type="text" placeholder="10.000" />
+                  </td>
+
+                  <td class="price-produit-montant">80.000</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="checkbox-colomn-bdc-add">
+                      <input type="checkbox" id="checkbox-table-bdc-add" />
+                      <p class="colomn-tags-name-bdc">1</p>
+                    </div>
+                  </td>
+                  <td>Pc dell xps</td>
+
+                  <td class="input-changeble quantity-produit">
+                    <input type="text" placeholder="8" />
+                  </td>
+                  <td class="input-changeble price-produit">
+                    <input type="text" placeholder="10.000" />
+                  </td>
+                  <td class="price-produit-montant">80.000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="heading-table-btns-add-bdr">
+            <button
+              class="heading-table-btn-bdr cancel-btn-add-bdc btn-add-bdr-qt see-bdc-close"
+              id="add-bdc-close"
+            >
+              Fermer
+            </button>
+            <!-- <button
+              class="heading-table-btn-bdr add-users-btn btn-save-bdc-qt"
+            >
+              Sauvegarder
+            </button> -->
+          </div>
+        </form>
+      </div>
       <!-- fin section pour ajouter un bdc  -->
       <!-- debut seciton pour voir tt les bdr -->
       <div class="big-container-bdr hidden">
@@ -2451,11 +2632,6 @@
                     class="heading-table-btn-bdr btn-delete btn-delete-bdr"
                   >
                     Supprimer
-                  </button>
-                  <button
-                    class="heading-table-btn-bdr add-users-btn btn-print-bdr"
-                  >
-                    Imprimer
                   </button>
                   <button
                     class="heading-table-btn-bdr add-users-btn btn-add-bdr"
@@ -2482,6 +2658,7 @@
                     <th>Bon de livraison</th>
                     <th>Facture</th>
                     <th>Informations</th>
+                    <th>Imprimer</th>
                   </tr>
                 </thead>
                 <tbody class="results-bdrs">
@@ -2515,6 +2692,17 @@
                           info
                         </span>
                       </button>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        class="details-btn print-bdr-btn"
+                        href=""
+                      >
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </a>
                     </td>
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
@@ -2551,6 +2739,17 @@
                         </span>
                       </button>
                     </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        class="details-btn print-bdr-btn"
+                        href=""
+                      >
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </a>
+                    </td>
                   </tr>
                   <tr>
                     <td>
@@ -2583,11 +2782,35 @@
                         </span>
                       </button>
                     </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        class="details-btn print-bdr-btn"
+                        href=""
+                      >
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </a>
+                    </td>
                   </tr>
 
                   <!--fin d'une ligne selected  -->
                 </tbody>
               </table>
+            </div>
+            <div class="heading-table-btns-add-bdr">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdc btn-add-bdr-qt"
+                id="bdr-close"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdr add-users-btn btn-save-bdc-qt"
+              >
+                Sauvegarder
+              </button>
             </div>
           </div>
         </div>
@@ -2750,6 +2973,27 @@
             <p class="error-message">
               Veuillez remplir ces paramètres en sélectionnant le choix désiré
               dans leurs menus déroulants respectifs.
+
+
+
+
+
+{
+    "num_commande": 8,
+    "type": "fourniture",
+    "link": "BonCommande/commande8.pdf",
+    "date_commande": "2004-05-27T23:00:00.000Z",
+    "etat": "en cours",
+    "objet": "Papier d'enseignement",
+    "fournisseur": "MACIF FOURNITURE"
+}
+
+
+
+
+
+
+              
             </p> -->
           </div>
         </div>
@@ -2762,11 +3006,13 @@
       <div class="overlay overlayDel hidden"></div>
       <div class="overlay overlayDelBdc hidden"></div>
       <div class="overlay overlayCancelBdc hidden"></div>
+      <div class="overlay overlaySeeBdc hidden"></div>
       <div class="overlay overlayAddRole hidden"></div>
       <div class="overlay overlayEditStr hidden"></div>
       <div class="overlay overlayDelStr hidden"></div>
       <div class="overlay overlayAddCmd hidden"></div>
       <div class="overlay overlayError hidden"></div>
+      <div class="overlay overlayBDR hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

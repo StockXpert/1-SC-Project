@@ -67,11 +67,9 @@ export class EditUserView extends AddUserView {
     // });
     // Update form fields with new values
     for (const key in NewInputValuesObj) {
-      if (NewInputValuesObj.hasOwnProperty(key)) {
-        const input = formElement.elements[key];
-        if (input) {
-          input.value = NewInputValuesObj[key];
-        }
+      const input = formElement.elements[key];
+      if (input) {
+        input.value = NewInputValuesObj[key];
       }
     }
   }
@@ -86,13 +84,13 @@ export class EditUserView extends AddUserView {
   _generateMarkup() {}
 
   _restricted = [
-    [this._nom, 'update user'],
-    [this._statut, 'change status'],
-    [this._prenom, 'update user'],
-    [this._ddn, 'update user'],
-    [this._str, 'rattacher'],
-    [this._email, 'update user'],
-    [this._roleContainer, 'update user'],
+    ['.edit-nom', 'update user'],
+    ['.edit-statut', 'change status'],
+    ['.edit-prenom', 'update user'],
+    ['.edit-ddn', 'update user'],
+    ['.edit-str', 'rattacher'],
+    ['.edit-email', 'update user'],
+    ['.edit-role', 'update user'],
     'none',
   ];
 }

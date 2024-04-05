@@ -142,7 +142,7 @@ export class AddUserView extends View {
       .join('');
   }
 
-  _restricted = [[this._btnOpen, 'register'], 'none'];
+  _restricted = [['.add-users-btn', 'register'], 'none'];
 }
 
 export default new AddUserView();
