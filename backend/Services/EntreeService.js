@@ -15,7 +15,7 @@ function montantHT(produits) {
   let somme;
   console.log(produits);
   for (let produit of produits)
-    somme = parseInt(produit.quantite) * parseInt(produit.prixUnitaire);
+    somme = somme + parseInt(produit.quantite) * parseInt(produit.prixUnitaire);
   return somme;
 }
 function TVA(montantHT, tva) {
