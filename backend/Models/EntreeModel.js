@@ -784,7 +784,7 @@ function getCommandeProducts(numCommande)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select p.designation ,c.quantite from commande c,produit p
+    const query = `select p.designation ,c.quantite , c.prix_unitaire from commande c,produit p
                    where c.id_commande=? and p.id_produit=c.id_produit `;           
     connection.connect((err) => {
       if (err) {
