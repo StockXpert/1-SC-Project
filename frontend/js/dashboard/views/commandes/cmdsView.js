@@ -98,11 +98,8 @@ class CmdsView extends UsersView {
             <button class="view-btc-btn">
               <p>Voir Bon de commande</p>
             </button>
-<<<<<<< HEAD
           </td>
           <td class="td-view-bdr">
-=======
->>>>>>> c70132b160f941b5eb47e6b5277e2c1dfbc830bf
             <button class="view-btr-btn">
               <p>Voir Bons de Receptions</p>
             </button>

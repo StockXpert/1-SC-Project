@@ -27,11 +27,8 @@ import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
-<<<<<<< HEAD
 import receptionView from './views/commandes/receptionView.js';
-=======
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
->>>>>>> c70132b160f941b5eb47e6b5277e2c1dfbc830bf
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -605,6 +602,7 @@ const controlLoadCmds = async function () {
   cmdsView.render(allCommandes);
   cmdsView.reSettingDynamicElementsPointersAndELs();
   receptionView.f();
+  receptionView.addHandlerShow(controlLoadBRec);
   // const filter1Obj = {
 
   // }
@@ -870,6 +868,15 @@ const controlCancelCmds = async function () {
       }
       // back to main menu
     });
+};
+
+const controlLoadBRec = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.view-btr-btn'),
+    target
+  );
+  console.log(model.state.bdc.allCommandes[targetIndex]);
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
