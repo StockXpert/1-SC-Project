@@ -28,6 +28,7 @@ import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 import receptionView from './views/commandes/receptionView.js';
+import receptionView from './views/commandes/receptionView.js';
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
 import seeCmdsView, { SeeCmdsView } from './views/commandes/seeCmdsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
@@ -989,6 +990,15 @@ const controlCancelCmds = async function () {
       }
       // back to main menu
     });
+};
+
+const controlLoadBRec = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.view-btr-btn'),
+    target
+  );
+  console.log(model.state.bdc.allCommandes[targetIndex]);
 };
 
 const controlLoadBRec = function () {
