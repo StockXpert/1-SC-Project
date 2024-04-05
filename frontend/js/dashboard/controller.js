@@ -1053,7 +1053,11 @@ const controlSavingBDC = async function () {
       `<p class="error-message"><b>Aucun produit n'a été ajouté au bon de commande.</b></p>
       <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
     );
-  } else await model.createBDC();
+  } else {
+    await model.createBDC();
+    // addCmdsView._boundToggleWindow();
+    await controlLoadCmds();
+  }
 };
 
 addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);

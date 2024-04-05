@@ -7,7 +7,7 @@ class AddCmdsView extends AddUserView {
   _window = document.querySelector('.big-container');
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
-  _btnClose;
+  _btnClose = document.querySelector('.btn-add-bdr-qt');
   _btnOpenAddProduct;
   _btnCloseAddProduct;
   _windowAddProduct;
@@ -82,6 +82,7 @@ class AddCmdsView extends AddUserView {
       // typeInput.setCustomValidity('');
       // fourInput.setCustomValidity('');
       handler();
+      this._btnClose.click();
     });
   }
 
