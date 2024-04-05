@@ -14,5 +14,5 @@ router.post('/showCommandeProducts',authMiddleware('show commande products'),Ent
 router.post('/showBonReceptionProducts',authMiddleware('show bon reception products'),EntreeController.showBonReceptionProducts)
 router.put('/updateReception',authMiddleware('update reception'),EntreeController.updateReception)
 router.delete('/deleteReception',authMiddleware('delete reception'),EntreeController.deleteReception)
-router.get('/showBonReception',authMiddleware('show bon reception'),EntreeController.showBonReception)
+router.post('/showBonReception',authMiddleware('show bon reception'),EntreeController.showBonReception)
 module.exports=router;
