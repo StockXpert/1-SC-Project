@@ -54,6 +54,7 @@ export class SeeCmdsView extends DeleteUserView {
   }
   changeDetails(cmd, products) {
     console.log(products);
+    console.log(cmd);
     const heading = this._window.querySelector('.bdc-title');
     heading.innerHTML = `Commande N°${cmd.num_commande}`;
     const formElement = document.querySelector('.see-bdc-cart');
