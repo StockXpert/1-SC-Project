@@ -366,7 +366,7 @@ function cancelCommande(numCommande)
     const connection = mysql.createConnection(connectionConfig);
       
     const query = `UPDATE bon_de_commande 
-    SET etat = 'annulé' 
+    SET etat = 'annuler' 
     WHERE num_commande = ?;`;
     console.log({numCommande})
     const values=[numCommande]
