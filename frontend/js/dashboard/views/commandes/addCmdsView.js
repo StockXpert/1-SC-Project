@@ -467,6 +467,7 @@ class AddCmdsView extends AddUserView {
       }
     });
   }
+  _restricted = [['.add-bdc-btn', 'bon commande'], 'none'];
 }
 
 export default new AddCmdsView();

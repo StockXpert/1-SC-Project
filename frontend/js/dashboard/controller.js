@@ -712,8 +712,21 @@ cmdsView.addHandlerCmdsSearch(controlCmdsSearch, model.state.bdc.filtersState);
 // searchView.addHandlerSearchV2(controlFuzzySearch);
 
 const controlLoadCmds = async function () {
+  if (
+    !model.state.me.permissions.all.find(
+      perm => perm.designation == 'show commandes'
+    )
+  ) {
+    sideView.btns[0].click();
+    helpers.renderError(
+      'Erreur',
+      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+    );
+    return;
+  }
   cmdsView.renderSpinner();
   cancelCmdsView.restrict(model.state.me.permissions.all);
+  addCmdsView.restrict(model.state.me.permissions.all);
   deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
