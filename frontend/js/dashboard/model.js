@@ -646,3 +646,13 @@ export const cancelCmd = async function (numCommande) {
     }
   );
 };
+
+export const loadBonRec = async function (numCommande) {
+  const uploadData = {
+    numCommande: numCommande,
+  };
+  // return await helpers.getJSONBody(
+  //   `${API_URL}/Entrees/showBonReception`,
+  //   uploadData
+  // );
+};

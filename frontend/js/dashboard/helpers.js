@@ -131,7 +131,7 @@ export const getJSONBody = async function (url, uploadData) {
     const data = await res.json();
     // console.log(data);
     // console.log(res);
-    if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+    // if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
     throw err;

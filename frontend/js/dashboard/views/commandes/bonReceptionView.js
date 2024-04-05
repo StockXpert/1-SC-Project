@@ -1,10 +1,11 @@
-import { AddUserView } from '../addUserView.js';
+import { UsersView } from '../usersView.js';
 
-class ReceptionView extends AddUserView {
+class BonReceptionView extends UsersView {
   _btnOpen = document.querySelectorAll('.view-btr-btn');
   _window = document.querySelector('.big-container-bdr');
   _overlay = document.querySelector('.overlayBDR');
   _btnClose = document.getElementById('bdr-close');
+  _parentElement = document.querySelector('.results-bdrs');
 
   constructor() {
     super();
@@ -41,4 +42,4 @@ class ReceptionView extends AddUserView {
   }
 }
 
-export default new ReceptionView();
+export default new BonReceptionView();

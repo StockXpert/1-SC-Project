@@ -27,7 +27,7 @@ import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
-import receptionView from './views/commandes/receptionView.js';
+import bonReceptionView from './views/commandes/bonReceptionView.js';
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
 import seeCmdsView, { SeeCmdsView } from './views/commandes/seeCmdsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
@@ -722,8 +722,8 @@ const controlLoadCmds = async function () {
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
   cmdsView.resetPointers();
-  receptionView.f();
-  receptionView.addHandlerShow(controlLoadBRec);
+  bonReceptionView.f();
+  bonReceptionView.addHandlerShow(controlLoadBRec);
   // const filter1Obj = {
 
   // }
@@ -991,13 +991,18 @@ const controlCancelCmds = async function () {
     });
 };
 
-const controlLoadBRec = function () {
+const controlLoadBRec = async function () {
   const target = this;
   const targetIndex = helpers.findNodeIndex(
     document.querySelectorAll('.view-btr-btn'),
     target
   );
-  console.log(model.state.bdc.allCommandes[targetIndex]);
+  bonReceptionView._clear();
+  bonReceptionView.renderSpinner('Load BDR ...', true);
+  const response = await model.loadBonRec(
+    model.state.bdc.allCommandes[targetIndex].num_commande
+  );
+  console.log(response);
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
