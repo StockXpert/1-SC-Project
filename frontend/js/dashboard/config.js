@@ -143,6 +143,7 @@ export const GROUP_BTNS = {
   Utilisateurs: `<a href="" class="sidebar-btns utilisateurs utilisateurs-btn" name="Utilisateurs">
   <span class="material-icons-sharp"> person_outline</span>
   <h3>Utilisateurs</h3>
+  <span class="message-count">27</span>
 </a>`,
   Roles: `<a href="" class="sidebar-btns roles-btn" name="Roles">
   <span class="material-icons-sharp"> work </span>
@@ -167,6 +168,11 @@ export const GROUP_BTNS = {
   Commandes: `<a class="sidebar-btns bon-de-commandes-btn" href="">
   <span class="material-icons-sharp"> description </span>
   <h3>Bon de Commande</h3>
+</a>
+  `,
+  Commandes_interne: `  <a class="sidebar-btns bon-de-commandes-interne-btn" href="">
+  <span class="material-icons-sharp"> assignment </span>
+  <h3>Commandes</h3>
 </a>
   `,
   Autre: `<a class="sidebar-btns bon-de-commandes-btn" href="">

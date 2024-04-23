@@ -112,6 +112,10 @@
             <span class="material-icons-sharp"> description </span>
             <h3>Bon de Commande</h3>
           </a>
+          <a class="sidebar-btns bon-de-commandes-interne-btn" href="">
+            <span class="material-icons-sharp"> assignment </span>
+            <h3>Commandes</h3>
+          </a>
 
           <a class="sidebar-btns statistiques-btn" href="">
             <span class="material-icons-sharp"> query_stats </span>
@@ -120,12 +124,12 @@
           <a class="sidebar-btns archive-btn" href="">
             <span class="material-icons-sharp"> history </span>
             <h3>Archive</h3>
-          </a>
+          </a> 
 
           <a class="sidebar-btns" href="">
             <span class="material-icons-sharp"> logout </span>
             <h3>Se deconnecter</h3>
-          </a> -->
+          </a>-->
         </div>
       </aside>
       <!-- fin of sidebar -->
@@ -1558,7 +1562,284 @@
             <!-- </div> -->
           </div>
         </div>
-        <!------debut de content for ServiceAchat : 4 - eleboration-bon-de-commande----- -->
+        <!------fin de content for ServiceAchat : 4 - eleboration-bon-de-commande----- -->
+        <!------ debut de content for consommateur : 5 - eleboration-bon-de-commande-interne----- -->
+        <div class="main-table hidden" id="main-table-bdci">
+          <div class="heading">
+            <h1>Mes Commandes</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="bdci-searchbar">
+            <div class="container-searchbar-bdci">
+              <div class="main-search-bdci">
+                <form class="searchbar-bdci">
+                  <span class="material-icons-sharp"> search </span>
+                  <input
+                    type="text"
+                    class="searchbar-text-bdci"
+                    placeholder="Chercher une commande..."
+                  />
+                </form>
+              </div>
+              <div class="container-filter-bdci">
+                <div class="dropbtn-text-bdci">
+                  <select
+                    name="date-bdci"
+                    class="filters-bdci"
+                    id="filter-bdci-date"
+                    placeholder="Date"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Date:</option>
+                    <option value="acd">Acendant</option>
+                    <option value="dcd">Decendant</option>
+                  </select>
+                </div>
+                <div class="dropbtn-text-bdci">
+                  <select
+                    name="status"
+                    class="filters-bdci"
+                    id="filter-bdci-status"
+                    placeholder="Selectionnés un status"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Statut:</option>
+                    <option value="all">Toutes</option>
+                    <option value="en-attente">En attente</option>
+                    <option value="v-responsable">Visée Responsable</option>
+                    <option value="v-directeur">Visée Directeur</option>
+                    <option value="Livrée">Livrée</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="add-bdci">
+              <button class="add-bdci-btn">Créer un bon</button>
+              <!-- <button class="print-bdc-btn">Imprimer</button> -->
+            </div>
+          </div>
+
+          <!-- tableau principale -->
+
+          <!-- heading tbale -->
+          <div class="table-top-bdci">
+            <div class="heading-table-bdci">
+              <div class="container-heading-table-bdc">
+                <div class="heading-table-text-bdc">
+                  <!-- <p class="table-text-bdc">
+                    Tout les Bons (<b class="number-users">245</b>)
+                  </p> -->
+                </div>
+                <div class="heading-table-btns-bdci">
+                  <button
+                    class="heading-table-btn btn-cancel-bdci disabled-delete-button"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    class="heading-table-btn btn-delete-bdc disabled-delete-button"
+                  >
+                    Supprimer
+                  </button>
+                  <button class="heading-table-btn btn-edit-bdci">
+                    Modifier
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <!--fin  heading tbale -->
+
+            <!------------debut du tableau ------------------------>
+            <div class="table-container-bdci">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="checkbox-colomn-bdci">
+                        <p class="colomn-tags-bdci">N°Commande</p>
+                      </div>
+                    </th>
+
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th class="view-bdc">Détails</th>
+                    <!-- <th class="view-bdr hidden">Bon de reception</th> -->
+                    <th class="hidden">Imprimer</th>
+                  </tr>
+                </thead>
+                <tbody class="results">
+                  <!--une ligne nrml  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+
+                    <td>21/12/2023</td>
+                    <td><p class="status enattente-status">En Attente</p></td>
+                    <td class="td-view-bdc">
+                      <button class="details-btn print-bdci-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
+                      </button>
+                    </td>
+                    <td class="hidden">
+                      <button class="details-btn print-bdc-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+
+                    <td>21/12/2023</td>
+                    <td><p class="status finish-status-bdci">Livrée</p></td>
+                    <td class="td-view-bdc">
+                      <button class="details-btn print-bdci-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
+                      </button>
+                    </td>
+                    <td class="hidden">
+                      <button class="details-btn print-bdc-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!--fin d'une ligne selected  -->
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+
+                    <td>21/12/2023</td>
+                    <td><p class="status canceled-status">Annulée</p></td>
+                    <td class="td-view-bdc">
+                      <button class="details-btn print-bdci-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
+                      </button>
+                    </td>
+                    <td class="hidden">
+                      <button class="details-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status v-responsable-status">V.Responsable</p>
+                    </td>
+                    <td class="td-view-bdc">
+                      <button class="details-btn print-bdci-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
+                      </button>
+                    </td>
+                    <td class="hidden">
+                      <button class="details-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status v-directeur-status">V.Directeur</p>
+                    </td>
+                    <td class="td-view-bdc">
+                      <button class="details-btn print-bdci-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                    <td class="td-view-bdr hidden">
+                      <button class="view-btr-btn">
+                        <p>Voir Bons de Receptions</p>
+                      </button>
+                    </td>
+                    <td class="hidden">
+                      <button class="details-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+        <!------ fin de content for consommateur : 5 - eleboration-bon-de-commande-interne----- -->
         <!------------------------------ II- END ServiceAchat FONCTIONS ------------------------------->
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
@@ -2081,6 +2362,21 @@
           </div>
         </form>
       </div>
+      <!-- debut section pour supprimer bdci  -->
+      <div class="container-supp-bdci hidden">
+        <form class="supp-bdc-cart">
+          <p class="supp-bdc-text">
+            Êtes-vous sûr de vouloir supprimer ce Bon de commande interne ?
+            Cette action est irréversible et toutes les données associées seront
+            perdues.
+          </p>
+          <div class="supp-bdc-btns">
+            <button class="btn-supp supp-bdci-annuler">Annuler</button>
+            <button class="btn-supp supp-bdc-confirmer">Confirmer</button>
+          </div>
+        </form>
+      </div>
+      <!-- fin section pour supprimer bdci  -->
       <!-- fin section pour supprimer bdc  -->
       <!-- debut section pour annuler bdc  -->
       <div class="container-supp-bdc container-cancel-bdc hidden">
@@ -2973,11 +3269,6 @@
             <p class="error-message">
               Veuillez remplir ces paramètres en sélectionnant le choix désiré
               dans leurs menus déroulants respectifs.
-
-
-
-
-
 {
     "num_commande": 8,
     "type": "fourniture",
@@ -2986,18 +3277,235 @@
     "etat": "en cours",
     "objet": "Papier d'enseignement",
     "fournisseur": "MACIF FOURNITURE"
-}
-
-
-
-
-
-
-              
+}        
             </p> -->
           </div>
         </div>
       </div>
+      <!-- debut section pour add un nv bdci -->
+      <div class="big-container-bdci hidden">
+        <div class="edit-product-bdci-container hidden">
+          <div class="edit-product-bdci-cart">
+            <div class="heading-edit-product-bdci">
+              <p>Modifier</p>
+            </div>
+            <form class="inputs-edit-product-bdci">
+              <div class="input-product-bdci-edit">
+                <input
+                  type="text"
+                  placeholder="Chercher la Designation du Produit"
+                  value="Pc Gamer"
+                  name="designation"
+                  id="bdci-product-edit"
+                  required
+                />
+                <div class="search-results edit-product-search-results">
+                  <ul class="product-search-results-container-edit">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
+              </div>
+              <div class="input-product-bdci">
+                <input
+                  type="number"
+                  placeholder="Modifier la Quantité"
+                  value="4"
+                  name="quantite"
+                  required
+                />
+              </div>
+              <div class="btn-product-bdci-edit">
+                <button class="cancel-btn-edit-bdci">Annuler</button>
+                <button class="add-btn-edit-bdci">Modifier</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-product-bdci-container hidden">
+          <div class="add-product-bdci-cart">
+            <div class="heading-add-product-bdci">
+              <p>Produit</p>
+            </div>
+            <form class="inputs-add-product-bdci">
+              <div class="input-product-bdci">
+                <input
+                  name="designation"
+                  type="text"
+                  placeholder="Chercher la Designation du Produit"
+                  id="bdci-product-add"
+                  autocomplete="off"
+                  required
+                />
+                <div class="search-results add-product-search-results">
+                  <ul class="product-search-results-container">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
+              </div>
+              <div class="input-product-bdci">
+                <input
+                  name="quantite"
+                  placeholder="Entrez la Quantité"
+                  id="bdci-quantity"
+                  autocomplete="off"
+                  type="number"
+                  required
+                />
+              </div>
+              <div class="btn-product-bdci">
+                <button class="cancel-btn-add-bdci">Annuler</button>
+                <button class="add-btn-add-bdci">Ajouter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-bdc-container">
+          <form class="add-bdc-cart">
+            <div class="container-select-bdci">
+              <div class="btn-add-product">
+                <button>Ajouter Produit</button>
+                <span class="material-icons-sharp"> add </span>
+              </div>
+            </div>
+            <div class="heading-table-add-bdci">
+              <div class="container-heading-table-add-bdc">
+                <div class="heading-table-text-add-bdci">
+                  <!-- <p class="table-text-add-bdc">
+                    Tout les Produits (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text-add-bdc">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p> -->
+                </div>
+                <div class="heading-table-btns-add-bdci">
+                  <!-- <button
+                    class="heading-table-btn btn-edit btn-edit-produits-bdc"
+                  >
+                    Modifier
+                  </button> -->
+                  <button
+                    class="heading-table-btn btn-delete btn-delete-produits-bdci disabled-delete-button"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-bdci-produits">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Designation</th>
+                    <th>Quantité</th>
+
+                    <th>Modifier</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdci-produits">
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdc-add">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdci-add"
+                        />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit-bdci">
+                      <input type="text" placeholder="8" />
+                    </td>
+
+                    <td>
+                      <button class="details-btn-bdci-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="selected-row">
+                    <td>
+                      <div class="checkbox-colomn-bdci-add">
+                        <input type="checkbox" id="checkbox-table-bdci-add" />
+                        <p class="colomn-tags-name-bdci">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit-bdci">
+                      <input type="text" placeholder="8" />
+                    </td>
+
+                    <td>
+                      <button class="details-btn-bdci-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdci-add">
+                        <input type="checkbox" id="checkbox-table-bdci-add" />
+                        <p class="colomn-tags-name-bdci">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit-bdci">
+                      <input type="text" placeholder="8" />
+                    </td>
+
+                    <td>
+                      <button class="details-btn-bdci-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <td colspan="6" class="empty-table--products">
+                    Les produits que vous ajouterez apparaîtront ici !
+                  </td>
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-add-bdci">
+              <button
+                class="heading-table-btn-bdci cancel-btn-add-bdci btn-add-bdci-qt"
+                id="add-bdci-close"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdci add-users-btn btn-save-bdci-qt"
+              >
+                Sauvegarder
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin section pour add un nv bdci -->
 
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
@@ -3013,6 +3521,7 @@
       <div class="overlay overlayAddCmd hidden"></div>
       <div class="overlay overlayError hidden"></div>
       <div class="overlay overlayBDR hidden"></div>
+      <div class="overlay overlayBDCI hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->
