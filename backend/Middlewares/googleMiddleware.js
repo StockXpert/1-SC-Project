@@ -1,6 +1,7 @@
 const {google} =require('googleapis');
 const fs = require('fs');
-const path=require('path')
+const path=require('path');
+const { inherits } = require('util');
 const credentialsPath = path.join(__dirname,'credentials.json');
 async function updateCel(pos,content,spreadsheetId)
 {
@@ -79,7 +80,10 @@ async function addRow(ligne,Content,idCopy,type)
             case 'reception':
                 valuesToInsert = [rowIndex-10,Content.designation,'','','',Content.quantite];
                 sc=1,
-                ec=5
+                ec=5;
+            case 'sortie':
+                valuesToInsert = [rowIndex-8,Content.designation,Content.quantite_demande,Content.quantite_servie,'',''];
+                 break;    
             default:
                 break;
         }
@@ -90,12 +94,12 @@ async function addRow(ligne,Content,idCopy,type)
             valueInputOption: 'USER_ENTERED',
             resource: {
                 range,
-                values: [valuesToInsert]
+                values: [valuesToInsert],
             }
         };
         const response = await sheets.spreadsheets.values.update(updateRequest);
         console.log('New row inserted at index', rowIndex, 'with values', valuesToInsert);
-          
+        if(type!='sortie'){  
         const res = await sheets.spreadsheets.batchUpdate({
             spreadsheetId:idCopy,
             requestBody:{
@@ -111,7 +115,8 @@ async function addRow(ligne,Content,idCopy,type)
                     }
                 }]
             }
-        })
+        })}
+        
         if(type==='commande'){
         const res2=await sheets.spreadsheets.batchUpdate({
             spreadsheetId:idCopy,

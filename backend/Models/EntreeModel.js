@@ -789,7 +789,7 @@ function getBonReception(numCommande)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select num_bon,date_reception,num_facture,num_livraison,link_livraison,link_facture from bon_de_reception
+    const query = `select num_bon,date_reception,num_facture,num_livraison,link_livraison,link_facture,link from bon_de_reception
                    where num_commande=? `;           
     connection.connect((err) => {
       if (err) {
