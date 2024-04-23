@@ -40,6 +40,58 @@ class BonReceptionView extends UsersView {
     this._addHandlerShowWindow();
     this._addHandlerHideWindow();
   }
+
+  _generateMarkup() {
+    console.log(this._data);
+    if (this._data.length === 0) return `<div><p>No data yet</p></div>`;
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
+  }
+
+  _generateMarkupPreview(result) {
+    const date = new Date(result.date_reception);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1;
+    const year = date.getUTCFullYear();
+
+    return `
+      <tr>
+        <td>
+          <div class="checkbox-colomn-bdr-show">
+            <input
+              class=""
+               type="checkbox"
+               id="checkbox-table-bdr-show"
+            />
+            <p class="colomn-tags-name-bdc">${result.num_bon}</p>
+          </div>
+        </td>
+        <td>${day}/${month}/${year}</td>
+        <td class="td-view-bdl">
+          <button class="view-bdl-btn">
+            <p>Voir Bon de livraison</p>
+          </button>
+        </td>
+        <td class="td-view-fac">
+          <button class="view-fac-btn">
+            <p>Voir Facture</p>
+          </button>
+        </td>
+        <td>
+          <a
+            target="_blank"
+             class="details-btn print-bdr-btn"
+             href=""
+          >
+            <span class="material-icons-sharp info-icon">
+               print
+            </span>
+          </a>
+        </td>
+      </tr>
+    `;
+  }
 }
 
 export default new BonReceptionView();

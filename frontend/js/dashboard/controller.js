@@ -30,6 +30,7 @@ import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 import bonReceptionView from './views/commandes/bonReceptionView.js';
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
 import seeCmdsView, { SeeCmdsView } from './views/commandes/seeCmdsView.js';
+import addBonReception from './views/commandes/addBonReception.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1013,11 +1014,13 @@ const controlLoadBRec = async function () {
     target
   );
   bonReceptionView._clear();
-  bonReceptionView.renderSpinner('Load BDR ...', true);
-  const response = await model.loadBonRec(
+  await model.loadBonRec(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
-  console.log(response);
+  bonReceptionView.renderSpinner('Load BDR ...');
+  bonReceptionView.render(model.state.bdr.all);
+  console.log(model.state.bdr.all);
+  addBonReception.f();
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
