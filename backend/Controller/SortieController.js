@@ -37,10 +37,12 @@ function livrer(req,res)
 {
     const {numDemande,dateSortie}=req.body;
     SortieModel.getDemandeProducts(numDemande).then((produits)=>{
-        SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
-            SortieModel.insertDateSortie(numDemande,dateSortie).then(()=>{
-                SortieService.genererBonSortie(numDemande,dateSortie,produits,'1B_H87qYOz-GsKPPVftyeTcXFX68n5bQiOMaBHR202GA').then((link)=>{
-                    res.status(200).json({response:link})
+        SortieService.subtituteQuantite(produits).then(()=>{
+            SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
+                SortieModel.insertDateSortie(numDemande,dateSortie).then(()=>{
+                    SortieService.genererBonSortie(numDemande,dateSortie,produits,'1B_H87qYOz-GsKPPVftyeTcXFX68n5bQiOMaBHR202GA').then((link)=>{
+                        res.status(200).json({response:link})
+                    }).catch(()=>{res.status(500).json({response:'internal error'})})
                 }).catch(()=>{res.status(500).json({response:'internal error'})})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
         }).catch(()=>{res.status(500).json({response:'internal error'})})
@@ -59,19 +61,24 @@ function showAllDemandes(req,res)
 {
     const {role,email}=req;
     let statement;
+    let etat=''
     switch (role) {
         case 'magasinier':
             statement="etat in ('visee par dir','pret','livree')"
             break;
-        case 'directeur':
-            statement="etat in ('visee par resp','visee par dir','pret','livree')" 
+        case 'Directeur':
+            statement="etat in ('visee par resp','visee par dg','pret','livree')" 
+            break;
+        case 'Responsable directe':
+            etat='en attente';statement=''    ;
+            break;
         default:
             statement=''
             break;
     }
-    SortieModel.getAllDemandes(statement,email).then((demandes)=>{
+    SortieModel.getAllDemandes(etat,statement,email,role).then((demandes)=>{
         res.status(200).json({response:demandes})
-    }).catch(()=>res.status(500).json({response:"internal error"}))
+    }).catch((err)=>{console.log(err);res.status(500).json({response:err})})
 }
 function showNewDemandes(req,res)
 {
@@ -132,5 +139,12 @@ function readNotif(req,res)
         res.status(200).json({response:"read"})
     }).catch(()=>res.status(500).json({response:"internal error"}))
 }
+function readAllNotif(req,res)
+{
+    SortieModel.readAllNotif().then(()=>{
+        res.status(200).json({response:"read"})
+    }).catch(()=>res.status(500).json({response:"internal error"}))
+}
 module.exports={demandeFourniture,fournitureDirApp,fournitureRespApp,fournitureMagApp,livrer,
-deleteFourniture,showNewDemandes,showAllDemandes,updateConsDemande,updateRespDirApp,updateMagApp,readNotif}
+deleteFourniture,showNewDemandes,showAllDemandes,updateConsDemande,updateRespDirApp,updateMagApp,
+readNotif,readAllNotif}
