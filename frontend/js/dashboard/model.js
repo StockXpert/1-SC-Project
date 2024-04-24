@@ -25,6 +25,9 @@ export const state = {
   bdr: {
     all: [],
   },
+  bdr_products: {
+    all: [],
+  },
   fournisseurs: {
     all: [],
     selected: '',
@@ -660,4 +663,29 @@ export const loadBonRec = async function (numCommande) {
   );
   state.bdr.all = data.response;
   console.log(state.bdr.all);
+};
+
+export const loadBonRecProducts = async function (numReception) {
+  const uploadData = {
+    numReception: numReception,
+  };
+  const data = await helpers.sendJSON(
+    `${API_URL}/Entrees/showBonReceptionProducts`,
+    uploadData
+  );
+
+  state.bdr_products.all = data.response;
+  console.log(state.bdr_products.all);
+};
+
+export const deleteBonRec = async function (numReception, numCommande) {
+  const uploadData = {
+    numReception: numReception,
+    numCommande: numCommande,
+  };
+  const data = await helpers.delJSON(
+    `${API_URL}/Entrees/deleteReception`,
+    uploadData
+  );
+  console.log(data);
 };
