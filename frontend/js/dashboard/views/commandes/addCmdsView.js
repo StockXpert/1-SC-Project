@@ -75,7 +75,6 @@ class AddCmdsView extends AddUserView {
     const articleInput = this._article;
     // const productInput = this._product;
     // const productEditInput = this._productEdit;
-    console.log(this._save);
     this._save.addEventListener('click', e => {
       e.preventDefault();
       // articleInput.setCustomValidity('');

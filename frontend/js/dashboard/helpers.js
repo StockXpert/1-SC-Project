@@ -78,7 +78,6 @@ export const formatDate = inputDate => {
 
 export const getJSON = async function (url) {
   try {
-    console.log('getJSON');
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',
@@ -108,7 +107,6 @@ export const getJSON = async function (url) {
 };
 export const getJSONBody = async function (url, uploadData) {
   try {
-    console.log('getJSON');
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',

@@ -46,7 +46,6 @@ const controlUpdateMyPerms = async function () {
   //     false
   //   )
   // );
-  console.log(model.state.me.permissions.wellFormed);
   sideView.render(model.state.me.permissions.wellFormed);
   sideView.reselectBtns();
   // sideView.unrenderSpinner();
@@ -732,10 +731,7 @@ const controlLoadCmds = async function () {
   deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
-  console.log(model.state.bdc.allCommandes);
-  console.log(model.state.me.permissions.all);
   cmdsView.render(allCommandes, true, model.state.me.permissions.all);
-  // cmdsView.reSettingDynamicElementsPointersAndELs();
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
   cmdsView.resetPointers();
@@ -1067,15 +1063,13 @@ const controlLoadCmdsInt = async function () {
     return;
   }
   cmdsIntView.renderSpinner();
-  cancelCmdsView.restrict(model.state.me.permissions.all);
-  addCmdsView.restrict(model.state.me.permissions.all);
-  deleteCmdsView.restrict(model.state.me.permissions.all);
+  // TODO:
+  // TODO: cancelCmdsView.restrict(model.state.me.permissions.all);
+  // TODO: addCmdsView.restrict(model.state.me.permissions.all);
+  // TODO: deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
-  console.log(model.state.bdc.allCommandes);
-  console.log(model.state.me.permissions.all);
   cmdsIntView.render(allCommandes, true, model.state.me.permissions.all);
-  // cmdsIntView.reSettingDynamicElementsPointersAndELs();
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
   cmdsIntView.resetPointers();
@@ -1179,9 +1173,10 @@ deleteStructureView.addDeleteController(controlDeleteStructure);
 sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
 
-controlUpdateFournisseurs();
+// controlUpdateFournisseurs();
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
-controlUpdateArticles();
+// #F00
+// controlUpdateArticles();
 addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
@@ -1196,3 +1191,4 @@ addCmdsView.addHandlerChangeProduct(controlChangeProduct);
 //     numberAddProductsView.calculateCheckboxes();
 //   numberRoleView.render(model.state);
 // };
+console.log(model.state);

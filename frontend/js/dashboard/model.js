@@ -101,7 +101,6 @@ export const getMyPerms = async function () {
     all: myPerms,
     wellFormed: organizePermissionsByGroup(myPerms, false, false),
   };
-  console.log(state.me);
   return state.me;
 };
 
@@ -596,6 +595,14 @@ export const loadCmds = async function () {
   commandes = commandes.commandes;
   state.bdc.allCommandes = commandes;
   return commandes;
+};
+export const loadCmdsInt = async function () {
+  let commandesInt = await helpers.getJSON(
+    `${API_URL}/Sorties/showAllDemandes`
+  );
+  console.log(commandesInt);
+  console.log(state);
+  return commandesInt;
 };
 export const loadCommandeproducts = async function (numCommande) {
   let products = await helpers.postJSONReturnResResp(
