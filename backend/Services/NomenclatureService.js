@@ -1,10 +1,10 @@
 const NomenclatureModel=require("../Models/NomenclatureModel");
-function addArticle(chapitre,designation,numArt)
+function addArticle(chapitre,designation,numArt,tva)
 {
    return new Promise((resolve,reject)=>
    {
       NomenclatureModel.getChapterId(chapitre).then((chapitreId)=>{
-       NomenclatureModel.addArticle(numArt,chapitreId,designation).then(()=>{
+       NomenclatureModel.addArticle(numArt,chapitreId,designation,tva).then(()=>{
         resolve("article added");
        }).catch(()=>{
         reject("internal error");
@@ -18,20 +18,21 @@ function addProduct(article,designation,description,quantite)
 {
     return new Promise((resolve,reject)=>
    {
-    NomenclatureModel.getArticleId(article).then((articleId)=>{
+    NomenclatureModel.getArticleIdTva(article).then((article)=>{
        NomenclatureModel.addProduct(quantite,designation,description).then(()=>{
         NomenclatureModel.getProductId(designation).then((productId)=>{
-           NomenclatureModel.addArticleProduct(articleId,productId).then(()=>{
+           console.log({article})
+           NomenclatureModel.addArticleProduct(article.num_article,productId).then(()=>{
             resolve("product added");
-           }).catch(()=>{reject("internal error")});
+           }).catch(()=>{reject("internal error1")});
         }).catch(()=>{
-        reject("internal error")
+        reject("internal error2")
         })
        }).catch(()=>{
-        reject("internal error")
+        reject("internal error3")
        })
     }).catch(()=>{
-        reject("internal error")
+        reject("internal error4")
     })
    });
 }

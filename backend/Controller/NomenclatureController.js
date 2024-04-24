@@ -22,22 +22,24 @@ function updateChapter(req,res)
 function deleteChapter(req,res)
 {
   const {designation}=req.body
-  NomenclatureModel.canDelete(designation,'chapitre').then(()=>{
-    NomenclatureModel.deleteChapter(designation).then(()=>{
-        res.status(200).json({response:'chapter deleted'})
-    }).catch((err)=>{
+  NomenclatureModel.isUsedchapter(designation).then(()=>{
+    NomenclatureModel.canDelete(designation,'chapitre').then(()=>{
+        NomenclatureModel.deleteChapter(designation).then(()=>{
+            res.status(200).json({response:'chapter deleted'})
+        }).catch((err)=>{
+            console.log({err})
+            res.status(500).json({response:'internal error'})
+        })
+      }).catch((err)=>{
         console.log({err})
-        res.status(500).json({response:'internal error'})
-    })
-  }).catch((err)=>{
-    console.log({err})
-      res.status(500).json({response:'prohibited to delete chapter'})
-    })
+          res.status(500).json({response:'prohibited to delete chapter'})
+        })
+  }).catch(()=>res.status(403).json({response:'forbidden'}))
 }
 function addArticle(req,res)
 {
-    const {numArt,chapitre,designation}=req.body;
-    NomenclatureService.addArticle(chapitre,designation,numArt).then((response)=>{
+    const {numArt,chapitre,designation,tva}=req.body;
+    NomenclatureService.addArticle(chapitre,designation,numArt,tva).then((response)=>{
         res.status(200).json({response})
     }).catch((response)=>{
         res.status(500).json({response})
@@ -54,8 +56,8 @@ function deleteFournisseur(raisonSocial)
 }
 function updateArticle(req,res)
 {
-    const {oldDesignation,newDesignation,chapitre}=req.body
-    NomenclatureModel.updateArticle(oldDesignation,newDesignation,chapitre).then(()=>{
+    const {oldDesignation,newDesignation,chapitre,tva}=req.body
+    NomenclatureModel.updateArticle(oldDesignation,newDesignation,chapitre,tva).then(()=>{
         res.status(200).json({response:'article updated'});
     }).catch((err)=>{
         console.log({err})
@@ -65,13 +67,15 @@ function updateArticle(req,res)
 function deleteArticle(req,res)
 {
     const {designation}=req.body;
-    NomenclatureModel.canDelete(designation,'article').then(()=>{
-        NomenclatureService.deleteArticle(designation).then((response)=>{
-            res.status(200).json({response})
-        }).catch((response)=>{
-            res.status(500).json({response})
-        })
-    }).catch(()=>{res.status(500).json({response:"prohibited to delete article"})})
+    NomenclatureModel.isUsedArticle(designation).then(()=>{
+        NomenclatureModel.canDelete(designation,'article').then(()=>{
+            NomenclatureService.deleteArticle(designation).then((response)=>{
+                res.status(200).json({response})
+            }).catch((response)=>{
+                res.status(500).json({response})
+            })
+        }).catch(()=>{res.status(500).json({response:"prohibited to delete article"})})
+    }).catch(()=>res.status(403).json({response:'forbidden'}))
 }
 function addProduct(req,res)
 {
@@ -79,17 +83,20 @@ function addProduct(req,res)
     NomenclatureService.addProduct(article,designation,description,quantite).then((response)=>{
         res.status(200).json({response})
     }).catch((response)=>{
-        res.status(500).json({response})
+        console.log(response)
+        res.status(500).json({response:response})
     })
 }
 function deleteProduct(req,res)
 {
     const {designation}=req.body;
-    NomenclatureService.deleteProduct(designation).then((response)=>{
-        res.status(200).json({response})
-    }).catch((response)=>{
-        res.status(500).json({response})
-    })
+    NomenclatureModel.isUsedProduct(designation).then(()=>{
+        NomenclatureService.deleteProduct(designation).then((response)=>{
+            res.status(200).json({response})
+        }).catch((response)=>{
+            res.status(500).json({response})
+        })
+    }).catch(()=>res.status(403).json({response:'forbidden'}))
 }
 function addFournisseur(req,res)
 {
@@ -103,13 +110,15 @@ function addFournisseur(req,res)
 function deleteFournisseur(req,res)
 {
     const {raisonSociale}=req.body;
-    NomenclatureModel.canDeletefourn(raisonSociale).then(()=>{
-        NomenclatureModel.deleteFournisseur(raisonSociale).then(()=>{
-            res.status(200).json({response:"fournisseur deleted"})
-        }).catch(()=>{
-            res.status(500).json({response:"internal error"});
-        })
-    }).catch(()=>{res.status(500).json({response:"prohibited to delete fournisseur"});})
+    NomenclatureModel.isUsedFournisseur(raisonSociale).then(()=>{
+        NomenclatureModel.canDeletefourn(raisonSociale).then(()=>{
+            NomenclatureModel.deleteFournisseur(raisonSociale).then(()=>{
+                res.status(200).json({response:"fournisseur deleted"})
+            }).catch(()=>{
+                res.status(500).json({response:"internal error"});
+            })
+        }).catch(()=>{res.status(500).json({response:"prohibited to delete fournisseur"});})
+    }).catch(()=>res.status(403).json({response:'forbidden'}))
 }
 function showFournisseurs(req,res)
 {
@@ -144,6 +153,24 @@ function showArticles(req,res)
         res.status(500).json({response:"internal error"});
     })
 }
+function updateFournisseur(req,res)
+{
+    const {adresse,telephone,fax,numRegistre,rib,rip,nif,nis,raisonSociale}=req.body
+    NomenclatureModel.updateFournisseur(adresse,telephone,fax,numRegistre,rib,rip,nif,nis,raisonSociale).then(()=>{
+        res.status(200).json({response:"fournisseur updated"});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
+function updateRaisonSociale(req,res)
+{
+    const {newRaisonSociale,oldRaisonSociale}=req.body
+    NomenclatureModel.updateRaisonSociale(newRaisonSociale,oldRaisonSociale).then(()=>{
+        res.status(200).json({response:"fournisseur updated"});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
 module.exports={addArticle,addProduct,addFournisseur,deleteArticle,
     deleteProduct,deleteFournisseur,showFournisseurs,showProducts,showChapters,showArticles,
-    addChapter,updateChapter,deleteChapter,updateArticle};
+    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur};

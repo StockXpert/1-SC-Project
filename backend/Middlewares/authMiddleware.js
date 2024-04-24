@@ -13,18 +13,17 @@ function verifyToken(permission) {
           const expirationDate = new Date(decoded.exp * 1000);
           const currentTime = new Date();
           const timeDifference = expirationDate.getTime() - currentTime.getTime();
-          if (timeDifference < 30 * 60 * 1000) {
+          if (timeDifference < 24* 60 * 60 * 1000) {
               const newToken = jwt.sign(
                   { email: decoded.email, role: decoded.role },
                   SecretKey,
-                  { expiresIn: '30m' }
+                  { expiresIn: '24h' }
               );
               res.setHeader('Authorization', newToken);
           }
   
           req.email = decoded.email;
           req.role = decoded.role;
-          req.permissions=decoded.permissions
           console.log(req.role)
           checkPermission(permission,req.role).then(()=>{
             next()
@@ -44,7 +43,7 @@ function checkPermission(permission,role)
   return new Promise((resolve,reject)=>{
     userModel.getRolePermissons(role).then((permissions)=>{
       const estInclus = permissions.some(objet => objet.designation === permission);
-      console.log({permissions:permissions[0]})
+      console.log({permissions})
       console.log({permission})
       if(estInclus)
          resolve('est inclus')
