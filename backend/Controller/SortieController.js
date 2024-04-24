@@ -1,5 +1,6 @@
 const SortieService=require('../Services/SortieService')
-const SortieModel=require('../Models/SortieModel')
+const SortieModel=require('../Models/SortieModel');
+const { response } = require('express');
 function demandeFourniture(req,res){
 const {produits,dateDemande}=req.body;
 const {email}=req
@@ -67,7 +68,11 @@ function showAllDemandes(req,res)
             statement="etat in ('visee par dir','pret','livree')"
             break;
         case 'Directeur':
-            statement="etat in ('visee par resp','visee par dg','pret','livree')" 
+            statement=`etat in ('visee par resp','visee par dg','pret','livree') or (etat="demande" and
+            id_demandeur in
+        (select email from utilisateur where id_structure=
+         (select id_structure from structure where id_resp=?)))`
+            etat="en attente"
             break;
         case 'Responsable directe':
             etat='en attente';statement=''    ;
@@ -145,6 +150,23 @@ function readAllNotif(req,res)
         res.status(200).json({response:"read"})
     }).catch(()=>res.status(500).json({response:"internal error"}))
 }
+function showDemande(req,res)
+{
+    const {numDemande}=req.body;
+    const {role}=req;
+    let quantiteType;
+    if(role==="Consommateur")
+       quantiteType="f.quantite_servie"
+    else if (role==="Magasinier")
+       quantiteType="f.quantite_servie,f.quantite_accorde";
+    else if(role==="Directeur")
+       quantiteType="f.quantite_accorde,f.quantite_servie"
+    else  
+       quantiteType="f.quantite_accorde"
+    SortieModel.getDemande(numDemande,role,quantiteType).then((demande)=>{
+        res.status(200).json({demande})
+    }).catch(()=>{res.status(500).json({response:"internal error"})})
+}
 module.exports={demandeFourniture,fournitureDirApp,fournitureRespApp,fournitureMagApp,livrer,
 deleteFourniture,showNewDemandes,showAllDemandes,updateConsDemande,updateRespDirApp,updateMagApp,
-readNotif,readAllNotif}
+readNotif,readAllNotif,showDemande}

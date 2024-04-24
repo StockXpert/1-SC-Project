@@ -386,16 +386,17 @@ function deleteFourniture(numDemande)
         });
       });
 }
-function getNewDemandes(etat,responable,notif)
+function getNewDemandes(role,etat,email,notif)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
         const query = `select num_demande,etat,id_demandeur,date_demande where ${notif}=true etat=? 
-        ${etat==='en attente'?`and id_demandeur in
+        ${role==="Consommateur"?"and id_demande=?":''}
+        ${(etat==='en attente'||role==="Directeur")?`and id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`
         const values = [etat];
-        if(etat==='en attente') values.push(responable)
+        if(etat==='en attente') values.push(email)
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -428,7 +429,7 @@ function getAllDemandes(etat,statement,email,role){
         }
         else{
          query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${statement}
-        ${etat==='en attente'?`id_demandeur in
+        ${(etat==='en attente'&&role==='Responsable directe')?`id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`;
          values =[]
@@ -752,6 +753,35 @@ function readAllNotif()
         });
       });
 }
+function getDemande(numDemande,role,quantiteType)
+{
+    return new Promise((resolve, reject) => {
+        const connection = mysql.createConnection(connectionConfig);
+        const query = `select p.designation,p.seuil,${quantiteType} ${role!="Consommateur"?',p.seuil,p.quantite':""}
+        from fournir f,produit p where p.id_produit=f.id_produit and f.id_demande=?`;
+        const values =[numDemande]
+        
+        connection.connect((err) => {
+          if (err) {
+            console.error('Erreur de connexion :', err);
+            reject("connexion erreur");
+            return;
+          }
+          
+          connection.query(query, values, (error, results, fields) => {
+            if (error) {
+              console.error('Erreur lors de l\'exécution de la requête :', error);
+              reject("request error");
+              return;
+            }
+             resolve(results)
+          });
+          
+          connection.end(); // Fermer la connexion après l'exécution de la requête
+        });
+      });
+}
 module.exports={addFourniture,insertFournir,updateAccordedQuantite,changeDemandeStatNotif,updateLivredQuantite,
                deleteFourniture,canDeleteFourniture,getNewDemandes,getAllDemandes,updateDemandedQuantite,
-            getDemandeStatus,deleteProductsFournir,readNotif,insertLink,getDemandeProducts,insertDateSortie,readAllNotif}
+            getDemandeStatus,deleteProductsFournir,readNotif,insertLink,
+            getDemandeProducts,insertDateSortie,readAllNotif,getDemande}
