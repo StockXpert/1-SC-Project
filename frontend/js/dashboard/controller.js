@@ -22,6 +22,7 @@ import editPermsView from './views/roles/editPermsView.js';
 import numberRoleView from './views/roles/numberRoleView.js';
 import deleteStructureView from './views/deleteStructureView.js';
 import cmdsView from './views/commandes/cmdsView.js';
+import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import productsView from './views/commandes/productsView.js';
@@ -1019,9 +1020,78 @@ const controlLoadBRec = async function () {
   );
   bonReceptionView.renderSpinner('Load BDR ...');
   bonReceptionView.render(model.state.bdr.all);
-  console.log(model.state.bdr.all);
   addBonReception.f();
+  controlAddBRec();
 };
+
+const controlAddBRec = async function () {
+  addBonReception._clear();
+  await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
+  addBonReception.renderSpinner('Loading products');
+  addBonReception.render(model.state.bdr_products.all);
+};
+
+const controlDeleteBonRec = function () {
+  filterArrayByBooleans(
+    model.state.bdr.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-bdrs')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    // usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
+    // await model.deleteStructure(el);
+    // back to main menu
+    // await controlLoadStructures();
+  });
+};
+
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// B O N S  D E  C O M M A N D E S  I N T E R N E S #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+const controlLoadCmdsInt = async function () {
+  if (
+    !model.state.me.permissions.all.find(
+      perm => perm.designation == 'show commandes'
+    )
+  ) {
+    sideView.btns[0].click();
+    helpers.renderError(
+      'Erreur',
+      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+    );
+    return;
+  }
+  cmdsIntView.renderSpinner();
+  cancelCmdsView.restrict(model.state.me.permissions.all);
+  addCmdsView.restrict(model.state.me.permissions.all);
+  deleteCmdsView.restrict(model.state.me.permissions.all);
+  await model.loadCmds();
+  const allCommandes = model.state.bdc.allCommandes;
+  console.log(model.state.bdc.allCommandes);
+  console.log(model.state.me.permissions.all);
+  cmdsIntView.render(allCommandes, true, model.state.me.permissions.all);
+  // cmdsIntView.reSettingDynamicElementsPointersAndELs();
+  seeCmdsView.resetPointers();
+  seeCmdsView.addSeeController(controlViewCmd);
+  cmdsIntView.resetPointers();
+  bonReceptionView.f();
+  bonReceptionView.addHandlerShow(controlLoadBRec);
+  // const filter1Obj = {
+
+  // }
+  // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
+};
+
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// B A C K  O '  B E Y O N D #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);

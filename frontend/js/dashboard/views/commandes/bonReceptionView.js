@@ -82,7 +82,7 @@ class BonReceptionView extends UsersView {
           <a
             target="_blank"
              class="details-btn print-bdr-btn"
-             href=""
+             href="../../backend/bonReception/reception${result.num_bon}.pdf"
           >
             <span class="material-icons-sharp info-icon">
                print
