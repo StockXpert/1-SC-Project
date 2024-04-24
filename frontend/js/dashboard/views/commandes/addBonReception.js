@@ -48,9 +48,8 @@ class AddBonReception extends AddUserView {
         <td>${result.designation}</td>
 
         <td>${result.quantite}</td>
-        <td class="blue-price">72.000 Da</td>
         <td class="quantity">
-          <input class="green-qt" type="text" value="20" />
+          <input class="green-qt" type="text" value="0" />
           <span class="material-icons-sharp">
             drive_file_rename_outline
           </span>
