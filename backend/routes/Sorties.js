@@ -1,11 +1,18 @@
 const express=require('express');
 const router=express.Router();
-const authMiddleware=require('../Middlewares/authMiddleware')
-router.post('/demandeFourniture',authMiddleware("demande fourniture"));
-router.post('/fournitureRespApp',authMiddleware('approuve fourniture by responsable'),)
-router.post('/fournitureDirApp',authMiddleware('approuve fourniture by director'),);
-router.delete('/deleteFourniture',authMiddleware("delete fourniture"),);
-router.put('/updateFourniture',authMiddleware('update fourniture'),)
-router.get('/showRespFourniture',authMiddleware('show resp fourniture'))
-router.get('/showDirFourniture',authMiddleware('show director fourniture'));
+const SortieController=require('../Controller/SortieController')
+const authMiddleware=require('../Middlewares/authMiddleware');
+router.post('/demandeFourniture',authMiddleware("demande fourniture"),SortieController.demandeFourniture);
+router.post('/fournitureRespApp',authMiddleware('approuve fourniture by responsable'),SortieController.fournitureRespApp)
+router.post('/fournitureDirApp',authMiddleware('approuve fourniture by director'),SortieController.fournitureDirApp);
+router.post('/fournitureMagApp',authMiddleware('approuve fourniture by magasinier'),SortieController.fournitureMagApp);
+router.post('/livrer',authMiddleware('livrer'),SortieController.livrer)
+router.put('/updateDirApp',authMiddleware('update approuve by director'),SortieController.updateRespDirApp);
+router.put('/updateRespApp',authMiddleware('update approuve by responable'),SortieController.updateRespDirApp);
+router.put('/updateMagApp',authMiddleware('update approuve by magasinier'),SortieController.updateMagApp);
+router.put('/updateConsDemande',authMiddleware('update demande by consommateur'),SortieController.updateConsDemande);
+router.delete('/deleteFourniture',authMiddleware("delete fourniture"),SortieController.deleteFourniture);
+router.get('/showAllDemandes',authMiddleware('show all demandes'),SortieController.showAllDemandes)
+router.get('/showNewDemandes',authMiddleware('show new demandes'),SortieController.showNewDemandes);
+router.put('/readNotif',authMiddleware('read notif'),SortieController.readNotif)
 module.exports=router;
