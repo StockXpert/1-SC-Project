@@ -1,7 +1,7 @@
 import { UsersView } from '../usersView.js';
 import * as helpers from '../../helpers.js';
 
-class CmdsView extends UsersView {
+export class CmdsView extends UsersView {
   _parentElement = document
     .querySelector('#main-table-bdc')
     .querySelector('.results');
@@ -71,7 +71,6 @@ class CmdsView extends UsersView {
     });
   }
   _generateMarkup() {
-    console.log(this._perms);
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');
@@ -108,7 +107,7 @@ class CmdsView extends UsersView {
               helpers.includesDesignation(perms, 'show bon reception')
                 ? `<button class="view-btr-btn">
                 <p>Voir Bons de Receptions</p>
-</button>`
+                   </button>`
                 : ``
             }
           </td>

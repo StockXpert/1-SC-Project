@@ -86,6 +86,12 @@ export const GROUP_DEFINITIONS = {
     'delete structure',
     'add structure',
   ],
+  'Commandes Internes': [
+    'demande fourniture',
+    'approuve fourniture by responsable',
+    'approuve fourniture by director',
+    'approuve fourniture by magasinier',
+  ],
 };
 export const PERM_NAMES = {
   register: 'Inscrire un nouvel utilisateur',
@@ -133,6 +139,13 @@ export const PERM_NAMES = {
   'update reception': 'Mettre à jour un bon de réception',
   'delete reception': 'Supprimmer un bon de réception',
   'show bon reception': 'Afficher les bons de réception',
+  'demande fourniture': 'Créer un bon de commande interne',
+  'approuve fourniture by responsable':
+    'Approuver les bon de commandes internes par un responsable directe',
+  'approuve fourniture by director':
+    'Approuver les bon de commandes internes par le directeur',
+  'approuve fourniture by magasinier':
+    'Accepter les bon de commandes internes par le magasinier',
 };
 
 export const GROUP_BTNS = {
@@ -170,9 +183,9 @@ export const GROUP_BTNS = {
   <h3>Bon de Commande</h3>
 </a>
   `,
-  Commandes_interne: `  <a class="sidebar-btns bon-de-commandes-interne-btn" href="">
+  'Commandes Internes': `  <a class="sidebar-btns bon-de-commandes-interne-btn" href="">
   <span class="material-icons-sharp"> assignment </span>
-  <h3>Commandes</h3>
+  <h3>Commandes Internes</h3>
 </a>
   `,
   Autre: `<a class="sidebar-btns bon-de-commandes-btn" href="">
@@ -200,6 +213,7 @@ export const ORDER_OF_GROUPS = [
   'Roles',
   'Permissions',
   'Commandes',
+  'Commandes Internes',
   'Chapitres',
   'Produits',
   'Articles',
