@@ -1019,8 +1019,32 @@ const controlLoadBRec = async function () {
   );
   bonReceptionView.renderSpinner('Load BDR ...');
   bonReceptionView.render(model.state.bdr.all);
-  console.log(model.state.bdr.all);
   addBonReception.f();
+  controlAddBRec();
+};
+
+const controlAddBRec = async function () {
+  addBonReception._clear();
+  await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
+  addBonReception.renderSpinner('Loading products');
+  addBonReception.render(model.state.bdr_products.all);
+};
+
+const controlDeleteBonRec = function () {
+  filterArrayByBooleans(
+    model.state.bdr.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-bdrs')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    // usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
+    // await model.deleteStructure(el);
+    // back to main menu
+    // await controlLoadStructures();
+  });
 };
 
 addCmdsView.addHandlerAddProduct(controlAddProduct);
