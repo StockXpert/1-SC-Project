@@ -1029,6 +1029,7 @@ const controlAddBRec = async function () {
   await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
+  addBonReception.handleUpdate();
 };
 
 const controlDeleteBonRec = function () {

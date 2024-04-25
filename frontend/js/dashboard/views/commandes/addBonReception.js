@@ -5,6 +5,7 @@ class AddBonReception extends AddUserView {
   _btnClose = document.querySelector('.cancel-btn-add-bdr');
   _window = document.querySelector('.big-container-bdr-add');
   _parentElement = document.querySelector('.results-bdr-produits');
+  _sauvgarde = document.querySelector('.btn-save-bdr-qt');
 
   toggleWindow() {
     this._window.classList.toggle('hidden');
@@ -38,6 +39,8 @@ class AddBonReception extends AddUserView {
   }
 
   _generateMarkupPreview(result) {
+    const inputQuatite =
+      this._parentElement.querySelector('input[type="text"]');
     return `
       <tr>
         <td>
@@ -54,9 +57,23 @@ class AddBonReception extends AddUserView {
             drive_file_rename_outline
           </span>
         </td>
-        <td class="red-reste">32</td>
       </tr>
     `;
+  }
+
+  handleUpdate() {
+    const bonLivraisonInput = document.getElementById('bonLivraisonInput');
+    const factureInput = document.getElementById('factureInput');
+    this._sauvgarde.addEventListener('click', e => {
+      e.preventDefault();
+      console.log('SAUVGARDE');
+      if (bonLivraisonInput.files.length > 0)
+        console.log(URL.createObjectURL(bonLivraisonInput.files[0]));
+      else console.log('no bon Livraison');
+      if (factureInput.files.length > 0)
+        console.log(URL.createObjectURL(factureInput.files[0]));
+      else console.log('no facture');
+    });
   }
 }
 
