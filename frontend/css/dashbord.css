@@ -532,7 +532,8 @@ aside .sidebar a:hover span {
   padding: 0.6rem;
 }
 .heading-table-btns-add-bdr,
-.heading-table-btns-add-bdci {
+.heading-table-btns-add-bdci,
+.heading-table-btns-verif-bdci {
   width: 100%;
   display: flex;
   justify-content: end;
@@ -795,7 +796,8 @@ aside .sidebar a:hover span {
   background-color: white;
   transition: all 0.3s ease;
 }
-.table-container-add-bdr {
+.table-container-add-bdr,
+.table-container-verif-bdci {
   width: auto;
   max-height: 49.6vh;
   overflow-y: auto;
@@ -808,7 +810,8 @@ aside .sidebar a:hover span {
 .table-container-bdci-produits table th,
 .table-container-bdr-produits table th,
 .table-container-add-bdr table th,
-.table-container-show-bdr table th {
+.table-container-show-bdr table th,
+.table-container-verif-bdci table th {
   width: 22rem;
 }
 
@@ -940,11 +943,16 @@ table tbody tr:last-child td {
   color: #4b4b4b;
   cursor: pointer;
 }
-
+.reste-livre {
+  color: red;
+}
 .view-btc-btn,
 .view-btr-btn,
 .view-bdl-btn,
-.view-fac-btn {
+.view-fac-btn,
+.verif-bdci-Directeur,
+.verif-bdci-RD,
+.verif-bdci-Magasinier {
   background-color: transparent;
   cursor: pointer;
 }
@@ -970,7 +978,8 @@ table tbody tr:last-child td {
 .colomn-tags-name-bdc,
 .colomn-tags-name-bdr,
 .colomn-tags-name-bdci,
-.colomn-tags-name-bdr-qt {
+.colomn-tags-name-bdr-qt,
+.colomn-des-name-product {
   /* width: 5rem; */
   padding: 0.4rem;
   font-size: 1.2rem;
@@ -1058,10 +1067,12 @@ table tbody tr:last-child td {
 .blue-price {
   color: #477ce2;
 }
-.quantity {
+.quantity,
+.quantity-verif {
   position: relative;
 }
-.quantity span {
+.quantity span,
+.quantity-verif span {
   position: absolute;
 }
 .green-qt {
@@ -1100,10 +1111,14 @@ table tbody tr:last-child td {
 .checkbox-colomn-bdc-add,
 .checkbox-colomn-bdci-add,
 .checkbox-colomn-bdr-add,
-.checkbox-colomn-bdr-show {
+.checkbox-colomn-bdr-show,
+.colomn-product-des {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  margin-left: 0.8rem;
+}
+.first-td-bdci {
   margin-left: 0.8rem;
 }
 .first-col {
@@ -1113,7 +1128,8 @@ table tbody tr:last-child td {
   font-size: 1.1rem;
   color: #4b4b4b;
 }
-.info-icon {
+.info-icon,
+.verif-icon {
   font-size: 2.1rem;
   color: #4b4b4b;
 }
@@ -1334,7 +1350,8 @@ table tbody tr:last-child td {
 .edit-structure-container,
 .add-bdc-container,
 .add-bdr-container,
-.show-bdr-container {
+.show-bdr-container,
+.verif-bdci-container {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -1368,7 +1385,8 @@ table tbody tr:last-child td {
 .big-container,
 .big-container-bdr,
 .big-container-bdr-add,
-.big-container-bdci {
+.big-container-bdci,
+.big-container-verif-bdci {
   margin: 0 auto;
 }
 .add-product-bdc-cart,
@@ -1474,7 +1492,8 @@ table tbody tr:last-child td {
   position: relative;
   overflow: hidden;
 }
-.add-bdr-cart {
+.add-bdr-cart,
+.verif-bdci-cart {
   width: 75rem;
   margin: 0 auto;
   display: flex;
@@ -2212,7 +2231,8 @@ a.password-icon:active {
 .results-produits,
 .results-bdc-produits,
 .results-bdci-produits,
-.results-bdr-produits {
+.results-bdr-produits,
+.results-bdci-produits-verif {
   position: relative;
 }
 .container-select-bdc {
@@ -2416,7 +2436,8 @@ a.password-icon:active {
 .overlayError {
   z-index: 1011;
 }
-.bdc-title {
+.bdc-title,
+.verif-bdci-title {
   font-size: 1.7rem;
   font-weight: 700;
   color: #477ce2;

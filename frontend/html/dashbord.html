@@ -1632,11 +1632,11 @@
                   </p> -->
                 </div>
                 <div class="heading-table-btns-bdci">
-                  <button
+                  <!-- <button
                     class="heading-table-btn btn-cancel-bdci disabled-delete-button"
                   >
                     Annuler
-                  </button>
+                  </button> -->
                   <button
                     class="heading-table-btn btn-delete-bdci disabled-delete-button"
                   >
@@ -1663,12 +1663,20 @@
                         <p class="colomn-tags-bdci">N°Commande</p>
                       </div>
                     </th>
-
+                    <!-- btns pour all sauf consommateur -->
+                    <th class="hidden">nom</th>
                     <th>Date</th>
                     <th>Statut</th>
+
+                    <!-- btns pour consommateur -->
                     <th class="view-bdc">Détails</th>
-                    <!-- <th class="view-bdr hidden">Bon de reception</th> -->
-                    <th class="hidden">Imprimer</th>
+                    <!-- btns pour Responsable direct -->
+                    <th class="verif-RD hidden">Vérifier</th>
+                    <!-- btns pour Directeur -->
+                    <th class="verif-Directeur hidden">Vérifier</th>
+                    <!-- btns pour Magasinier -->
+                    <th class="verif-Magasinier hidden">Vérifier</th>
+                    <th class="print-bdci hidden">Imprimer</th>
                   </tr>
                 </thead>
                 <tbody class="results">
@@ -1680,9 +1688,12 @@
                         <p class="colomn-tags-name">24299</p>
                       </div>
                     </td>
-
+                    <!-- pour savoir qui a commander -->
+                    <td class="hidden">hadi baghdadli</td>
                     <td>21/12/2023</td>
                     <td><p class="status enattente-status">En Attente</p></td>
+
+                    <!-- btns pour info pour consommateur -->
                     <td class="td-view-bdc">
                       <button class="details-btn print-bdci-btn">
                         <span class="material-icons-sharp info-icon">
@@ -1690,12 +1701,31 @@
                         </span>
                       </button>
                     </td>
-                    <td class="td-view-bdr hidden">
-                      <button class="view-btr-btn">
-                        <p>Voir Bons de Receptions</p>
+                    <!-- btns verif pour Responsable direct -->
+                    <td class="td-verif-bdci-RD hidden">
+                      <button class="verif-bdci-RD">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
                       </button>
                     </td>
-                    <td class="hidden">
+                    <!-- btns verif pour Directeur -->
+                    <td class="td-verif-bdci-Directeur hidden">
+                      <button class="verif-bdci-Directeur">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td>
+                    <!-- btns verif+print pour Magasinier -->
+                    <td class="td-verif-bdci-Magasinier hidden">
+                      <button class="verif-bdci-Magasinier">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td>
+                    <td class="td-print-bdci hidden">
                       <button class="details-btn print-bdc-btn">
                         <span class="material-icons-sharp info-icon">
                           print
@@ -2829,6 +2859,7 @@
                   <th>Quantité</th>
                   <th>Prix.U</th>
                   <th>Montant</th>
+                  <th>Reste a livré</th>
                   <!-- <th>Modifier</th> -->
                 </tr>
               </thead>
@@ -2853,6 +2884,7 @@
                     <input type="text" placeholder="10.000" />
                   </td>
                   <td class="price-produit-montant">80.000</td>
+                  <td class="reste-livre">1</td>
                 </tr>
                 <tr class="selected-row">
                   <td>
@@ -3166,7 +3198,7 @@
                     <th>Quantité</th>
                     <!-- <th>Prix Unitaire</th> -->
                     <th>Qt Recue</th>
-                    <th>Reste a Livrer</th>
+                    <!-- <th>Reste a Livrer</th> -->
                   </tr>
                 </thead>
                 <tbody class="results-bdr-produits">
@@ -3186,7 +3218,7 @@
                         drive_file_rename_outline
                       </span>
                     </td>
-                    <td class="red-reste">32</td>
+                    <!-- <td class="red-reste">32</td> -->
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
@@ -3207,7 +3239,7 @@
                         drive_file_rename_outline
                       </span>
                     </td>
-                    <td class="red-reste">32</td>
+                    <!-- <td class="red-reste">32</td> -->
                   </tr>
                   <tr>
                     <td>
@@ -3225,7 +3257,7 @@
                         drive_file_rename_outline
                       </span>
                     </td>
-                    <td class="red-reste">32</td>
+                    <!-- <td class="red-reste">32</td> -->
                   </tr>
                   <!--fin d'une ligne selected  -->
                 </tbody>
@@ -3508,6 +3540,94 @@
         </div>
       </div>
       <!-- fin section pour add un nv bdci -->
+      <!-- debut section pour verif un bdci -->
+      <div class="big-container-verif-bdci hidden">
+        <div class="verif-bdci-container">
+          <div class="verif-bdci-cart">
+            <p class="verif-bdci-title">Commande N°08</p>
+            <div class="table-container-verif-bdci">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Designation</p>
+                      </div>
+                    </th>
+                    <th>Quantité demandée</th>
+                    <th>Quantité accordée</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdci-produits-verif">
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td>14</td>
+                    <td class="quantity-verif">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+
+                    <td>14</td>
+
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+
+                    <td>14</td>
+
+                    <td class="quantity">
+                      <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-verif-bdci">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdr btn-cancel-verif-bdci-qt"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdr add-users-btn btn-save-verif-bdci-qt"
+              >
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin section pour verif un bdci -->
 
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
