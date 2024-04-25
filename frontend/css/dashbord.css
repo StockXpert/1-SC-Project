@@ -944,7 +944,10 @@ table tbody tr:last-child td {
 .view-btc-btn,
 .view-btr-btn,
 .view-bdl-btn,
-.view-fac-btn {
+.view-fac-btn,
+.verif-bdci-Directeur,
+.verif-bdci-RD,
+.verif-bdci-Magasinier {
   background-color: transparent;
   cursor: pointer;
 }
@@ -1113,7 +1116,8 @@ table tbody tr:last-child td {
   font-size: 1.1rem;
   color: #4b4b4b;
 }
-.info-icon {
+.info-icon,
+.verif-icon {
   font-size: 2.1rem;
   color: #4b4b4b;
 }

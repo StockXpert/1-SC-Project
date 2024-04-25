@@ -1564,7 +1564,7 @@
         </div>
         <!------fin de content for ServiceAchat : 4 - eleboration-bon-de-commande----- -->
         <!------ debut de content for consommateur : 5 - eleboration-bon-de-commande-interne----- -->
-        <div class="main-table hidden" id="main-table-bdci">
+        <div class="main-table" id="main-table-bdci">
           <div class="heading">
             <h1>Les Commandes Internes</h1>
             <hr class="line-style" />
@@ -1632,11 +1632,11 @@
                   </p> -->
                 </div>
                 <div class="heading-table-btns-bdci">
-                  <button
+                  <!-- <button
                     class="heading-table-btn btn-cancel-bdci disabled-delete-button"
                   >
                     Annuler
-                  </button>
+                  </button> -->
                   <button
                     class="heading-table-btn btn-delete-bdci disabled-delete-button"
                   >
@@ -1666,9 +1666,15 @@
 
                     <th>Date</th>
                     <th>Statut</th>
+                    <!-- btns pour consommateur -->
                     <th class="view-bdc">Détails</th>
-                    <!-- <th class="view-bdr hidden">Bon de reception</th> -->
-                    <th class="hidden">Imprimer</th>
+                    <!-- btns pour Responsable direct -->
+                    <th class="verif-RD hidden">Vérifier</th>
+                    <!-- btns pour Directeur -->
+                    <th class="verif-Directeur hidden">Vérifier</th>
+                    <!-- btns pour Magasinier -->
+                    <th class="verif-Magasinier hidden">Vérifier</th>
+                    <th class="print-bdci hidden">Imprimer</th>
                   </tr>
                 </thead>
                 <tbody class="results">
@@ -1683,6 +1689,7 @@
 
                     <td>21/12/2023</td>
                     <td><p class="status enattente-status">En Attente</p></td>
+                    <!-- btns pour info pour consommateur -->
                     <td class="td-view-bdc">
                       <button class="details-btn print-bdci-btn">
                         <span class="material-icons-sharp info-icon">
@@ -1690,12 +1697,31 @@
                         </span>
                       </button>
                     </td>
-                    <td class="td-view-bdr hidden">
-                      <button class="view-btr-btn">
-                        <p>Voir Bons de Receptions</p>
+                    <!-- btns verif pour Responsable direct -->
+                    <td class="td-verif-bdci-RD hidden">
+                      <button class="verif-bdci-RD">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
                       </button>
                     </td>
-                    <td class="hidden">
+                    <!-- btns verif pour Directeur -->
+                    <td class="td-verif-bdci-Directeur hidden">
+                      <button class="verif-bdci-Directeur">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td>
+                    <!-- btns verif+print pour Magasinier -->
+                    <td class="td-verif-bdci-Magasinier hidden">
+                      <button class="verif-bdci-Magasinier">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td>
+                    <td class="td-print-bdci hidden">
                       <button class="details-btn print-bdc-btn">
                         <span class="material-icons-sharp info-icon">
                           print
