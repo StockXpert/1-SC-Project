@@ -88,6 +88,7 @@ export class SeeCmdsView extends DeleteUserView {
                     <td class="price-produit-montant">${
                       product.quantite * product.prix_unitaire
                     }</td>
+                    <td class="reste-livre">1</td>
                   </tr>`;
       })
       .join('');
