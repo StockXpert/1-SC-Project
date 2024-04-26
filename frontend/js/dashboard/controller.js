@@ -31,7 +31,8 @@ import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 import bonReceptionView from './views/commandes/bonReceptionView.js';
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
-import seeCmdsView, { SeeCmdsView } from './views/commandes/seeCmdsView.js';
+import seeCmdsView from './views/commandes/seeCmdsView.js';
+import seeCmdsIntView from './views/commandesInt/seeCmdsIntView.js';
 import addBonReception from './views/commandes/addBonReception.js';
 import View from './views/view.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
@@ -1119,8 +1120,9 @@ const controlLoadCmdsInt = async function () {
     true,
     model.state.me.permissions.all
   );
-  // TODO: seeCmdsView.resetPointers();
-  // TODO: seeCmdsView.addSeeController(controlViewCmd);
+  seeCmdsIntView.resetPointers();
+  // TODO:
+  seeCmdsIntView.addSeeController(controlViewCmdInt);
   cmdsIntView.resetPointers();
   // bonReceptionView.f();
   // bonReceptionView.addHandlerShow(controlLoadBRec);
@@ -1262,6 +1264,37 @@ const controlSavingBDCI = async function () {
     // addCmdsView._boundToggleWindow();
     await controlLoadCmdsInt();
   }
+};
+
+const controlViewCmdInt = async function (target) {
+  /*
+  //ONCLICK OF A VIEW BUTTON
+  //Get the index of the clicked view button here
+  // const target = this;
+  const targetIndex = helpers.findNodeIndex(seeCmdsIntView._btnOpen, target);
+  seeCmdsIntView.renderSpinner(
+    'Récupération des produits de la commande interne...',
+    true
+  );
+  //TODO:
+  // const products = await model.loadCommandeproducts(
+  //   model.state.bdc.allCommandes[targetIndex].num_commande
+  // );
+  seeCmdsView.unrenderSpinner(true);
+  if (!products[0].ok) {
+    helpers.renderError(
+      'Erreur',
+      `Une erreur s'est produite lors de la récupération des produits du bon de commande interne.`
+    );
+  } else {
+    // model.state.user = model.state.search.queryResults[targetIndex];
+    //Use it to extract the input data from the state object
+    seeCmdsView.changeDetails(
+      model.state.bdc.allCommandes[targetIndex],
+      products[1].response
+    );
+  }
+  //                                                                        TODO:  */
 };
 
 //////////////////////////////////////////////////////////////////
