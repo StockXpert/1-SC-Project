@@ -23,7 +23,7 @@ export const formatDate = inputDate => {
   const day = String(date.getDate()).padStart(2, '0');
 
   // Format the date in the desired format
-  const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = `${day}/${month}/${year}`;
 
   return formattedDate;
 };
@@ -78,7 +78,6 @@ export const formatDate = inputDate => {
 
 export const getJSON = async function (url) {
   try {
-    console.log('getJSON');
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',
@@ -108,7 +107,6 @@ export const getJSON = async function (url) {
 };
 export const getJSONBody = async function (url, uploadData) {
   try {
-    console.log('getJSON');
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',
@@ -491,4 +489,59 @@ export const renderError = function (heading, content) {
   //add closing ELs
   container.querySelector('.close-btn').addEventListener('click', hideWindow);
   document.querySelector('.overlayError').addEventListener('click', hideWindow);
+};
+
+export const getStatusClass = function (status) {
+  switch (status) {
+    case 'servie':
+      return 'served-status-bdci';
+    case 'pret':
+      return 'finish-status-bdci';
+    case 'visee par dg':
+      return 'v-directeur-status';
+    case 'visee par resp':
+      return 'v-responsable-status';
+    case 'demande':
+      return 'enattente-status';
+    default:
+      return '';
+  }
+};
+
+export const isObjectInArray = function (array, objectToCheck) {
+  return array.some(item => {
+    // Compare each element's properties with objectToCheck's properties
+    return item.designation === objectToCheck.designation;
+  });
+};
+export const validateInput = function (input) {
+  // Remove leading zeros
+  input.value = input.value.replace(/^0+/, '');
+  // Ensure the value is at least 1
+  if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) {
+    input.value = ''; // Set value to 1 if less than 1 or not a number
+  }
+};
+export const validateInputPrice = function (input) {
+  // Remove non-numeric characters except dot
+  input.value = input.value.replace(/[^\d.]/g, '');
+
+  // Remove leading dot
+  input.value = input.value.replace(/^\./, '');
+
+  // Remove extra dots
+  input.value = input.value.replace(/(\..*)\./g, '$1');
+
+  // Remove decimals beyond two digits
+  input.value = input.value.replace(/(\.\d\d)\d+/g, '$1');
+
+  // Ensure the value is not empty
+  if (input.value === '') {
+    input.value = '0'; // Default to 0 if empty
+  }
+
+  // Ensure the value is valid
+  if (isNaN(parseFloat(input.value))) {
+    input.value = '0'; // Default to 0 if not a valid number
+  }
 };
