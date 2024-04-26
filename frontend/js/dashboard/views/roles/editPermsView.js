@@ -6,7 +6,7 @@ import * as model from '../../model.js';
 class EditPermsView extends EditUserView {
   // constructor(){
   _parentElement = document.querySelector('.container-checkboxes-permissions');
-  _trueParentElement = document.querySelector('.container-pick-role');
+  _trueParentElement = document.querySelector('.container-permissions');
   _role = document.querySelector('#pick-role-options');
   _data;
   _btnClose = document.querySelector('.cancel-permission-btn');

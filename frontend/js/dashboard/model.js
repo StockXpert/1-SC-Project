@@ -17,6 +17,7 @@ export const state = {
       all: [],
       wellFormed: [],
     },
+    commandesInt: [],
   },
   bdc: {
     allCommandes: [],
@@ -37,6 +38,12 @@ export const state = {
     selected: '',
   },
   bdc_products: {
+    all: [],
+    selected: '',
+    added: [],
+    changed: {},
+  },
+  bdci_products: {
     all: [],
     selected: '',
     added: [],
@@ -600,8 +607,7 @@ export const loadCmdsInt = async function () {
   let commandesInt = await helpers.getJSON(
     `${API_URL}/Sorties/showAllDemandes`
   );
-  console.log(commandesInt);
-  console.log(state);
+  state.me.commandesInt = commandesInt.response;
   return commandesInt;
 };
 export const loadCommandeproducts = async function (numCommande) {
@@ -630,6 +636,11 @@ export const loadArticles = async function () {
 export const loadProducts = async function (article) {
   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
   return helpers.filterByArticle(products.response, article);
+};
+
+export const loadAllProducts = async function () {
+  let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+  return products.response;
 };
 
 export const createBDC = async function () {
