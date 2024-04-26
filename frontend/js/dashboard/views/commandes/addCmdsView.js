@@ -271,10 +271,10 @@ export class AddCmdsView extends AddUserView {
     //also add the EL for numberic price value inputs
     this._addProductForm
       .querySelector('input[name="prixUnitaire"]')
-      .addEventListener('input', e => helpers.validateInputPrice(e.target));
+      ?.addEventListener('input', e => helpers.validateInputPrice(e.target));
     this._editProductForm
       .querySelector('input[name="prixUnitaire"]')
-      .addEventListener('input', e => helpers.validateInputPrice(e.target));
+      ?.addEventListener('input', e => helpers.validateInputPrice(e.target));
   }
   addToSuggestionsProductsAndEL(
     results = [],
