@@ -63,11 +63,12 @@ export class AddCmdsView extends AddUserView {
   // });
   // }
 
-  allowSavingBDC(allow = true) {
-    this._btnDeleteProducts.disabled = !allow;
+  allowSavingBDC(allow = true, btnClass = '.btn-delete-produits-bdc') {
+    const btn = document.querySelector(btnClass);
+    btn.disabled = !allow;
     allow
-      ? this._btnDeleteProducts.classList.remove('disabled-save-button')
-      : this._btnDeleteProducts.classList.add('disabled-save-button');
+      ? btn.classList.remove('disabled-save-button')
+      : btn.classList.add('disabled-save-button');
   }
   addHandlerSavingBDC(handler, state) {
     // const typeInput = this._type;
@@ -159,6 +160,7 @@ export class AddCmdsView extends AddUserView {
   addHandlerHideAddProductWindow(CloserClassName, windowClassName) {
     this._windowAddProduct = document.querySelector(windowClassName);
     this._btnCloseAddProduct = document.querySelector(CloserClassName);
+    this._product.parentElement.classList.remove('input-product--valid');
     this._btnCloseAddProduct.addEventListener(
       'click',
       this._boundToggleAddProductWindow
@@ -259,6 +261,20 @@ export class AddCmdsView extends AddUserView {
       this._productEdit.setCustomValidity('');
       productSearchHandler(e.target.value, 'edit');
     });
+    //also add the EL for numberic value inputs
+    this._addProductForm
+      .querySelector('input[name="quantite"]')
+      .addEventListener('input', e => helpers.validateInput(e.target));
+    this._editProductForm
+      .querySelector('input[name="quantite"]')
+      .addEventListener('input', e => helpers.validateInput(e.target));
+    //also add the EL for numberic price value inputs
+    this._addProductForm
+      .querySelector('input[name="prixUnitaire"]')
+      .addEventListener('input', e => helpers.validateInputPrice(e.target));
+    this._editProductForm
+      .querySelector('input[name="prixUnitaire"]')
+      .addEventListener('input', e => helpers.validateInputPrice(e.target));
   }
   addToSuggestionsProductsAndEL(
     results = [],
@@ -318,9 +334,7 @@ export class AddCmdsView extends AddUserView {
       });
       handler(formDataObj);
       this.clearAddProductForm();
-      document
-        .querySelector('.product-add-bdci')
-        .classList.remove('input-product--valid');
+      this._product.parentElement.classList.remove('input-product--valid');
       this.toggleAddProductWindow.bind(this)();
     });
   }
@@ -410,6 +424,7 @@ export class AddCmdsView extends AddUserView {
   addHandlerHideEditProductWindow(CloserClassName, windowClassName) {
     this._windowEditProduct = document.querySelector(windowClassName);
     this._btnCloseEditProduct = document.querySelector(CloserClassName);
+    this._productEdit.parentElement.classList.remove('input-product--valid');
     this._btnCloseEditProduct.addEventListener(
       'click',
       this._boundToggleEditProductWindow

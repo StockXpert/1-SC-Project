@@ -1028,11 +1028,11 @@ const controlLoadBRec = async function () {
   addBonReception.handleUpdate();
 };
 
-const controlAddBRec = async function (newReception) {
-  const newReception = {
-    numCommande: model.state.bdr.all[0].num_bon,
-  };
-};
+// const controlAddBRec = async function (newReception) {
+//   const newReception = {
+//     numCommande: model.state.bdr.all[0].num_bon,
+//   };
+// };
 
 const controlDeleteBonRec = function () {
   filterArrayByBooleans(
@@ -1101,6 +1101,9 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
+  addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
+  model.state.bdci_products.added = [];
+  addCmdsIntView.render(model.state.bdci_products.added);
   cmdsIntView.renderSpinner('Chagement des produits depuis la BDD ...');
   await controlUpdateAllProducts();
   cmdsIntView.unrenderSpinner();
@@ -1136,6 +1139,7 @@ const controlAddProductInt = newProduct => {
       `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.`
     );
   } else {
+    addCmdsIntView.allowSavingBDC(true, '.btn-save-bdci-qt');
     model.state.bdci_products.added.push(newProduct);
     addCmdsIntView.render(model.state.bdci_products.added);
     addCmdsIntView._checkboxesAddProduct =
@@ -1230,8 +1234,8 @@ const controlDeleteAddedProductsInt = () => {
     model.state.bdci_products.added,
     helpers.getCheckboxStates(addCmdsIntView._checkboxesAddProduct)
   );
-  // if (addedProductsAfterRemoval.length == 0)
-  //   addCmdsIntView.allowSavingBDC(false);
+  if (addedProductsAfterRemoval.length == 0)
+    addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
   model.state.bdci_products.added = addedProductsAfterRemoval;
   addCmdsIntView.render(model.state.bdci_products.added);
   addCmdsIntView._checkboxesAddProduct =
