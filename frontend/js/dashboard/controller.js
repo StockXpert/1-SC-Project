@@ -1308,12 +1308,17 @@ const controlEditCmdsInt = async function () {
   console.log(model.state.commandesInt.all[targetIndex]);
   const numDemande = model.state.commandesInt.all[targetIndex].num_demande;
   model.state.commandesInt.selected.new.numDemande = numDemande;
-  const selectedCmdIntProducts = await model.loadCommandeIntProducts(
+  editCmdsIntView.renderSpinner('', true);
+  let selectedCmdIntProducts = await model.loadCommandeIntProducts(
     model.state.commandesInt.all[targetIndex].num_demande
   );
-  //Use it to extract the input data from the state object
+
+  editCmdsIntView.unrenderSpinner(true);
+  selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
+  // Use it to extract the input data from the state object
   // editCmdsIntView.changeInputs(numDemande, selectedCmdIntProducts);
-  editCmdsIntView.render(numDemande, selectedCmdIntProducts);
+  console.log(selectedCmdIntProducts);
+  editCmdsIntView.render(selectedCmdIntProducts);
   //                                                                           TODO:
 };
 

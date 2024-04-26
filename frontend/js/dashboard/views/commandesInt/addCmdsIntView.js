@@ -59,7 +59,9 @@ export class AddCmdsIntView extends AddCmdsView {
     <td>${result.designation}</td>
 
     <td class="input-changeble quantity-produit-bdci">
-      <input type="text" placeholder="${result.quantite}" />
+      <input type="text" placeholder="${
+        result.quantite ? result.quantite : result.quantite_demande
+      }" />
     </td>
 
     <td>

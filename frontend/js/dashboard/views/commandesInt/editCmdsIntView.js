@@ -29,6 +29,9 @@ class EditCmdsIntView extends AddCmdsIntView {
   _addProductForm = document.querySelector('.inputs-add-product-edit-bdci');
   _editProductForm = document.querySelector('.inputs-edit-product-edit-bdci');
   _parentElement = document.querySelector('.results-edit-bdci-produits');
+  _trueParentElement = document.querySelector(
+    '.big-container-edit-bdci .add-bdc-cart'
+  );
   _product = document.querySelector('#edit-bdci-product-add');
   _productEdit = document.querySelector('#edit-bdci-product-edit');
   _editProductForm = document.querySelector('.inputs-edit-product-edit-bdci');
