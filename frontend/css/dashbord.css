@@ -1114,7 +1114,7 @@ table tbody tr:last-child td {
 }
 .quantity-produit input,
 .quantity-produit-bdci input {
-  width: 2rem;
+  width: 3rem;
 }
 .price-produit input::placeholder {
   color: #477ce2;
