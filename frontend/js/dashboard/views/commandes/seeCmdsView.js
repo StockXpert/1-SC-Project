@@ -25,7 +25,6 @@ export class SeeCmdsView extends DeleteUserView {
   resetPointers() {
     //voir bon de commande
     this._btnOpen = document.querySelectorAll('.view-btc-btn');
-    console.log(this._btnOpen);
   }
   // {
   // "num_commande": 8,
@@ -41,11 +40,12 @@ export class SeeCmdsView extends DeleteUserView {
       this._overlay.classList.toggle('hidden');
       this._window.classList.toggle('hidden');
     };
+    const newThis = this;
     this._btnOpen.forEach(btn =>
       btn.addEventListener('click', async function (e) {
         console.log('click !');
         e.preventDefault();
-        toggleWindow();
+        toggleWindow.bind(newThis)();
         // this._btnClose.click();
         await ctrler(this);
       })
