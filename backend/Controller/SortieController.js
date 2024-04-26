@@ -98,10 +98,10 @@ function showNewDemandes(req,res)
         case 'directeur':
             etat='visee par resp' 
         default:
-            etat='en attente'
+            etat='demande'
             break;
     }
-    SortieModel.getNewDemandes(etat,email,role==='consommateur'?'cons_notif':'other_notif').then((demandes)=>{
+    SortieModel.getNewDemandes(role,etat,email,role==='consommateur'?'cons_notif':'other_notif').then((demandes)=>{
         res.status(200).json({response:demandes})
     }).catch(()=>res.status(500).json({response:"internal error"}))
 }
@@ -140,14 +140,36 @@ function readNotif(req,res)
 {
     const {role}=req;
     const {numDemande}=req.body;
-    SortieModel.readNotif(numDemande,role==='consommateur'?'cons_notif':'other_notif').then(()=>{
+    SortieModel.readNotif(numDemande,role==='Consommateur'?'cons_notif':'other_notif').then(()=>{
         res.status(200).json({response:"read"})
     }).catch(()=>res.status(500).json({response:"internal error"}))
 }
 function readAllNotif(req,res)
 {
-    SortieModel.readAllNotif().then(()=>{
-        res.status(200).json({response:"read"})
+    const {role,email}=req;
+    let etat;
+    switch (role) {
+        case 'consommateur':
+            etat='pret'
+        case 'magasinier':
+            etat='visee par dir'
+            break;
+        case 'directeur':
+            etat='visee par resp' 
+        default:
+            etat='demande'
+            break;
+    }
+    let numDemandes=[]
+    SortieModel.getNewDemandes(role,etat,email,role==='Consommateur'?'cons_notif':'other_notif').then((demandes)=>{
+        for(let demande of demandes)
+        {
+          numDemandes.push(demande.num_demande)
+        }
+        console.log({numDemandes})
+        SortieModel.readAllNotif(role==="Consommateur"?"cons_notif":"other_notif",numDemandes).then(()=>{
+            res.status(200).json({response:'read'})
+        }).catch(()=>res.status(500).json({response:"internal error"}))
     }).catch(()=>res.status(500).json({response:"internal error"}))
 }
 function showDemande(req,res)
@@ -156,13 +178,13 @@ function showDemande(req,res)
     const {role}=req;
     let quantiteType;
     if(role==="Consommateur")
-       quantiteType="f.quantite_servie"
+       quantiteType="f.quantite_demande,f.quantite_servie"
     else if (role==="Magasinier")
        quantiteType="f.quantite_servie,f.quantite_accorde";
     else if(role==="Directeur")
-       quantiteType="f.quantite_accorde,f.quantite_servie"
+       quantiteType="f.quantite_demande,f.quantite_accorde,f.quantite_servie"
     else  
-       quantiteType="f.quantite_accorde"
+       quantiteType="f.quantite_demande,f.quantite_accorde"
     SortieModel.getDemande(numDemande,role,quantiteType).then((demande)=>{
         res.status(200).json({demande})
     }).catch(()=>{res.status(500).json({response:"internal error"})})

@@ -390,13 +390,13 @@ function getNewDemandes(role,etat,email,notif)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `select num_demande,etat,id_demandeur,date_demande where ${notif}=true etat=? 
+        const query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${notif}=true and etat=? 
         ${role==="Consommateur"?"and id_demande=?":''}
-        ${(etat==='en attente'||role==="Directeur")?`and id_demandeur in
+        ${(etat==='demande'||role==="Directeur")?`and id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`
         const values = [etat];
-        if(etat==='en attente') values.push(email)
+        if(etat==='demande') values.push(email)
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -623,7 +623,7 @@ function readNotif(numDemande,notif)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set etat=? , ${notif}=false where num_demande=?`;
+        const query = `update demande_fourniture set ${notif}=false where num_demande=?`;
         const values = [numDemande];
       
         connection.connect((err) => {
@@ -726,13 +726,14 @@ function getDemandeProducts(numDemande)
           connection.end(); // Fermer la connexion après l'exécution de la requête
         });})  
 }
-function readAllNotif()
+function readAllNotif(notif,numDemandes)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set other_notif=false where other_notif=true`;
-        
-      
+
+        const query = `update demande_fourniture set ${notif}=false where num_demande in(?)`;
+        console.log({query});
+        const values=[numDemandes]
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -740,7 +741,7 @@ function readAllNotif()
             return;
           }
           
-          connection.query(query, (error, results, fields) => {
+          connection.query(query,values,(error, results, fields) => {
             if (error) {
               console.error('Erreur lors de l\'exécution de la requête :', error);
               reject("request error");
