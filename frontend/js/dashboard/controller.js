@@ -26,6 +26,7 @@ import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
+import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
@@ -130,10 +131,7 @@ const controlViewCmd = async function (target) {
   // const target = this;
   const targetIndex = helpers.findNodeIndex(seeCmdsView._btnOpen, target);
   // seeCmdsView.renderSpinner('Récupération des produits de la commande...');
-  seeCmdsView.renderSpinner(
-    'Récupération des produits de la commande...',
-    true
-  );
+  seeCmdsView.renderSpinner('', true);
   const products = await model.loadCommandeproducts(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
@@ -1116,7 +1114,7 @@ const controlLoadCmdsInt = async function () {
   await model.loadCmdsInt();
   cmdsIntView.unrenderSpinner();
   cmdsIntView.render(
-    model.state.me.commandesInt,
+    model.state.commandesInt.all,
     true,
     model.state.me.permissions.all
   );
@@ -1271,14 +1269,11 @@ const controlViewCmdInt = async function (target) {
   //Get the index of the clicked view button here
   // const target = this;
   const targetIndex = helpers.findNodeIndex(seeCmdsIntView._btnOpen, target);
-  seeCmdsIntView.renderSpinner(
-    'Récupération des produits de la commande interne...',
-    true
-  );
+  seeCmdsIntView.renderSpinner('', true);
   // TODO:
-  console.log(model.state.me.commandesInt[targetIndex]);
+  console.log(model.state.commandesInt.all[targetIndex]);
   const products = await model.loadCommandeIntProducts(
-    model.state.me.commandesInt[targetIndex].num_demande
+    model.state.commandesInt.all[targetIndex].num_demande
   );
   seeCmdsIntView.unrenderSpinner(true);
   if (!products[0].ok) {
@@ -1290,7 +1285,7 @@ const controlViewCmdInt = async function (target) {
     // model.state.user = model.state.search.queryResults[targetIndex];
     //Use it to extract the input data from the state object
     seeCmdsIntView.changeDetails(
-      model.state.me.commandesInt[targetIndex],
+      model.state.commandesInt.all[targetIndex],
       products[1].demande
     );
   }

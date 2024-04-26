@@ -125,28 +125,30 @@ export class AddCmdsView extends AddUserView {
     //   input.focus(); // Focus the input when the div is clicked
     // });
   }
-  constructor() {
+  constructor(nerfed = false) {
     super();
     //INITIALZR
-    this.addHandlerShowWindow('.add-bdc-btn', '.big-container');
-    this.addHandlerHideWindow('#add-bdc-close', '.big-container');
-    // #F00
-    this.addHandlerHideAddProductWindow(
-      '.cancel-btn-add-bdc',
-      '.add-product-bdc-container'
-    );
-    this.addHandlerShowAddProductWindow(
-      '.btn-add-product',
-      '.add-product-bdc-container'
-    );
-    this.addHandlerHideEditProductWindow(
-      '.cancel-btn-edit-bdc',
-      '.edit-product-bdc-container'
-    );
-    this.addHandlerShowEditProductWindow(
-      '.details-btn-bdc-add',
-      '.edit-product-bdc-container'
-    );
+    if (!nerfed) {
+      this.addHandlerShowWindow('.add-bdc-btn', '.big-container');
+      this.addHandlerHideWindow('#add-bdc-close', '.big-container');
+      // #F00
+      this.addHandlerHideAddProductWindow(
+        '.cancel-btn-add-bdc',
+        '.add-product-bdc-container'
+      );
+      this.addHandlerShowAddProductWindow(
+        '.btn-add-product',
+        '.add-product-bdc-container'
+      );
+      this.addHandlerHideEditProductWindow(
+        '.cancel-btn-edit-bdc',
+        '.edit-product-bdc-container'
+      );
+      this.addHandlerShowEditProductWindow(
+        '.details-btn-bdc-add',
+        '.edit-product-bdc-container'
+      );
+    }
   }
   resultVisibilityTogglers() {
     this.toggleDivVisibility('#bdc-product', '.add-product-search-results');
