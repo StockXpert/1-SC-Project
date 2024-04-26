@@ -1096,7 +1096,7 @@ table tbody tr:last-child td {
   color: #477ce2;
 }
 .quantity,
-.quantity-verif {
+.quantity-verif,.quantity-verif-RD {
   position: relative;
 }
 .quantity span,

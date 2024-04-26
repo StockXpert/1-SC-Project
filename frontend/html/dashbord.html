@@ -3490,7 +3490,7 @@
       </div>
       <!-- fin section pour add un nv bdci -->
       <!-- debut section pour verif un bdci -->
-      <div class="big-container-verif-bdci hidden">
+      <div class="big-container-verif-bdci">
         <div class="verif-bdci-container">
           <div class="verif-bdci-cart">
             <p class="verif-bdci-title">Commande N°08</p>
@@ -3504,7 +3504,9 @@
                       </div>
                     </th>
                     <th>Quantité demandée</th>
-                    <th>Quantité accordée</th>
+                    <th>Quantité accordée(RD)</th>
+                    <th>Quantité accordée(D)</th>
+                    <th>Quantité accordée(M)</th>
                   </tr>
                 </thead>
                 <tbody class="results-bdci-produits-verif">
@@ -3516,7 +3518,19 @@
                     </td>
                     <td>14</td>
                     <td class="quantity-verif">
-                      <input class="green-qt" type="text" value="20" />
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
                       <span class="material-icons-sharp">
                         drive_file_rename_outline
                       </span>
@@ -3540,6 +3554,18 @@
                         drive_file_rename_outline
                       </span>
                     </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
                   </tr>
                   <!--fin d'une ligne selected  -->
                   <tr>
@@ -3553,6 +3579,18 @@
 
                     <td class="quantity">
                       <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
                       <span class="material-icons-sharp">
                         drive_file_rename_outline
                       </span>
