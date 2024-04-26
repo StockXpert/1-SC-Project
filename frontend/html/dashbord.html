@@ -3336,7 +3336,7 @@
               <p>Modifier</p>
             </div>
             <form class="inputs-edit-product-bdci">
-              <div class="input-product-bdci-edit">
+              <div class="input-product-bdci-edit product-edit-bdci">
                 <input
                   type="text"
                   placeholder="Chercher la Designation du Produit"
@@ -3345,8 +3345,9 @@
                   id="bdci-product-edit"
                   required
                 />
+
                 <div class="search-results edit-product-search-results">
-                  <ul class="product-search-results-container-edit">
+                  <ul class="bdci-product-search-results-container-edit">
                     <!-- <li>SARL MANSOUR</li>
                     <li>SARL MANSOUR</li>
                     <li>SARL MANSOUR</li>
@@ -3354,7 +3355,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="input-product-bdci">
+              <div class="input-product-bdci quantite-edit-bdci">
                 <input
                   type="number"
                   placeholder="Modifier la Quantité"
@@ -3376,7 +3377,7 @@
               <p>Produit</p>
             </div>
             <form class="inputs-add-product-bdci">
-              <div class="input-product-bdci">
+              <div class="input-product-bdci product-add-bdci">
                 <input
                   name="designation"
                   type="text"
@@ -3385,8 +3386,9 @@
                   autocomplete="off"
                   required
                 />
+                <!-- <input type="checkbox" /> -->
                 <div class="search-results add-product-search-results">
-                  <ul class="product-search-results-container">
+                  <ul class="bdci-product-search-results-container">
                     <!-- <li>SARL MANSOUR</li>
                     <li>SARL MANSOUR</li>
                     <li>SARL MANSOUR</li>
@@ -3394,7 +3396,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="input-product-bdci">
+              <div class="input-product-bdci quantite-add-bdci">
                 <input
                   name="quantite"
                   placeholder="Entrez la Quantité"
@@ -3414,7 +3416,7 @@
         <div class="add-bdc-container">
           <form class="add-bdc-cart">
             <div class="container-select-bdci">
-              <div class="btn-add-product">
+              <div class="btn-add-product btn-add-product-bdci">
                 <button>Ajouter Produit</button>
                 <span class="material-icons-sharp"> add </span>
               </div>
@@ -3463,75 +3465,10 @@
                 </thead>
                 <tbody class="results-bdci-produits">
                   <tr>
-                    <td>
-                      <div class="checkbox-colomn-bdc-add">
-                        <input
-                          class=""
-                          type="checkbox"
-                          id="checkbox-table-bdci-add"
-                        />
-                        <p class="colomn-tags-name-bdc">1</p>
-                      </div>
-                    </td>
-                    <td>Pc dell xps</td>
-
-                    <td class="input-changeble quantity-produit-bdci">
-                      <input type="text" placeholder="8" />
-                    </td>
-
-                    <td>
-                      <button class="details-btn-bdci-add">
-                        <span class="material-icons-sharp info-icon">
-                          edit
-                        </span>
-                      </button>
+                    <td colspan="6" class="empty-table--products">
+                      Les produits que vous ajouterez apparaîtront ici !
                     </td>
                   </tr>
-                  <tr class="selected-row">
-                    <td>
-                      <div class="checkbox-colomn-bdci-add">
-                        <input type="checkbox" id="checkbox-table-bdci-add" />
-                        <p class="colomn-tags-name-bdci">1</p>
-                      </div>
-                    </td>
-                    <td>Pc dell xps</td>
-
-                    <td class="input-changeble quantity-produit-bdci">
-                      <input type="text" placeholder="8" />
-                    </td>
-
-                    <td>
-                      <button class="details-btn-bdci-add">
-                        <span class="material-icons-sharp info-icon">
-                          edit
-                        </span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="checkbox-colomn-bdci-add">
-                        <input type="checkbox" id="checkbox-table-bdci-add" />
-                        <p class="colomn-tags-name-bdci">1</p>
-                      </div>
-                    </td>
-                    <td>Pc dell xps</td>
-
-                    <td class="input-changeble quantity-produit-bdci">
-                      <input type="text" placeholder="8" />
-                    </td>
-
-                    <td>
-                      <button class="details-btn-bdci-add">
-                        <span class="material-icons-sharp info-icon">
-                          edit
-                        </span>
-                      </button>
-                    </td>
-                  </tr>
-                  <td colspan="6" class="empty-table--products">
-                    Les produits que vous ajouterez apparaîtront ici !
-                  </td>
                 </tbody>
               </table>
             </div>

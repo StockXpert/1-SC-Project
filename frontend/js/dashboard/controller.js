@@ -25,6 +25,7 @@ import cmdsView from './views/commandes/cmdsView.js';
 import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
+import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
@@ -32,6 +33,7 @@ import bonReceptionView from './views/commandes/bonReceptionView.js';
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
 import seeCmdsView, { SeeCmdsView } from './views/commandes/seeCmdsView.js';
 import addBonReception from './views/commandes/addBonReception.js';
+import View from './views/view.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -46,7 +48,6 @@ const controlUpdateMyPerms = async function () {
   //     false
   //   )
   // );
-  console.log(model.state.me.permissions.wellFormed);
   sideView.render(model.state.me.permissions.wellFormed);
   sideView.reselectBtns();
   // sideView.unrenderSpinner();
@@ -442,7 +443,7 @@ const controlAddUserUpdateSelects = async function () {
   addUserView.unrenderSpinner();
 };
 const controlEditRoleUpdateSelects = async function () {
-  editPermsView.renderSpinner('Veuillez attendre un moment...', true);
+  editPermsView.renderSpinner('Chargement des permissions...', true);
   const roles = await model.getRoles();
   editPermsView.unrenderSpinner(true);
   editPermsView.addToSelection(roles, 'pick-role-options', 'role');
@@ -510,9 +511,10 @@ const controlLoadPerms = async function () {
     );
     return;
   }
-  editPermsView.render('');
+  editPermsView.renderSpinner('Chargement des Roles... ', true);
   editPermsView.setSelector(0);
   await model.loadRoles();
+  editPermsView.unrenderSpinner(true);
   //update the roleSelector from backend
   await controlEditRoleUpdateSelects();
 };
@@ -732,10 +734,7 @@ const controlLoadCmds = async function () {
   deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
-  console.log(model.state.bdc.allCommandes);
-  console.log(model.state.me.permissions.all);
   cmdsView.render(allCommandes, true, model.state.me.permissions.all);
-  // cmdsView.reSettingDynamicElementsPointersAndELs();
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
   cmdsView.resetPointers();
@@ -859,6 +858,7 @@ const controlTypeSelection = typeName => {
 const controlAddProduct = newProduct => {
   //TODO:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
+
   model.state.bdc_products.added.push(newProduct);
   addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
@@ -1051,79 +1051,6 @@ const controlDeleteBonRec = function () {
   });
 };
 
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-/////// B O N S  D E  C O M M A N D E S  I N T E R N E S #fff
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-const controlLoadCmdsInt = async function () {
-  if (
-    !model.state.me.permissions.all.find(
-      perm => perm.designation == 'show commandes'
-    )
-  ) {
-    sideView.btns[0].click();
-    helpers.renderError(
-      'Erreur',
-      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
-    );
-    return;
-  }
-  cmdsIntView.renderSpinner();
-  cancelCmdsView.restrict(model.state.me.permissions.all);
-  addCmdsView.restrict(model.state.me.permissions.all);
-  deleteCmdsView.restrict(model.state.me.permissions.all);
-  await model.loadCmds();
-  const allCommandes = model.state.bdc.allCommandes;
-  console.log(model.state.bdc.allCommandes);
-  console.log(model.state.me.permissions.all);
-  cmdsIntView.render(allCommandes, true, model.state.me.permissions.all);
-  // cmdsIntView.reSettingDynamicElementsPointersAndELs();
-  seeCmdsView.resetPointers();
-  seeCmdsView.addSeeController(controlViewCmd);
-  cmdsIntView.resetPointers();
-  bonReceptionView.f();
-  bonReceptionView.addHandlerShow(controlLoadBRec);
-  // const filter1Obj = {
-
-  // }
-  // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
-};
-
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-/////// B A C K  O '  B E Y O N D #fff
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-
-addCmdsView.addHandlerAddProduct(controlAddProduct);
-addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
-
-deleteCmdsView.addDeleteController(controlDeleteCmds);
-cancelCmdsView.addCancelController(controlCancelCmds);
-
-// REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
-//TODO: TEMPORARY
-// await controlAddUserUpdateSelects();
-// addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
-// controlSearchResults();
-// userViewAdders();
-
-const controllers = [
-  controlProfile,
-  controlSearchResults,
-  controlLoadStructures,
-  controlLoadRoles,
-  controlLoadPerms,
-  ,
-  ,
-  ,
-  ,
-  ,
-  ,
-  controlLoadCmds,
-];
-
 const controlSavingBDC = async function () {
   if (model.state.fournisseurs.selected == '') {
     helpers.renderError(
@@ -1156,7 +1083,222 @@ const controlSavingBDC = async function () {
   }
 };
 
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// B O N S  D E  C O M M A N D E S  I N T E R N E S #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+const controlLoadCmdsInt = async function () {
+  if (
+    !model.state.me.permissions.all.find(
+      perm => perm.designation == 'show all demandes'
+    )
+  ) {
+    sideView.btns[0].click();
+    helpers.renderError(
+      'Erreur',
+      'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+    );
+    return;
+  }
+  cmdsIntView.renderSpinner('Chagement des produits depuis la BDD ...');
+  await controlUpdateAllProducts();
+  cmdsIntView.unrenderSpinner();
+  cmdsIntView.renderSpinner('Chagement des commandes internes ...');
+  // TODO:
+  // TODO: cancelCmdsView.restrict(model.state.me.permissions.all);
+  // TODO: addCmdsView.restrict(model.state.me.permissions.all);
+  // TODO: deleteCmdsView.restrict(model.state.me.permissions.all);
+  await model.loadCmdsInt();
+  cmdsIntView.unrenderSpinner();
+  cmdsIntView.render(
+    model.state.me.commandesInt,
+    true,
+    model.state.me.permissions.all
+  );
+  // TODO: seeCmdsView.resetPointers();
+  // TODO: seeCmdsView.addSeeController(controlViewCmd);
+  cmdsIntView.resetPointers();
+  // bonReceptionView.f();
+  // bonReceptionView.addHandlerShow(controlLoadBRec);
+  // const filter1Obj = {
+
+  // }
+  // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
+};
+
+const controlAddProductInt = newProduct => {
+  //TODO:
+  // newProduct.numero = model.state.bdc_products.added.length + 1;
+  if (helpers.isObjectInArray(model.state.bdci_products.added, newProduct)) {
+    helpers.renderError(
+      'Erreur',
+      `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.`
+    );
+  } else {
+    model.state.bdci_products.added.push(newProduct);
+    addCmdsIntView.render(model.state.bdci_products.added);
+    addCmdsIntView._checkboxesAddProduct =
+      addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
+    addCmdsIntView.AddHandlerAddedProductsCheckboxes();
+    //TODO: edit btns
+    addCmdsIntView.addHandlerShowEditProductWindow(
+      '.details-btn-bdci-add',
+      '.edit-product-bdci-container'
+    );
+    // editUserView.addHandlerEdit(controlEditUser);
+    //TODO: hide btn
+    addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  }
+};
+
+const controlUpdateAllProducts = async () => {
+  const products = await model.loadAllProducts();
+  model.state.bdci_products.all = products;
+};
+
+const controlSearchProductsInt = (input, type) => {
+  //ON INPUT:
+  addCmdsIntView.setInputValidity(
+    '.product-add-bdci',
+    model.state.bdci_products.all
+      .map(entry => entry.designation)
+      .includes(input)
+  );
+  addCmdsIntView.setInputValidity(
+    '.product-edit-bdci',
+    model.state.bdci_products.all
+      .map(entry => entry.designation)
+      .includes(input)
+  );
+  const fuze = model.fuseMakerProducts(model.state.bdci_products.all);
+  const results = fuze.search(input);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  switch (type) {
+    case 'add':
+      addCmdsIntView.addToSuggestionsProductsAndEL(
+        extractItems(results),
+        '.bdci-product-search-results-container'
+      );
+      addCmdsIntView.resultVisibilityTogglers();
+      break;
+    case 'edit':
+      addCmdsIntView.addToSuggestionsProductsAndEL(
+        extractItems(results),
+        '.bdci-product-search-results-container-edit'
+      );
+      addCmdsIntView.resultVisibilityTogglers();
+      break;
+  }
+};
+
+const controlEditProductBtnsInt = function () {
+  //ONCLICK OF A EDIT BUTTON
+  //Get the index of the clicked edit button here
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    addCmdsIntView._btnsOpenEditProduct,
+    target
+  );
+  //Use it to extract the input data from the state object
+  addCmdsIntView.changeInputs(model.state.bdci_products.added[targetIndex]);
+  model.state.bdci_products.changed = targetIndex;
+};
+
+const controlChangeProductInt = function (editedProduct) {
+  //TODO:
+  model.state.bdci_products.added[model.state.bdci_products.changed] =
+    editedProduct;
+  addCmdsIntView.render(model.state.bdci_products.added);
+  addCmdsIntView._checkboxesAddProduct =
+    addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
+  addCmdsIntView.AddHandlerAddedProductsCheckboxes();
+  //TODO: edit btns
+  addCmdsIntView.addHandlerShowEditProductWindow(
+    '.details-btn-bdci-add',
+    '.edit-product-bdci-container'
+  );
+  //TODO: hide btn
+  addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  // numberRoleView.selectionUpdater('.table-container-bdc-produits');
+};
+
+const controlDeleteAddedProductsInt = () => {
+  const addedProductsAfterRemoval = helpers.removeArrayByBooleans(
+    model.state.bdci_products.added,
+    helpers.getCheckboxStates(addCmdsIntView._checkboxesAddProduct)
+  );
+  // if (addedProductsAfterRemoval.length == 0)
+  //   addCmdsIntView.allowSavingBDC(false);
+  model.state.bdci_products.added = addedProductsAfterRemoval;
+  addCmdsIntView.render(model.state.bdci_products.added);
+  addCmdsIntView._checkboxesAddProduct =
+    addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
+  addCmdsIntView.AddHandlerAddedProductsCheckboxes();
+  //TODO: edit btns
+  addCmdsIntView.addHandlerShowEditProductWindow(
+    '.details-btn-bdci-add',
+    '.edit-product-bdci-container'
+  );
+  //TODO: hide btn
+  addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+
+const controlSavingBDCI = async function () {
+  if (model.state.bdci_products.added.length == 0) {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun produit n'a été ajouté au bon de commande.</b></p>
+      <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
+    );
+  } else {
+    await model.createBDCI();
+    // addCmdsView._boundToggleWindow();
+    await controlLoadCmdsInt();
+  }
+};
+
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// B A C K  O '  B E Y O N D #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+addCmdsView.addHandlerAddProduct(controlAddProduct);
+addCmdsIntView.addHandlerAddProduct(controlAddProductInt);
+addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
+addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
+
+deleteCmdsView.addDeleteController(controlDeleteCmds);
+cancelCmdsView.addCancelController(controlCancelCmds);
+
+// REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
+//TODO: TEMPORARY
+// await controlAddUserUpdateSelects();
+// addUserView.addHandlerOpenWindowAndUpdateSelect(controlAddUserUpdateSelects);
+// controlSearchResults();
+// userViewAdders();
+
+const controllers = [
+  controlProfile,
+  controlSearchResults,
+  controlLoadStructures,
+  controlLoadRoles,
+  controlLoadPerms,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  controlLoadCmds,
+  controlLoadCmdsInt,
+];
+
 addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);
+addCmdsIntView.addHandlerSavingBDC(controlSavingBDCI, model.state);
 
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
@@ -1182,15 +1324,17 @@ deleteStructureView.addDeleteController(controlDeleteStructure);
 sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
 
-controlUpdateFournisseurs();
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
-controlUpdateArticles();
+// #F00
+//  controlUpdateArticles();
+// controlUpdateFournisseurs();
 addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
 addCmdsView.addHandlerProductSearch(controlSearchProducts);
 
 addCmdsView.addHandlerChangeProduct(controlChangeProduct);
+addCmdsIntView.addHandlerChangeProduct(controlChangeProductInt);
 
 //TODO: add after every render
 // const controlNumberAddProducts = function () {
@@ -1199,3 +1343,5 @@ addCmdsView.addHandlerChangeProduct(controlChangeProduct);
 //     numberAddProductsView.calculateCheckboxes();
 //   numberRoleView.render(model.state);
 // };
+
+addCmdsIntView.addHandlerProductSearch(controlSearchProductsInt);

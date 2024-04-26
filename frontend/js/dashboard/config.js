@@ -91,6 +91,7 @@ export const GROUP_DEFINITIONS = {
     'approuve fourniture by responsable',
     'approuve fourniture by director',
     'approuve fourniture by magasinier',
+    'show all demandes',
   ],
 };
 export const PERM_NAMES = {
@@ -146,6 +147,7 @@ export const PERM_NAMES = {
     'Approuver les bon de commandes internes par le directeur',
   'approuve fourniture by magasinier':
     'Accepter les bon de commandes internes par le magasinier',
+  'show all demandes': 'Voir toutes mes commandes',
 };
 
 export const GROUP_BTNS = {

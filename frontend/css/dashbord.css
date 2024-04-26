@@ -1026,10 +1026,17 @@ table tbody tr:last-child td {
 .input-product-bdci,
 .input-product-bdc-edit,
 .input-product-bdci-edit {
+  transition: all 0.4s;
   width: 15rem;
   border: 1px solid #477ce2;
   border-radius: 15px;
   padding: 0.4rem;
+}
+.input-product--valid {
+  border: 1px solid #07b60e;
+}
+.input-product--invalid {
+  border: 1px solid #c91111;
 }
 .input-product-bdc input,
 .input-product-bdc-edit input,
@@ -1107,7 +1114,7 @@ table tbody tr:last-child td {
 }
 .quantity-produit input,
 .quantity-produit-bdci input {
-  width: 2rem;
+  width: 3rem;
 }
 .price-produit input::placeholder {
   color: #477ce2;
@@ -1193,17 +1200,20 @@ table tbody tr:last-child td {
   color: #ffffff;
   border-radius: 15px;
 }
+.canceled-status {
+  background-color: red;
+}
+.served-status-bdci {
+  background-color: rgb(0, 132, 255);
+}
 .finish-status,
 .finish-status-bdci {
   background-color: #49bf20;
 }
-.canceled-status {
-  background-color: red;
-}
-.v-responsable-status {
+.v-directeur-status {
   background-color: rgb(206, 134, 1);
 }
-.v-directeur-status {
+.v-responsable-status {
   background-color: rgb(206, 134, 1);
 }
 .encour-status,
@@ -2371,23 +2381,36 @@ a.password-icon:active {
 
 .search-results {
   position: absolute;
-  overflow: hidden;
-  min-width: 14rem;
+  /* min-width: 14rem; */
+  width: 15.3rem;
   top: 4rem;
+  /* border-radius: 15px; */
+  overflow: hidden;
   z-index: 99999;
-  border-radius: 15px;
+}
+.input-product-bdci input {
+  width: 100%;
+}
+.bdci-product-search-results-container,
+.bdci-product-search-results-container-edit {
+  max-height: 15rem;
+  overflow: scroll;
 }
 .add-product-search-results,
 .edit-product-search-results {
-  top: 6.5rem !important;
-  left: 1.5rem;
+  top: 7.4rem !important;
+  left: 1.4rem;
 }
 .search-results ul {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+}
+.search-results ul li:last-child {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+.search-results ul li:first-child {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 .search-results ul li {
   color: #000;
@@ -2397,6 +2420,8 @@ a.password-icon:active {
   list-style: none;
   padding: 0.5rem 1rem;
   /* */
+  /* border: #477ce2 1px solid; */
+
   width: 100%;
   cursor: pointer;
 }

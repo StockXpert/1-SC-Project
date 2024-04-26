@@ -1,6 +1,8 @@
 const SortieModel=require('../Models/SortieModel');
 const googleMiddleware=require('../Middlewares/googleMiddleware');
 const { reject } = require('async');
+const EntreeModel=require('../Models/EntreeModel')
+const nomencaltureModel=require('../Models/NomenclatureModel')
 function canUpdate(numDemande,role)
 {
     return new Promise((resolve,reject)=>{
@@ -11,7 +13,7 @@ function canUpdate(numDemande,role)
                     reject('')   
                     break;
                 case 'Directeur':
-                    if(status==="visee par dir") resolve('')
+                    if(status==="visee par dg") resolve('')
                     reject('')
                     break;
                 default:
@@ -39,6 +41,21 @@ function genererBonSortie(numDemande,dateSortie,produits,id)
             resolve(link)
         }).catch(()=>{reject("err")})
     })
-
 }
-module.exports={canUpdate,genererBonSortie}
+function subtituteQuantite(produits)
+{
+    return new Promise(async(resolve,reject)=>{
+        let response
+        for(let produit of produits)
+        {
+          await nomencaltureModel.getProductId(produit.designation).then(async(idProduit)=>{
+            console.log({produit})
+            response =await EntreeModel.updateQuantite('-'+produit.quantite_servie,idProduit)
+            if(response!='success') reject('inetnal error1');
+          }).catch((err)=>{console.log(err); reject(err)})
+         
+        }
+        resolve('success')
+    })
+}
+module.exports={canUpdate,genererBonSortie,subtituteQuantite}

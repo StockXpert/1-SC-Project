@@ -23,7 +23,7 @@ export const formatDate = inputDate => {
   const day = String(date.getDate()).padStart(2, '0');
 
   // Format the date in the desired format
-  const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = `${day}/${month}/${year}`;
 
   return formattedDate;
 };
@@ -78,7 +78,6 @@ export const formatDate = inputDate => {
 
 export const getJSON = async function (url) {
   try {
-    console.log('getJSON');
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',
@@ -108,7 +107,6 @@ export const getJSON = async function (url) {
 };
 export const getJSONBody = async function (url, uploadData) {
   try {
-    console.log('getJSON');
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',
@@ -491,4 +489,28 @@ export const renderError = function (heading, content) {
   //add closing ELs
   container.querySelector('.close-btn').addEventListener('click', hideWindow);
   document.querySelector('.overlayError').addEventListener('click', hideWindow);
+};
+
+export const getStatusClass = function (status) {
+  switch (status) {
+    case 'servie':
+      return 'served-status-bdci';
+    case 'pret':
+      return 'finish-status-bdci';
+    case 'visee par dg':
+      return 'v-directeur-status';
+    case 'visee par resp':
+      return 'v-responsable-status';
+    case 'demande':
+      return 'enattente-status';
+    default:
+      return '';
+  }
+};
+
+export const isObjectInArray = function (array, objectToCheck) {
+  return array.some(item => {
+    // Compare each element's properties with objectToCheck's properties
+    return item.designation === objectToCheck.designation;
+  });
 };

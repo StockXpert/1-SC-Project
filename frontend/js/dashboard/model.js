@@ -17,6 +17,7 @@ export const state = {
       all: [],
       wellFormed: [],
     },
+    commandesInt: [],
   },
   bdc: {
     allCommandes: [],
@@ -37,6 +38,12 @@ export const state = {
     selected: '',
   },
   bdc_products: {
+    all: [],
+    selected: '',
+    added: [],
+    changed: {},
+  },
+  bdci_products: {
     all: [],
     selected: '',
     added: [],
@@ -101,7 +108,6 @@ export const getMyPerms = async function () {
     all: myPerms,
     wellFormed: organizePermissionsByGroup(myPerms, false, false),
   };
-  console.log(state.me);
   return state.me;
 };
 
@@ -597,6 +603,13 @@ export const loadCmds = async function () {
   state.bdc.allCommandes = commandes;
   return commandes;
 };
+export const loadCmdsInt = async function () {
+  let commandesInt = await helpers.getJSON(
+    `${API_URL}/Sorties/showAllDemandes`
+  );
+  state.me.commandesInt = commandesInt.response;
+  return commandesInt;
+};
 export const loadCommandeproducts = async function (numCommande) {
   let products = await helpers.postJSONReturnResResp(
     `${API_URL}/Entrees/showCommandeProducts`,
@@ -625,6 +638,11 @@ export const loadProducts = async function (article) {
   return helpers.filterByArticle(products.response, article);
 };
 
+export const loadAllProducts = async function () {
+  let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+  return products.response;
+};
+
 export const createBDC = async function () {
   const postBDCOBJ = {
     produits: state.bdc_products.added,
@@ -635,6 +653,14 @@ export const createBDC = async function () {
   };
   console.log(postBDCOBJ);
   await helpers.sendJSON(`${API_URL}/Entrees/bonCommande`, postBDCOBJ);
+};
+export const createBDCI = async function () {
+  const postBDCIOBJ = {
+    produits: state.bdci_products.added,
+    dateDemande: helpers.getFormattedDate(),
+  };
+  console.log(postBDCIOBJ);
+  // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
 export const deleteCmd = async function (numCommande) {
   return await helpers.delJSONReturnResResp(
