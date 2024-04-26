@@ -12,7 +12,7 @@ class AddCmdsIntView extends AddCmdsView {
   _btnDeleteProducts = document.querySelector('.btn-delete-produits-bdci');
   _checkboxesAddProduct;
   // _btnModifyProducts = document.querySelector('.btn-edit-produits-bdc');
-  // _save = document.querySelector('.btn-save-bdc-qt');
+  _save = document.querySelector('.btn-save-bdci-qt');
   // _btnOpenAddProduct;
   // _btnCloseAddProduct;
   // _windowAddProduct;

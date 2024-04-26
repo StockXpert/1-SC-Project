@@ -2,6 +2,9 @@ import { UsersView } from '../usersView.js';
 import * as helpers from '../../helpers.js';
 
 export class CmdsView extends UsersView {
+  constructor() {
+    super();
+  }
   _parentElement = document
     .querySelector('#main-table-bdc')
     .querySelector('.results');
@@ -17,6 +20,8 @@ export class CmdsView extends UsersView {
   _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
 
   addEventListenerCheckboxesChange(handler = '') {
+    // this._btnDeleteBdc = document.querySelector('.btn-delete-bdc');
+    // this._btnCancelBdc = document.querySelector('.btn-cancel-bdc');
     this._btnDeleteBdc.disabled = true;
     this._btnCancelBdc.disabled = true;
     this._checkboxes.forEach(cbx =>

@@ -70,9 +70,9 @@ export class AddCmdsView extends AddUserView {
       : this._btnDeleteProducts.classList.add('disabled-save-button');
   }
   addHandlerSavingBDC(handler, state) {
-    const typeInput = this._type;
-    const fourInput = this._four;
-    const articleInput = this._article;
+    // const typeInput = this._type;
+    // const fourInput = this._four;
+    // const articleInput = this._article;
     // const productInput = this._product;
     // const productEditInput = this._productEdit;
     this._save.addEventListener('click', e => {

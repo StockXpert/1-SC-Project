@@ -9,7 +9,7 @@ class CmdsIntView extends CmdsView {
     .querySelector('.results');
   _searchBox = document.querySelector('.searchbar-text-bdci');
   _btnDeleteBdc = document.querySelector('.btn-delete-bdci');
-  _btnCancelBdc = document.querySelector('.btn-cancel-bdci');
+  // _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
   _filters = document.querySelectorAll('.filters-bdci');
 
   // date_demande
