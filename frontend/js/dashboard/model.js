@@ -689,3 +689,15 @@ export const deleteBonRec = async function (numReception, numCommande) {
   );
   console.log(data);
 };
+
+export const addBonReception = async function (numCommande, obj) {
+  const uploadData = {
+    numCommande: numCommande,
+    ...obj,
+  };
+  const data = await helpers.putJSON(
+    `${API_URL}//Entrees/updateQuantite`,
+    uploadData
+  );
+  console.log(data);
+};

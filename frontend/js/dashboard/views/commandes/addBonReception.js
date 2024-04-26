@@ -62,17 +62,44 @@ class AddBonReception extends AddUserView {
   }
 
   handleUpdate() {
-    const bonLivraisonInput = document.getElementById('bonLivraisonInput');
-    const factureInput = document.getElementById('factureInput');
+    const bonLivraisonInput = this._window.querySelector(
+      'input[name="bonLivraison"]'
+    );
+    const factureInput = this._window.querySelector('input[name="facture"]');
+    const numBonLivraison = this._window.querySelector(
+      'input[name="num-livraison"]'
+    );
+    const numFacture = this._window.querySelector('input[name="num-facture"');
+    const tableRows = this._parentElement.querySelectorAll('tr');
+    console.log('handleUpdate');
     this._sauvgarde.addEventListener('click', e => {
       e.preventDefault();
-      console.log('SAUVGARDE');
+
+      const dataArray = [];
+      tableRows.forEach(row => {
+        const inputQuatite = +row.querySelector('input[type="text"]').value;
+        console.log(inputQuatite);
+        const elementQuantite =
+          +row.querySelector('td:nth-child(3)').textContent;
+        console.log(elementQuantite);
+        if (!inputQuatite) return;
+        if (inputQuatite <= elementQuantite) {
+          const dataObject = {
+            designation: row.querySelector('td:nth-child(2)').textContent,
+            quantite: inputQuatite,
+          };
+          console.log(dataObject);
+          dataArray.push(dataObject);
+        } else throw new Error('Quantité Errorr');
+      });
+      console.log('SAUVGARDE', numBonLivraison.value, numFacture.value);
       if (bonLivraisonInput.files.length > 0)
         console.log(URL.createObjectURL(bonLivraisonInput.files[0]));
       else console.log('no bon Livraison');
       if (factureInput.files.length > 0)
         console.log(URL.createObjectURL(factureInput.files[0]));
       else console.log('no facture');
+      console.log(dataArray);
     });
   }
 }

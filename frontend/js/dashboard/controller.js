@@ -1021,15 +1021,17 @@ const controlLoadBRec = async function () {
   bonReceptionView.renderSpinner('Load BDR ...');
   bonReceptionView.render(model.state.bdr.all);
   addBonReception.f();
-  controlAddBRec();
-};
-
-const controlAddBRec = async function () {
   addBonReception._clear();
   await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
   addBonReception.handleUpdate();
+};
+
+const controlAddBRec = async function (newReception) {
+  const newReception = {
+    numCommande: model.state.bdr.all[0].num_bon,
+  };
 };
 
 const controlDeleteBonRec = function () {
