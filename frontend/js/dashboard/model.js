@@ -727,3 +727,14 @@ export const addBonReception = async function (numCommande, obj) {
   );
   console.log(data);
 };
+
+export const loadCommandeIntProducts = async function (numDemande) {
+  let products = await helpers.postJSONReturnResResp(
+    `${API_URL}/Sorties/showDemande`,
+    { numDemande: `${numDemande}` }
+  );
+  console.log(products);
+  return products;
+  // produits = produits.produits;
+  // return produits;
+};

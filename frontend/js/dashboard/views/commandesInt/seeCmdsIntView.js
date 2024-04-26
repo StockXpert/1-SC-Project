@@ -13,6 +13,7 @@ class SeeCmdsIntView extends SeeCmdsView {
   _overlay = document.querySelector('.overlaySeeBdci');
   //TODO:
   _btnOpen;
+  _btnClose = document.querySelector('.btn-close-see-bdci');
   //TODO:
   // _btnClose = document.querySelector('.see-bdci-close');
   _trueParentElement = document.querySelector('.see-bdci-container');
@@ -25,26 +26,23 @@ class SeeCmdsIntView extends SeeCmdsView {
 
   changeDetails(cmd, products) {
     const heading = this._window.querySelector('.see-bdci-title');
-    heading.innerHTML = `Commande N°${cmd.num_commande}`;
-    const formElement = document.querySelector('.see-bdc-cart');
-    for (const key in cmd) {
-      const input = formElement.elements[key];
-      if (input) {
-        if (key == 'date_commande') {
-          input.value = helpers.formatDate(cmd[key]);
-        } else input.value = cmd[key];
-      }
-    }
-    let productsHTML = products
-      .map(product => {
-        return `<tr>
-                    <td>${product.designation}</td>
-                    <td class="input-changeble quantity-produit">
-                      <input type="text" placeholder="${product.quantite}" />
-                    </td>
-                  </tr>`;
-      })
-      .join('');
+    heading.innerHTML = `Commande N°${cmd.num_demande}`;
+
+    let productsHTML =
+      products.length != 0
+        ? products
+            .map(product => {
+              return `<tr>
+              <td>
+                <div class="colomn-product-des">
+                  <p class="colomn-des-name-product">${product.designation}</p>
+                </div>
+              </td>
+              <td>${product.quantite_demande}</td>
+            </tr>`;
+            })
+            .join('')
+        : `<td colspan=2><b>Aucun Produit</b></td>`;
     this._parentElement.innerHTML = '';
     this._parentElement.innerHTML = productsHTML;
   }

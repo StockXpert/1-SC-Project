@@ -1267,7 +1267,6 @@ const controlSavingBDCI = async function () {
 };
 
 const controlViewCmdInt = async function (target) {
-  /*
   //ONCLICK OF A VIEW BUTTON
   //Get the index of the clicked view button here
   // const target = this;
@@ -1276,11 +1275,12 @@ const controlViewCmdInt = async function (target) {
     'Récupération des produits de la commande interne...',
     true
   );
-  //TODO:
-  // const products = await model.loadCommandeproducts(
-  //   model.state.bdc.allCommandes[targetIndex].num_commande
-  // );
-  seeCmdsView.unrenderSpinner(true);
+  // TODO:
+  console.log(model.state.me.commandesInt[targetIndex]);
+  const products = await model.loadCommandeIntProducts(
+    model.state.me.commandesInt[targetIndex].num_demande
+  );
+  seeCmdsIntView.unrenderSpinner(true);
   if (!products[0].ok) {
     helpers.renderError(
       'Erreur',
@@ -1289,12 +1289,12 @@ const controlViewCmdInt = async function (target) {
   } else {
     // model.state.user = model.state.search.queryResults[targetIndex];
     //Use it to extract the input data from the state object
-    seeCmdsView.changeDetails(
-      model.state.bdc.allCommandes[targetIndex],
-      products[1].response
+    seeCmdsIntView.changeDetails(
+      model.state.me.commandesInt[targetIndex],
+      products[1].demande
     );
   }
-  //                                                                        TODO:  */
+  //                                                                        TODO:
 };
 
 //////////////////////////////////////////////////////////////////
