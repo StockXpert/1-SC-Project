@@ -1292,6 +1292,31 @@ const controlViewCmdInt = async function (target) {
   //                                                                        TODO:
 };
 
+const controlEditCmdsInt = async function () {
+  //ONCLICK OF the EDIT BUTTON
+  //Get the index of the selected CmdInt
+  // const target = this;
+  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+
+  // const targetIndex = helpers.findNodeIndex(
+  //   Array.from(cmdsIntView._checkboxes).find(checkbox => checkbox.checked),
+  //   Array.from(cmdsIntView._checkboxes).find(checkbox => checkbox.checked)
+  // );
+  const targetIndex = Array.from(cmdsIntView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  console.log(model.state.commandesInt.all[targetIndex]);
+  const numDemande = model.state.commandesInt.all[targetIndex].num_demande;
+  model.state.commandesInt.selected.new.numDemande = numDemande;
+  const selectedCmdIntProducts = await model.loadCommandeIntProducts(
+    model.state.commandesInt.all[targetIndex].num_demande
+  );
+  //Use it to extract the input data from the state object
+  // editCmdsIntView.changeInputs(numDemande, selectedCmdIntProducts);
+  editCmdsIntView.render(numDemande, selectedCmdIntProducts);
+  //                                                                           TODO:
+};
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// B A C K  O '  B E Y O N D #fff
@@ -1377,3 +1402,4 @@ addCmdsIntView.addHandlerChangeProduct(controlChangeProductInt);
 // };
 
 addCmdsIntView.addHandlerProductSearch(controlSearchProductsInt);
+await editCmdsIntView.addHandlerEdit(controlEditCmdsInt);

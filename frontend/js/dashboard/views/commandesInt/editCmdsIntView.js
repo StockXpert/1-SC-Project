@@ -37,5 +37,16 @@ class EditCmdsIntView extends AddCmdsIntView {
   _checkboxesAddProduct;
 
   // _form = document.querySelector('.inputs-edit');
+  async addHandlerEdit(controller) {
+    // const btnOpenArray = Array.from(this._btnOpen);
+    // btnOpenArray.forEach(btn => {
+    //   btn.addEventListener('click', controller);
+    // });
+    this._btnOpen.addEventListener('click', await controller);
+  }
+
+  changeInputs(numDemande, selectedCmdIntProducts) {
+    // Get the form element (EditUserView.js)
+  }
 }
 export default new EditCmdsIntView();
