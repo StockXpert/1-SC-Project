@@ -26,12 +26,14 @@ import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
+import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 import bonReceptionView from './views/commandes/bonReceptionView.js';
 import cancelCmdsView from './views/commandes/cancelCmdsView.js';
-import seeCmdsView, { SeeCmdsView } from './views/commandes/seeCmdsView.js';
+import seeCmdsView from './views/commandes/seeCmdsView.js';
+import seeCmdsIntView from './views/commandesInt/seeCmdsIntView.js';
 import addBonReception from './views/commandes/addBonReception.js';
 import View from './views/view.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
@@ -129,10 +131,7 @@ const controlViewCmd = async function (target) {
   // const target = this;
   const targetIndex = helpers.findNodeIndex(seeCmdsView._btnOpen, target);
   // seeCmdsView.renderSpinner('Récupération des produits de la commande...');
-  seeCmdsView.renderSpinner(
-    'Récupération des produits de la commande...',
-    true
-  );
+  seeCmdsView.renderSpinner('', true);
   const products = await model.loadCommandeproducts(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
@@ -1021,16 +1020,18 @@ const controlLoadBRec = async function () {
   bonReceptionView.renderSpinner('Load BDR ...');
   bonReceptionView.render(model.state.bdr.all);
   addBonReception.f();
-  controlAddBRec();
-};
-
-const controlAddBRec = async function () {
   addBonReception._clear();
   await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
   addBonReception.handleUpdate();
 };
+
+// const controlAddBRec = async function (newReception) {
+//   const newReception = {
+//     numCommande: model.state.bdr.all[0].num_bon,
+//   };
+// };
 
 const controlDeleteBonRec = function () {
   filterArrayByBooleans(
@@ -1099,6 +1100,9 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
+  addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
+  model.state.bdci_products.added = [];
+  addCmdsIntView.render(model.state.bdci_products.added);
   cmdsIntView.renderSpinner('Chagement des produits depuis la BDD ...');
   await controlUpdateAllProducts();
   cmdsIntView.unrenderSpinner();
@@ -1110,12 +1114,13 @@ const controlLoadCmdsInt = async function () {
   await model.loadCmdsInt();
   cmdsIntView.unrenderSpinner();
   cmdsIntView.render(
-    model.state.me.commandesInt,
+    model.state.commandesInt.all,
     true,
     model.state.me.permissions.all
   );
-  // TODO: seeCmdsView.resetPointers();
-  // TODO: seeCmdsView.addSeeController(controlViewCmd);
+  seeCmdsIntView.resetPointers();
+  // TODO:
+  seeCmdsIntView.addSeeController(controlViewCmdInt);
   cmdsIntView.resetPointers();
   // bonReceptionView.f();
   // bonReceptionView.addHandlerShow(controlLoadBRec);
@@ -1134,6 +1139,7 @@ const controlAddProductInt = newProduct => {
       `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.`
     );
   } else {
+    addCmdsIntView.allowSavingBDC(true, '.btn-save-bdci-qt');
     model.state.bdci_products.added.push(newProduct);
     addCmdsIntView.render(model.state.bdci_products.added);
     addCmdsIntView._checkboxesAddProduct =
@@ -1228,8 +1234,8 @@ const controlDeleteAddedProductsInt = () => {
     model.state.bdci_products.added,
     helpers.getCheckboxStates(addCmdsIntView._checkboxesAddProduct)
   );
-  // if (addedProductsAfterRemoval.length == 0)
-  //   addCmdsIntView.allowSavingBDC(false);
+  if (addedProductsAfterRemoval.length == 0)
+    addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
   model.state.bdci_products.added = addedProductsAfterRemoval;
   addCmdsIntView.render(model.state.bdci_products.added);
   addCmdsIntView._checkboxesAddProduct =
@@ -1256,6 +1262,64 @@ const controlSavingBDCI = async function () {
     // addCmdsView._boundToggleWindow();
     await controlLoadCmdsInt();
   }
+};
+
+const controlViewCmdInt = async function (target) {
+  //ONCLICK OF A VIEW BUTTON
+  //Get the index of the clicked view button here
+  // const target = this;
+  const targetIndex = helpers.findNodeIndex(seeCmdsIntView._btnOpen, target);
+  seeCmdsIntView.renderSpinner('', true);
+  // TODO:
+  console.log(model.state.commandesInt.all[targetIndex]);
+  const products = await model.loadCommandeIntProducts(
+    model.state.commandesInt.all[targetIndex].num_demande
+  );
+  seeCmdsIntView.unrenderSpinner(true);
+  if (!products[0].ok) {
+    helpers.renderError(
+      'Erreur',
+      `Une erreur s'est produite lors de la récupération des produits du bon de commande interne.`
+    );
+  } else {
+    // model.state.user = model.state.search.queryResults[targetIndex];
+    //Use it to extract the input data from the state object
+    seeCmdsIntView.changeDetails(
+      model.state.commandesInt.all[targetIndex],
+      products[1].demande
+    );
+  }
+  //                                                                        TODO:
+};
+
+const controlEditCmdsInt = async function () {
+  //ONCLICK OF the EDIT BUTTON
+  //Get the index of the selected CmdInt
+  // const target = this;
+  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
+
+  // const targetIndex = helpers.findNodeIndex(
+  //   Array.from(cmdsIntView._checkboxes).find(checkbox => checkbox.checked),
+  //   Array.from(cmdsIntView._checkboxes).find(checkbox => checkbox.checked)
+  // );
+  const targetIndex = Array.from(cmdsIntView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  console.log(model.state.commandesInt.all[targetIndex]);
+  const numDemande = model.state.commandesInt.all[targetIndex].num_demande;
+  model.state.commandesInt.selected.new.numDemande = numDemande;
+  editCmdsIntView.renderSpinner('', true);
+  let selectedCmdIntProducts = await model.loadCommandeIntProducts(
+    model.state.commandesInt.all[targetIndex].num_demande
+  );
+
+  editCmdsIntView.unrenderSpinner(true);
+  selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
+  // Use it to extract the input data from the state object
+  // editCmdsIntView.changeInputs(numDemande, selectedCmdIntProducts);
+  console.log(selectedCmdIntProducts);
+  editCmdsIntView.render(selectedCmdIntProducts);
+  //                                                                           TODO:
 };
 
 //////////////////////////////////////////////////////////////////
@@ -1343,3 +1407,4 @@ addCmdsIntView.addHandlerChangeProduct(controlChangeProductInt);
 // };
 
 addCmdsIntView.addHandlerProductSearch(controlSearchProductsInt);
+await editCmdsIntView.addHandlerEdit(controlEditCmdsInt);

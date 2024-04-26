@@ -16,4 +16,5 @@ router.get('/showAllDemandes',authMiddleware('show all demandes'),SortieControll
 router.get('/showNewDemandes',authMiddleware('show new demandes'),SortieController.showNewDemandes);
 router.put('/readNotif',authMiddleware('read notif'),SortieController.readNotif);
 router.put('/readAllNotif',authMiddleware('read all notif'),SortieController.readAllNotif);
+router.post('/showDemande',authMiddleware('show demande'),SortieController.showDemande)
 module.exports=router;

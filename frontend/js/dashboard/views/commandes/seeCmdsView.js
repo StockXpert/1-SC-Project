@@ -4,7 +4,6 @@ export class SeeCmdsView extends DeleteUserView {
   _window = document.querySelector('.see-bdc-container');
   _parentElement = document.querySelector('.view-bdc-produits');
   _overlay = document.querySelector('.overlaySeeBdc');
-  //TODO:
   _btnOpen;
   _btnClose = document.querySelector('.see-bdc-close');
   _trueParentElement = document.querySelector('.see-bdc-container');
@@ -26,7 +25,6 @@ export class SeeCmdsView extends DeleteUserView {
   resetPointers() {
     //voir bon de commande
     this._btnOpen = document.querySelectorAll('.view-btc-btn');
-    console.log(this._btnOpen);
   }
   // {
   // "num_commande": 8,
@@ -39,22 +37,21 @@ export class SeeCmdsView extends DeleteUserView {
   // }
   addSeeController(ctrler) {
     const toggleWindow = function () {
-      document.querySelector('.overlaySeeBdc').classList.toggle('hidden');
-      document.querySelector('.see-bdc-container').classList.toggle('hidden');
+      this._overlay.classList.toggle('hidden');
+      this._window.classList.toggle('hidden');
     };
+    const newThis = this;
     this._btnOpen.forEach(btn =>
       btn.addEventListener('click', async function (e) {
         console.log('click !');
         e.preventDefault();
-        toggleWindow();
+        toggleWindow.bind(newThis)();
         // this._btnClose.click();
         await ctrler(this);
       })
     );
   }
   changeDetails(cmd, products) {
-    console.log(products);
-    console.log(cmd);
     const heading = this._window.querySelector('.bdc-title');
     heading.innerHTML = `Commande N°${cmd.num_commande}`;
     const formElement = document.querySelector('.see-bdc-cart');

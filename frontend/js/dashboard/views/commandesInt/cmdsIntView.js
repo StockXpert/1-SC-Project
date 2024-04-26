@@ -11,6 +11,7 @@ class CmdsIntView extends CmdsView {
   _btnDeleteBdc = document.querySelector('.btn-delete-bdci');
   // _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
   _filters = document.querySelectorAll('.filters-bdci');
+  _btnModifyBdc = document.querySelector('.btn-edit-bdci');
 
   // date_demande
   // :

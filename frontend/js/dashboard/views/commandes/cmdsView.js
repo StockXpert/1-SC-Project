@@ -24,6 +24,7 @@ export class CmdsView extends UsersView {
     // this._btnCancelBdc = document.querySelector('.btn-cancel-bdc');
     this._btnDeleteBdc.disabled = true;
     this._btnCancelBdc.disabled = true;
+    this._btnModifyBdc.disabled = true;
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
         const tthis = e.currentTarget;
@@ -40,18 +41,30 @@ export class CmdsView extends UsersView {
         if (this._checkedCheckboxes.length === 0) {
           this._btnCancelBdc.disabled = true;
           this._btnDeleteBdc.disabled = true;
+          this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
           this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
           this._btnDeleteBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
+          this._btnModifyBdc
+            ? this._btnModifyBdc.classList.add('disabled-button')
+            : ''; // Apply disabled appearance)
         } else if (this._checkedCheckboxes.length === 1) {
           this._btnCancelBdc.disabled = false;
           this._btnDeleteBdc.disabled = false;
+          this._btnModifyBdc ? (this._btnModifyBdc.disabled = false) : '';
           this._btnCancelBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
           this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
+          this._btnModifyBdc
+            ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
+            : '';
         } else {
-          this._btnCancelBdc.disabled = false;
+          this._btnCancelBdc.disabled = true;
           this._btnDeleteBdc.disabled = false;
+          this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
           this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
           this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
+          this._btnModifyBdc
+            ? this._btnModifyBdc.classList.add('disabled-button') // Remove disabled appearance
+            : '';
         }
       })
     );
