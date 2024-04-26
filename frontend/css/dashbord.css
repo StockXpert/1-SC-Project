@@ -1558,7 +1558,21 @@ table tbody tr:last-child td {
 /* .roles-cart-container {
    padding: 0.4rem; 
 } */
-
+.close-see-bdci {
+  width: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+.close-see-bdci button span {
+  font-size: 2rem;
+}
+.close-see-bdci button {
+  width: 2rem;
+  background-color: transparent;
+  color: #313131;
+  cursor: pointer;
+}
 /* .container-checkboxes-permissions::-webkit-scrollbar {
   width: 5px;
   height: 5px;
