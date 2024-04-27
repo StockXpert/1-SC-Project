@@ -1385,7 +1385,7 @@ addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
 editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
-controlShowUsersEmail();
+// controlShowUsersEmail();
 numberRoleView.addHandlerNumber(controlNumberRoles);
 AddStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
@@ -1398,8 +1398,8 @@ deleteRoleView.addDeleteController(controlDeleteRoles);
 
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 // #F00
-controlUpdateArticles();
-controlUpdateFournisseurs();
+// controlUpdateArticles();
+// controlUpdateFournisseurs();
 addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
