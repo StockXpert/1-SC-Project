@@ -527,7 +527,8 @@ aside .sidebar a:hover span {
   gap: 1.2rem;
   margin-bottom: 0.2rem;
 }
-.heading-table-btns-add-bdci {
+.heading-table-btns-add-bdci,
+.heading-table-btns-bottom-edit-bdci {
   width: 100%;
   display: flex;
   justify-content: end;
@@ -535,7 +536,8 @@ aside .sidebar a:hover span {
   gap: 1.2rem;
   margin-bottom: 0.2rem;
 }
-.heading-table-btns-bottom-bdci {
+.heading-table-btns-bottom-bdci,
+.heading-table-btns-edit-bdci {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -1112,7 +1114,8 @@ table tbody tr:last-child td {
   color: #477ce2;
 }
 .quantity,
-.quantity-verif,.quantity-verif-RD {
+.quantity-verif,
+.quantity-verif-RD {
   position: relative;
 }
 .quantity span,
@@ -2532,7 +2535,8 @@ a.password-icon:active {
 .bdc-title,
 .verif-bdci-title,
 .see-bdci-title,
-.bdci-title {
+.bdci-title,
+.edit-bdci-title {
   font-size: 1.7rem;
   font-weight: 700;
   color: #477ce2;
