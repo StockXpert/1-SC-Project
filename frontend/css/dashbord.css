@@ -521,9 +521,26 @@ aside .sidebar a:hover span {
 .heading-table-btns-bdc,
 .heading-table-btns-bdci,
 .heading-table-btns-add-bdc,
-.heading-table-btns-add-bdci,
 .heading-table-btns-show-bdr {
   display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+.heading-table-btns-add-bdci,
+.heading-table-btns-bottom-edit-bdci {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+.heading-table-btns-bottom-bdci,
+.heading-table-btns-edit-bdci {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 1.2rem;
   margin-bottom: 0.2rem;
@@ -535,7 +552,6 @@ aside .sidebar a:hover span {
   padding: 0.6rem;
 }
 .heading-table-btns-add-bdr,
-.heading-table-btns-add-bdci,
 .heading-table-btns-verif-bdci {
   width: 100%;
   display: flex;
@@ -2314,7 +2330,7 @@ a.password-icon:active {
   gap: 2rem;
   padding: 0.6rem;
   align-items: center;
-  /* justify-content: center; */
+  justify-content: center;
 }
 
 .dropbtn {
@@ -2521,7 +2537,9 @@ a.password-icon:active {
 }
 .bdc-title,
 .verif-bdci-title,
-.see-bdci-title {
+.see-bdci-title,
+.bdci-title,
+.edit-bdci-title {
   font-size: 1.7rem;
   font-weight: 700;
   color: #477ce2;
