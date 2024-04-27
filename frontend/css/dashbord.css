@@ -530,6 +530,14 @@ aside .sidebar a:hover span {
 .heading-table-btns-add-bdci {
   width: 100%;
   display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+.heading-table-btns-bottom-bdci {
+  width: 100%;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1.2rem;
