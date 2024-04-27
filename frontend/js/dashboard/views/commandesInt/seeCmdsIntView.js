@@ -2,13 +2,20 @@ import { SeeCmdsView } from '../commandes/seeCmdsView.js';
 class SeeCmdsIntView extends SeeCmdsView {
   constructor() {
     super();
+    this._btnClose.addEventListener('click', e => {
+      e.preventDefault();
+      this.toggleWindow.bind(this)();
+    });
+    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
   }
-  _window = document.querySelector('.see-bdci-container');
-  _parentElement = document.querySelector('.view-bdci-produits');
+  _window = document.querySelector('.big-container-see-bdci');
+  _parentElement = document.querySelector('.results-bdci-produits-see');
   _overlay = document.querySelector('.overlaySeeBdci');
   //TODO:
   _btnOpen;
-  _btnClose = document.querySelector('.see-bdci-close');
+  _btnClose = document.querySelector('.btn-close-see-bdci');
+  //TODO:
+  // _btnClose = document.querySelector('.see-bdci-close');
   _trueParentElement = document.querySelector('.see-bdci-container');
 
   resetPointers() {
@@ -18,38 +25,24 @@ class SeeCmdsIntView extends SeeCmdsView {
   }
 
   changeDetails(cmd, products) {
-    const heading = this._window.querySelector('.bdc-title');
-    heading.innerHTML = `Commande N°${cmd.num_commande}`;
-    const formElement = document.querySelector('.see-bdc-cart');
-    for (const key in cmd) {
-      const input = formElement.elements[key];
-      if (input) {
-        if (key == 'date_commande') {
-          input.value = helpers.formatDate(cmd[key]);
-        } else input.value = cmd[key];
-      }
-    }
+    const heading = this._window.querySelector('.see-bdci-title');
+    heading.innerHTML = `Commande N°${cmd.num_demande}`;
 
-    let numero = 0;
-    let productsHTML = products
-      .map(product => {
-        return `<tr>
-                    <td>
-                      <div class="checkbox-colomn-bdc-add">
-                        <p class="colomn-tags-name-bdc">${++numero}</p>
-                      </div>
-                    </td>
-                    <td>${product.designation}</td>
-                    <td class="input-changeble quantity-produit">
-                      <input type="text" placeholder="${product.quantite}" />
-                    </td>
-                    <td class="price-produit-montant">${
-                      product.quantite * product.prix_unitaire
-                    }</td>
-                    <td class="reste-livre">1</td>
-                  </tr>`;
-      })
-      .join('');
+    let productsHTML =
+      products.length != 0
+        ? products
+            .map(product => {
+              return `<tr>
+              <td>
+                <div class="colomn-product-des">
+                  <p class="colomn-des-name-product">${product.designation}</p>
+                </div>
+              </td>
+              <td>${product.quantite_demande}</td>
+            </tr>`;
+            })
+            .join('')
+        : `<td colspan=2><b>Aucun Produit</b></td>`;
     this._parentElement.innerHTML = '';
     this._parentElement.innerHTML = productsHTML;
   }

@@ -1642,7 +1642,9 @@
                   >
                     Supprimer
                   </button>
-                  <button class="heading-table-btn btn-edit-bdci">
+                  <button
+                    class="heading-table-btn btn-edit-bdci disabled-button"
+                  >
                     Modifier
                   </button>
                 </div>
@@ -3492,8 +3494,179 @@
         </div>
       </div>
       <!-- fin section pour add un nv bdci -->
+      <!-- debut section pour edit un bdci -->
+      <div class="big-container-edit-bdci hidden">
+        <div
+          class="edit-product-bdci-container edit-product-edit-bdci-container hidden"
+        >
+          <div class="edit-product-bdci-cart">
+            <div class="heading-edit-product-bdci">
+              <p>Modifier</p>
+            </div>
+            <form
+              class="inputs-edit-product-edit-bdci inputs-edit-product-bdci"
+            >
+              <div class="input-product-bdci-edit product-edit-bdci">
+                <input
+                  type="text"
+                  placeholder="Chercher la Designation du Produit"
+                  value="Pc Gamer"
+                  name="designation"
+                  id="edit-bdci-product-edit"
+                  required
+                />
+
+                <div class="search-results edit-product-search-results">
+                  <ul class="bdci-product-search-results-container-edit">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
+              </div>
+              <div class="input-product-bdci quantite-edit-bdci">
+                <input
+                  type="number"
+                  placeholder="Modifier la Quantité"
+                  value="4"
+                  name="quantite"
+                  required
+                />
+              </div>
+              <div class="btn-product-bdci-edit">
+                <button class="cancel-btn-edit-bdci">Annuler</button>
+                <button class="add-btn-edit-bdci">Modifier</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div
+          class="add-product-bdci-container add-product-edit-bdci-container hidden"
+        >
+          <div class="add-product-bdci-cart">
+            <div class="heading-add-product-bdci">
+              <p>Produit</p>
+            </div>
+            <form class="inputs-add-product-edit-bdci inputs-add-product-bdci">
+              <div class="input-product-bdci product-add-bdci">
+                <input
+                  name="designation"
+                  type="text"
+                  placeholder="Chercher la Designation du Produit"
+                  id="edit-bdci-product-add"
+                  autocomplete="off"
+                  required
+                />
+                <!-- <input type="checkbox" /> -->
+                <div class="search-results add-product-search-results">
+                  <ul class="bdci-product-search-results-container">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
+              </div>
+              <div class="input-product-bdci quantite-add-bdci">
+                <input
+                  name="quantite"
+                  placeholder="Entrez la Quantité"
+                  id="bdci-quantity"
+                  autocomplete="off"
+                  type="number"
+                  required
+                />
+              </div>
+              <div class="btn-product-bdci">
+                <button class="cancel-btn-add-bdci cancel-btn-add-edit-bdci">
+                  Annuler
+                </button>
+                <button class="add-btn-add-bdci">Ajouter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-bdc-container">
+          <form class="add-bdc-cart">
+            <div class="container-select-bdci">
+              <div
+                class="btn-add-product btn-add-product-bdci btn-add-product-edit-bdci"
+              >
+                <button>Ajouter Produit</button>
+                <span class="material-icons-sharp"> add </span>
+              </div>
+            </div>
+            <div class="heading-table-add-bdci">
+              <div class="container-heading-table-add-bdc">
+                <div class="heading-table-text-add-bdci">
+                  <!-- <p class="table-text-add-bdc">
+                    Tout les Produits (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text-add-bdc">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p> -->
+                </div>
+                <div class="heading-table-btns-add-bdci">
+                  <!-- <button
+                    class="heading-table-btn btn-edit btn-edit-produits-bdc"
+                  >
+                    Modifier
+                  </button> -->
+                  <button
+                    class="heading-table-btn btn-delete btn-delete-produits-edit-bdci disabled-delete-button"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-bdci-produits">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Designation</th>
+                    <th>Quantité</th>
+
+                    <th>Modifier</th>
+                  </tr>
+                </thead>
+                <tbody class="results-edit-bdci-produits">
+                  <tr>
+                    <td colspan="6" class="empty-table--products">
+                      Les produits que vous ajouterez apparaîtront ici !
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-add-bdci">
+              <button
+                class="heading-table-btn-bdci cancel-btn-add-bdci btn-edit-bdci-qt"
+                id="edit-bdci-close"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdci add-users-btn btn-save-edit-bdci-qt"
+              >
+                Sauvegarder
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin section pour edit un bdci -->
       <!-- debut section pour verif un bdci -->
-      <div class="big-container-verif-bdci hidden">
+      <div class="big-container-verif-bdci">
         <div class="verif-bdci-container">
           <div class="verif-bdci-cart">
             <p class="verif-bdci-title">Commande N°08</p>
@@ -3507,7 +3680,9 @@
                       </div>
                     </th>
                     <th>Quantité demandée</th>
-                    <th>Quantité accordée</th>
+                    <th>Quantité accordée(RD)</th>
+                    <th>Quantité accordée(D)</th>
+                    <th>Quantité accordée(M)</th>
                   </tr>
                 </thead>
                 <tbody class="results-bdci-produits-verif">
@@ -3519,7 +3694,19 @@
                     </td>
                     <td>14</td>
                     <td class="quantity-verif">
-                      <input class="green-qt" type="text" value="20" />
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
                       <span class="material-icons-sharp">
                         drive_file_rename_outline
                       </span>
@@ -3543,6 +3730,18 @@
                         drive_file_rename_outline
                       </span>
                     </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
                   </tr>
                   <!--fin d'une ligne selected  -->
                   <tr>
@@ -3556,6 +3755,18 @@
 
                     <td class="quantity">
                       <input class="green-qt" type="text" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="quantity-verif-RD">
+                      <input class="green-qt" type="number" value="20" />
                       <span class="material-icons-sharp">
                         drive_file_rename_outline
                       </span>
@@ -3648,6 +3859,7 @@
       <div class="overlay overlayDelBdc hidden"></div>
       <div class="overlay overlayCancelBdc hidden"></div>
       <div class="overlay overlaySeeBdc hidden"></div>
+      <div class="overlay overlaySeeBdci hidden"></div>
       <div class="overlay overlayAddRole hidden"></div>
       <div class="overlay overlayEditStr hidden"></div>
       <div class="overlay overlayDelStr hidden"></div>
@@ -3655,6 +3867,7 @@
       <div class="overlay overlayError hidden"></div>
       <div class="overlay overlayBDR hidden"></div>
       <div class="overlay overlayBDCI hidden"></div>
+      <div class="overlay overlayEditBDCI hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->
