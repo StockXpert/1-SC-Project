@@ -2,6 +2,37 @@
 import * as helpers from '../helpers.js';
 import * as model from '../model.js';
 
+HTMLInputElement.prototype.changeInputValidity = function (
+  validityMessage = 'Invalid Input !',
+  isValid = false
+) {
+  // Get the parent element of the input
+  const parent = this.parentElement;
+  const validityDiv = parent.querySelector('.validity-message');
+  // Check if the message is empty (neutral)
+  if (validityMessage.length == 0) {
+    validityDiv.classList.add('hidden');
+    validityDiv.style.color = '#313131';
+    parent.classList.remove('input-product--invalid');
+    parent.classList.remove('input-product--valid');
+  } else {
+    //valid (for some reason)
+    if (isValid) {
+      validityDiv.classList.remove('hidden');
+      validityDiv.innerHTML = validityMessage;
+      validityDiv.style.color = '#07b60e';
+      parent.classList.remove('input-product--invalid');
+      parent.classList.add('input-product--valid');
+      //invalid (for some reason)
+    } else {
+      validityDiv.classList.remove('hidden');
+      validityDiv.innerHTML = validityMessage;
+      validityDiv.style.color = '#c91111';
+      parent.classList.remove('input-product--valid');
+      parent.classList.add('input-product--invalid');
+    }
+  }
+};
 export default class View {
   _permissions = model.state.me.permissions.all;
   _restricted;

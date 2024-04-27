@@ -1131,6 +1131,7 @@ const controlLoadCmdsInt = async function () {
 };
 
 const controlAddProductInt = newProduct => {
+  // ON SUBMIT:
   //TODO:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
   if (helpers.isObjectInArray(model.state.bdci_products.added, newProduct)) {
@@ -1161,39 +1162,42 @@ const controlUpdateAllProducts = async () => {
   model.state.bdci_products.all = products;
 };
 
-const controlSearchProductsInt = (input, type) => {
+const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
   //ON INPUT:
-  addCmdsIntView.setInputValidity(
-    '.product-add-bdci',
-    model.state.bdci_products.all
-      .map(entry => entry.designation)
-      .includes(input)
+  const fuze = model.fuseMakerProducts(
+    //TODO: what about for modifyProduct? (a second type?) :
+    helpers.subtractObjects(
+      model.state.bdci_products.all,
+      model.state.bdci_products.added,
+      'designation'
+    )
   );
-  addCmdsIntView.setInputValidity(
-    '.product-edit-bdci',
-    model.state.bdci_products.all
-      .map(entry => entry.designation)
-      .includes(input)
-  );
-  const fuze = model.fuseMakerProducts(model.state.bdci_products.all);
   const results = fuze.search(input);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
   switch (type) {
     case 'add':
-      addCmdsIntView.addToSuggestionsProductsAndEL(
+      console.log(extractItems(results));
+      console.log(
+        document.querySelector('.product-search-results-container-edit')
+      );
+      view.addToSuggestionsProductsAndEL(
         extractItems(results),
         '.bdci-product-search-results-container'
       );
-      addCmdsIntView.resultVisibilityTogglers();
+      view.resultVisibilityTogglers();
       break;
     case 'edit':
-      addCmdsIntView.addToSuggestionsProductsAndEL(
+      console.log(extractItems(results));
+      console.log(
+        document.querySelector('.product-search-results-container-edit')
+      );
+      view.addToSuggestionsProductsAndEL(
         extractItems(results),
         '.bdci-product-search-results-container-edit'
       );
-      addCmdsIntView.resultVisibilityTogglers();
+      view.resultVisibilityTogglers();
       break;
   }
 };
@@ -1213,20 +1217,31 @@ const controlEditProductBtnsInt = function () {
 
 const controlChangeProductInt = function (editedProduct) {
   //TODO:
-  model.state.bdci_products.added[model.state.bdci_products.changed] =
-    editedProduct;
-  addCmdsIntView.render(model.state.bdci_products.added);
-  addCmdsIntView._checkboxesAddProduct =
-    addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
-  addCmdsIntView.AddHandlerAddedProductsCheckboxes();
-  //TODO: edit btns
-  addCmdsIntView.addHandlerShowEditProductWindow(
-    '.details-btn-bdci-add',
-    '.edit-product-bdci-container'
-  );
-  //TODO: hide btn
-  addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-  // numberRoleView.selectionUpdater('.table-container-bdc-produits');
+  if (
+    helpers.isObjectInArray(model.state.bdci_products.added, editedProduct) &&
+    model.state.bdci_products.changed !=
+      helpers.objectIndexInArray(model.state.bdci_products.added, editedProduct)
+  ) {
+    helpers.renderError(
+      'Erreur',
+      `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.`
+    );
+  } else {
+    model.state.bdci_products.added[model.state.bdci_products.changed] =
+      editedProduct;
+    addCmdsIntView.render(model.state.bdci_products.added);
+    addCmdsIntView._checkboxesAddProduct =
+      addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
+    addCmdsIntView.AddHandlerAddedProductsCheckboxes();
+    //TODO: edit btns
+    addCmdsIntView.addHandlerShowEditProductWindow(
+      '.details-btn-bdci-add',
+      '.edit-product-bdci-container'
+    );
+    //TODO: hide btn
+    addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+    // numberRoleView.selectionUpdater('.table-container-bdc-produits');
+  }
 };
 
 const controlDeleteAddedProductsInt = () => {
@@ -1318,6 +1333,8 @@ const controlEditCmdsInt = async function () {
   // Use it to extract the input data from the state object
   // editCmdsIntView.changeInputs(numDemande, selectedCmdIntProducts);
   console.log(selectedCmdIntProducts);
+  model.state.commandesInt.selected.numDemande = numDemande;
+  model.state.commandesInt.selected.products = selectedCmdIntProducts;
   editCmdsIntView.render(selectedCmdIntProducts);
   //                                                                           TODO:
 };
@@ -1328,8 +1345,6 @@ const controlEditCmdsInt = async function () {
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
-addCmdsView.addHandlerAddProduct(controlAddProduct);
-addCmdsIntView.addHandlerAddProduct(controlAddProductInt);
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
 addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
 
@@ -1393,10 +1408,29 @@ addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
-addCmdsView.addHandlerProductSearch(controlSearchProducts);
+addCmdsView.addHandlerProductSearch(
+  controlSearchProducts,
+  model.state.bdc_products
+);
+addCmdsIntView.addHandlerProductSearch(
+  controlSearchProductsInt,
+  model.state.bdci_products
+);
 
-addCmdsView.addHandlerChangeProduct(controlChangeProduct);
-addCmdsIntView.addHandlerChangeProduct(controlChangeProductInt);
+addCmdsView.addHandlerAddProduct(controlAddProduct, model.state.bdc_products);
+addCmdsIntView.addHandlerAddProduct(
+  controlAddProductInt,
+  model.state.bdci_products
+);
+
+addCmdsView.addHandlerChangeProduct(
+  controlChangeProduct,
+  model.state.bdc_products
+);
+addCmdsIntView.addHandlerChangeProduct(
+  controlChangeProductInt,
+  model.state.bdci_products
+);
 
 //TODO: add after every render
 // const controlNumberAddProducts = function () {
@@ -1406,5 +1440,4 @@ addCmdsIntView.addHandlerChangeProduct(controlChangeProductInt);
 //   numberRoleView.render(model.state);
 // };
 
-addCmdsIntView.addHandlerProductSearch(controlSearchProductsInt);
 await editCmdsIntView.addHandlerEdit(controlEditCmdsInt);

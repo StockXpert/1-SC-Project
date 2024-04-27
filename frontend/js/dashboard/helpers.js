@@ -514,8 +514,14 @@ export const isObjectInArray = function (array, objectToCheck) {
     return item.designation === objectToCheck.designation;
   });
 };
+export const objectIndexInArray = function (array, objectToCheck) {
+  return array.findIndex(item => {
+    // Compare each element's properties with objectToCheck's properties
+    return item.designation === objectToCheck.designation;
+  });
+};
+// Remove leading zeros
 export const validateInput = function (input) {
-  // Remove leading zeros
   input.value = input.value.replace(/^0+/, '');
   // Ensure the value is at least 1
   if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) {
@@ -544,4 +550,9 @@ export const validateInputPrice = function (input) {
   if (isNaN(parseFloat(input.value))) {
     input.value = '0'; // Default to 0 if not a valid number
   }
+};
+
+export const subtractObjects = (mainArray, subArray, key) => {
+  const subValues = new Set(subArray.map(obj => obj[key]));
+  return mainArray.filter(obj => !subValues.has(obj[key]));
 };

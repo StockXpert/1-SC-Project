@@ -18,12 +18,36 @@ export const state = {
       wellFormed: [],
     },
   },
+  validityMsgs: {
+    addbdci: {
+      addProduct: {
+        designation: '',
+        quantite: '',
+      },
+      editProduct: {
+        designation: '',
+        quantite: '',
+      },
+    },
+    editbdci: {
+      addProduct: {
+        designation: '',
+        quantite: '',
+      },
+      editProduct: {
+        designation: '',
+        quantite: '',
+      },
+    },
+  },
   commandesInt: {
     all: [],
     selected: {
       old: {},
       new: { numDemande: '', deletedProducts: [], addededProducts: [] },
       newApproval: { numDemande: '', products: [] },
+      numDemande: '',
+      products: [],
     },
   },
   bdc: {

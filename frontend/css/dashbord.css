@@ -1098,7 +1098,8 @@ table tbody tr:last-child td {
   color: #477ce2;
 }
 .quantity,
-.quantity-verif,.quantity-verif-RD {
+.quantity-verif,
+.quantity-verif-RD {
   position: relative;
 }
 .quantity span,
@@ -2429,9 +2430,12 @@ a.password-icon:active {
   max-height: 15rem;
   overflow: scroll;
 }
-.add-product-search-results,
-.edit-product-search-results {
+.add-product-search-results {
   top: 7.4rem !important;
+  left: 1.4rem;
+}
+.edit-product-search-results {
+  top: 6.5rem !important;
   left: 1.4rem;
 }
 .search-results ul {
@@ -2521,4 +2525,15 @@ a.password-icon:active {
   font-size: 1.7rem;
   font-weight: 700;
   color: #477ce2;
+}
+.validity-message {
+  padding: 0 3px;
+  left: 23px;
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s;
+  transform: scale(0.87) translateY(-37px);
+  position: absolute;
+  color: #f13a3a;
+  font-weight: 600;
+  /* width: %; */
+  background-color: #fff;
 }

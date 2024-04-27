@@ -169,6 +169,15 @@ export class AddCmdsView extends AddUserView {
     );
   }
   addHandlerShowAddProductWindow(OpClassName, windowClassName) {
+    // this._window.addEventListener('click', e => {
+    //   console.log(this._resultsContainerProduct);
+    //   if (!this._resultsContainerProduct?.contains(e.target)) {
+    //     console.log('YOU CLICKED OUTSIDE THE SUGGESTION BOX');
+    //     console.log(this._resultsContainerProduct);
+    //     console.log(e.target);
+    //     console.log(this._window);
+    //   }
+    // });
     this._windowAddProduct = document.querySelector(windowClassName);
     this._btnOpenAddProduct = document.querySelector(OpClassName);
     this._btnOpenAddProduct.addEventListener(
@@ -253,15 +262,27 @@ export class AddCmdsView extends AddUserView {
     });
   }
 
-  addHandlerProductSearch(productSearchHandler) {
+  addHandlerProductSearch(productSearchController, productsObj) {
+    let productDesignations;
     this._product.addEventListener('input', e => {
-      this._product.setCustomValidity('');
-      productSearchHandler(e.target.value, 'add');
+      this._resultsContainerProduct.classList.remove('hidden');
+      productDesignations = productsObj.all.map(entry => entry.designation);
+      if (productDesignations.includes(e.target.value)) {
+        this._product.changeInputValidity('Ce Produit Existe !', true);
+      } else {
+        this._product.changeInputValidity('');
+      }
+      productSearchController(e.target.value, 'add', this);
     });
     //ALSO ADD THE EL TO the modifier search
     this._productEdit.addEventListener('input', e => {
-      this._productEdit.setCustomValidity('');
-      productSearchHandler(e.target.value, 'edit');
+      productDesignations = productsObj.all.map(entry => entry.designation);
+      if (productDesignations.includes(e.target.value)) {
+        this._productEdit.changeInputValidity('Ce Produit Existe !', true);
+      } else {
+        this._productEdit.changeInputValidity('');
+      }
+      productSearchController(e.target.value, 'edit', this);
     });
     //also add the EL for numberic value inputs
     this._addProductForm
@@ -282,14 +303,26 @@ export class AddCmdsView extends AddUserView {
     results = [],
     resultsContainerClass = '.product-search-results-container'
   ) {
+    this._resultsContainerProduct = document.querySelector(
+      resultsContainerClass
+    );
     document.querySelector(resultsContainerClass).innerHTML = '';
-    if (results.length == 0 && this._product.value != '') {
+    if (
+      results.length == 0 &&
+      (this._product.value != '' || this._productEdit.value != '')
+    ) {
       document
         .querySelector(resultsContainerClass)
         .insertAdjacentHTML(
           'afterbegin',
           `<li> Aucun Produit n'a été trouvé</li>`
         );
+      document
+        .querySelector(resultsContainerClass)
+        .querySelector('li')
+        .addEventListener('click', e => {
+          e.target.parentElement.innerHTML = '';
+        });
     } else {
       const markup = results
         .map(result => `<li>${result.designation}</li>`)
@@ -311,7 +344,14 @@ export class AddCmdsView extends AddUserView {
             bubbles: true,
             cancelable: true,
           });
-          this._product.dispatchEvent(event);
+          // this._product.dispatchEvent(event);
+          if (resultsContainerClass.includes('-edit')) {
+            this._productEdit.dispatchEvent(event);
+          } else {
+            if (!resultsContainerClass.includes('-edit')) {
+              this._product.dispatchEvent(event);
+            }
+          }
           document.querySelector(resultsContainerClass).innerHTML = '';
         });
       });
@@ -321,20 +361,23 @@ export class AddCmdsView extends AddUserView {
   addTypeSelectHandler(selectHandler) {
     this._type.addEventListener('change', e => selectHandler(e.target.value));
   }
-  addHandlerAddProduct(handler) {
+  addHandlerAddProduct(handler, productsObj) {
     this._addProductForm.addEventListener('submit', e => {
       e.preventDefault();
+      const productDesignations = productsObj.all.map(el => el.designation);
       const formElement = this._addProductForm;
       const formData = new FormData(formElement);
-      // formData.forEach(function (value, key) {
-      //   console.log(key + ': ' + value);
-      // });
       // Convert FormData object to object with key-value pairs
       const formDataObj = {};
       formData.forEach(function (value, key) {
         formDataObj[key] = value;
       });
+      if (!productDesignations.includes(formDataObj.designation)) {
+        this._product.changeInputValidity("Ce produit là n'existe pas");
+        return;
+      }
       handler(formDataObj);
+      this._product.changeInputValidity('');
       this.clearAddProductForm();
       this._product.parentElement.classList.remove('input-product--valid');
       this.toggleAddProductWindow.bind(this)();
@@ -436,7 +479,10 @@ export class AddCmdsView extends AddUserView {
     this._windowEditProduct = document.querySelector(windowClassName);
     this._btnsOpenEditProduct = document.querySelectorAll(OpClassName);
     this._btnsOpenEditProduct.forEach(btn =>
-      btn.addEventListener('click', this._boundToggleEditProductWindow)
+      btn.addEventListener('click', e => {
+        this._boundToggleEditProductWindow(e);
+        this._productEdit.changeInputValidity('Nom de produit Valide !', true);
+      })
     );
   }
   toggleEditProductWindow() {
@@ -480,11 +526,12 @@ export class AddCmdsView extends AddUserView {
     }
   }
 
-  addHandlerChangeProduct(handler) {
-    const closeBtn = this._btnCloseEditProduct;
-    this._editProductForm.addEventListener('submit', async function (e) {
+  addHandlerChangeProduct(handler, productsObj) {
+    // const closeBtn = this._btnCloseEditProduct;
+    this._editProductForm.addEventListener('submit', async e => {
       e.preventDefault();
-      const form = this;
+      const productDesignations = productsObj.all.map(el => el.designation);
+      const form = this._editProductForm;
       let inputs = Array.from(form.getElementsByTagName('input'));
       // const select = Array.from(form.getElementsByTagName('select'));
       // inputs = inputs.concat(select);
@@ -498,15 +545,21 @@ export class AddCmdsView extends AddUserView {
       if (allFilled) {
         const dataArr = [...new FormData(form)];
         const data = Object.fromEntries(dataArr);
-        closeBtn.click();
+        console.log(data);
+        if (!productDesignations.includes(data.designation)) {
+          this._productEdit.changeInputValidity("Ce produit là n'existe pas !");
+          return;
+        }
         handler(data);
+        this._btnCloseEditProduct.click();
       } else {
-        alert('Please fill in all fields before submitting.');
+        alert('Veuillez remplir tous les champs avant de soumettre.');
       }
     });
   }
 
   setInputValidity(inputBoxClass, boolean) {
+    // this._product.editSurroundingHTML('msg');
     if (boolean) {
       document
         .querySelector(inputBoxClass)
