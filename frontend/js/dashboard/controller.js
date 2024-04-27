@@ -1101,6 +1101,7 @@ const controlLoadCmdsInt = async function () {
     return;
   }
   addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
+  editCmdsIntView.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
   model.state.bdci_products.added = [];
   addCmdsIntView.render(model.state.bdci_products.added);
   cmdsIntView.renderSpinner('Chagement des produits depuis la BDD ...');
@@ -1134,15 +1135,19 @@ const controlAddProductInt = newProduct => {
   // ON SUBMIT:
   //TODO:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
-  if (helpers.isObjectInArray(model.state.bdci_products.added, newProduct)) {
+  let oldProducts;
+  oldProducts = model.state.bdci_products.added;
+
+  if (helpers.isObjectInArray(oldProducts, newProduct)) {
     helpers.renderError(
       'Erreur',
-      `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.`
+      `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.
+      Utilisez le bouton 'Modifier (icône de stylo)' pour modifier un produit deja ajouté `
     );
   } else {
     addCmdsIntView.allowSavingBDC(true, '.btn-save-bdci-qt');
-    model.state.bdci_products.added.push(newProduct);
-    addCmdsIntView.render(model.state.bdci_products.added);
+    oldProducts.push(newProduct);
+    addCmdsIntView.render(oldProducts);
     addCmdsIntView._checkboxesAddProduct =
       addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
     addCmdsIntView.AddHandlerAddedProductsCheckboxes();
@@ -1298,10 +1303,9 @@ const controlViewCmdInt = async function (target) {
       products[1].demande
     );
   }
-  //                                                                        TODO:
 };
 
-const controlEditCmdsInt = async function () {
+const controlModifyCmdsInt = async function () {
   //ONCLICK OF the EDIT BUTTON
   //Get the index of the selected CmdInt
   // const target = this;
@@ -1316,7 +1320,7 @@ const controlEditCmdsInt = async function () {
   );
   console.log(model.state.commandesInt.all[targetIndex]);
   const numDemande = model.state.commandesInt.all[targetIndex].num_demande;
-  model.state.commandesInt.selected.new.numDemande = numDemande;
+
   editCmdsIntView.renderSpinner('', true);
   let selectedCmdIntProducts = await model.loadCommandeIntProducts(
     model.state.commandesInt.all[targetIndex].num_demande
@@ -1328,10 +1332,47 @@ const controlEditCmdsInt = async function () {
   // editCmdsIntView.changeInputs(numDemande, selectedCmdIntProducts);
   console.log(selectedCmdIntProducts);
   model.state.commandesInt.selected.numDemande = numDemande;
+  model.state.commandesInt.selected.new.numDemande = numDemande;
+  // model.state.commandesInt.selected.new.DELETED && ADDED ARE TBD
   model.state.commandesInt.selected.products = selectedCmdIntProducts;
-  // editCmdsIntView.render(selectedCmdIntProducts);
+  model.state.commandesInt.selected.old.numDemande = numDemande;
+  model.state.commandesInt.selected.old.products = selectedCmdIntProducts;
   editCmdsIntView.changeDetails(numDemande, selectedCmdIntProducts);
-  //                                                                           TODO:
+  editCmdsIntView._checkboxesAddProduct =
+    editCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
+  editCmdsIntView.AddHandlerAddedProductsCheckboxes();
+  //TODO: edit btns
+  editCmdsIntView.addHandlerShowEditProductWindow(
+    '.details-btn-edit-bdci-add',
+    '.edit-product-edit-bdci-container'
+  );
+};
+
+const controlAddProductIntEdit = newProduct => {
+  // ON SUBMIT:
+  let oldProducts = model.state.commandesInt.selected.products;
+  if (helpers.isObjectInArray(oldProducts, newProduct)) {
+    helpers.renderError(
+      'Erreur',
+      `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.
+      Utilisez le bouton 'Modifier (icône de stylo)' pour modifier un produit deja ajouté `
+    );
+  } else {
+    editCmdsIntView.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
+    oldProducts.push(newProduct);
+    editCmdsIntView.render(oldProducts);
+    editCmdsIntView._checkboxesAddProduct =
+      editCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
+    editCmdsIntView.AddHandlerAddedProductsCheckboxes();
+    //TODO: edit btns
+    editCmdsIntView.addHandlerShowEditProductWindow(
+      '.details-btn-edit-bdci-add',
+      '.edit-product-edit-bdci-container'
+    );
+    // editUserView.addHandlerEdit(controlEditUser);
+    //TODO: hide btn
+    editCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  }
 };
 
 //////////////////////////////////////////////////////////////////
@@ -1423,7 +1464,7 @@ addCmdsIntView.addHandlerAddProduct(
   model.state.bdci_products
 );
 editCmdsIntView.addHandlerAddProduct(
-  controlAddProductInt,
+  controlAddProductIntEdit,
   model.state.bdci_products
 );
 
@@ -1448,4 +1489,4 @@ editCmdsIntView.addHandlerChangeProduct(
 //   numberRoleView.render(model.state);
 // };
 
-await editCmdsIntView.addHandlerEdit(controlEditCmdsInt);
+await editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);

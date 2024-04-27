@@ -976,6 +976,7 @@ table tbody tr:last-child td {
 .details-btn-produits,
 .details-btn-bdc-add,
 .details-btn-bdci-add,
+.details-btn-edit-bdci-add,
 .details-btn-bdr-add,
 .details-btn-bdr-show {
   background-color: transparent;

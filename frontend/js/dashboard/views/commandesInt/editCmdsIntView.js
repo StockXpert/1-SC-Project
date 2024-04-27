@@ -87,7 +87,7 @@ class EditCmdsIntView extends AddCmdsIntView {
               </td>
           
               <td>
-                <button class="details-btn-bdci-add">
+                <button class="details-btn-edit-bdci-add">
                   <span class="material-icons-sharp info-icon">
                     edit
                   </span>

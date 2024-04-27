@@ -43,11 +43,14 @@ export const state = {
   commandesInt: {
     all: [],
     selected: {
-      old: {},
+      old: {
+        numDemande: '',
+        products: '',
+      },
       new: { numDemande: '', deletedProducts: [], addededProducts: [] },
       newApproval: { numDemande: '', products: [] },
       numDemande: '',
-      products: [],
+      products: [], //selecter bdci products
     },
   },
   bdc: {
