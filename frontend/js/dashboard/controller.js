@@ -1178,25 +1178,19 @@ const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
   }
   switch (type) {
     case 'add':
-      console.log(extractItems(results));
-      console.log(
-        document.querySelector('.product-search-results-container-edit')
-      );
-      view.addToSuggestionsProductsAndEL(
-        extractItems(results),
-        '.bdci-product-search-results-container'
-      );
+      // view.addToSuggestionsProductsAndEL(
+      //   extractItems(results),
+      //   '.bdci-product-search-results-container'
+      // );
+      view.addToSuggestionsProductsAndEL(extractItems(results), 'add');
       view.resultVisibilityTogglers();
       break;
     case 'edit':
-      console.log(extractItems(results));
-      console.log(
-        document.querySelector('.product-search-results-container-edit')
-      );
-      view.addToSuggestionsProductsAndEL(
-        extractItems(results),
-        '.bdci-product-search-results-container-edit'
-      );
+      // view.addToSuggestionsProductsAndEL(
+      //   extractItems(results),
+      //   '.bdci-product-search-results-container-edit'
+      // );
+      view.addToSuggestionsProductsAndEL(extractItems(results), 'edit');
       view.resultVisibilityTogglers();
       break;
   }
@@ -1335,7 +1329,8 @@ const controlEditCmdsInt = async function () {
   console.log(selectedCmdIntProducts);
   model.state.commandesInt.selected.numDemande = numDemande;
   model.state.commandesInt.selected.products = selectedCmdIntProducts;
-  editCmdsIntView.render(selectedCmdIntProducts);
+  // editCmdsIntView.render(selectedCmdIntProducts);
+  editCmdsIntView.changeDetails(numDemande, selectedCmdIntProducts);
   //                                                                           TODO:
 };
 
@@ -1390,12 +1385,12 @@ addUserView.addHandlerUpload(controlAddUser);
 editUserView.addHandlerUpload(controlUpdateUser);
 deleteUserView.addDeleteController(controlDeleteUsers);
 editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
-// controlShowUsersEmail();
+controlShowUsersEmail();
 numberRoleView.addHandlerNumber(controlNumberRoles);
 AddStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
-// editStructureView.addHandlerShowWindow();
+editStructureView.addHandlerShowWindow();
 editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
 sideView.hideAllDivs();
@@ -1403,8 +1398,8 @@ deleteRoleView.addDeleteController(controlDeleteRoles);
 
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 // #F00
-//  controlUpdateArticles();
-// controlUpdateFournisseurs();
+controlUpdateArticles();
+controlUpdateFournisseurs();
 addCmdsView.addHandlerArticleSearch(controlSearchArticles);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
@@ -1417,8 +1412,17 @@ addCmdsIntView.addHandlerProductSearch(
   model.state.bdci_products
 );
 
+editCmdsIntView.addHandlerProductSearch(
+  controlSearchProductsInt,
+  model.state.bdci_products
+);
+
 addCmdsView.addHandlerAddProduct(controlAddProduct, model.state.bdc_products);
 addCmdsIntView.addHandlerAddProduct(
+  controlAddProductInt,
+  model.state.bdci_products
+);
+editCmdsIntView.addHandlerAddProduct(
   controlAddProductInt,
   model.state.bdci_products
 );
@@ -1428,6 +1432,10 @@ addCmdsView.addHandlerChangeProduct(
   model.state.bdc_products
 );
 addCmdsIntView.addHandlerChangeProduct(
+  controlChangeProductInt,
+  model.state.bdci_products
+);
+editCmdsIntView.addHandlerChangeProduct(
   controlChangeProductInt,
   model.state.bdci_products
 );

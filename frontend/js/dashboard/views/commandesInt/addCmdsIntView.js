@@ -18,6 +18,12 @@ export class AddCmdsIntView extends AddCmdsView {
   // _btnCloseAddProduct;
   // _windowAddProduct;
   // _restricted = [[this._btnOpen, 'bon commande'], 'none'];
+  _resultsContainerProduct = document.querySelector(
+    '.bdci-product-search-results-container'
+  );
+  _resultsContainerProductEdit = document.querySelector(
+    '.bdci-product-search-results-container-edit'
+  );
   constructor(nerfed = false) {
     // #F00
     super(true);

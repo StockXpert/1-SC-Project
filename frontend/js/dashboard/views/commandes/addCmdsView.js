@@ -23,6 +23,9 @@ export class AddCmdsView extends AddUserView {
   _resultsContainerProduct = document.querySelector(
     '.product-search-results-container'
   );
+  _resultsContainerProductEdit = document.querySelector(
+    '.product-search-results-container-edit'
+  );
   _fourResults;
   _articleResults;
   _productResults;
@@ -169,15 +172,6 @@ export class AddCmdsView extends AddUserView {
     );
   }
   addHandlerShowAddProductWindow(OpClassName, windowClassName) {
-    // this._window.addEventListener('click', e => {
-    //   console.log(this._resultsContainerProduct);
-    //   if (!this._resultsContainerProduct?.contains(e.target)) {
-    //     console.log('YOU CLICKED OUTSIDE THE SUGGESTION BOX');
-    //     console.log(this._resultsContainerProduct);
-    //     console.log(e.target);
-    //     console.log(this._window);
-    //   }
-    // });
     this._windowAddProduct = document.querySelector(windowClassName);
     this._btnOpenAddProduct = document.querySelector(OpClassName);
     this._btnOpenAddProduct.addEventListener(
@@ -301,39 +295,59 @@ export class AddCmdsView extends AddUserView {
   }
   addToSuggestionsProductsAndEL(
     results = [],
+    type,
     resultsContainerClass = '.product-search-results-container'
   ) {
-    this._resultsContainerProduct = document.querySelector(
-      resultsContainerClass
-    );
-    document.querySelector(resultsContainerClass).innerHTML = '';
+    let theContainer;
+    switch (type) {
+      case 'add':
+        theContainer = this._resultsContainerProduct;
+        break;
+      case 'edit':
+        theContainer = this._resultsContainerProductEdit;
+        break;
+    }
+    // this._resultsContainerProduct = document.querySelector(
+    //   resultsContainerClass
+    // );
+    // document.querySelector(resultsContainerClass).innerHTML = '';
+    theContainer.innerHTML = '';
     if (
       results.length == 0 &&
       (this._product.value != '' || this._productEdit.value != '')
     ) {
-      document
-        .querySelector(resultsContainerClass)
-        .insertAdjacentHTML(
-          'afterbegin',
-          `<li> Aucun Produit n'a été trouvé</li>`
-        );
-      document
-        .querySelector(resultsContainerClass)
-        .querySelector('li')
-        .addEventListener('click', e => {
-          e.target.parentElement.innerHTML = '';
-        });
+      // document
+      //   .querySelector(resultsContainerClass)
+      //   .insertAdjacentHTML(
+      //     'afterbegin',
+      //     `<li> Aucun Produit n'a été trouvé</li>`
+      //   );
+      theContainer.insertAdjacentHTML(
+        'afterbegin',
+        `<li> Aucun Produit n'a été trouvé</li>`
+      );
+      // document
+      //   .querySelector(resultsContainerClass)
+      //   .querySelector('li')
+      //   .addEventListener('click', e => {
+      //     e.target.parentElement.innerHTML = '';
+      //   });
+      theContainer.querySelector('li').addEventListener('click', e => {
+        e.target.parentElement.innerHTML = '';
+      });
     } else {
       const markup = results
         .map(result => `<li>${result.designation}</li>`)
         .slice(0, 10)
         .join('');
-      document
-        .querySelector(resultsContainerClass)
-        .insertAdjacentHTML('afterbegin', markup);
-      this._productResults = document
-        .querySelector(resultsContainerClass)
-        .querySelectorAll('li');
+      // document
+      //   .querySelector(resultsContainerClass)
+      //   .insertAdjacentHTML('afterbegin', markup);
+      theContainer.insertAdjacentHTML('afterbegin', markup);
+      // this._productResults = document
+      //   .querySelector(resultsContainerClass)
+      //   .querySelectorAll('li');
+      this._productResults = theContainer.querySelectorAll('li');
       this._productResults.forEach(el => {
         return el.addEventListener('click', e => {
           this._product.setCustomValidity('');
@@ -345,14 +359,23 @@ export class AddCmdsView extends AddUserView {
             cancelable: true,
           });
           // this._product.dispatchEvent(event);
-          if (resultsContainerClass.includes('-edit')) {
-            this._productEdit.dispatchEvent(event);
-          } else {
-            if (!resultsContainerClass.includes('-edit')) {
+          // if (resultsContainerClass.includes('-edit')) {
+          //   this._productEdit.dispatchEvent(event);
+          // } else {
+          //   if (!resultsContainerClass.includes('-edit')) {
+          //     this._product.dispatchEvent(event);
+          //   }
+          // }
+          switch (type) {
+            case 'add':
               this._product.dispatchEvent(event);
-            }
+              break;
+            case 'edit':
+              this._productEdit.dispatchEvent(event);
+              break;
           }
-          document.querySelector(resultsContainerClass).innerHTML = '';
+          // document.querySelector(resultsContainerClass).innerHTML = '';
+          theContainer.innerHTML = '';
         });
       });
     }
