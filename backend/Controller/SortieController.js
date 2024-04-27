@@ -41,7 +41,7 @@ function livrer(req,res)
         SortieService.subtituteQuantite(produits).then(()=>{
             SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
                 SortieModel.insertDateSortie(numDemande,dateSortie).then(()=>{
-                    SortieService.genererBonSortie(numDemande,dateSortie,produits,'1B_H87qYOz-GsKPPVftyeTcXFX68n5bQiOMaBHR202GA').then((link)=>{
+                    SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E').then((link)=>{
                         res.status(200).json({response:link})
                     }).catch(()=>{res.status(500).json({response:'internal error'})})
                 }).catch(()=>{res.status(500).json({response:'internal error'})})

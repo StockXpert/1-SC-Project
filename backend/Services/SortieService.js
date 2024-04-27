@@ -27,15 +27,15 @@ function canUpdate(numDemande,role)
 function genererBonSortie(numDemande,dateSortie,produits,id)
 {
     return new Promise(async(resolve,reject)=>{
-        await googleMiddleware.updateCel('D7',`Le:${dateSortie}`,id);
-        let i=9;
+        await googleMiddleware.updateCel('E3',`Le:${dateSortie}`,id);
+        let i=5;
         for(let produit of produits)
         {
             await googleMiddleware.addRow(i,produit,id,"sortie")
             i++;
         }
         await googleMiddleware.generatePDF(id,`sortie`,`sortie${numDemande}`);
-        await googleMiddleware.deleteRows(9,i-1,id);
+        await googleMiddleware.deleteRows(5,i-1,id);
         const link=`sortie/sortie${numDemande}.pdf`
         SortieModel.insertLink(numDemande,link).then(()=>{
             resolve(link)

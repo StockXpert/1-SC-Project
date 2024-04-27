@@ -82,7 +82,7 @@ async function addRow(ligne,Content,idCopy,type)
                 sc=1,
                 ec=5;
             case 'sortie':
-                valuesToInsert = [rowIndex-8,Content.designation,Content.quantite_demande,Content.quantite_servie,'',''];
+                valuesToInsert = [rowIndex-4,Content.designation,Content.quantite_demande,Content.quantite_servie,'',''];
                  break;    
             default:
                 break;
@@ -116,7 +116,66 @@ async function addRow(ligne,Content,idCopy,type)
                 }]
             }
         })}
-        
+        else
+        {
+            for(sc=0;sc<6;sc++)
+            {
+                const res2=await sheets.spreadsheets.batchUpdate({
+                    spreadsheetId:idCopy,
+                    requestBody:{
+                        requests:[
+                            {
+                                updateBorders:{
+                                    range:{
+                                        sheetId:0,
+                                        startColumnIndex:sc,
+                                        startRowIndex:rowIndex-1,
+                                        endColumnIndex:sc+1,
+                                        endRowIndex:rowIndex   
+                                    },
+                                    top: {
+                                        style: 'SOLID',
+                                        width: 1,
+                                        color: {
+                                            red: 0,
+                                            green: 0,
+                                            blue: 0
+                                        }
+                                    },
+                                    bottom: {
+                                        style: 'SOLID',
+                                        width: 1,
+                                        color: {
+                                            red: 0,
+                                            green: 0,
+                                            blue: 0
+                                        }
+                                    },
+                                    left: {
+                                        style: 'SOLID',
+                                        width: 1,
+                                        color: {
+                                            red: 0,
+                                            green: 0,
+                                            blue: 0
+                                        }
+                                    },
+                                    right: {
+                                        style: 'SOLID',
+                                        width: 1,
+                                        color: {
+                                            red: 0,
+                                            green: 0,
+                                            blue: 0
+                                        }
+                                    }    
+                                }
+                            }
+                        ]
+                    }
+                })
+            }
+        }
         if(type==='commande'){
         const res2=await sheets.spreadsheets.batchUpdate({
             spreadsheetId:idCopy,
@@ -289,7 +348,7 @@ async function generatePDF(idCopy,folder,filename)
         // Exporter la copie en PDF
         const pdfExportResponse = await drive.files.export({
             fileId: idCopy,
-            mimeType: 'application/pdf',
+            mimeType: 'application/pdf',         
         }, { responseType: 'stream' });
         let PDFpath= path.join('backend',folder,`${filename}.pdf`);
         const pdfFile = fs.createWriteStream(PDFpath);
