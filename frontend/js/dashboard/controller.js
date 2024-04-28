@@ -1024,14 +1024,33 @@ const controlLoadBRec = async function () {
   await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
-  addBonReception.handleUpdate();
+  addBonReception.handleUpdate(controlAddBRec);
 };
 
-// const controlAddBRec = async function (newReception) {
-//   const newReception = {
-//     numCommande: model.state.bdr.all[0].num_bon,
-//   };
-// };
+const controlAddBRec = async function (
+  numBonLivraison,
+  numFacture,
+  products,
+  linkLivraison,
+  linkFacture
+) {
+  const year = new Date().getFullYear();
+  const month = String(new Date().getMonth() + 1).padStart(2, '0');
+  const day = String(new Date().getDate()).padStart(2, '0');
+
+  const newReception = {
+    numCommande: model.state.bdr.all[0].numCommande,
+    numLivraison: numBonLivraison,
+    numFacture: numFacture,
+    produits: products,
+    facture: linkFacture,
+    bonLivraison: linkLivraison,
+    dateReception: `${year}-${month}-${day}`,
+  };
+
+  await model.addBonReception(newReception);
+  bonReceptionView.render(model.state.bdr.all);
+};
 
 const controlDeleteBonRec = function () {
   filterArrayByBooleans(

@@ -752,16 +752,12 @@ export const deleteBonRec = async function (numReception, numCommande) {
   console.log(data);
 };
 
-export const addBonReception = async function (numCommande, obj) {
-  const uploadData = {
-    numCommande: numCommande,
-    ...obj,
-  };
+export const addBonReception = async function (newReception) {
   const data = await helpers.putJSON(
-    `${API_URL}//Entrees/updateQuantite`,
-    uploadData
+    `${API_URL}/Entrees/updateQuantite`,
+    newReception
   );
-  console.log(data);
+  console.log('data', data);
 };
 
 export const loadCommandeIntProducts = async function (numDemande) {
