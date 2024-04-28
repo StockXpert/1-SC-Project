@@ -1,5 +1,6 @@
+import View from '../View.js';
 class DeleteBonReception extends View {
-  _btnOpen = document.querySelectorAll('.btn-delete-bdr');
+  _btnOpen = document.querySelector('.btn-delete-bdr');
   _window = document.querySelector('.container-supp-bdr');
   _annuler = document.querySelector('.supp-bdr-annuler');
   _confirm = document.querySelector('.supp-bdr-confirmer');
@@ -33,3 +34,5 @@ class DeleteBonReception extends View {
     });
   }
 }
+
+export default new DeleteBonReception();

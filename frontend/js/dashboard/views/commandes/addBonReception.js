@@ -61,7 +61,7 @@ class AddBonReception extends AddUserView {
     `;
   }
 
-  handleUpdate() {
+  handleUpdate(control) {
     const bonLivraisonInput = this._window.querySelector(
       'input[name="bonLivraison"]'
     );
@@ -92,14 +92,20 @@ class AddBonReception extends AddUserView {
           dataArray.push(dataObject);
         } else throw new Error('Quantité Errorr');
       });
+      if (dataArray.length === 0) return console.log('No modification');
       console.log('SAUVGARDE', numBonLivraison.value, numFacture.value);
       if (bonLivraisonInput.files.length > 0)
-        console.log(URL.createObjectURL(bonLivraisonInput.files[0]));
+        console.log(bonLivraisonInput.files[0]);
       else console.log('no bon Livraison');
-      if (factureInput.files.length > 0)
-        console.log(URL.createObjectURL(factureInput.files[0]));
+      if (factureInput.files.length > 0) console.log(factureInput.files[0]);
       else console.log('no facture');
-      console.log(dataArray);
+      control(
+        numBonLivraison,
+        numFacture,
+        dataArray,
+        bonLivraisonInput.files[0],
+        factureInput.files[0]
+      );
     });
   }
 }

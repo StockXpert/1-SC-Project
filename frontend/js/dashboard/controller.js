@@ -36,6 +36,7 @@ import seeCmdsView from './views/commandes/seeCmdsView.js';
 import seeCmdsIntView from './views/commandesInt/seeCmdsIntView.js';
 import addBonReception from './views/commandes/addBonReception.js';
 import View from './views/view.js';
+import deleteBonReception from './views/commandes/deleteBonReception.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1024,16 +1025,40 @@ const controlLoadBRec = async function () {
   await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
-  addBonReception.handleUpdate();
+  addBonReception.handleUpdate(controlAddBRec);
+  deleteBonReception.addDeleteController(controlDeleteBonRec);
 };
 
-// const controlAddBRec = async function (newReception) {
-//   const newReception = {
-//     numCommande: model.state.bdr.all[0].num_bon,
-//   };
-// };
+function fun() {
+  console.log('fun');
+}
 
-const controlDeleteBonRec = function () {
+const controlAddBRec = async function (
+  numBonLivraison,
+  numFacture,
+  products,
+  linkLivraison,
+  linkFacture
+) {
+  const year = new Date().getFullYear();
+  const month = String(new Date().getMonth() + 1).padStart(2, '0');
+  const day = String(new Date().getDate()).padStart(2, '0');
+
+  const newReception = {
+    numCommande: model.state.bdr.all[0].numCommande,
+    numLivraison: numBonLivraison,
+    numFacture: numFacture,
+    produits: products,
+    facture: linkFacture,
+    bonLivraison: linkLivraison,
+    dateReception: `${year}-${month}-${day}`,
+  };
+
+  await model.addBonReception(newReception);
+  bonReceptionView.render(model.state.bdr.all);
+};
+
+const controlDeleteBonRec = async function () {
   filterArrayByBooleans(
     model.state.bdr.all,
     helpers.getCheckboxStates(
@@ -1043,12 +1068,32 @@ const controlDeleteBonRec = function () {
     )
   ).forEach(async el => {
     console.log(el);
-    // usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
-    // await model.deleteStructure(el);
-    // back to main menu
-    // await controlLoadStructures();
+    // bonReceptionView.renderSpinner(
+    //   'Suppression Structure ' + el.designation + '...'
+    // );
+    // await model.deleteBonRec(el.num_bon, el.numCommande);
+    // // back to main menu
+    // await controlLoadBRec();
   });
 };
+/*
+const controlDeleteStructure = function () {
+  filterArrayByBooleans(
+    model.state.structures.results,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.table-structures')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
+    await model.deleteStructure(el);
+    // back to main menu
+    await controlLoadStructures();
+  });
+};
+*/
 
 const controlSavingBDC = async function () {
   if (model.state.fournisseurs.selected == '') {
