@@ -1201,16 +1201,43 @@ const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
   }
 };
 
-const controlEditProductBtnsInt = function () {
+// const controlEditProductBtnsInt = function () {
+//   //ONCLICK OF A EDIT BUTTON
+//   //Get the index of the clicked edit button here
+//   const target = this;
+//   const targetIndex = helpers.findNodeIndex(
+//     addCmdsIntView._btnsOpenEditProduct,
+//     target
+//   );
+//   //Use it to extract the input data from the state object
+//   addCmdsIntView.changeInputs(model.state.bdci_products.added[targetIndex]);
+//   model.state.bdci_products.changed = targetIndex;
+// };
+const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   //ONCLICK OF A EDIT BUTTON
   //Get the index of the clicked edit button here
-  const target = this;
-  const targetIndex = helpers.findNodeIndex(
-    addCmdsIntView._btnsOpenEditProduct,
-    target
-  );
+  // const productsArray = (typeof view == 'EditCmdsIntView')?model.state.commandesInt.selected.products:;
+  let productsArray;
+  switch (view.constructor.name) {
+    case 'EditCmdsIntView':
+      console.log('hello');
+      productsArray = model.state.commandesInt.selected.products;
+      break;
+    case 'AddCmdsIntView':
+      console.log('hi');
+      productsArray = model.state.bdci_products.added;
+      break;
+  }
+  // console.log(typeof view);
+  console.log(view.constructor.name);
+  const target = e.currentTarget;
+  const targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+  console.log(target);
+  console.log(view);
+  console.log(targetIndex);
+  console.log(productsArray);
   //Use it to extract the input data from the state object
-  addCmdsIntView.changeInputs(model.state.bdci_products.added[targetIndex]);
+  view.changeInputs(productsArray[targetIndex]);
   model.state.bdci_products.changed = targetIndex;
 };
 
@@ -1346,6 +1373,8 @@ const controlModifyCmdsInt = async function () {
     '.details-btn-edit-bdci-add',
     '.edit-product-edit-bdci-container'
   );
+  editCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  editCmdsIntView.changeInputs();
 };
 
 const controlAddProductIntEdit = newProduct => {

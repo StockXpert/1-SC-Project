@@ -525,7 +525,10 @@ export class AddCmdsView extends AddUserView {
   addHandlerEditProductBtns(controller) {
     const btnOpenArray = Array.from(this._btnsOpenEditProduct);
     btnOpenArray.forEach(async btn => {
-      btn.addEventListener('click', await controller);
+      btn.addEventListener('click', async e => {
+        console.log(this);
+        await controller(this, e);
+      });
     });
   }
 

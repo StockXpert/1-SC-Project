@@ -53,9 +53,9 @@ class EditCmdsIntView extends AddCmdsIntView {
     this._btnOpen.addEventListener('click', await controller);
   }
 
-  changeInputs(numDemande, selectedCmdIntProducts) {
-    // Get the form element (EditUserView.js)
-  }
+  // changeInputs(numDemande, selectedCmdIntProducts) {
+  //   // Get the form element (EditUserView.js)
+  // }
 
   changeDetails(cmd, products) {
     const heading = this._window.querySelector('.edit-bdci-title');
