@@ -718,11 +718,11 @@ export const loadBonRec = async function (numCommande) {
   const uploadData = {
     numCommande: numCommande,
   };
-  console.log(uploadData);
   const data = await helpers.sendJSON(
     `${API_URL}/Entrees/showBonReception`,
     uploadData
   );
+  data.response[0].numCommande = numCommande;
   state.bdr.all = data.response;
   console.log(state.bdr.all);
 };

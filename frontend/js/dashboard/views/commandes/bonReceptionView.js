@@ -69,14 +69,14 @@ class BonReceptionView extends UsersView {
         </td>
         <td>${day}/${month}/${year}</td>
         <td class="td-view-bdl">
-          <button class="view-bdl-btn">
+          <a class="view-bdl-btn" href="../../backend/${result.link_livraison}">
             <p>Voir Bon de livraison</p>
-          </button>
+          </a>
         </td>
         <td class="td-view-fac">
-          <button class="view-fac-btn">
+          <a class="view-fac-btn" href="../../backend/${result.link_facture}">
             <p>Voir Facture</p>
-          </button>
+          </a>
         </td>
         <td>
           <a
