@@ -1,26 +1,26 @@
-﻿#Les Compte de StockXpert:
+﻿# Les Compte de StockXpert:
 
-##Admin
+## Admin
 
-- [x] kam@esi-sba.dz
-- [ ] kamix2022
+-  kam@esi-sba.dz
+-  kamix2022
 
-##Consommateur
+## Consommateur
 
-- [x] saidsenhadji06@gmail.com
-- [ ] 123456
+-  saidsenhadji06@gmail.com
+-  123456
 
-##Responsable direct
+## Responsable direct
 
-- [x] RespDirct@esi-sba.dz
-- [ ] RD12
+-  RespDirct@esi-sba.dz
+-  RD12
 
-##Directeur
+## Directeur
 
-- [x] Directeur@esi-sba.dz
-- [ ] Directeur
+-  Directeur@esi-sba.dz
+-  Directeur
 
-##Magasinier
+## Magasinier
 
-- [x] o.aliabbou@esi-sba.dz
-- [ ] hadi2004
+-  o.aliabbou@esi-sba.dz
+-  hadi2004
