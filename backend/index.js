@@ -16,6 +16,10 @@ app.use("/Entrees", EntreeRoute);
 app.use("/Nomenclatures", NomenclatureRoute);
 app.use("/Sorties", SortieRoute);
 app.use('/bonCommande', express.static(path.join(__dirname,'bonCommande')));
+app.use('/bonReception', express.static(path.join(__dirname,'bonReception')));
+app.use('/bonLivraison', express.static(path.join(__dirname,'bonLivraison')));
+app.use('/Facture', express.static(path.join(__dirname,'Facture')));
+app.use('/sortie', express.static(path.join(__dirname,'sorite')));
 const options={
   definition:{
     openapi:"3.1.0",

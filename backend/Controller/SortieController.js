@@ -1,5 +1,6 @@
 const SortieService=require('../Services/SortieService')
-const SortieModel=require('../Models/SortieModel')
+const SortieModel=require('../Models/SortieModel');
+const { response } = require('express');
 function demandeFourniture(req,res){
 const {produits,dateDemande}=req.body;
 const {email}=req
@@ -37,10 +38,12 @@ function livrer(req,res)
 {
     const {numDemande,dateSortie}=req.body;
     SortieModel.getDemandeProducts(numDemande).then((produits)=>{
-        SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
-            SortieModel.insertDateSortie(numDemande,dateSortie).then(()=>{
-                SortieService.genererBonSortie(numDemande,dateSortie,produits,'1B_H87qYOz-GsKPPVftyeTcXFX68n5bQiOMaBHR202GA').then((link)=>{
-                    res.status(200).json({response:link})
+        SortieService.subtituteQuantite(produits).then(()=>{
+            SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
+                SortieModel.insertDateSortie(numDemande,dateSortie).then(()=>{
+                    SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E').then((link)=>{
+                        res.status(200).json({response:link})
+                    }).catch(()=>{res.status(500).json({response:'internal error'})})
                 }).catch(()=>{res.status(500).json({response:'internal error'})})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
         }).catch(()=>{res.status(500).json({response:'internal error'})})
@@ -59,19 +62,28 @@ function showAllDemandes(req,res)
 {
     const {role,email}=req;
     let statement;
+    let etat=''
     switch (role) {
         case 'magasinier':
             statement="etat in ('visee par dir','pret','livree')"
             break;
-        case 'directeur':
-            statement="etat in ('visee par resp','visee par dir','pret','livree')" 
+        case 'Directeur':
+            statement=`etat in ('visee par resp','visee par dg','pret','livree') or (etat="demande" and
+            id_demandeur in
+        (select email from utilisateur where id_structure=
+         (select id_structure from structure where id_resp=?)))`
+            etat="en attente"
+            break;
+        case 'Responsable directe':
+            etat='en attente';statement=''    ;
+            break;
         default:
             statement=''
             break;
     }
-    SortieModel.getAllDemandes(statement,email).then((demandes)=>{
+    SortieModel.getAllDemandes(etat,statement,email,role).then((demandes)=>{
         res.status(200).json({response:demandes})
-    }).catch(()=>res.status(500).json({response:"internal error"}))
+    }).catch((err)=>{console.log(err);res.status(500).json({response:err})})
 }
 function showNewDemandes(req,res)
 {
@@ -86,10 +98,10 @@ function showNewDemandes(req,res)
         case 'directeur':
             etat='visee par resp' 
         default:
-            etat='en attente'
+            etat='demande'
             break;
     }
-    SortieModel.getNewDemandes(etat,email,role==='consommateur'?'cons_notif':'other_notif').then((demandes)=>{
+    SortieModel.getNewDemandes(role,etat,email,role==='consommateur'?'cons_notif':'other_notif').then((demandes)=>{
         res.status(200).json({response:demandes})
     }).catch(()=>res.status(500).json({response:"internal error"}))
 }
@@ -128,9 +140,55 @@ function readNotif(req,res)
 {
     const {role}=req;
     const {numDemande}=req.body;
-    SortieModel.readNotif(numDemande,role==='consommateur'?'cons_notif':'other_notif').then(()=>{
+    SortieModel.readNotif(numDemande,role==='Consommateur'?'cons_notif':'other_notif').then(()=>{
         res.status(200).json({response:"read"})
     }).catch(()=>res.status(500).json({response:"internal error"}))
 }
+function readAllNotif(req,res)
+{
+    const {role,email}=req;
+    let etat;
+    switch (role) {
+        case 'consommateur':
+            etat='pret'
+        case 'magasinier':
+            etat='visee par dir'
+            break;
+        case 'directeur':
+            etat='visee par resp' 
+        default:
+            etat='demande'
+            break;
+    }
+    let numDemandes=[]
+    SortieModel.getNewDemandes(role,etat,email,role==='Consommateur'?'cons_notif':'other_notif').then((demandes)=>{
+        for(let demande of demandes)
+        {
+          numDemandes.push(demande.num_demande)
+        }
+        console.log({numDemandes})
+        SortieModel.readAllNotif(role==="Consommateur"?"cons_notif":"other_notif",numDemandes).then(()=>{
+            res.status(200).json({response:'read'})
+        }).catch(()=>res.status(500).json({response:"internal error"}))
+    }).catch(()=>res.status(500).json({response:"internal error"}))
+}
+function showDemande(req,res)
+{
+    const {numDemande}=req.body;
+    const {role}=req;
+    let quantiteType;
+    if(role==="Consommateur")
+       quantiteType="f.quantite_demande,f.quantite_servie"
+    else if (role==="Magasinier")
+       quantiteType="f.quantite_servie,f.quantite_accorde";
+    else if(role==="Directeur")
+       quantiteType="f.quantite_demande,f.quantite_accorde,f.quantite_servie"
+    else  
+       quantiteType="f.quantite_demande,f.quantite_accorde"
+    SortieModel.getDemande(numDemande,role,quantiteType).then((demande)=>{
+        res.status(200).json({demande})
+    }).catch(()=>{res.status(500).json({response:"internal error"})})
+}
 module.exports={demandeFourniture,fournitureDirApp,fournitureRespApp,fournitureMagApp,livrer,
-deleteFourniture,showNewDemandes,showAllDemandes,updateConsDemande,updateRespDirApp,updateMagApp,readNotif}
+deleteFourniture,showNewDemandes,showAllDemandes,updateConsDemande,updateRespDirApp,updateMagApp,
+readNotif,readAllNotif,showDemande}

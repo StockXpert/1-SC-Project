@@ -350,7 +350,7 @@ function canDeleteFourniture(numDemande)
               reject("request error");
               return;
             }
-            if(results[0].etat==="en attente")
+            if(results[0].etat==="demande")
                resolve('can')
             reject('prohibited')
           });
@@ -363,7 +363,7 @@ function deleteFourniture(numDemande)
 { 
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `delete demande_fourniture where num_demande=?`
+        const query = `delete from demande_fourniture where num_demande=?`
         const values = [numDemande];
       
         connection.connect((err) => {
@@ -386,16 +386,17 @@ function deleteFourniture(numDemande)
         });
       });
 }
-function getNewDemandes(etat,responable,notif)
+function getNewDemandes(role,etat,email,notif)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `select num_demande,etat,id_demandeur,date_demande where ${notif}=true etat=? 
-        ${etat==='en attente'?`and id_demandeur in
+        const query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${notif}=true and etat=? 
+        ${role==="Consommateur"?"and id_demande=?":''}
+        ${(etat==='demande'||role==="Directeur")?`and id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`
         const values = [etat];
-        if(etat==='en attente') values.push(responable)
+        if(etat==='demande') values.push(email)
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -416,15 +417,25 @@ function getNewDemandes(etat,responable,notif)
         });
       });
 }
-function getAllDemandes(statement,responable){
+function getAllDemandes(etat,statement,email,role){
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `select num_demande,etat,id_demandeur,date_demande where ${statement}
-        ${etat==='en attente'?`id_demandeur in
+        let query
+        let values=[]
+        if(role==="Consommateur")
+        {
+            query=`select num_demande,etat,date_demande from demande_fourniture where id_demandeur=?`
+            values.push(email)
+        }
+        else{
+         query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${statement}
+        ${(etat==='en attente'&&role==='Responsable directe')?`id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`;
-        const values =[]
-        if(etat==='en attente') values.push(responable)
+         values =[]
+        if(etat==='en attente') values.push(email)
+        }
+        console.log({query})
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -575,7 +586,7 @@ function deleteProductsFournir(numDemande,produits)
                         const id_produit = rows[0].id_produit;
   
                         // Insérer les données dans ma_table avec l'ID produit récupéré
-                        connection.query('delete from fournir (id_demande, id_produit, quantite_demande) VALUES (?, ?, ?)', [numDemande, id_produit, produit.quantite], (err, result) => {
+                        connection.query('delete from fournir where id_demande=? and id_produit=?', [numDemande, id_produit], (err, result) => {
                             if (err) {
                                 return callback(err);
                             }
@@ -612,7 +623,7 @@ function readNotif(numDemande,notif)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set etat=? , ${notif}=false where num_demande=?`;
+        const query = `update demande_fourniture set ${notif}=false where num_demande=?`;
         const values = [numDemande];
       
         connection.connect((err) => {
@@ -715,6 +726,63 @@ function getDemandeProducts(numDemande)
           connection.end(); // Fermer la connexion après l'exécution de la requête
         });})  
 }
+function readAllNotif(notif,numDemandes)
+{
+    return new Promise((resolve, reject) => {
+        const connection = mysql.createConnection(connectionConfig);
+
+        const query = `update demande_fourniture set ${notif}=false where num_demande in(?)`;
+        console.log({query});
+        const values=[numDemandes]
+        connection.connect((err) => {
+          if (err) {
+            console.error('Erreur de connexion :', err);
+            reject("connexion erreur");
+            return;
+          }
+          
+          connection.query(query,values,(error, results, fields) => {
+            if (error) {
+              console.error('Erreur lors de l\'exécution de la requête :', error);
+              reject("request error");
+              return;
+            }
+            resolve('success');
+          });
+          
+          connection.end(); // Fermer la connexion après l'exécution de la requête
+        });
+      });
+}
+function getDemande(numDemande,role,quantiteType)
+{
+    return new Promise((resolve, reject) => {
+        const connection = mysql.createConnection(connectionConfig);
+        const query = `select p.designation,p.seuil,${quantiteType} ${role!="Consommateur"?',p.seuil,p.quantite':""}
+        from fournir f,produit p where p.id_produit=f.id_produit and f.id_demande=?`;
+        const values =[numDemande]
+        
+        connection.connect((err) => {
+          if (err) {
+            console.error('Erreur de connexion :', err);
+            reject("connexion erreur");
+            return;
+          }
+          
+          connection.query(query, values, (error, results, fields) => {
+            if (error) {
+              console.error('Erreur lors de l\'exécution de la requête :', error);
+              reject("request error");
+              return;
+            }
+             resolve(results)
+          });
+          
+          connection.end(); // Fermer la connexion après l'exécution de la requête
+        });
+      });
+}
 module.exports={addFourniture,insertFournir,updateAccordedQuantite,changeDemandeStatNotif,updateLivredQuantite,
                deleteFourniture,canDeleteFourniture,getNewDemandes,getAllDemandes,updateDemandedQuantite,
-            getDemandeStatus,deleteProductsFournir,readNotif,insertLink,getDemandeProducts,insertDateSortie}
+            getDemandeStatus,deleteProductsFournir,readNotif,insertLink,
+            getDemandeProducts,insertDateSortie,readAllNotif,getDemande}
