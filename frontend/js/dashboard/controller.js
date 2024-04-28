@@ -36,6 +36,7 @@ import seeCmdsView from './views/commandes/seeCmdsView.js';
 import seeCmdsIntView from './views/commandesInt/seeCmdsIntView.js';
 import addBonReception from './views/commandes/addBonReception.js';
 import View from './views/view.js';
+import deleteBonReception from './views/commandes/deleteBonReception.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1025,7 +1026,12 @@ const controlLoadBRec = async function () {
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
   addBonReception.handleUpdate(controlAddBRec);
+  deleteBonReception.addDeleteController(controlDeleteBonRec);
 };
+
+function fun() {
+  console.log('fun');
+}
 
 const controlAddBRec = async function (
   numBonLivraison,
@@ -1052,7 +1058,7 @@ const controlAddBRec = async function (
   bonReceptionView.render(model.state.bdr.all);
 };
 
-const controlDeleteBonRec = function () {
+const controlDeleteBonRec = async function () {
   filterArrayByBooleans(
     model.state.bdr.all,
     helpers.getCheckboxStates(
@@ -1062,12 +1068,32 @@ const controlDeleteBonRec = function () {
     )
   ).forEach(async el => {
     console.log(el);
-    // usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
-    // await model.deleteStructure(el);
-    // back to main menu
-    // await controlLoadStructures();
+    // bonReceptionView.renderSpinner(
+    //   'Suppression Structure ' + el.designation + '...'
+    // );
+    // await model.deleteBonRec(el.num_bon, el.numCommande);
+    // // back to main menu
+    // await controlLoadBRec();
   });
 };
+/*
+const controlDeleteStructure = function () {
+  filterArrayByBooleans(
+    model.state.structures.results,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.table-structures')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
+    await model.deleteStructure(el);
+    // back to main menu
+    await controlLoadStructures();
+  });
+};
+*/
 
 const controlSavingBDC = async function () {
   if (model.state.fournisseurs.selected == '') {
