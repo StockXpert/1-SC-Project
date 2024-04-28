@@ -132,17 +132,16 @@ function isUsedFournisseur(fournisseur)
     });
   });
 }
-function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, nis, raisonSociale) {
+function updateFournisseur(adresse, telephone, fax, numRegistre, ribRip, nif, nis, raisonSociale) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query = `
     UPDATE fournisseur SET 
-    ${adresse ? 'adresse=?' : ''}${adresse && (telephone || fax || numRegistre || rib || rip || nif || nis) ? ', ' : ''}
-    ${telephone ? 'telephone=?' : ''}${telephone && (fax || numRegistre || rib || rip || nif || nis) ? ', ' : ''}
-    ${fax ? 'fax=?' : ''}${fax && (numRegistre || rib || rip || nif || nis) ? ', ' : ''}
-    ${numRegistre ? 'num_registre=?' : ''}${numRegistre && (rib || rip || nif || nis) ? ', ' : ''}
-    ${rib ? 'rib=?' : ''}${rib && (rip || nif || nis) ? ', ' : ''}
-    ${rip ? 'rip=?' : ''}${rip && (nif || nis) ? ', ' : ''}
+    ${adresse ? 'adresse=?' : ''}${adresse && (telephone || fax || numRegistre || ribRip || nif || nis) ? ', ' : ''}
+    ${telephone ? 'telephone=?' : ''}${telephone && (fax || numRegistre || ribRip || nif || nis) ? ', ' : ''}
+    ${fax ? 'fax=?' : ''}${fax && (numRegistre || ribRip || nif || nis) ? ', ' : ''}
+    ${numRegistre ? 'num_registre=?' : ''}${numRegistre && (ribRip || nif || nis) ? ', ' : ''}
+    ${ribRip ? 'rib_ou_rip=?' : ''}${ribRip && ( nif || nis) ? ', ' : ''}
     ${nif ? 'nif=?' : ''}${nif && nis ? ', ' : ''}
     ${nis ? 'nis=?' : ''}
     WHERE raison_sociale=?`;
@@ -152,8 +151,7 @@ function updateFournisseur(adresse, telephone, fax, numRegistre, rib, rip, nif, 
     if (telephone) values.push(telephone);
     if (fax) values.push(fax);
     if (numRegistre) values.push(numRegistre);
-    if (rib) values.push(rib);
-    if (rip) values.push(rip);
+    if (rib) values.push(ribRip);
     if (nif) values.push(nif);
     if (nis) values.push(nis);
     values.push(raisonSociale);
@@ -388,12 +386,12 @@ function addArticle(numArt,chapitreId,designation,tva)
         });
       });
 }
-function addProduct(quantite,designation,description)
+function addProduct(quantite,designation,description,seuil)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into produit (designation,description,quantite,date_ajout) values (?,?,?,now())';
-        const values = [designation,description,quantite];
+        const query = 'insert into produit (designation,description,quantite,date_ajout,seuil) values (?,?,?,now(),?)';
+        const values = [designation,description,quantite,seuil];
         if(quantite===null) quantite=0;
         connection.connect((err) => {
           if (err) {
@@ -612,12 +610,12 @@ function deleteProductFromC(productId)
         });
       });
 }
-function insertFournisseur(raisonSocial,adresse,tel,fax,numRegistre,rib,rip,nif,nis)
+function insertFournisseur(raisonSocial,adresse,tel,fax,numRegistre,ribRip,nif,nis)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'insert into fournisseur (raison_sociale,adresse,telephone,fax,num_registre,rib,rip,nif,nis,date_ajout) values (?,?,?,?,?,?,?,?,?,NOW())';
-    const values = [raisonSocial,adresse,tel,fax,numRegistre,rib,rip,nif,nis];
+    const query = 'insert into fournisseur (raison_sociale,adresse,telephone,fax,num_registre,rib_ou_rip,nif,nis,date_ajout) values (?,?,?,?,?,?,?,?,NOW())';
+    const values = [raisonSocial,adresse,tel,fax,numRegistre,ribRip,nif,nis];
   
     connection.connect((err) => {
       if (err) {
@@ -701,7 +699,7 @@ function getFournisseurs()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'select raison_sociale,adresse,telephone,fax,num_registre,rib,rip,nif,nis from fournisseur';
+    const query = 'select raison_sociale,adresse,telephone,fax,num_registre,rib_ou_rip,nif,nis from fournisseur';
     
   
     connection.connect((err) => {
@@ -729,7 +727,7 @@ function getProducts()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select p.designation,p.quantite,p.description,a.designation as article from produit p , contient c ,article a 
+    const query = `select p.designation,p.quantite,p.seuil,p.description,a.designation as article from produit p , contient c ,article a 
                    where p.id_produit=c.id_produit and c.id_article=a.num_article`;
     
   
