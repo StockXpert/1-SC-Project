@@ -396,6 +396,8 @@ export class AddCmdsView extends AddUserView {
       formData.forEach(function (value, key) {
         formDataObj[key] = value;
       });
+      formDataObj.quantite = parseInt(formDataObj.quantite);
+      console.log(formDataObj);
       if (!productDesignations.includes(formDataObj.designation)) {
         this._product.changeInputValidity("Ce produit là n'existe pas");
         return;
@@ -588,7 +590,14 @@ export class AddCmdsView extends AddUserView {
       });
       if (allFilled) {
         const dataArr = [...new FormData(form)];
+        // console.log(dataArr);
+        dataArr.find(([key, value]) => key === 'quantite')[1] = parseInt(
+          dataArr.find(([key, value]) => key === 'quantite')[1],
+          10
+        );
+        console.log(dataArr);
         const data = Object.fromEntries(dataArr);
+        console.log(data);
         if (!productDesignations.includes(data.designation)) {
           this._productEdit.changeInputValidity("Ce produit là n'existe pas !");
           return;

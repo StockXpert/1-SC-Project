@@ -698,6 +698,15 @@ export const createBDCI = async function () {
   console.log(postBDCIOBJ);
   // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
+export const saveBDCI = async function () {
+  const postBDCIOBJ = {
+    numDemande: state.commandesInt.selected.numDemande,
+    deletedProducts: state.commandesInt.selected.old.products,
+    addedProducts: state.commandesInt.selected.products,
+  };
+  console.log(postBDCIOBJ);
+  await helpers.sendJSON(`${API_URL}/Sorties/updateConsDemande`, postBDCIOBJ);
+};
 export const deleteCmd = async function (numCommande) {
   return await helpers.delJSONReturnResResp(
     `${API_URL}/Entrees/deleteCommande`,

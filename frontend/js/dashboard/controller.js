@@ -1316,9 +1316,12 @@ const controlChangeProductInt = function (
     switch (view.constructor.name) {
       case 'AddCmdsIntView':
         view.render(BdciProdsCurrState);
+        //TODO: make it depend on if the user has really changed the products or not
+        view.allowSavingBDC(true, '.btn-save-bdci-qt');
         break;
       case 'EditCmdsIntView':
         view.changeDetails(BdciProdsCurrState);
+        view.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
         break;
     }
     view._checkboxesAddProduct = view._parentElement.querySelectorAll(
@@ -1376,19 +1379,21 @@ const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
     helpers.getCheckboxStates(view._checkboxesAddProduct)
   );
   BdciProdsCurrState = addedProductsAfterRemoval;
-  if (addedProductsAfterRemoval.length == 0) {
-    switch (view.constructor.name) {
-      case 'AddCmdsIntView':
+  switch (view.constructor.name) {
+    case 'AddCmdsIntView':
+      if (addedProductsAfterRemoval.length == 0) {
         view.allowSavingBDC(false, '.btn-save-bdci-qt');
-        model.state.bdci_products.added = BdciProdsCurrState;
-        view.render(BdciProdsCurrState);
-        break;
-      case 'EditCmdsIntView':
+      }
+      model.state.bdci_products.added = BdciProdsCurrState;
+      view.render(BdciProdsCurrState);
+      break;
+    case 'EditCmdsIntView':
+      if (addedProductsAfterRemoval.length == 0) {
         view.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
-        model.state.commandesInt.selected.products = BdciProdsCurrState;
-        view.changeDetails(BdciProdsCurrState);
-        break;
-    }
+      }
+      model.state.commandesInt.selected.products = BdciProdsCurrState;
+      view.changeDetails(BdciProdsCurrState);
+      break;
   }
   view._checkboxesAddProduct = view._parentElement.querySelectorAll(
     'input[type="checkbox"]'
@@ -1528,6 +1533,20 @@ const controlAddProductIntEdit = newProduct => {
   }
 };
 
+const controlSavingBDCIEdit = async function () {
+  if (model.state.commandesInt.selected.products.length == 0) {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Aucun produit n'a été ajouté au bon de commande.</b></p>
+      <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
+    );
+  } else {
+    await model.saveBDCI();
+    // addCmdsView._boundToggleWindow();
+    await controlLoadCmdsInt();
+  }
+};
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// B A C K  O '  B E Y O N D #fff
@@ -1566,6 +1585,7 @@ const controllers = [
 
 addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);
 addCmdsIntView.addHandlerSavingBDC(controlSavingBDCI, model.state);
+editCmdsIntView.addHandlerSavingBDC(controlSavingBDCIEdit, model.state);
 
 addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
