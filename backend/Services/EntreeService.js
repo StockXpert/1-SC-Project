@@ -42,7 +42,7 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tv
             await googleMiddleware.updateCel('F13',`N.I.F : ${fournisseur.nif?fournisseur.nif:''}`,Id)
             await googleMiddleware.updateCel('F14',`N.I.S : ${+fournisseur.nis?fournisseur.nis:''}`,Id)
             await googleMiddleware.updateCel('F22',montantHT(produits)+'.00',Id)
-            await googleMiddleware.updateCel('C15',`RIB (ou RIP) :${fournisseur.rib?fournisseur.rib:fournisseur.rip}`,Id)
+            await googleMiddleware.updateCel('C15',`RIB (ou RIP) :${fournisseur.rib_ou_rip}`,Id)
             await googleMiddleware.updateCel('F18',`Objet de la commande: ${objet}`,Id);
             let range
             switch (type) {

@@ -79,8 +79,8 @@ function deleteArticle(req,res)
 }
 function addProduct(req,res)
 {
-    const {article,designation,quantite,description}=req.body;
-    NomenclatureService.addProduct(article,designation,description,quantite).then((response)=>{
+    const {article,designation,quantite,description,seuil}=req.body;
+    NomenclatureService.addProduct(article,designation,description,quantite,seuil).then((response)=>{
         res.status(200).json({response})
     }).catch((response)=>{
         console.log(response)
@@ -100,8 +100,8 @@ function deleteProduct(req,res)
 }
 function addFournisseur(req,res)
 {
-    const {raisonSociale,adresse,tel,fax,numRegistre,rib,rip,nif,nis}=req.body;
-    NomenclatureModel.insertFournisseur(raisonSociale,adresse,tel,fax,numRegistre,rib,rip,nif,nis).then(()=>{
+    const {raisonSociale,adresse,tel,fax,numRegistre,ribRip,nif,nis}=req.body;
+    NomenclatureModel.insertFournisseur(raisonSociale,adresse,tel,fax,numRegistre,ribRip,nif,nis).then(()=>{
         res.status(200).json({response:"fournisseur added"})
     }).catch(()=>{
         res.status(500).json({response:"internal error"});
@@ -155,8 +155,8 @@ function showArticles(req,res)
 }
 function updateFournisseur(req,res)
 {
-    const {adresse,telephone,fax,numRegistre,rib,rip,nif,nis,raisonSociale}=req.body
-    NomenclatureModel.updateFournisseur(adresse,telephone,fax,numRegistre,rib,rip,nif,nis,raisonSociale).then(()=>{
+    const {adresse,telephone,fax,numRegistre,ribRip,nif,nis,raisonSociale}=req.body
+    NomenclatureModel.updateFournisseur(adresse,telephone,fax,numRegistre,ribRip,nif,nis,raisonSociale).then(()=>{
         res.status(200).json({response:"fournisseur updated"});
     }).catch(()=>{
         res.status(500).json({response:"internal error"})
