@@ -292,10 +292,10 @@ function createReception(
     EntreeModel.insertBonReception(
       numCommande,
       dateReception,
-      numFacture,
-      numLivraison,
       bonLivraisonLink,
-      factureLink
+      factureLink,
+      numFacture,
+      numLivraison
     )
       .then(numReception => {
         EntreeModel.insertLivre(numReception, produits)
