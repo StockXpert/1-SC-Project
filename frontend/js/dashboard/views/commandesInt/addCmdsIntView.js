@@ -24,6 +24,10 @@ export class AddCmdsIntView extends AddCmdsView {
   _resultsContainerProductEdit = document.querySelector(
     '.bdci-product-search-results-container-edit'
   );
+  _boundToggleWindow = e => {
+    e.preventDefault();
+    this.toggleWindow.bind(this)();
+  };
   constructor(nerfed = false) {
     // #F00
     super(true);

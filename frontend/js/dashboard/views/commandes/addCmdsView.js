@@ -450,7 +450,11 @@ export class AddCmdsView extends AddUserView {
     }
   }
   addHandlerDeleteAddedProducts(handler) {
-    this._btnDeleteProducts.addEventListener('click', handler);
+    console.log(this);
+    this._btnDeleteProducts.addEventListener('click', e => {
+      e.preventDefault();
+      handler(this);
+    });
   }
   _generateMarkupPreview(result, perms = []) {
     return `
@@ -536,12 +540,13 @@ export class AddCmdsView extends AddUserView {
   changeInputs(NewInputValuesObj) {
     // Get the form element
     const formElement = this._editProductForm;
-    // Create a new FormData object from the form
-    const formData = new FormData(formElement);
-    // TODO:
+
+    // TODO: Create a new FormData object from the form - to console.log it if you need
+    // const formData = new FormData(formElement);
     // formData.forEach(function (value, key) {
     //   console.log(key + ': ' + value);
     // });
+
     // Update form fields with new values
     for (const key in NewInputValuesObj) {
       if (NewInputValuesObj.hasOwnProperty(key)) {

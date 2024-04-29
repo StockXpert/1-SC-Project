@@ -99,7 +99,7 @@ class EditCmdsIntView extends AddCmdsIntView {
             </tr>`;
             })
             .join('')
-        : `<td colspan=2><b>Aucun Produit</b></td>`;
+        : `<td colspan=4 class="empty-table--products"><b>Aucun Produit</b></td>`;
     this._parentElement.innerHTML = '';
     this._parentElement.innerHTML = productsHTML;
   }

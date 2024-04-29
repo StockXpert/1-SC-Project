@@ -1294,13 +1294,13 @@ const controlChangeProductInt = function (
   let BdciProdsCurrState;
   let changed;
   switch (view.constructor.name) {
-    case 'EditCmdsIntView':
-      BdciProdsCurrState = model.state.commandesInt.selected.products;
-      changed = model.state.commandesInt.selected.changed;
-      break;
     case 'AddCmdsIntView':
       BdciProdsCurrState = model.state.bdci_products.added;
       changed = model.state.bdci_products.changed;
+      break;
+    case 'EditCmdsIntView':
+      BdciProdsCurrState = model.state.commandesInt.selected.products;
+      changed = model.state.commandesInt.selected.changed;
       break;
   }
   if (
@@ -1314,11 +1314,11 @@ const controlChangeProductInt = function (
   } else {
     BdciProdsCurrState[changed] = editedProduct;
     switch (view.constructor.name) {
-      case 'EditCmdsIntView':
-        view.changeDetails(BdciProdsCurrState);
-        break;
       case 'AddCmdsIntView':
         view.render(BdciProdsCurrState);
+        break;
+      case 'EditCmdsIntView':
+        view.changeDetails(BdciProdsCurrState);
         break;
     }
     view._checkboxesAddProduct = view._parentElement.querySelectorAll(
@@ -1340,25 +1340,72 @@ const controlChangeProductInt = function (
   }
 };
 
-const controlDeleteAddedProductsInt = () => {
-  const addedProductsAfterRemoval = helpers.removeArrayByBooleans(
-    model.state.bdci_products.added,
-    helpers.getCheckboxStates(addCmdsIntView._checkboxesAddProduct)
+// const controlDeleteAddedProductsInt = view => {
+//   console.log(view.constructor.name);
+//   const addedProductsAfterRemoval = helpers.removeArrayByBooleans(
+//     model.state.bdci_products.added,
+//     helpers.getCheckboxStates(addCmdsIntView._checkboxesAddProduct)
+//   );
+//   if (addedProductsAfterRemoval.length == 0)
+//     addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
+//   model.state.bdci_products.added = addedProductsAfterRemoval;
+//   addCmdsIntView.render(model.state.bdci_products.added);
+//   addCmdsIntView._checkboxesAddProduct =
+//     addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
+//   addCmdsIntView.AddHandlerAddedProductsCheckboxes();
+//   //TODO: edit btns
+//   addCmdsIntView.addHandlerShowEditProductWindow(
+//     '.details-btn-bdci-add',
+//     '.edit-product-bdci-container'
+//   );
+//   //TODO: hide btn
+//   addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+// };
+const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
+  let BdciProdsCurrState;
+  switch (view.constructor.name) {
+    case 'AddCmdsIntView':
+      BdciProdsCurrState = model.state.bdci_products.added;
+      break;
+    case 'EditCmdsIntView':
+      BdciProdsCurrState = model.state.commandesInt.selected.products;
+      break;
+  }
+  let addedProductsAfterRemoval = helpers.removeArrayByBooleans(
+    BdciProdsCurrState,
+    helpers.getCheckboxStates(view._checkboxesAddProduct)
   );
-  if (addedProductsAfterRemoval.length == 0)
-    addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
-  model.state.bdci_products.added = addedProductsAfterRemoval;
-  addCmdsIntView.render(model.state.bdci_products.added);
-  addCmdsIntView._checkboxesAddProduct =
-    addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
-  addCmdsIntView.AddHandlerAddedProductsCheckboxes();
+  BdciProdsCurrState = addedProductsAfterRemoval;
+  if (addedProductsAfterRemoval.length == 0) {
+    switch (view.constructor.name) {
+      case 'AddCmdsIntView':
+        view.allowSavingBDC(false, '.btn-save-bdci-qt');
+        model.state.bdci_products.added = BdciProdsCurrState;
+        view.render(BdciProdsCurrState);
+        break;
+      case 'EditCmdsIntView':
+        view.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
+        model.state.commandesInt.selected.products = BdciProdsCurrState;
+        view.changeDetails(BdciProdsCurrState);
+        break;
+    }
+  }
+  view._checkboxesAddProduct = view._parentElement.querySelectorAll(
+    'input[type="checkbox"]'
+  );
+  view.AddHandlerAddedProductsCheckboxes();
   //TODO: edit btns
   addCmdsIntView.addHandlerShowEditProductWindow(
     '.details-btn-bdci-add',
     '.edit-product-bdci-container'
   );
+  editCmdsIntView.addHandlerShowEditProductWindow(
+    '.details-btn-edit-bdci-add',
+    '.edit-product-edit-bdci-container'
+  );
   //TODO: hide btn
-  addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  view.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
 const controlSavingBDCI = async function () {
@@ -1489,6 +1536,7 @@ const controlAddProductIntEdit = newProduct => {
 
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
 addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
+editCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
 
 deleteCmdsView.addDeleteController(controlDeleteCmds);
 cancelCmdsView.addCancelController(controlCancelCmds);
