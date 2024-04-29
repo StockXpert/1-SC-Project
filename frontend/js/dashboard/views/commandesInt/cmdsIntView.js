@@ -76,8 +76,10 @@ export class CmdsIntView extends CmdsView {
     ${
       this._role.includes('Directeur')
         ? `
-      <td class="td-verif-bdci-Directeur">
-        <button class="verif-bdci-Directeur">
+      <td class="td-verif-bdci-RD">
+        <button class="verif-bdci-RD ${
+          result.etat.includes('visee par resp') ? '' : 'hidden'
+        }">
           <span class="material-icons-sharp verif-icon">
             check_circle
           </span>
