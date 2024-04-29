@@ -61,9 +61,11 @@ function showCommandes(req,res)
 }
 function updateQuantite(req,res)
 {
+   console.log(req.file)
    const {numCommande,produits,numFacture,numLivraison,dateReception}=req.body;
-   const bonLivraisonLink = req.files['bonLivraison'][0].originalname?req.files['bonLivraison'][0].originalname:null;
-   const factureLink = req.files['facture'][0].originalname?req.files['facture'][0].originalname:null;
+   const bonLivraisonLink = req.files['bonLivraison'][0].filename
+   const factureLink = req.files['facture'][0].filename
+   console.log({bonLivraisonLink,factureLink});
    EntreeService.changeQuantite(numCommande,produits).then((response)=>{
       EntreeService.uploadvalidity(numCommande).then((response)=>{
           EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink).then((response)=>{
