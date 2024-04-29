@@ -6,6 +6,7 @@ class BonReceptionView extends UsersView {
   _overlay = document.querySelector('.overlayBDR');
   _btnClose = document.getElementById('bdr-close');
   _parentElement = document.querySelector('.results-bdrs');
+  _trueParentElement = document.querySelector('.table-container-show-bdr');
 
   constructor() {
     super();

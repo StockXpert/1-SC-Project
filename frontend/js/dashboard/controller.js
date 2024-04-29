@@ -1014,11 +1014,11 @@ const controlLoadBRec = async function () {
     document.querySelectorAll('.view-btr-btn'),
     target
   );
-  bonReceptionView._clear();
+  bonReceptionView.renderSpinner();
   await model.loadBonRec(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
-  bonReceptionView.renderSpinner('Load BDR ...');
+  bonReceptionView._clear();
   bonReceptionView.render(model.state.bdr.all);
   addBonReception.f();
   addBonReception._clear();
