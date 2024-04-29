@@ -1014,7 +1014,8 @@ const controlLoadBRec = async function () {
     document.querySelectorAll('.view-btr-btn'),
     target
   );
-  bonReceptionView.renderSpinner();
+  bonReceptionView._clear();
+  // bonReceptionView.renderSpinner();
   await model.loadBonRec(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
@@ -1046,15 +1047,15 @@ const controlAddBRec = async function (
   const day = String(currentDay.getDate()).padStart(2, '0');
   console.log(`${year}-${month}-${day}`);
 
-  const newReception = {
-    numCommande: model.state.bdr.all[0].numCommande,
-    numLivraison: numBonLivraison,
-    numFacture: numFacture,
-    produits: products,
-    facture: linkFacture,
-    bonLivraison: linkLivraison,
-    dateReception: `${year}-${month}-${day}`,
-  };
+  const newReception = new FormData();
+  newReception.append('numCommande', model.state.bdr.all[0].numCommande);
+  newReception.append('numLivraison', numBonLivraison);
+  newReception.append('numFacture', numFacture);
+  newReception.append('produits', products);
+  newReception.append('facture', linkFacture);
+  newReception.append('bonLivraison', linkLivraison);
+  newReception.append('dateReception', `${year}-${month}-${day}`);
+
   addBonReception.renderSpinner();
   await model.addBonReception(newReception);
   await controlLoadBRec();
