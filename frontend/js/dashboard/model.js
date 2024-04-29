@@ -822,14 +822,14 @@ export const dirAppCmdInt = async function (appObject) {
 };
 export const magAppCmdInt = async function (appObject) {
   let responseArray = await helpers.postJSONReturnResResp(
-    `${API_URL}/fournitureMagApp`,
+    `${API_URL}/Sorties/fournitureMagApp`,
     appObject
   );
   return responseArray;
 };
 export const magLivrerCmdInt = async function (appObject) {
   let responseArray = await helpers.postJSONReturnResResp(
-    `${API_URL}/livrer`,
+    `${API_URL}/Sorties/livrer`,
     appObject
   );
   return responseArray;
