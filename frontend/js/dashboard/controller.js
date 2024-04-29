@@ -1388,11 +1388,12 @@ const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
       view.render(BdciProdsCurrState);
       break;
     case 'EditCmdsIntView':
+      model.state.commandesInt.selected.products = BdciProdsCurrState;
+      view.changeDetails(BdciProdsCurrState);
+      view.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
       if (addedProductsAfterRemoval.length == 0) {
         view.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
       }
-      model.state.commandesInt.selected.products = BdciProdsCurrState;
-      view.changeDetails(BdciProdsCurrState);
       break;
   }
   view._checkboxesAddProduct = view._parentElement.querySelectorAll(
