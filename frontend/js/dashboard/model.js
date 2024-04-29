@@ -696,7 +696,7 @@ export const createBDCI = async function () {
     dateDemande: helpers.getFormattedDate(),
   };
   console.log(postBDCIOBJ);
-  // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
+  await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
 export const saveBDCI = async function () {
   let postBDCIOBJ = {
