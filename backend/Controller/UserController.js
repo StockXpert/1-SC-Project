@@ -43,12 +43,14 @@ async function login(req, res) {
               userModel
                 .getRolePermissons(response.designation)
                 .then(permissions => {
-                  res.status(200).json({
-                    response: 'succuss of login',
-                    jwt: token,
-                    role: response.designation,
-                    permissions,
-                  });
+                  res
+                    .status(200)
+                    .json({
+                      response: 'succuss of login',
+                      jwt: token,
+                      role: response.designation,
+                      permissions,
+                    });
                 })
                 .catch(() => {
                   res.status(500).json({ response: 'internal error' });
