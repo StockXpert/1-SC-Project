@@ -28,6 +28,7 @@ import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
 import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
+import validateCmdsIntView from './views/commandesInt/validateCmdsIntView.js';
 import productsView from './views/commandes/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
@@ -1170,6 +1171,14 @@ const controlLoadCmdsInt = async function () {
   await model.loadCmdsInt();
   cmdsIntView.unrenderSpinner();
   cmdsIntView._role = model.state.me.role;
+  validateCmdsIntView._role = model.state.me.role;
+  // validateCmdsIntView._max = model.state.me.role;
+  // switch(validateCmdsIntView._role){
+  //   case 'Magasinier':
+  //     validateCmdsIntView._max = ;
+
+  // }
+  validateCmdsIntView.changeHeader();
   // cmdsIntView._role = 'Magasinier';
   // cmdsIntView._role = 'Directeur';
   // cmdsIntView._role = 'Responsable directe';
@@ -1182,6 +1191,7 @@ const controlLoadCmdsInt = async function () {
   // TODO:
   seeCmdsIntView.addSeeController(controlViewCmdInt);
   cmdsIntView.resetPointers();
+  validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
   // bonReceptionView.f();
   // bonReceptionView.addHandlerShow(controlLoadBRec);
   // const filter1Obj = {
@@ -1563,6 +1573,76 @@ const controlSavingBDCIEdit = async function () {
     await controlLoadCmdsInt();
   }
 };
+const controlValidatingCmdsInt = async e => {
+  //ONCLICK OF A VALIDATE BUTTON
+  console.log(
+    helpers.findNodeIndex(validateCmdsIntView._btnOpen, e.currentTarget)
+  );
+  console.log(model.state.commandesInt.all);
+  console.log(
+    model.state.commandesInt.all[
+      helpers.findNodeIndex(validateCmdsIntView._btnOpen, e.currentTarget)
+    ]
+  );
+  const targetIndex = helpers.findNodeIndex(
+    validateCmdsIntView._btnOpen,
+    e.currentTarget
+  );
+  validateCmdsIntView.renderSpinner('');
+  let selectedCmdIntProducts = await model.loadCommandeIntProducts(
+    model.state.commandesInt.all[targetIndex].num_demande
+  );
+  validateCmdsIntView.unrenderSpinner('');
+  selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
+  console.log(helpers.fillMissingProperties(selectedCmdIntProducts));
+  selectedCmdIntProducts = helpers.fillMissingProperties(
+    selectedCmdIntProducts
+  );
+  validateCmdsIntView.changeDetails(
+    selectedCmdIntProducts,
+    model.state.commandesInt.all[targetIndex].num_demande
+  );
+
+  // {
+  //     "designation": "Duplicopieur - Monochrome - A3",
+  //     "seuil": 5,
+  //     "quantite_demande": 420,
+  //     "quantite_accorde": 0,
+  //     "quantite_servie": 0,
+  //     "quantite": 50
+  // }
+};
+
+const controlValidateCmdsInt = async () => {
+  let appObject = validateCmdsIntView.extractObject();
+  let returnValue;
+  console.log(appObject);
+  console.log(validateCmdsIntView._role);
+  switch (validateCmdsIntView._role) {
+    case 'Responsable directe':
+      validateCmdsIntView._btnClose.click();
+      cmdsIntView.renderSpinner('Approving...');
+      returnValue = await model.resAppCmdInt(appObject);
+      cmdsIntView.unrenderSpinner('');
+      await controlLoadCmdsInt();
+      console.log(returnValue);
+      break;
+    case 'Directeur':
+      validateCmdsIntView._btnClose.click();
+      cmdsIntView.renderSpinner('Approving...');
+      returnValue = await model.dirAppCmdInt(appObject);
+      await controlLoadCmdsInt();
+      console.log(returnValue);
+      break;
+    case 'Magasinier':
+      validateCmdsIntView._btnClose.click();
+      cmdsIntView.renderSpinner('Approving...');
+      returnValue = await model.magAppCmdInt(appObject);
+      await controlLoadCmdsInt();
+      console.log(returnValue);
+      break;
+  }
+};
 
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -1681,3 +1761,4 @@ editCmdsIntView.addHandlerChangeProduct(
 // };
 
 await editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);
+validateCmdsIntView.addHandlerValidate(controlValidateCmdsInt);

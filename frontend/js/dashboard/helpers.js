@@ -521,6 +521,13 @@ export const objectIndexInArray = function (array, objectToCheck) {
   });
 };
 // Remove leading zeros
+// export const validateInput = function (input) {
+//   input.value = input.value.replace(/^0+/, '0');
+//   // Ensure the value is at least 1
+//   if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) {
+//     input.value = '0'; // Set value to 1 if less than 1 or not a number
+//   }
+// };
 export const validateInput = function (input) {
   input.value = input.value.replace(/^0+/, '');
   // Ensure the value is at least 1
@@ -528,6 +535,13 @@ export const validateInput = function (input) {
     input.value = ''; // Set value to 1 if less than 1 or not a number
   }
 };
+// export const validateInput2 = function (input) {
+//   input.value = input.value.replace(/^0+/, '0');
+//   // Ensure the value is at least 1
+//   if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) {
+//     input.value = '0'; // Set value to 1 if less than 1 or not a number
+//   }
+// };
 export const validateInputPrice = function (input) {
   // Remove non-numeric characters except dot
   input.value = input.value.replace(/[^\d.]/g, '');
@@ -552,7 +566,54 @@ export const validateInputPrice = function (input) {
   }
 };
 
+// inputValidation.js
+
+export const validateIntegerInput = function (input, maxValue) {
+  input.addEventListener('input', event => {
+    let value = event.target.value;
+
+    // Remove leading zeros
+    value = value.replace(/^0+/, '');
+
+    // Replace non-numeric characters with empty string
+    value = value.replace(/\D/g, '');
+
+    // Convert to integer
+    let intValue = parseInt(value);
+
+    // Ensure value is within the range
+    if (isNaN(intValue) || intValue < 0) {
+      intValue = 0;
+    } else if (intValue >= maxValue) {
+      intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
+    }
+
+    // Update input value
+    event.target.value = intValue;
+  });
+};
+
 export const subtractObjects = (mainArray, subArray, key) => {
   const subValues = new Set(subArray.map(obj => obj[key]));
   return mainArray.filter(obj => !subValues.has(obj[key]));
 };
+export function fillMissingProperties(array) {
+  return array.map(item => ({
+    designation: item.designation || '',
+    seuil: item.seuil === null || item.seuil === undefined ? 0 : item.seuil,
+    quantite_demande:
+      item.quantite_demande === null || item.quantite_demande === undefined
+        ? 0
+        : item.quantite_demande,
+    quantite_accorde:
+      item.quantite_accorde === null || item.quantite_accorde === undefined
+        ? 0
+        : item.quantite_accorde,
+    quantite_servie:
+      item.quantite_servie === null || item.quantite_servie === undefined
+        ? 0
+        : item.quantite_servie,
+    quantite:
+      item.quantite === null || item.quantite === undefined ? 0 : item.quantite,
+  }));
+}

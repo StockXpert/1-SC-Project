@@ -1116,7 +1116,9 @@ table tbody tr:last-child td {
 }
 .quantity,
 .quantity-verif,
-.quantity-verif-RD {
+.quantity-verif-RD,
+.quantity-verif-M,
+.quantity-verif-D {
   position: relative;
 }
 .quantity span,

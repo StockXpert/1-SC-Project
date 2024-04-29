@@ -1,25 +1,27 @@
 import { AddCmdsIntView } from './addCmdsIntView.js';
-class EditCmdsIntView extends AddCmdsIntView {
-  constructor() {
+export class EditCmdsIntView extends AddCmdsIntView {
+  constructor(nerfed = false) {
     super(true);
-    this.addHandlerShowWindow('.btn-edit-bdci', '.big-container-edit-bdci');
-    this.addHandlerHideWindow('#edit-bdci-close', '.big-container-edit-bdci');
-    this.addHandlerHideAddProductWindow(
-      '.cancel-btn-add-edit-bdci',
-      '.add-product-edit-bdci-container'
-    );
-    this.addHandlerShowAddProductWindow(
-      '.btn-add-product-edit-bdci',
-      '.add-product-edit-bdci-container'
-    );
-    this.addHandlerHideEditProductWindow(
-      '.cancel-btn-edit-edit-bdci',
-      '.edit-product-edit-bdci-container'
-    );
-    this.addHandlerShowEditProductWindow(
-      '.details-btn-bdci-add',
-      '.edit-product-edit-bdci-container'
-    );
+    if (!nerfed) {
+      this.addHandlerShowWindow('.btn-edit-bdci', '.big-container-edit-bdci');
+      this.addHandlerHideWindow('#edit-bdci-close', '.big-container-edit-bdci');
+      this.addHandlerHideAddProductWindow(
+        '.cancel-btn-add-edit-bdci',
+        '.add-product-edit-bdci-container'
+      );
+      this.addHandlerShowAddProductWindow(
+        '.btn-add-product-edit-bdci',
+        '.add-product-edit-bdci-container'
+      );
+      this.addHandlerHideEditProductWindow(
+        '.cancel-btn-edit-edit-bdci',
+        '.edit-product-edit-bdci-container'
+      );
+      this.addHandlerShowEditProductWindow(
+        '.details-btn-bdci-add',
+        '.edit-product-edit-bdci-container'
+      );
+    }
   }
   _btnOpen = document.querySelector('.btn-edit-bdci');
   _btnModifyBdc = document.querySelector('.btn-edit-bdci');
@@ -59,8 +61,6 @@ class EditCmdsIntView extends AddCmdsIntView {
   // }
 
   changeDetails(products, cmd = '') {
-    console.log(products);
-    console.log(cmd);
     if (cmd != '') {
       const heading = this._window.querySelector('.edit-bdci-title');
       heading.innerHTML = `Commande N°${cmd}`;

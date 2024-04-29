@@ -3587,8 +3587,8 @@
             <div class="table-container-verif-bdci">
               <table>
                 <thead>
-                  <tr>
-                    <th>
+                  <tr class="verif-bdci-header">
+                    <!-- <th>
                       <div class="first-col">
                         <p class="colomn-tags">Designation</p>
                       </div>
@@ -3596,96 +3596,13 @@
                     <th>Quantité demandée</th>
                     <th>Quantité accordée(RD)</th>
                     <th>Quantité accordée(D)</th>
-                    <th>Quantité accordée(M)</th>
+                    <th>Quantité accordée(M)</th> -->
                   </tr>
                 </thead>
                 <tbody class="results-bdci-produits-verif">
-                  <tr>
-                    <td>
-                      <div class="colomn-product-des">
-                        <p class="colomn-des-name-product">Pc dell xps</p>
-                      </div>
-                    </td>
-                    <td>14</td>
-                    <td class="quantity-verif">
-                      <input class="green-qt" type="number" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                    <td class="quantity-verif">
-                      <input class="green-qt" type="number" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                    <td class="quantity-verif-RD">
-                      <input class="green-qt" type="number" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                  </tr>
-                  <!-- fin  d'une ligne nrml  -->
-                  <!--une ligne selected  -->
-                  <tr class="selected-row">
-                    <!--ajoute selected-row for selected lines-->
-                    <td>
-                      <div class="colomn-product-des">
-                        <p class="colomn-des-name-product">Pc dell xps</p>
-                      </div>
-                    </td>
-
-                    <td>14</td>
-
-                    <td class="quantity">
-                      <input class="green-qt" type="text" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                    <td class="quantity-verif-RD">
-                      <input class="green-qt" type="number" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                    <td class="quantity-verif-RD">
-                      <input class="green-qt" type="number" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                  </tr>
-                  <!--fin d'une ligne selected  -->
-                  <tr>
-                    <td>
-                      <div class="colomn-product-des">
-                        <p class="colomn-des-name-product">Pc dell xps</p>
-                      </div>
-                    </td>
-
-                    <td>14</td>
-
-                    <td class="quantity">
-                      <input class="green-qt" type="text" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                    <td class="quantity-verif-RD">
-                      <input class="green-qt" type="number" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                    <td class="quantity-verif-RD">
-                      <input class="green-qt" type="number" value="20" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
-                    </td>
-                  </tr>
+                  <td colspan="3" class="empty-table--products">
+                    <b>Aucun Produit</b>
+                  </td>
                 </tbody>
               </table>
             </div>
@@ -3796,6 +3713,7 @@
       <div class="overlay overlayBDR hidden"></div>
       <div class="overlay overlayBDCI hidden"></div>
       <div class="overlay overlayEditBDCI hidden"></div>
+      <div class="overlay overlayValidateBDCI hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

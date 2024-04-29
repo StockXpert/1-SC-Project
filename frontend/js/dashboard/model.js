@@ -793,3 +793,31 @@ export const loadCommandeIntProducts = async function (numDemande) {
   // produits = produits.produits;
   // return produits;
 };
+export const resAppCmdInt = async function (appObject) {
+  let responseArray = await helpers.postJSONReturnResResp(
+    `${API_URL}/Sorties/fournitureRespApp`,
+    appObject
+  );
+  return responseArray;
+};
+export const dirAppCmdInt = async function (appObject) {
+  let responseArray = await helpers.postJSONReturnResResp(
+    `${API_URL}/Sorties/fournitureDirApp`,
+    appObject
+  );
+  return responseArray;
+};
+export const magAppCmdInt = async function (appObject) {
+  let responseArray = await helpers.postJSONReturnResResp(
+    `${API_URL}/fournitureMagApp`,
+    appObject
+  );
+  return responseArray;
+};
+export const magLivrerCmdInt = async function (appObject) {
+  let responseArray = await helpers.postJSONReturnResResp(
+    `${API_URL}/livrer`,
+    appObject
+  );
+  return responseArray;
+};

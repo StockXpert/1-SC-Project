@@ -62,7 +62,9 @@ export class CmdsIntView extends CmdsView {
       this._role.includes('Responsable direct')
         ? `
       <td class="td-verif-bdci-RD">
-        <button class="verif-bdci-RD">
+        <button class="verif-bdci-RD ${
+          result.etat.includes('demande') ? '' : 'hidden'
+        }">
           <span class="material-icons-sharp verif-icon">
             check_circle
           </span>
@@ -87,8 +89,8 @@ export class CmdsIntView extends CmdsView {
     ${
       this._role.includes('Magasinier')
         ? `
-      <td class="td-verif-bdci-Magasinier">
-        <button class="verif-bdci-Magasinier">
+      <td class="td-verif-bdci-RD">
+        <button class="verif-bdci-RD">
           <span class="material-icons-sharp verif-icon">
             check_circle
           </span>
