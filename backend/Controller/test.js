@@ -4,6 +4,11 @@ const EntreeController = require('../Controller/EntreeController');
 const authMiddleware = require('../Middlewares/authMiddleware');
 const multer = require('../Middlewares/multer');
 router.post(
+    '/bonCommande',
+    authMiddleware('bon commande'),
+    EntreeController.genererBondeCommande
+  );
+router.post(
   '/bonCommande',
   authMiddleware('bon commande'),
   EntreeController.genererBondeCommande
