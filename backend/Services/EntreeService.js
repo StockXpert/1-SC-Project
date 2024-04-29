@@ -154,7 +154,7 @@ function changeBonCommande(objet,fournisseur,deletedProducts,addedProducts,date,
 function createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink)
 {
   return new Promise ((resolve,reject)=>{
-    EntreeModel.insertBonReception(numCommande, dateReception,numFacture,numLivraison,bonLivraisonLink,factureLink)
+    EntreeModel.insertBonReception(numCommande, dateReception,bonLivraisonLink,factureLink,numFacture,numLivraison)
     .then((numReception)=>{
         EntreeModel.insertLivre(numReception,produits).then(()=>{
             EntreeModel.getCommande(numCommande).then((commande)=>{
