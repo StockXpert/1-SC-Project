@@ -129,6 +129,21 @@ function updateQuantite(req, res) {
       });
     })
     .catch(response => res.status(500).json({ response }));
+function updateQuantite(req,res)
+{
+   console.log(req.file)
+   const {numCommande,produits,numFacture,numLivraison,dateReception}=req.body;
+   console.log(produits);
+   const bonLivraisonLink = req.files['bonLivraison'][0].filename
+   const factureLink = req.files['facture'][0].filename
+   console.log({bonLivraisonLink,factureLink});
+   EntreeService.changeQuantite(numCommande,produits).then((response)=>{
+      EntreeService.uploadvalidity(numCommande).then((response)=>{
+          EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink).then((response)=>{
+            res.status(200).json({response})
+          }).catch((response)=>res.status(500).json({response}))
+      })
+   }).catch((response)=>res.status(500).json({response}))
 }
 function updateBonCommande(req, res) {
   const {
