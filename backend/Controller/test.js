@@ -8,6 +8,11 @@ router.post(
   authMiddleware('bon commande'),
   EntreeController.genererBondeCommande
 );
+router.post(
+  '/bonCommande',
+  authMiddleware('bon commande'),
+  EntreeController.genererBondeCommande
+);
 router.delete(
   '/deleteCommande',
   authMiddleware('delete commande'),
