@@ -1052,7 +1052,7 @@ const controlAddBRec = async function (
   newReception.append('numCommande', model.state.bdr.all[0].numCommande);
   newReception.append('numLivraison', numBonLivraison);
   newReception.append('numFacture', numFacture);
-  newReception.append('produits', products);
+  newReception.append('produits', JSON.stringify(products));
   newReception.append('facture', linkFacture);
   newReception.append('bonLivraison', linkLivraison);
   newReception.append('dateReception', `${year}-${month}-${day}`);
