@@ -14,12 +14,12 @@ function addArticle(chapitre,designation,numArt,tva)
       })
    });
 }
-function addProduct(article,designation,description,quantite)
+function addProduct(article,designation,description,quantite,seuil)
 {
     return new Promise((resolve,reject)=>
    {
     NomenclatureModel.getArticleIdTva(article).then((article)=>{
-       NomenclatureModel.addProduct(quantite,designation,description).then(()=>{
+       NomenclatureModel.addProduct(quantite,designation,description,seuil).then(()=>{
         NomenclatureModel.getProductId(designation).then((productId)=>{
            console.log({article})
            NomenclatureModel.addArticleProduct(article.num_article,productId).then(()=>{

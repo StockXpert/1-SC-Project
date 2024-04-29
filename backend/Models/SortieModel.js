@@ -363,7 +363,7 @@ function deleteFourniture(numDemande)
 { 
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `delete demande_fourniture where num_demande=?`
+        const query = `delete from demande_fourniture where num_demande=?`
         const values = [numDemande];
       
         connection.connect((err) => {
