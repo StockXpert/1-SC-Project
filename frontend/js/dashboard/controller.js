@@ -23,6 +23,7 @@ import numberRoleView from './views/roles/numberRoleView.js';
 import deleteStructureView from './views/deleteStructureView.js';
 import cmdsView from './views/commandes/cmdsView.js';
 import cmdsIntView from './views/commandesInt/cmdsIntView.js';
+import cmdsIntHeaderView from './views/commandesInt/cmdsIntHeaderView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
@@ -1014,7 +1015,8 @@ const controlLoadBRec = async function () {
     document.querySelectorAll('.view-btr-btn'),
     target
   );
-  bonReceptionView.renderSpinner();
+  bonReceptionView._clear();
+  // bonReceptionView.renderSpinner();
   await model.loadBonRec(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
@@ -1046,15 +1048,15 @@ const controlAddBRec = async function (
   const day = String(currentDay.getDate()).padStart(2, '0');
   console.log(`${year}-${month}-${day}`);
 
-  const newReception = {
-    numCommande: model.state.bdr.all[0].numCommande,
-    numLivraison: numBonLivraison,
-    numFacture: numFacture,
-    produits: products,
-    facture: linkFacture,
-    bonLivraison: linkLivraison,
-    dateReception: `${year}-${month}-${day}`,
-  };
+  const newReception = new FormData();
+  newReception.append('numCommande', model.state.bdr.all[0].numCommande);
+  newReception.append('numLivraison', numBonLivraison);
+  newReception.append('numFacture', numFacture);
+  newReception.append('produits', products);
+  newReception.append('facture', linkFacture);
+  newReception.append('bonLivraison', linkLivraison);
+  newReception.append('dateReception', `${year}-${month}-${day}`);
+
   addBonReception.renderSpinner();
   await model.addBonReception(newReception);
   await controlLoadBRec();
@@ -1147,6 +1149,11 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
+  console.log(model.state);
+  cmdsIntHeaderView.render(model.state.me.role);
+  // cmdsIntHeaderView.render('Magasinier');
+  // cmdsIntHeaderView.render('Directeur');
+  // cmdsIntHeaderView.render('Responsable directe');
   addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
   addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
@@ -1163,6 +1170,10 @@ const controlLoadCmdsInt = async function () {
   // TODO: deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmdsInt();
   cmdsIntView.unrenderSpinner();
+  cmdsIntView._role = model.state.me.role;
+  // cmdsIntView._role = 'Magasinier';
+  // cmdsIntView._role = 'Directeur';
+  // cmdsIntView._role = 'Responsable directe';
   cmdsIntView.render(
     model.state.commandesInt.all,
     true,

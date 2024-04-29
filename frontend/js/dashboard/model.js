@@ -776,10 +776,23 @@ export const deleteBonRec = async function (numReception, numCommande) {
 };
 
 export const addBonReception = async function (newReception) {
-  const data = await helpers.sendJSON(
-    `${API_URL}/Entrees/updateQuantite`,
-    newReception
-  );
+  const data = await fetch(`${API_URL}/Entrees/updateQuantite`, {
+    method: 'POST',
+    body: newReception,
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('File uploaded successfully');
+        // Handle successful upload
+      } else {
+        console.error('Failed to upload file');
+        // Handle upload failure
+      }
+    })
+    .catch(error => {
+      console.error('Error uploading file:', error);
+      // Handle error
+    });
   console.log('data', data);
 };
 
