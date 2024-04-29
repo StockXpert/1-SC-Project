@@ -1149,7 +1149,7 @@ const controlLoadCmdsInt = async function () {
   editCmdsIntView.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
   model.state.bdci_products.added = [];
   addCmdsIntView.render(model.state.bdci_products.added);
-  cmdsIntView.renderSpinner('Chagement des produits depuis la BDD ...');
+  cmdsIntView.renderSpinner('Chagement des produits ...');
   await controlUpdateAllProducts();
   cmdsIntView.unrenderSpinner();
   cmdsIntView.renderSpinner('Chagement des commandes internes ...');
@@ -1544,7 +1544,6 @@ const controlSavingBDCIEdit = async function () {
   } else {
     cmdsIntView.renderSpinner('Sauvegarde en cours...');
     let response = await model.saveBDCI();
-    console.log(response);
     cmdsIntView.unrenderSpinner();
     // addCmdsView._boundToggleWindow();
     await controlLoadCmdsInt();
