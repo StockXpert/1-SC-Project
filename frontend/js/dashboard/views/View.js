@@ -38,6 +38,27 @@ export default class View {
   _permissions = model.state.me.permissions.all;
   _restricted;
   _data;
+  allowDeleteBtn(allow = true, btnClass) {
+    const btn = document.querySelector(btnClass);
+    btn.disabled = !allow;
+    allow
+      ? btn.classList.remove('disabled-delete-button')
+      : btn.classList.add('disabled-delete-button');
+  }
+  allowWhiteBtn(allow = true, btnClass) {
+    const btn = document.querySelector(btnClass);
+    btn.disabled = !allow;
+    allow
+      ? btn.classList.remove('disabled-button')
+      : btn.classList.add('disabled-button');
+  }
+  allowBlueBtn(allow = true, btnClass) {
+    const btn = document.querySelector(btnClass);
+    btn.disabled = !allow;
+    allow
+      ? btn.classList.remove('disabled-save-button')
+      : btn.classList.add('disabled-save-button');
+  }
   _clear() {
     this._parentElement.innerHTML = '';
   }

@@ -1145,6 +1145,8 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
+  addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
   editCmdsIntView.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
   model.state.bdci_products.added = [];
