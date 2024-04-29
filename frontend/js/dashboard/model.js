@@ -776,7 +776,7 @@ export const deleteBonRec = async function (numReception, numCommande) {
 };
 
 export const addBonReception = async function (newReception) {
-  const data = await helpers.putJSON(
+  const data = await helpers.sendJSON(
     `${API_URL}/Entrees/updateQuantite`,
     newReception
   );

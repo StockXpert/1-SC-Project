@@ -61,7 +61,7 @@ class AddBonReception extends AddUserView {
     `;
   }
 
-  handleUpdate(control) {
+  async handleUpdate(control) {
     const bonLivraisonInput = this._window.querySelector(
       'input[name="bonLivraison"]'
     );
@@ -72,7 +72,7 @@ class AddBonReception extends AddUserView {
     const numFacture = this._window.querySelector('input[name="num-facture"');
     const tableRows = this._parentElement.querySelectorAll('tr');
     console.log('handleUpdate');
-    this._sauvgarde.addEventListener('click', e => {
+    this._sauvgarde.addEventListener('click', async e => {
       e.preventDefault();
 
       const dataArray = [];
@@ -99,7 +99,8 @@ class AddBonReception extends AddUserView {
       else console.log('no bon Livraison');
       if (factureInput.files.length > 0) console.log(factureInput.files[0]);
       else console.log('no facture');
-      control(
+
+      await control(
         numBonLivraison,
         numFacture,
         dataArray,
