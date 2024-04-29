@@ -102,8 +102,8 @@ class AddBonReception extends AddUserView {
 
       console.log(dataArray);
       await control(
-        numBonLivraison,
-        numFacture,
+        +numBonLivraison.value,
+        +numFacture.value,
         dataArray,
         bonLivraisonInput.files[0],
         factureInput.files[0]
