@@ -1658,29 +1658,7 @@
             <!------------debut du tableau ------------------------>
             <div class="table-container-bdci">
               <table>
-                <thead>
-                  <tr>
-                    <th>
-                      <div class="checkbox-colomn-bdci">
-                        <p class="colomn-tags-bdci">N°Commande</p>
-                      </div>
-                    </th>
-                    <!-- btns pour all sauf consommateur -->
-                    <th class="hidden">nom</th>
-                    <th>Date</th>
-                    <th>Statut</th>
-
-                    <!-- btns pour consommateur -->
-                    <th class="view-bdc">Détails</th>
-                    <!-- btns pour Responsable direct -->
-                    <th class="verif-RD hidden">Vérifier</th>
-                    <!-- btns pour Directeur -->
-                    <th class="verif-Directeur hidden">Vérifier</th>
-                    <!-- btns pour Magasinier -->
-                    <th class="verif-Magasinier hidden">Vérifier</th>
-                    <th class="print-bdci hidden">Imprimer</th>
-                  </tr>
-                </thead>
+                <thead class="load-bdci-container"></thead>
                 <tbody class="results">
                   <!--une ligne nrml  -->
                   <tr>
@@ -1703,6 +1681,7 @@
                         </span>
                       </button>
                     </td>
+
                     <!-- btns verif pour Responsable direct -->
                     <td class="td-verif-bdci-RD hidden">
                       <button class="verif-bdci-RD">

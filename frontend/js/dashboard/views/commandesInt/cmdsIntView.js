@@ -1,6 +1,6 @@
 import { CmdsView } from '../commandes/cmdsView.js';
 import * as helpers from '../../helpers.js';
-class CmdsIntView extends CmdsView {
+export class CmdsIntView extends CmdsView {
   constructor() {
     super();
   }
@@ -12,6 +12,7 @@ class CmdsIntView extends CmdsView {
   // _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
   _filters = document.querySelectorAll('.filters-bdci');
   _btnModifyBdc = document.querySelector('.btn-edit-bdci');
+  _role;
 
   // date_demande
   // :
@@ -23,7 +24,8 @@ class CmdsIntView extends CmdsView {
   // :
   // 1
   _generateMarkupPreview(result, perms = []) {
-    return `<tr>
+    console.log(this._role);
+    const html = `<tr>
     <td>
       <div class="checkbox-colomn">
         <input type="checkbox" id="checkbox-table">
@@ -31,18 +33,80 @@ class CmdsIntView extends CmdsView {
       </div>
     </td>
 
+    ${
+      this._role.includes('Consommateur')
+        ? ''
+        : `<td>${result.id_demandeur}</td>`
+    }
+
     <td>${helpers.formatDate(result.date_demande)}</td>
     <td><p class="status ${helpers.getStatusClass(result.etat)}">${
       result.etat
     }</p></td>
-    <td class="td-view-bdc">
-      <button class="details-btn print-bdci-btn">
-        <span class="material-icons-sharp info-icon">
-          info
-        </span>
-      </button>
-    </td>
+
+    ${
+      this._role.includes('Consommateur')
+        ? `
+        <td class="td-view-bdc">
+          <button class="details-btn print-bdci-btn">
+          <span class="material-icons-sharp info-icon">
+            info
+          </span>
+          </button>
+        </td>
+        `
+        : ''
+    }
+
+    ${
+      this._role.includes('Responsable direct')
+        ? `
+      <td class="td-verif-bdci-RD">
+        <button class="verif-bdci-RD">
+          <span class="material-icons-sharp verif-icon">
+            check_circle
+          </span>
+        </button>
+      </td>`
+        : ``
+    }
+
+    ${
+      this._role.includes('Directeur')
+        ? `
+      <td class="td-verif-bdci-Directeur">
+        <button class="verif-bdci-Directeur">
+          <span class="material-icons-sharp verif-icon">
+            check_circle
+          </span>
+        </button>
+      </td>`
+        : ``
+    }
+    
+    ${
+      this._role.includes('Magasinier')
+        ? `
+      <td class="td-verif-bdci-Magasinier">
+        <button class="verif-bdci-Magasinier">
+          <span class="material-icons-sharp verif-icon">
+            check_circle
+          </span>
+        </button>
+      </td>
+      <td class="td-print-bdci">
+        <button class="details-btn print-bdci-btn">
+          <span class="material-icons-sharp info-icon">
+            print
+          </span>
+        </button>
+      </td>`
+        : ``
+    }
+
+
   </tr>`;
+    return html;
   }
   addEventListenerCheckboxesChange(handler = '') {
     // this._btnDeleteBdc = document.querySelector('.btn-delete-bdc');
