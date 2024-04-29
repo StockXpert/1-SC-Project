@@ -100,6 +100,7 @@ class AddBonReception extends AddUserView {
       if (factureInput.files.length > 0) console.log(factureInput.files[0]);
       else console.log('no facture');
 
+      console.log(dataArray);
       await control(
         numBonLivraison,
         numFacture,
