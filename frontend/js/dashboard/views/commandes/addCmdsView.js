@@ -191,6 +191,7 @@ export class AddCmdsView extends AddUserView {
   _boundToggleAddProductWindow = e => {
     e.preventDefault();
     this.clearAddProductForm();
+    this._product.changeInputValidity('');
     this.toggleAddProductWindow.bind(this)();
   };
   addHandlerFournisseurSearch(fournisseurSearchHandler) {
@@ -400,8 +401,8 @@ export class AddCmdsView extends AddUserView {
         return;
       }
       handler(formDataObj);
-      this._product.changeInputValidity('');
       this.clearAddProductForm();
+      this._product.changeInputValidity('');
       this._product.parentElement.classList.remove('input-product--valid');
       this.toggleAddProductWindow.bind(this)();
     });

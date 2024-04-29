@@ -11,6 +11,7 @@ HTMLInputElement.prototype.changeInputValidity = function (
   const validityDiv = parent.querySelector('.validity-message');
   // Check if the message is empty (neutral)
   if (validityMessage.length == 0) {
+    console.log('length == 0');
     validityDiv.classList.add('hidden');
     validityDiv.style.color = '#313131';
     parent.classList.remove('input-product--invalid');
