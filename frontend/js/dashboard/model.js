@@ -51,6 +51,7 @@ export const state = {
       newApproval: { numDemande: '', products: [] },
       numDemande: '',
       products: [], //selecter bdci products
+      changed: '',
     },
   },
   bdc: {
@@ -78,7 +79,7 @@ export const state = {
     changed: {},
   },
   bdci_products: {
-    all: [],
+    all: [{}, {}],
     selected: '',
     added: [],
     changed: {},

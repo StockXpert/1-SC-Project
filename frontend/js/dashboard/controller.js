@@ -1273,7 +1273,6 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
       productsArray = model.state.bdci_products.added;
       break;
   }
-  // console.log(typeof view);
   console.log(view.constructor.name);
   const target = e.currentTarget;
   const targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
@@ -1284,33 +1283,59 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   //Use it to extract the input data from the state object
   view.changeInputs(productsArray[targetIndex]);
   model.state.bdci_products.changed = targetIndex;
+  model.state.commandesInt.selected.changed = targetIndex;
 };
 
-const controlChangeProductInt = function (editedProduct) {
+const controlChangeProductInt = function (
+  editedProduct,
+  view = editCmdsIntView
+) {
   //TODO:
+  let BdciProdsCurrState;
+  let changed;
+  switch (view.constructor.name) {
+    case 'EditCmdsIntView':
+      BdciProdsCurrState = model.state.commandesInt.selected.products;
+      changed = model.state.commandesInt.selected.changed;
+      break;
+    case 'AddCmdsIntView':
+      BdciProdsCurrState = model.state.bdci_products.added;
+      changed = model.state.bdci_products.changed;
+      break;
+  }
   if (
-    helpers.isObjectInArray(model.state.bdci_products.added, editedProduct) &&
-    model.state.bdci_products.changed !=
-      helpers.objectIndexInArray(model.state.bdci_products.added, editedProduct)
+    helpers.isObjectInArray(BdciProdsCurrState, editedProduct) &&
+    changed != helpers.objectIndexInArray(BdciProdsCurrState, editedProduct)
   ) {
     helpers.renderError(
       'Erreur',
       `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.`
     );
   } else {
-    model.state.bdci_products.added[model.state.bdci_products.changed] =
-      editedProduct;
-    addCmdsIntView.render(model.state.bdci_products.added);
-    addCmdsIntView._checkboxesAddProduct =
-      addCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
-    addCmdsIntView.AddHandlerAddedProductsCheckboxes();
+    BdciProdsCurrState[changed] = editedProduct;
+    switch (view.constructor.name) {
+      case 'EditCmdsIntView':
+        view.changeDetails(BdciProdsCurrState);
+        break;
+      case 'AddCmdsIntView':
+        view.render(BdciProdsCurrState);
+        break;
+    }
+    view._checkboxesAddProduct = view._parentElement.querySelectorAll(
+      'input[type="checkbox"]'
+    );
+    view.AddHandlerAddedProductsCheckboxes();
     //TODO: edit btns
     addCmdsIntView.addHandlerShowEditProductWindow(
       '.details-btn-bdci-add',
       '.edit-product-bdci-container'
     );
+    editCmdsIntView.addHandlerShowEditProductWindow(
+      '.details-btn-edit-bdci-add',
+      '.edit-product-edit-bdci-container'
+    );
     //TODO: hide btn
-    addCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+    view.addHandlerEditProductBtns(controlEditProductBtnsInt);
     // numberRoleView.selectionUpdater('.table-container-bdc-produits');
   }
 };
@@ -1357,7 +1382,6 @@ const controlViewCmdInt = async function (target) {
   const targetIndex = helpers.findNodeIndex(seeCmdsIntView._btnOpen, target);
   seeCmdsIntView.renderSpinner('', true);
   // TODO:
-  console.log(model.state.commandesInt.all[targetIndex]);
   const products = await model.loadCommandeIntProducts(
     model.state.commandesInt.all[targetIndex].num_demande
   );
@@ -1390,26 +1414,33 @@ const controlModifyCmdsInt = async function () {
   const targetIndex = Array.from(cmdsIntView._checkboxes).findIndex(
     checkbox => checkbox.checked
   );
-  console.log(model.state.commandesInt.all[targetIndex]);
+  // #ffa TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
   const numDemande = model.state.commandesInt.all[targetIndex].num_demande;
 
   editCmdsIntView.renderSpinner('', true);
   let selectedCmdIntProducts = await model.loadCommandeIntProducts(
     model.state.commandesInt.all[targetIndex].num_demande
   );
-
   editCmdsIntView.unrenderSpinner(true);
   selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
+  // #ffa TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
+  selectedCmdIntProducts = selectedCmdIntProducts.map(el => {
+    return {
+      designation: el.designation,
+      quantite: el.quantite_demande,
+    };
+  });
   // Use it to extract the input data from the state object
   // editCmdsIntView.changeInputs(numDemande, selectedCmdIntProducts);
-  console.log(selectedCmdIntProducts);
+
   model.state.commandesInt.selected.numDemande = numDemande;
   model.state.commandesInt.selected.new.numDemande = numDemande;
-  // model.state.commandesInt.selected.new.DELETED && ADDED ARE TBD
-  model.state.commandesInt.selected.products = selectedCmdIntProducts;
   model.state.commandesInt.selected.old.numDemande = numDemande;
+  // model.state.commandesInt.selected.new.DELETED && ADDED ARE TBD
+
+  model.state.commandesInt.selected.products = selectedCmdIntProducts;
   model.state.commandesInt.selected.old.products = selectedCmdIntProducts;
-  editCmdsIntView.changeDetails(numDemande, selectedCmdIntProducts);
+  editCmdsIntView.changeDetails(selectedCmdIntProducts, numDemande);
   editCmdsIntView._checkboxesAddProduct =
     editCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
   editCmdsIntView.AddHandlerAddedProductsCheckboxes();
@@ -1419,13 +1450,12 @@ const controlModifyCmdsInt = async function () {
     '.edit-product-edit-bdci-container'
   );
   editCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-  editCmdsIntView.changeInputs();
 };
 
 const controlAddProductIntEdit = newProduct => {
   // ON SUBMIT:
-  let oldProducts = model.state.commandesInt.selected.products;
-  if (helpers.isObjectInArray(oldProducts, newProduct)) {
+  let selectedBDCIProdsCurrState = model.state.commandesInt.selected.products;
+  if (helpers.isObjectInArray(selectedBDCIProdsCurrState, newProduct)) {
     helpers.renderError(
       'Erreur',
       `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.
@@ -1433,8 +1463,9 @@ const controlAddProductIntEdit = newProduct => {
     );
   } else {
     editCmdsIntView.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
-    oldProducts.push(newProduct);
-    editCmdsIntView.render(oldProducts);
+    selectedBDCIProdsCurrState.push(newProduct);
+    editCmdsIntView.render(selectedBDCIProdsCurrState);
+    // #fad
     editCmdsIntView._checkboxesAddProduct =
       editCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
     editCmdsIntView.AddHandlerAddedProductsCheckboxes();
@@ -1446,6 +1477,7 @@ const controlAddProductIntEdit = newProduct => {
     // editUserView.addHandlerEdit(controlEditUser);
     //TODO: hide btn
     editCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+    // #fad
   }
 };
 
@@ -1552,7 +1584,7 @@ addCmdsIntView.addHandlerChangeProduct(
 );
 editCmdsIntView.addHandlerChangeProduct(
   controlChangeProductInt,
-  model.state.bdci_products
+  model.state.commandesInt.selected
 );
 
 //TODO: add after every render

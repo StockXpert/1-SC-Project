@@ -552,11 +552,23 @@ export class AddCmdsView extends AddUserView {
     }
   }
 
-  addHandlerChangeProduct(handler, productsObj) {
+  addHandlerChangeProduct(handler, productsArrayParentObj) {
     // const closeBtn = this._btnCloseEditProduct;
     this._editProductForm.addEventListener('submit', async e => {
       e.preventDefault();
-      const productDesignations = productsObj.all.map(el => el.designation);
+      let productDesignations;
+      switch (this.constructor.name) {
+        case 'AddCmdsIntView':
+          productDesignations = productsArrayParentObj.all.map(
+            el => el.designation
+          );
+          break;
+        case 'EditCmdsIntView':
+          productDesignations = productsArrayParentObj.products.map(
+            el => el.designation
+          );
+          break;
+      }
       const form = this._editProductForm;
       let inputs = Array.from(form.getElementsByTagName('input'));
       // const select = Array.from(form.getElementsByTagName('select'));
@@ -571,12 +583,11 @@ export class AddCmdsView extends AddUserView {
       if (allFilled) {
         const dataArr = [...new FormData(form)];
         const data = Object.fromEntries(dataArr);
-        console.log(data);
         if (!productDesignations.includes(data.designation)) {
           this._productEdit.changeInputValidity("Ce produit là n'existe pas !");
           return;
         }
-        handler(data);
+        handler(data, this);
         this._btnCloseEditProduct.click();
       } else {
         alert('Veuillez remplir tous les champs avant de soumettre.');

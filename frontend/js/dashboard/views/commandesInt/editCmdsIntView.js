@@ -32,6 +32,7 @@ class EditCmdsIntView extends AddCmdsIntView {
   _trueParentElement = document.querySelector(
     '.big-container-edit-bdci .add-bdc-cart'
   );
+  _btnsOpenEditProduct;
   _product = document.querySelector('#edit-bdci-product-add');
   _productEdit = document.querySelector('#edit-bdci-product-edit');
   _editProductForm = document.querySelector('.inputs-edit-product-edit-bdci');
@@ -57,10 +58,14 @@ class EditCmdsIntView extends AddCmdsIntView {
   //   // Get the form element (EditUserView.js)
   // }
 
-  changeDetails(cmd, products) {
-    const heading = this._window.querySelector('.edit-bdci-title');
-    heading.innerHTML = `Commande N°${cmd}`;
-
+  changeDetails(products, cmd = '') {
+    console.log(products);
+    console.log(cmd);
+    if (cmd != '') {
+      const heading = this._window.querySelector('.edit-bdci-title');
+      heading.innerHTML = `Commande N°${cmd}`;
+    }
+    console.log("editCmdsintView's change inputs got called");
     let productsHTML =
       products.length != 0
         ? products
@@ -81,9 +86,7 @@ class EditCmdsIntView extends AddCmdsIntView {
               <td>${product.designation}</td>
           
               <td class="input-changeble quantity-produit-bdci">
-                <input type="text" placeholder="${
-                  product.quantite ? product.quantite : product.quantite_demande
-                }" />
+                <input type="text" placeholder="${product.quantite}" />
               </td>
           
               <td>
