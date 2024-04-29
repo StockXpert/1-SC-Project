@@ -460,7 +460,8 @@ aside .sidebar a:hover span {
 .add-btn-add-bdc:hover,
 .add-btn-edit-bdc:hover,
 .add-btn-edit-bdci:hover,
-.add-btn-add-bdci:hover {
+.add-btn-add-bdci:hover,
+.btn-deliver-bdci:hover {
   background-color: #3963b5;
   /* transform: translateY(-2px); */
   transform: translateY(-2px);
@@ -474,7 +475,8 @@ aside .sidebar a:hover span {
 .add-btn-add-bdc:active,
 .add-btn-edit-bdc:active,
 .add-btn-edit-bdci:active,
-.add-btn-add-bdci:active {
+.add-btn-add-bdci:active,
+.btn-deliver-bdci:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -633,7 +635,8 @@ aside .sidebar a:hover span {
 .add-btn-add-bdc,
 .add-btn-edit-bdc,
 .add-btn-edit-bdci,
-.add-btn-add-bdci {
+.add-btn-add-bdci,
+.btn-deliver-bdci {
   color: white;
   background: #477ce2;
 }
