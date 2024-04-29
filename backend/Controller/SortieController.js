@@ -64,8 +64,8 @@ function showAllDemandes(req,res)
     let statement;
     let etat=''
     switch (role) {
-        case 'magasinier':
-            statement="etat in ('visee par dir','pret','livree')"
+        case 'Magasinier':
+            statement="etat in ('visee par dg','pret','livree')"
             break;
         case 'Directeur':
             statement=`etat in ('visee par resp','visee par dg','pret','livree') or (etat="demande" and
