@@ -84,8 +84,8 @@ export class AddCmdsView extends AddUserView {
       // articleInput.setCustomValidity('');
       // typeInput.setCustomValidity('');
       // fourInput.setCustomValidity('');
-      handler();
       this._btnClose.click();
+      handler();
     });
   }
 
