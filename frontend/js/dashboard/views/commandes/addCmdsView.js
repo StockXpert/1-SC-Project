@@ -508,12 +508,14 @@ export class AddCmdsView extends AddUserView {
   addHandlerShowEditProductWindow(OpClassName, windowClassName) {
     this._windowEditProduct = document.querySelector(windowClassName);
     this._btnsOpenEditProduct = document.querySelectorAll(OpClassName);
-    this._btnsOpenEditProduct.forEach(btn =>
+    console.log(this);
+    this._btnsOpenEditProduct.forEach(btn => {
+      console.log(btn);
       btn.addEventListener('click', e => {
         this._boundToggleEditProductWindow(e);
         this._productEdit.changeInputValidity('Nom de produit Valide !', true);
-      })
-    );
+      });
+    });
   }
   toggleEditProductWindow() {
     this._windowEditProduct.classList.toggle('hidden');

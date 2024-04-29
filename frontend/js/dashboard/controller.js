@@ -1517,7 +1517,7 @@ const controlAddProductIntEdit = newProduct => {
   } else {
     editCmdsIntView.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
     selectedBDCIProdsCurrState.push(newProduct);
-    editCmdsIntView.render(selectedBDCIProdsCurrState);
+    editCmdsIntView.changeDetails(selectedBDCIProdsCurrState);
     // #fad
     editCmdsIntView._checkboxesAddProduct =
       editCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
