@@ -18,12 +18,7 @@ router.delete(
   authMiddleware('delete commande'),
   EntreeController.deleteCommande
 );
-router.put(
-  '/updateQuantite',
-  multer,
-  authMiddleware('update quantite'),
-  EntreeController.updateQuantite
-);
+router.post('/updateQuantite', multer, EntreeController.updateQuantite);
 router.post(
   '/cancelCommande',
   authMiddleware('cancel commande'),

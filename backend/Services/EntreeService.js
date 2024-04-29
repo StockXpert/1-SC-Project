@@ -97,9 +97,7 @@ async function genererBondeCommande(
         );
         await googleMiddleware.updateCel(
           'C15',
-          `RIB (ou RIP) :${
-            fournisseur.rib ? fournisseur.rib : fournisseur.rip
-          }`,
+          `RIB (ou RIP) :${fournisseur.rib_ou_rip}`,
           Id
         );
         await googleMiddleware.updateCel(
