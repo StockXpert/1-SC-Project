@@ -1541,7 +1541,8 @@ const controlSavingBDCIEdit = async function () {
       <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
     );
   } else {
-    await model.saveBDCI();
+    let response = await model.saveBDCI();
+    console.log(response);
     // addCmdsView._boundToggleWindow();
     await controlLoadCmdsInt();
   }

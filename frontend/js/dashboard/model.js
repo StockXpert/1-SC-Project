@@ -699,13 +699,26 @@ export const createBDCI = async function () {
   // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
 export const saveBDCI = async function () {
-  const postBDCIOBJ = {
+  let postBDCIOBJ = {
     numDemande: state.commandesInt.selected.numDemande,
     deletedProducts: state.commandesInt.selected.old.products,
+  };
+  console.log(postBDCIOBJ);
+  let resp = [];
+  resp[0] = await helpers.putJSON(
+    `${API_URL}/Sorties/updateConsDemande`,
+    postBDCIOBJ
+  );
+  postBDCIOBJ = {
+    numDemande: state.commandesInt.selected.numDemande,
     addedProducts: state.commandesInt.selected.products,
   };
   console.log(postBDCIOBJ);
-  await helpers.sendJSON(`${API_URL}/Sorties/updateConsDemande`, postBDCIOBJ);
+  resp[1] = await helpers.putJSON(
+    `${API_URL}/Sorties/updateConsDemande`,
+    postBDCIOBJ
+  );
+  return resp;
 };
 export const deleteCmd = async function (numCommande) {
   return await helpers.delJSONReturnResResp(
