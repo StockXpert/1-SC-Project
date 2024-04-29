@@ -63,7 +63,7 @@ function updateQuantite(req,res)
 {
    console.log(req.file)
    const {numCommande,produits,numFacture,numLivraison,dateReception}=req.body;
-   console.log({produits});
+   console.log(produits);
    const bonLivraisonLink = req.files['bonLivraison'][0].filename
    const factureLink = req.files['facture'][0].filename
    console.log({bonLivraisonLink,factureLink});
