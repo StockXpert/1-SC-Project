@@ -93,7 +93,7 @@ class ValidateCmdsIntView extends EditCmdsIntView {
               <td class="quantity-verif-M ${
                 this._role.includes('Magasinier') ? '' : 'hidden'
               }">
-                <input class="green-qt" type="number"  data-max="${Math.max(
+                <input class="green-qt" type="number"  data-max="${Math.min(
                   ...[
                     product.quantite_accorde,
                     product.quantite - product.seuil,
