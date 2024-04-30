@@ -1017,11 +1017,12 @@ const controlLoadBRec = async function () {
     target
   );
   bonReceptionView._clear();
-  // bonReceptionView.renderSpinner();
+  bonReceptionView.renderSpinner('', true);
   await model.loadBonRec(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
-  bonReceptionView._clear();
+  bonReceptionView.unrenderSpinner(true);
+  // bonReceptionView._clear();
   bonReceptionView.render(model.state.bdr.all);
   addBonReception.f();
   addBonReception._clear();
@@ -1075,10 +1076,12 @@ const controlDeleteBonRec = async function () {
   ).forEach(async el => {
     console.log(el);
     bonReceptionView.renderSpinner(
-      "Suppression d'un bon de reception  " + el.num_bon + '...'
+      "Suppression d'un bon de reception  " + el.num_bon + '...',
+      true
     );
     await model.deleteBonRec(el.num_bon, el.numCommande);
-    bonReceptionView.render();
+    bonReceptionView.unrenderSpinner(true);
+    bonReceptionView.toggleWindow();
     // back to main menu
     await controlLoadCmds();
   });
