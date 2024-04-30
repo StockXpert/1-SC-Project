@@ -1,3 +1,4 @@
+const { json } = require('express');
 const EntreeModel=require('../Models/EntreeModel');
 const { getArticleIdTva } = require('../Models/NomenclatureModel');
 const EntreeService=require('../Services/EntreeService')
@@ -62,7 +63,9 @@ function showCommandes(req,res)
 function updateQuantite(req,res)
 {
    console.log(req.file)
-   const {numCommande,produits,numFacture,numLivraison,dateReception}=req.body;
+   const {numCommande,numFacture,numLivraison,dateReception}=req.body;
+   const produits=JSON.parse(req.body.produits);
+   console.log(produits);
    const bonLivraisonLink = req.files['bonLivraison'][0].filename
    const factureLink = req.files['facture'][0].filename
    console.log({bonLivraisonLink,factureLink});
