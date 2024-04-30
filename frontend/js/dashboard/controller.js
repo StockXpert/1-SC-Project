@@ -1076,10 +1076,12 @@ const controlDeleteBonRec = async function () {
   ).forEach(async el => {
     console.log(el);
     bonReceptionView.renderSpinner(
-      "Suppression d'un bon de reception  " + el.num_bon + '...'
+      "Suppression d'un bon de reception  " + el.num_bon + '...',
+      true
     );
     await model.deleteBonRec(el.num_bon, el.numCommande);
-    bonReceptionView.render();
+    bonReceptionView.unrenderSpinner(true);
+    bonReceptionView.toggleWindow();
     // back to main menu
     await controlLoadCmds();
   });
