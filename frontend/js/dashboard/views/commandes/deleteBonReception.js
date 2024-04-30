@@ -4,6 +4,7 @@ class DeleteBonReception extends View {
   _window = document.querySelector('.container-supp-bdr');
   _annuler = document.querySelector('.supp-bdr-annuler');
   _confirm = document.querySelector('.supp-bdr-confirmer');
+  _overlay = document.querySelector('.overlayDelBDR');
 
   constructor() {
     super();
@@ -14,6 +15,7 @@ class DeleteBonReception extends View {
   toggleWindow(e) {
     e.preventDefault();
     this._window.classList.toggle('hidden');
+    this._overlay.classList.toggle('hidden');
   }
 
   addHandlerShowWindow() {
@@ -21,6 +23,7 @@ class DeleteBonReception extends View {
   }
   addHandlerHideWindow() {
     this._annuler.addEventListener('click', this.toggleWindow.bind(this));
+    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
   }
 
   addDeleteController(ctrler) {

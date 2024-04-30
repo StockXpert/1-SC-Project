@@ -6,9 +6,11 @@ class AddBonReception extends AddUserView {
   _window = document.querySelector('.big-container-bdr-add');
   _parentElement = document.querySelector('.results-bdr-produits');
   _sauvgarde = document.querySelector('.btn-save-bdr-qt');
+  _overlay = document.querySelector('.overlayAddBDR');
 
   toggleWindow() {
     this._window.classList.toggle('hidden');
+    this._overlay.classList.toggle('hidden');
   }
   _addHandlerShowWindow() {
     this._btnOpen.addEventListener('click', e => {
@@ -19,6 +21,11 @@ class AddBonReception extends AddUserView {
 
   _addHandlerHideWindow() {
     this._btnClose.addEventListener('click', e => {
+      e.preventDefault();
+      this.toggleWindow();
+      console.log('suppp');
+    });
+    this._overlay.addEventListener('click', e => {
       e.preventDefault();
       this.toggleWindow();
       console.log('suppp');

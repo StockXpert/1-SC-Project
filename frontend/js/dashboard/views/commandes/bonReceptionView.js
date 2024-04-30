@@ -35,6 +35,10 @@ class BonReceptionView extends UsersView {
       e.preventDefault();
       this.toggleWindow();
     });
+    this._overlay.addEventListener('click', e => {
+      e.preventDefault();
+      this.toggleWindow();
+    });
   }
 
   f() {
