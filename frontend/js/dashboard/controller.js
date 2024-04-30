@@ -1061,6 +1061,7 @@ const controlAddBRec = async function (
   addBonReception.renderSpinner();
   await model.addBonReception(newReception);
   await controlLoadBRec();
+  // await controlLoadCmds();
 };
 
 const controlDeleteBonRec = async function () {
@@ -1073,12 +1074,13 @@ const controlDeleteBonRec = async function () {
     )
   ).forEach(async el => {
     console.log(el);
-    // bonReceptionView.renderSpinner(
-    //   'Suppression Structure ' + el.designation + '...'
-    // );
-    // await model.deleteBonRec(el.num_bon, el.numCommande);
-    // // back to main menu
-    // await controlLoadBRec();
+    bonReceptionView.renderSpinner(
+      "Suppression d'un bon de reception  " + el.num_bon + '...'
+    );
+    await model.deleteBonRec(el.num_bon, el.numCommande);
+    bonReceptionView.render();
+    // back to main menu
+    await controlLoadCmds();
   });
 };
 /*
