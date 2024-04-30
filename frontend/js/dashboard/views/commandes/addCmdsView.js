@@ -575,7 +575,7 @@ export class AddCmdsView extends AddUserView {
           );
           break;
         case 'EditCmdsIntView':
-          productDesignations = productsArrayParentObj.products.map(
+          productDesignations = productsArrayParentObj.all.map(
             el => el.designation
           );
           break;
@@ -601,6 +601,7 @@ export class AddCmdsView extends AddUserView {
         console.log(dataArr);
         const data = Object.fromEntries(dataArr);
         console.log(data);
+        console.log(productDesignations);
         if (!productDesignations.includes(data.designation)) {
           this._productEdit.changeInputValidity("Ce produit là n'existe pas !");
           return;

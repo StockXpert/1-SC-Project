@@ -1504,6 +1504,13 @@ table tbody tr:last-child td {
   pointer-events: none;
   cursor: default;
 }
+.input-changeble2 input {
+  font-weight: 600;
+  font-family: 'Poppins';
+  background-color: transparent;
+  pointer-events: none;
+  cursor: default;
+}
 /*
 .input-changeble input::placeholder {
    color: #4b4b4b; 

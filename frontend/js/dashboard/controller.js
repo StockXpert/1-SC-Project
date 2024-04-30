@@ -1750,7 +1750,7 @@ addCmdsIntView.addHandlerChangeProduct(
 );
 editCmdsIntView.addHandlerChangeProduct(
   controlChangeProductInt,
-  model.state.commandesInt.selected
+  model.state.bdci_products
 );
 
 //TODO: add after every render
