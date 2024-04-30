@@ -1171,6 +1171,17 @@ const controlLoadCmdsInt = async function () {
   // TODO: deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmdsInt();
   cmdsIntView.unrenderSpinner();
+  switch (model.state.me.role) {
+    case 'Magasinier':
+      document.querySelector('.btn-deliver-bdci').classList.remove('hidden');
+      break;
+    case 'Consommateur':
+      document.querySelector('.btn-delete-bdci').classList.remove('hidden');
+      document.querySelector('.btn-edit-bdci').classList.remove('hidden');
+      break;
+    default:
+      break;
+  }
   cmdsIntView._role = model.state.me.role;
   validateCmdsIntView._role = model.state.me.role;
   // validateCmdsIntView._max = model.state.me.role;

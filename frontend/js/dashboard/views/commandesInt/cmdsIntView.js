@@ -154,13 +154,15 @@ export class CmdsIntView extends CmdsView {
               )
             ].etat
           );
+          console.log(this._btnCancelBdc);
+          console.log(this._btnDeleteBdc);
           if (
             this._data[
               helpers.findNodeIndex(
                 this._checkboxes,
                 this._checkedCheckboxes[0]
               )
-            ].etat == 'demande'
+            ].etat === 'demande'
           ) {
             this._btnCancelBdc.disabled = false;
             this._btnDeleteBdc.disabled = false;
@@ -170,16 +172,17 @@ export class CmdsIntView extends CmdsView {
             this._btnModifyBdc
               ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
               : '';
+          } else {
+            console.log('TRIGGERED');
+            this._btnCancelBdc.disabled = true;
+            this._btnDeleteBdc.disabled = true;
+            this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
+            this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
+            this._btnDeleteBdc.classList.add('disabled-delete-button'); // Remove disabled appearance
+            this._btnModifyBdc
+              ? this._btnModifyBdc.classList.add('disabled-button') // Remove disabled appearance
+              : '';
           }
-        } else {
-          this._btnCancelBdc.disabled = true;
-          this._btnDeleteBdc.disabled = false;
-          this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
-          this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
-          this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
-          this._btnModifyBdc
-            ? this._btnModifyBdc.classList.add('disabled-button') // Remove disabled appearance
-            : '';
         }
       })
     );
