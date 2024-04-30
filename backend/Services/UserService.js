@@ -1,30 +1,15 @@
-const { get } = require('http');
 const userModel = require('../Models/UserModel');
 const crypto = require('crypto');
-const { response } = require('express');
-const { resolve } = require('path');
-const { rejects } = require('assert');
-const { error } = require('console');
-async function createUser(email, role, password) {
-  try {
-    // Vérification de l'existence de l'utilisateur
-    let result = await userModel.verifyUser(email);
-    console.log(result);
-    if (result === 'request error') {
-      return 'internal error';
-    } else if (result === 'email unavailable') {
-      return result;
-    }
-
-    // Insertion de l'utilisateur
-    console.log('before insert user');
-    result = await userModel.insertUser(email, role, password);
-    console.log('after insert result ');
-    return result;
-  } catch (error) {
-    console.log(error);
-    return 'internal error';
-  }
+async function createUser(email, role, password,prenom,nom,date_naissance,type,structure) {
+  return new Promise((resolve,reject)=>{
+    userModel.verifyUser(email).then(()=>{
+      userModel.getRole(role).then((roleId)=>{
+        userModel.insertUser(email,roleId,password,prenom,nom,date_naissance,type,structure).then(()=>{
+          resolve('user created')
+      }).catch(()=>{reject('internal error')})
+      }).catch(()=>{reject('internal error')})
+    }).catch(()=>{reject('email unaivailable')})
+  })
 }
 async function verifyUser(email) {
   let result = await userModel.verifyUser(email);
@@ -71,58 +56,26 @@ async function createConsommateur(
 }
 function deleteUser(email) {
   return new Promise((resolve, reject) => {
-    userModel.getUser(email).then(response => {
-      if (response.role === 'Consommateur') {
-        userModel
-          .deletePerson(email, 'Consommateur')
-          .then(() => {
-            userModel
-              .deletePerson(email, 'utilisateurs')
-              .then(() => {
-                resolve('user deleted');
-              })
-              .catch(() => {
-                reject('internal error');
-              });
-          })
-          .catch(() => {
-            reject('internal error');
-          });
-      } else if (response.role == 'DG' || response.role == 'RD') {
-        userModel
-          .deletePerson(email, 'responsable')
-          .then(() => {
-            userModel
-              .deletePerson(email, 'utilisateur')
-              .then(() => {
-                resolve('user deleted');
-              })
-              .catch(() => {
-                reject('internal error');
-              });
-          })
-          .catch(() => {
-            reject('internal error');
-          });
-      } else
-        userModel
-          .deletePerson(email, 'utilisateur')
-          .then(() => {
-            resolve('user deleted');
-          })
-          .catch(() => {
-            reject('internal error');
-          });
-    });
+   userModel.canDeletePerson(email).then(()=>{
+    userModel.deletePerson(email).then(()=>{
+      resolve("user deleted")
+    }).catch(()=>{
+      reject('internal error')
+    })
+   }).catch((error)=>{
+    console.log({error})
+    reject("prohibited to delete")
+   })
   });
 }
-function updateConsumerInfos(
+function updateUser(
   email,
   nom,
   prenom,
   date_naissance,
   type,
-  structure
+  structure,
+  role
 ) {
   return new Promise((resolve, reject) => {
     if (structure) {
@@ -137,7 +90,8 @@ function updateConsumerInfos(
               date_naissance,
               type,
               structureId,
-              'consommateur'
+              'utilisateur',
+              role
             )
             .then(() => {
               resolve('informations updated');
@@ -159,7 +113,8 @@ function updateConsumerInfos(
           date_naissance,
           type,
           null,
-          'consommateur'
+          'utilisateur',
+          role
         )
         .then(() => {
           resolve('informations updated');
@@ -231,7 +186,7 @@ module.exports = {
   generateCode,
   createConsommateur,
   deleteUser,
-  updateConsumerInfos,
+  updateUser,
   rattacher,
   responsable,
   createResponsable,
