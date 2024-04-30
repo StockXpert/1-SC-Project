@@ -1,4 +1,5 @@
 import { UsersView } from '../usersView.js';
+import * as helpers from '../../helpers.js';
 
 class BonReceptionView extends UsersView {
   _btnOpen = document.querySelectorAll('.view-btr-btn');
@@ -55,10 +56,11 @@ class BonReceptionView extends UsersView {
   }
 
   _generateMarkupPreview(result) {
-    const date = new Date(result.date_reception);
-    const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1;
-    const year = date.getUTCFullYear();
+    const date = helpers.formatDate(result.date_reception);
+    // const day = date.getUTCDate();
+    // const month = date.getUTCMonth() + 1;
+    // const year = date.getUTCFullYear();
+    console.log(date);
 
     return `
       <tr>
@@ -72,7 +74,7 @@ class BonReceptionView extends UsersView {
             <p class="colomn-tags-name-bdc">${result.num_bon}</p>
           </div>
         </td>
-        <td>${day}/${month}/${year}</td>
+        <td>${date}</td>
         <td class="td-view-bdl">
           <a class="view-bdl-btn" href="../../backend/${result.link_livraison}">
             <p>Voir Bon de livraison</p>
