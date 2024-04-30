@@ -1017,11 +1017,12 @@ const controlLoadBRec = async function () {
     target
   );
   bonReceptionView._clear();
-  // bonReceptionView.renderSpinner();
+  bonReceptionView.renderSpinner('', true);
   await model.loadBonRec(
     model.state.bdc.allCommandes[targetIndex].num_commande
   );
-  bonReceptionView._clear();
+  bonReceptionView.unrenderSpinner(true);
+  // bonReceptionView._clear();
   bonReceptionView.render(model.state.bdr.all);
   addBonReception.f();
   addBonReception._clear();
