@@ -282,7 +282,7 @@ function showDemande(req, res) {
   if (role === 'Consommateur')
     quantiteType = 'f.quantite_demande,f.quantite_servie';
   else if (role === 'Magasinier')
-    quantiteType = 'f.quantite_servie,f.quantite_accorde';
+    quantiteType = 'f.quantite_servie,f.quantite_accorde,f.quantite_demande';
   else if (role === 'Directeur')
     quantiteType = 'f.quantite_demande,f.quantite_accorde,f.quantite_servie';
   else quantiteType = 'f.quantite_demande,f.quantite_accorde';

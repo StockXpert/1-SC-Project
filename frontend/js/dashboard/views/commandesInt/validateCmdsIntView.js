@@ -63,7 +63,11 @@ class ValidateCmdsIntView extends EditCmdsIntView {
                   <p class="colomn-des-name-product">${product.designation}</p>
                 </div>
               </td>
-              <td>${product.quantite_demande}</td>
+              <td>${
+                this._role.includes('Magasinier')
+                  ? product.quantite_accorde
+                  : product.quantite_demande
+              }</td>
               <td class="quantity-verif-RD ${
                 this._role.includes('Responsable directe') ? '' : 'hidden'
               }">
@@ -113,6 +117,9 @@ class ValidateCmdsIntView extends EditCmdsIntView {
     this._parentElement.innerHTML = productsHTML;
     this._parentElement
       .querySelectorAll('td input[type="number"]')
+      .forEach(input => console.log(input, input.dataset.max));
+    this._parentElement
+      .querySelectorAll('td input[type="number"]')
       .forEach(input => helpers.validateIntegerInput(input, input.dataset.max));
   }
 
@@ -125,7 +132,9 @@ class ValidateCmdsIntView extends EditCmdsIntView {
             <p class="colomn-tags">Designation</p>
           </div>
         </th>
-        <th>Quantité demandée</th>
+        <th>Quantité ${
+          this._role.includes('Magasinier') ? 'Accodrée' : 'Demandée'
+        }</th>
         ${
           this._role.includes('Responsable directe')
             ? '<th>Quantité accordée(RD)</th>'
