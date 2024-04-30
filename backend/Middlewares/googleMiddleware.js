@@ -2,6 +2,7 @@ const {google} =require('googleapis');
 const fs = require('fs');
 const path=require('path');
 const { inherits } = require('util');
+const { content } = require('googleapis/build/src/apis/content');
 const credentialsPath = path.join(__dirname,'credentials.json');
 async function updateCel(pos,content,spreadsheetId)
 {
@@ -78,7 +79,9 @@ async function addRow(ligne,Content,idCopy,type)
                 ec=2
                 break;
             case 'reception':
+                console.log(Content.quantite)
                 valuesToInsert = [rowIndex-10,Content.designation,'','','',Content.quantite];
+                console.log(valuesToInsert)
                 sc=1,
                 ec=5;
             case 'sortie':
@@ -87,6 +90,8 @@ async function addRow(ligne,Content,idCopy,type)
             default:
                 break;
         }
+        if(type==='reception') valuesToInsert = [rowIndex-10,Content.designation,'','','',Content.quantite];
+        console.log(valuesToInsert)
         const range = `A${rowIndex}:${String.fromCharCode(64 + valuesToInsert.length)}${rowIndex}`;
         const updateRequest = {
             spreadsheetId:idCopy,
