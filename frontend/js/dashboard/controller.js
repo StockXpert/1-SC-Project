@@ -1656,6 +1656,32 @@ const controlValidateCmdsInt = async () => {
   }
 };
 
+const controlDeliverCmdsInt = async view => {
+  // console.log(
+  //   model.state.commandesInt.all[
+  //     Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
+  //   ]
+  // );
+  // console.log(helpers.getFormattedDate());
+  cmdsIntView.renderSpinner(
+    `Validation finale de la commande N°${
+      model.state.commandesInt.all[
+        Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
+      ].num_demande
+    } ...`
+  );
+  let postObj = {
+    numDemande:
+      model.state.commandesInt.all[
+        Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
+      ].num_demande,
+    dateSortie: helpers.getFormattedDate(),
+  };
+  console.log(postObj);
+  await model.magLivrerCmdInt(postObj);
+  cmdsIntView.unrenderSpinner('');
+  await controlLoadCmdsInt();
+};
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// B A C K  O '  B E Y O N D #fff
@@ -1774,3 +1800,4 @@ editCmdsIntView.addHandlerChangeProduct(
 
 await editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);
 validateCmdsIntView.addHandlerValidate(controlValidateCmdsInt);
+validateCmdsIntView.addHandlerDeliver(controlDeliverCmdsInt);

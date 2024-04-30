@@ -9,6 +9,8 @@ class ValidateCmdsIntView extends EditCmdsIntView {
   _role;
   _btnClose;
   _parentElement = document.querySelector('.results-bdci-produits-verif');
+  _btnLivrerBdci = document.querySelector('.btn-deliver-bdci');
+  _checkboxes;
   addHandlerShowWindow(OpClassName, windowClassName) {
     this._window = document.querySelector(windowClassName);
     // console.log(this, this._window);
@@ -39,6 +41,9 @@ class ValidateCmdsIntView extends EditCmdsIntView {
   resetPointers(controller) {
     this.addHandlerShowWindow('.verif-bdci-RD', '.big-container-verif-bdci');
     this.addHandlerEdit(controller);
+    this._checkboxes = document
+      .querySelector('.table-container-bdci .results')
+      .querySelectorAll('input[type="checkbox"]');
   }
 
   changeDetails(products, cmd = '') {
@@ -160,6 +165,11 @@ class ValidateCmdsIntView extends EditCmdsIntView {
   addHandlerValidate(ctrl) {
     // console.log(this._save);
     this._save.addEventListener('click', ctrl);
+  }
+  addHandlerDeliver(ctrl) {
+    this._btnLivrerBdci.addEventListener('click', e => {
+      ctrl(this);
+    });
   }
 }
 export default new ValidateCmdsIntView();

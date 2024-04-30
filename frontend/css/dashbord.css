@@ -626,6 +626,7 @@ aside .sidebar a:hover span {
 }
 .btn-edit,
 .btn-edit-bdci,
+.btn-deliver-bdci,
 .btn-edit-chapitres,
 .btn-edit-articles {
   color: black;
@@ -1127,12 +1128,17 @@ table tbody tr:last-child td {
   position: relative;
 }
 .quantity span,
-.quantity-verif span {
+.quantity-verif span,
+.quantity-verif-RD span,
+.quantity-verif-M span,
+.quantity-verif-D span {
   position: absolute;
 }
 .green-qt {
   width: 4rem;
-  font-size: 1.1rem;
+  font-weight: 600;
+  margin-left: 3.5rem;
+  font-size: 1.5rem;
   color: #49bf20;
 }
 .red-reste {

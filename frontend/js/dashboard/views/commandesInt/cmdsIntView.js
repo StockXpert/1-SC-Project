@@ -12,6 +12,7 @@ export class CmdsIntView extends CmdsView {
   // _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
   _filters = document.querySelectorAll('.filters-bdci');
   _btnModifyBdc = document.querySelector('.btn-edit-bdci');
+  _btnLivrerBdci = document.querySelector('.btn-deliver-bdci');
   _role;
 
   // date_demande
@@ -100,12 +101,18 @@ export class CmdsIntView extends CmdsView {
           </span>
         </button>
       </td>
-      <td class="td-print-bdci">
-        <button class="details-btn print-bdci-btn">
-          <span class="material-icons-sharp info-icon">
-            print
-          </span>
-        </button>
+      <td class="td-print-bdci">${
+        result.etat.includes('servie')
+          ? `
+    <a class="details-btn print-bdci-btn" href="/">
+      <span class="material-icons-sharp info-icon">
+        print
+      </span>
+    </a>
+    `
+          : ''
+      }
+        
       </td>`
         : ``
     }
@@ -120,6 +127,7 @@ export class CmdsIntView extends CmdsView {
     this._btnDeleteBdc.disabled = true;
     this._btnCancelBdc.disabled = true;
     if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;
+    if (this._btnLivrerBdci) this._btnLivrerBdci.disabled = true;
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
         const tthis = e.currentTarget;
@@ -136,12 +144,16 @@ export class CmdsIntView extends CmdsView {
         if (this._checkedCheckboxes.length === 0) {
           this._btnCancelBdc.disabled = true;
           this._btnDeleteBdc.disabled = true;
+          this._btnLivrerBdci ? (this._btnLivrerBdci.disabled = true) : '';
           this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
           this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
           this._btnDeleteBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
           this._btnModifyBdc
             ? this._btnModifyBdc.classList.add('disabled-button')
             : ''; // Apply disabled appearance)
+          this._btnLivrerBdci
+            ? this._btnLivrerBdci.classList.add('disabled-save-button')
+            : '';
         } else if (this._checkedCheckboxes.length === 1) {
           console.log(
             helpers.findNodeIndex(this._checkboxes, this._checkedCheckboxes[0])
@@ -154,8 +166,6 @@ export class CmdsIntView extends CmdsView {
               )
             ].etat
           );
-          console.log(this._btnCancelBdc);
-          console.log(this._btnDeleteBdc);
           if (
             this._data[
               helpers.findNodeIndex(
@@ -172,15 +182,31 @@ export class CmdsIntView extends CmdsView {
             this._btnModifyBdc
               ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
               : '';
+          }
+          if (
+            this._data[
+              helpers.findNodeIndex(
+                this._checkboxes,
+                this._checkedCheckboxes[0]
+              )
+            ].etat === 'pret'
+          ) {
+            this._btnLivrerBdci ? (this._btnLivrerBdci.disabled = false) : '';
+            this._btnLivrerBdci
+              ? this._btnLivrerBdci.classList.remove('disabled-save-button')
+              : '';
           } else {
-            console.log('TRIGGERED');
             this._btnCancelBdc.disabled = true;
             this._btnDeleteBdc.disabled = true;
             this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
+            this._btnLivrerBdci ? (this._btnLivrerBdci.disabled = true) : '';
             this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
             this._btnDeleteBdc.classList.add('disabled-delete-button'); // Remove disabled appearance
             this._btnModifyBdc
               ? this._btnModifyBdc.classList.add('disabled-button') // Remove disabled appearance
+              : '';
+            this._btnLivrerBdci
+              ? this._btnLivrerBdci.classList.add('disabled-save-button')
               : '';
           }
         }
