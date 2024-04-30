@@ -65,10 +65,10 @@ function showAllDemandes(req,res)
     let etat=''
     switch (role) {
         case 'Magasinier':
-            statement="etat in ('visee par dg','pret','livree')"
+            statement="etat in ('visee par dg','pret','servie')"
             break;
         case 'Directeur':
-            statement=`etat in ('visee par resp','visee par dg','pret','livree') or (etat="demande" and
+            statement=`etat in ('visee par resp','visee par dg','pret','servie') or (etat="demande" and
             id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?)))`
