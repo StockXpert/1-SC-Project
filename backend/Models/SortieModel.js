@@ -454,6 +454,8 @@ function getAllDemandes(etat,statement,email,role){
             query=`select num_demande,etat,date_demande from demande_fourniture where id_demandeur=?`
             values.push(email)
         }
+        else if(role==='Magasinier')
+        values.push(email)
         else{
          query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${statement}
         ${(etat==='en attente'&&role==='Responsable directe')?`id_demandeur in
