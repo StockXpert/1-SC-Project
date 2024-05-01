@@ -82,16 +82,20 @@ async function addRow(ligne,Content,idCopy,type)
                 console.log(Content.quantite)
                 valuesToInsert = [rowIndex-10,Content.designation,'','','',Content.quantite];
                 console.log(valuesToInsert)
-                sc=1,
+                sc=1;
                 ec=5;
+                break;
             case 'sortie':
                 valuesToInsert = [rowIndex-4,Content.designation,Content.quantite_demande,Content.quantite_servie,'',''];
-                 break;    
+                ec=6;
+                 break; 
+            case 'decharge':
+                valuesToInsert = [Content.designation,Content.reference,Content.observation];
+                ec=4;
+                 break;      
             default:
                 break;
         }
-        if(type==='reception') valuesToInsert = [rowIndex-10,Content.designation,'','','',Content.quantite];
-        console.log(valuesToInsert)
         const range = `A${rowIndex}:${String.fromCharCode(64 + valuesToInsert.length)}${rowIndex}`;
         const updateRequest = {
             spreadsheetId:idCopy,
@@ -123,7 +127,7 @@ async function addRow(ligne,Content,idCopy,type)
         })}
         else
         {
-            for(sc=0;sc<6;sc++)
+            for(sc=0;sc<ec;sc++)
             {
                 const res2=await sheets.spreadsheets.batchUpdate({
                     spreadsheetId:idCopy,

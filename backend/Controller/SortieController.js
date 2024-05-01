@@ -1,10 +1,13 @@
 const SortieService=require('../Services/SortieService')
 const SortieModel=require('../Models/SortieModel');
 const { response } = require('express');
+const { isErrored } = require('nodemailer/lib/xoauth2');
+const { google } = require('googleapis');
+const { updateCel } = require('../Middlewares/googleMiddleware');
 function demandeFourniture(req,res){
-const {produits,dateDemande}=req.body;
+const {produits,dateDemande,exterieur}=req.body;
 const {email}=req
-SortieModel.addFourniture(email,dateDemande).then((numDemande)=>{
+SortieModel.addFourniture(email,dateDemande,exterieur).then((numDemande)=>{
     SortieModel.insertFournir(numDemande,produits).then(()=>{
         res.status(200).json({response:'demande added'})
     }).catch(()=>{res.status(500).json({response:'internal error'})})
@@ -36,14 +39,23 @@ function fournitureMagApp(req,res){
 }
 function livrer(req,res)
 {
-    const {numDemande,dateSortie}=req.body;
+    const {numDemande,dateSortie,numDecharge,dateDecharge}=req.body;
     SortieModel.getDemandeProducts(numDemande).then((produits)=>{
         SortieService.subtituteQuantite(produits).then(()=>{
             SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
-                SortieModel.insertDateSortie(numDemande,dateSortie).then(()=>{
-                    SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E').then((link)=>{
-                        res.status(200).json({response:link})
-                    }).catch(()=>{res.status(500).json({response:'internal error'})})
+                SortieModel.isExterior(numDemande).then((exterior)=>{
+                    if(exterior)
+                    {
+                        SortieService.addDecharge('',produits,numDecharge,dateDecharge,numDecharge).then(()=>{
+                            res.status(200).json({response:'gererated'})
+                        }).catch(()=>{res.status(500).json({response:'internal error'})})
+                    }
+                    else
+                    {
+                        SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E').then((link)=>{
+                            res.status(200).json({response:link})
+                        }).catch(()=>{res.status(500).json({response:'internal error'})})
+                    }
                 }).catch(()=>{res.status(500).json({response:'internal error'})})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
         }).catch(()=>{res.status(500).json({response:'internal error'})})
