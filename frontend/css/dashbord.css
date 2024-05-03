@@ -320,7 +320,8 @@ aside .sidebar a:hover span {
 .articles-searchbar,
 .produits-searchbar,
 .bdc-searchbar,
-.bdci-searchbar {
+.bdci-searchbar,
+.inv-searchbar {
   display: flex;
   justify-content: space-between;
   background-color: white;
@@ -334,7 +335,8 @@ aside .sidebar a:hover span {
 .main-search-produit,
 .main-search-permission,
 .main-search-bdc,
-.main-search-bdci {
+.main-search-bdci,
+.main-search-inv {
   display: flex;
   gap: 1rem;
   justify-content: center;
@@ -345,7 +347,8 @@ aside .sidebar a:hover span {
 .container-searchbar-produit,
 .container-searchbar-permission,
 .container-searchbar-bdc,
-.container-searchbar-bdci {
+.container-searchbar-bdci,
+.container-searchbar-inv {
   /* width: 30%; */
   display: flex;
   flex-direction: row;
@@ -359,7 +362,8 @@ aside .sidebar a:hover span {
 .searchbar-produit,
 .searchbar-permission,
 .searchbar-bdc,
-.searchbar-bdci {
+.searchbar-bdci,
+.searchbar-inv {
   height: 2.5rem;
   display: flex;
   align-items: center;
@@ -381,7 +385,8 @@ aside .sidebar a:hover span {
 .searchbar-text-article,
 .searchbar-text-produit,
 .searchbar-text-bdc,
-.searchbar-text-bdci {
+.searchbar-text-bdci,
+.searchbar-text-inv {
   width: 30vw;
   font-size: 1.1rem;
   padding: 0.4rem 0.4rem;
@@ -399,7 +404,8 @@ aside .sidebar a:hover span {
 .add-articles,
 .add-produits,
 .add-bdc,
-.add-bdci {
+.add-bdci,
+.add-inv {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -433,6 +439,17 @@ aside .sidebar a:hover span {
   border-radius: 25px;
   box-shadow: 1px 1px 1px 0px #00000066;
 }
+.add-inv-btn {
+  height: 2.6rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  background-color: var(--color-primary);
+  cursor: pointer;
+  border-radius: 25px;
+  box-shadow: 1px 1px 1px 0px #00000066;
+  padding: 0.4rem;
+}
 .search-users-btn {
   width: 8rem;
   height: 2.5rem;
@@ -461,7 +478,8 @@ aside .sidebar a:hover span {
 .add-btn-edit-bdc:hover,
 .add-btn-edit-bdci:hover,
 .add-btn-add-bdci:hover,
-.btn-deliver-bdci:hover {
+.btn-deliver-bdci:hover,
+.btn-maj-inv:hover {
   background-color: #3963b5;
   /* transform: translateY(-2px); */
   transform: translateY(-2px);
@@ -476,13 +494,15 @@ aside .sidebar a:hover span {
 .add-btn-edit-bdc:active,
 .add-btn-edit-bdci:active,
 .add-btn-add-bdci:active,
-.btn-deliver-bdci:active {
+.btn-deliver-bdci:active,
+.btn-maj-inv:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
 .heading-table,
 .heading-table-bdc,
-.heading-table-bdci {
+.heading-table-bdci,
+.heading-table-inv {
   display: flex;
   flex-direction: column;
 }
@@ -499,6 +519,7 @@ aside .sidebar a:hover span {
 .container-heading-table-roles,
 .container-heading-table-bdc,
 .container-heading-table-bdci,
+.container-heading-table-inv,
 .container-heading-table-add-bdc,
 .container-heading-table-add-bdci,
 .container-heading-table-show-bdr {
@@ -522,6 +543,7 @@ aside .sidebar a:hover span {
 .heading-table-btns-produits,
 .heading-table-btns-bdc,
 .heading-table-btns-bdci,
+.heading-table-btns-inv,
 .heading-table-btns-add-bdc,
 .heading-table-btns-show-bdr {
   display: flex;
@@ -634,7 +656,9 @@ aside .sidebar a:hover span {
 }
 .btn-edit,
 .btn-edit-bdci,
+.btn-edit-inv,
 .btn-deliver-bdci,
+.btn-maj-inv,
 .btn-edit-chapitres,
 .btn-edit-articles {
   color: black;
@@ -645,7 +669,8 @@ aside .sidebar a:hover span {
 .add-btn-edit-bdc,
 .add-btn-edit-bdci,
 .add-btn-add-bdci,
-.btn-deliver-bdci {
+.btn-deliver-bdci,
+.btn-maj-inv {
   color: white;
   background: #477ce2;
 }
@@ -661,8 +686,10 @@ aside .sidebar a:hover span {
 }
 .btn-edit:hover,
 .btn-edit-bdci:hover,
+.btn-edit-inv:hover,
 .btn-edit-chapitres:hover,
 .btn-delete-bdci:hover,
+.btn-delete-inv:hover,
 .btn-edit-articles:hover {
   transform: translateY(-4px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
@@ -693,6 +720,7 @@ aside .sidebar a:hover span {
 .btn-delete-produits,
 .btn-delete-bdc,
 .btn-delete-bdci,
+.btn-delete-inv,
 .btn-cancel-bdc,
 .btn-cancel-bdci {
   color: white;
@@ -727,6 +755,7 @@ aside .sidebar a:hover span {
 .heading-table-text-produits,
 .heading-table-text-bdc,
 .heading-table-text-bdci,
+.heading-table-text-inv,
 .heading-table-text-show-bdr {
   display: flex;
   gap: 1rem;
@@ -773,7 +802,8 @@ aside .sidebar a:hover span {
 }
 .table-top,
 .table-top-bdc,
-.table-top-bdci {
+.table-top-bdci,
+.table-top-inv {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -830,7 +860,8 @@ aside .sidebar a:hover span {
 .table-container-articles,
 .table-container-produits,
 .table-container-bdc,
-.table-container-bdci {
+.table-container-bdci,
+.table-container-inv {
   /* max-height: 51.2vh; */
   max-height: 59.6vh;
   overflow-y: auto;
@@ -989,6 +1020,7 @@ table tbody tr:last-child td {
   border: none;
 }
 .details-btn,
+.details-inv-btn,
 .details-btn-structures,
 .details-btn-chapitres,
 .details-btn-articles,
@@ -1011,7 +1043,8 @@ table tbody tr:last-child td {
 .view-fac-btn,
 .verif-bdci-Directeur,
 .verif-bdci-RD,
-.verif-bdci-Magasinier {
+.verif-bdci-Magasinier,
+.verif-inv {
   background-color: transparent;
   cursor: pointer;
 }
@@ -1027,7 +1060,8 @@ table tbody tr:last-child td {
 }
 .colomn-tags,
 .colomn-tags-bdc,
-.colomn-tags-bdci {
+.colomn-tags-bdci,
+.colomn-tags-inv {
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 3rem;
@@ -1190,6 +1224,7 @@ table tbody tr:last-child td {
 .checkbox-colomn-permissions,
 .checkbox-colomn-bdc,
 .checkbox-colomn-bdci,
+.checkbox-colomn-inv,
 .checkbox-colomn-bdc-add,
 .checkbox-colomn-bdci-add,
 .checkbox-colomn-bdr-add,
@@ -1242,7 +1277,8 @@ table tbody tr:last-child td {
   background-color: #545454;
   border-radius: 15px;
 }
-.status {
+.status,
+.status-inv {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1271,15 +1307,20 @@ table tbody tr:last-child td {
   background-color: rgb(206, 134, 1);
 }
 .encour-status,
-.enattente-status {
+.enattente-status,
+.novalide-status {
   background-color: #f9c012;
+}
+.valide-status {
+  background-color: #49bf20;
 }
 
 /* filtres */
 .container-filter,
 .container-filter-produits,
 .container-filter-bdc,
-.container-filter-bdci {
+.container-filter-bdci,
+.container-filter-inv {
   display: flex;
   /* justify-content: space-between; */
   gap: 1rem;
@@ -1290,7 +1331,8 @@ table tbody tr:last-child td {
 .filters,
 .filters-produits,
 .filters-bdc,
-.filters-bdci {
+.filters-bdci,
+.filters-inv {
   font-size: 1rem;
   color: #477ce2;
   font-weight: 600;
@@ -2363,6 +2405,7 @@ a.password-icon:active {
 }
 
 .results,
+.results-inv,
 .results-chapitres,
 .results-articles,
 .results-produits,
