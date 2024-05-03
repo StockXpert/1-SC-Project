@@ -3239,7 +3239,7 @@
         </div>
       </div>
       <!-- debut section pour add un nv bdci -->
-      <div class="big-container-bdci hidden">
+      <div class="big-container-bdci">
         <div class="edit-product-bdci-container hidden">
           <div class="edit-product-bdci-cart">
             <div class="heading-edit-product-bdci">
@@ -3326,7 +3326,7 @@
             </form>
           </div>
         </div>
-        <div class="add-bdc-container">
+        <div class="add-bdc-container hidden">
           <form class="add-bdc-cart">
             <div class="container-select-bdci">
               <p class="bdci-title">Ajouter Une Commande Interne</p>
@@ -3348,8 +3348,15 @@
                     Modifier
                   </button> -->
                   <div class="btn-add-product btn-add-product-bdci">
-                    <button>Ajouter Produit</button>
-                    <span class="material-icons-sharp"> add </span>
+                    <div class="add-product">
+                      <button>Ajouter Produit</button>
+                      <span class="material-icons-sharp"> add </span>
+                    </div>
+                    <!-- add classe checked whene it is checked -->
+                    <div class="check-bdd">
+                      <input type="checkbox" id="checkbox-bdd" />
+                      <button>Commande externe</button>
+                    </div>
                   </div>
                   <div>
                     <button
@@ -3705,7 +3712,7 @@
       </div>
       <!-- fin section pour supprimer bdr  -->
       <!-- fin section pour bdd  -->
-      <div class="big-container-verif-bdd">
+      <div class="big-container-verif-bdd hidden">
         <div class="bdd-container">
           <div class="bdd-cart">
             <div class="heading-table-text-add-bdd">

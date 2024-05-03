@@ -2398,15 +2398,41 @@ a.password-icon:active {
   height: 2.3rem;
   padding: 0.2rem;
 }
-.btn-add-product,
-.btn-add-bdci-product {
+.btn-add-bdci-product,
+.add-product {
   display: flex;
   align-items: center;
   background-color: #477ce2;
   border-radius: 15px;
 }
-.btn-add-product button,
-.btn-add-bdci-product button {
+.check-bdd {
+  display: flex;
+  align-items: center;
+  background-color: #9a9a9a;
+  border-radius: 15px;
+  padding-left: 0.6rem;
+}
+.checked {
+  background-color: #477ce2;
+  color: white;
+}
+.btn-add-product {
+  display: flex;
+  gap: 1rem;
+}
+.add-product input {
+  font-size: 1.2rem;
+  padding: 0.2rem;
+  color: white;
+  cursor: pointer;
+}
+.check-bdd input {
+  font-size: 1.2rem;
+  padding: 0.2rem;
+  cursor: pointer;
+}
+.btn-add-bdci-product button,
+.add-product button {
   width: 8rem;
   height: 2.3rem;
   padding: 0.4rem;
@@ -2414,8 +2440,16 @@ a.password-icon:active {
   color: white;
   cursor: pointer;
 }
-.btn-add-product span,
-.btn-add-bdci-product span {
+.check-bdd button {
+  width: auto;
+  height: 2.3rem;
+  padding: 0.4rem;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+}
+.btn-add-bdci-product span,
+.add-product span {
   font-size: 1.2rem;
   padding: 0.2rem;
   color: white;
