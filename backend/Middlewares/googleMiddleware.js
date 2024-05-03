@@ -91,7 +91,7 @@ async function addRow(ligne,Content,idCopy,type)
                  break; 
             case 'decharge':
                 valuesToInsert = [Content.designation,Content.reference,Content.observation];
-                ec=4;
+                ec=3;
                  break;      
             default:
                 break;
@@ -108,7 +108,7 @@ async function addRow(ligne,Content,idCopy,type)
         };
         const response = await sheets.spreadsheets.values.update(updateRequest);
         console.log('New row inserted at index', rowIndex, 'with values', valuesToInsert);
-        if(type!='sortie'){  
+        if(type!='sortie'&&type!='decharge'){  
         const res = await sheets.spreadsheets.batchUpdate({
             spreadsheetId:idCopy,
             requestBody:{
@@ -368,6 +368,33 @@ async function generatePDF(idCopy,folder,filename)
         console.error('Error:', error);
     }
 }
+async function generateCSV(idCopy,folder,filename)
+{
+    try {
+        const auth= new google.auth.GoogleAuth(
+            {
+                keyFile:credentialsPath,
+                scopes:['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.file']
+            }
+        )
+        console.log("auth")
+
+        // Créer une instance de l'API Google Sheets
+        let drive=await google.drive({version:"v3",auth});
+        // Exporter la copie en PDF
+        const pdfExportResponse = await drive.files.export({
+            fileId: idCopy,
+            mimeType: 'application/csv',         
+        }, { responseType: 'stream' });
+        let CSVpath= path.join('backend',folder,`${filename}.pdf`);
+        const csvFile = fs.createWriteStream(CSVpath);
+        pdfExportResponse.data.pipe(csvFile);
+
+        console.log('CSV exported successfully.');
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 async function deleteRows(ligneD,ligneF,id)
 {
     try {
@@ -476,4 +503,4 @@ async function addBorder(rowIndex,idCopy,sc,ec)
         console.error('Error inserting row:', error);
     }
 }
-module.exports={generatePDF,getCopy,updateCel,addRow,deleteRows,addBorder};
+module.exports={generatePDF,getCopy,updateCel,addRow,deleteRows,addBorder,generateCSV};

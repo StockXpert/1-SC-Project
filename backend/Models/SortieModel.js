@@ -842,7 +842,7 @@ function insertDateNumDecharge(numDemande,numDecharge,dateDecharge)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set date_decharge=?,num_decharge where num_demande=?`;
+        const query = `update demande_fourniture set date_decharge=?,num_decharge=? where num_demande=?`;
         const values = [dateDecharge,numDecharge,numDemande];
       
         connection.connect((err) => {
@@ -866,80 +866,79 @@ function insertDateNumDecharge(numDemande,numDecharge,dateDecharge)
       });
 }
 function insertDecharge(numDemande, produits) {
-    return new Promise((resolve, reject) => {
-        const connection = mysql.createConnection(connectionConfig);
-        connection.connect((err) => {
-            if (err) {
-                console.error('Erreur de connexion à la base de données : ', err);
-                reject(err);
-                return;
-            }
-            console.log('Connecté à la base de données MySQL');
-            
-            // Commencer la transaction
-            connection.beginTransaction((err) => {
-                if (err) {
-                    console.error('Erreur lors du démarrage de la transaction : ', err);
-                    reject(err);
-                    return;
-                }
-                console.log("Début de la transaction");
-  
-                // Utiliser une boucle asynchrone pour traiter chaque produit
-                async.eachSeries(produits, (produit, callback) => {
-                    // Exécuter la requête pour récupérer l'ID produit à partir de la désignation
-                    console.log({produit})
-                    connection.query('SELECT id_produit FROM produit WHERE designation = ?', [produit.designation], (err, rows) => {
-                        if (err) {
-                            return callback(err);
-                        }
-                        if (rows.length === 0) {
-                            return callback("Produit non trouvé  " + produit.designation);
-                        }
-                        const id_produit = rows[0].id_produit;
-  
-                        // Insérer les données dans ma_table avec l'ID produit récupéré
-                        connection.query('INSERT INTO decharge (num_demande,reference) VALUES (?, ?, ?)', [numDemande,produit.reference], (err, result) => {
-                            if (err) {
-                                return callback(err);
-                            }
-                            console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
-                            callback();
-                        });
-                        connection.query('INSERT INTO reference (reference,id_produit)  VALUES (?,?)', [produit.reference,id_produit], (err, result) => {
-                            if (err) {
-                                return callback(err);
-                            }
-                            console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
-                            callback();
-                        });
-                    });
-                }, (err) => {
-                    if (err) {
-                        return connection.rollback(() => {
-                            console.error('Erreur lors du traitement des produits : ', err);
-                            if(err.code!='ER_DUP_ENTRY')
-                            reject(err);
-                        });
-                    }
-  
-                    // Valider la transaction
-                    connection.commit((err) => {
-                        if (err) {
-                            return connection.rollback(() => {
-                                console.error('Erreur lors de la validation de la transaction : ', err);
-                                if(err.code!='ER_DUP_ENTRY')
-                                reject(err);
-                            });
-                        }
-                        console.log("Transaction validée avec succès");
-                        resolve("success");
-                        connection.end();
-                    });
-                });
-            });
-        });
-    });
+  return new Promise((resolve, reject) => {
+      const connection = mysql.createConnection(connectionConfig);
+      connection.connect((err) => {
+          if (err) {
+              console.error('Erreur de connexion à la base de données : ', err);
+              reject(err);
+              return;
+          }
+          console.log('Connecté à la base de données MySQL');
+          
+          // Commencer la transaction
+          connection.beginTransaction((err) => {
+              if (err) {
+                  console.error('Erreur lors du démarrage de la transaction : ', err);
+                  reject(err);
+                  return;
+              }
+              console.log("Début de la transaction");
+
+              // Utiliser une boucle asynchrone pour traiter chaque produit
+              async.eachSeries(produits, (produit, callback) => {
+                  // Exécuter la requête pour récupérer l'ID produit à partir de la désignation
+                  console.log({produit})
+                  connection.query('SELECT id_produit FROM produit WHERE designation = ?', [produit.designation], (err, rows) => {
+                      if (err) {
+                          return callback(err);
+                      }
+                      if (rows.length === 0) {
+                          return callback("Produit non trouvé  " + produit.designation);
+                      }
+                      const id_produit = rows[0].id_produit;
+
+                      // Insérer les données dans ma_table avec l'ID produit récupéré
+                      connection.query('INSERT INTO decharge (num_demande,reference) VALUES (?, ?)', [numDemande,produit.reference], (err, result) => {
+                          if (err && err.code !== 'ER_DUP_ENTRY') { // Ignorer l'erreur Duplicate entry
+                              return callback(err);
+                          }
+                          console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
+                          
+                          // Insérer les données dans la table reference après avoir inséré dans la table decharge
+                          connection.query('INSERT INTO reference (designation,id_produit)  VALUES (?,?)', [produit.reference,id_produit], (err, result) => {
+                              if (err && err.code !== 'ER_DUP_ENTRY') { // Ignorer l'erreur Duplicate entry
+                                  return callback(err);
+                              }
+                              console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
+                              callback(); // Appel du callback après avoir exécuté les deux requêtes
+                          });
+                      });
+                  });
+              }, (err) => {
+                  if (err) {
+                      return connection.rollback(() => {
+                          console.error('Erreur lors du traitement des produits : ', err);
+                          reject(err);
+                      });
+                  }
+
+                  // Valider la transaction
+                  connection.commit((err) => {
+                      if (err) {
+                          return connection.rollback(() => {
+                              console.error('Erreur lors de la validation de la transaction : ', err);
+                              reject(err);
+                          });
+                      }
+                      console.log("Transaction validée avec succès");
+                      resolve("success");
+                      connection.end();
+                  });
+              });
+          });
+      });
+  });
 }
 module.exports={addFourniture,insertFournir,updateAccordedQuantite,changeDemandeStatNotif,updateLivredQuantite,
                deleteFourniture,canDeleteFourniture,getNewDemandes,getAllDemandes,updateDemandedQuantite,
