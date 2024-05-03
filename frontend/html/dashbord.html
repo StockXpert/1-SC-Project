@@ -3627,6 +3627,7 @@
         </div>
       </div>
       <!-- fin section pour verif un bdci -->
+      <!-- debut section pour voir les bdci -->
       <div class="big-container-see-bdci hidden">
         <div class="see-bdci-container">
           <div class="see-bdci-cart">
@@ -3687,6 +3688,8 @@
           </div>
         </div>
       </div>
+      <!-- fin section pour voir les bdci -->
+      <!-- debut section pour supp un bdr -->
       <div class="container-supp-bdr hidden">
         <form class="supp-bdr-cart">
           <p class="supp-bdr-text">
@@ -3701,6 +3704,112 @@
         </form>
       </div>
       <!-- fin section pour supprimer bdr  -->
+      <!-- fin section pour bdd  -->
+      <div class="big-container-verif-bdd">
+        <div class="bdd-container">
+          <div class="bdd-cart">
+            <div class="heading-table-text-add-bdd">
+              <div class="num-bdd-inputs">
+                <p>Entez le numero du Bon de décharge :</p>
+                <input class="input-num-bdd" name="num-bdd" type="number" />
+              </div>
+              <div class="heading-table-date-end-bdd">
+                <p>Entrez la date du fin de l'emprunt :</p>
+                <input class="input-date-bdd" name="date-end" type="date" />
+              </div>
+            </div>
+            <div class="table-container-bdd">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Designation</p>
+                      </div>
+                    </th>
+                    <th>Réference du Produit</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdd-produits">
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td class="reference">
+                      <input
+                        class="green-ref"
+                        type="text"
+                        value="ESI-Imprimente-1"
+                        autocomplete="off"
+                      />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+
+                    <td class="reference">
+                      <input
+                        class="green-ref"
+                        type="text"
+                        value="ESI-Imprimente-2"
+                        autocomplete="off"
+                      />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+
+                    <td class="reference">
+                      <input
+                        class="green-ref"
+                        type="text"
+                        value="ESI-Imprimente-3"
+                        autocomplete="off"
+                      />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-verif-bdci">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdr btn-cancel-verif-bdci-qt"
+              >
+                Annuler
+              </button>
+              <button
+                class="heading-table-btn-bdr add-users-btn btn-save-verif-bdci-qt"
+              >
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin section pour bdd  -->
       <!-- pour ajouter le flou en arriere plan (ajoute hidden pour lenlever) -->
       <div class="overlay overlayAdd hidden"></div>
       <div class="overlay overlayEdit hidden"></div>

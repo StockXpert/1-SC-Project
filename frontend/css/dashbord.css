@@ -560,19 +560,27 @@ aside .sidebar a:hover span {
   justify-content: end;
   gap: 1.2rem;
 }
-.num-bdr-inputs {
+.num-bdr-inputs,
+.num-bdd-inputs {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 .heading-table-file-add-1-bdr,
-.heading-table-file-add-2-bdr {
+.heading-table-file-add-2-bdr,
+.heading-table-date-end-bdd {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 .num-bdr-inputs p {
   font-size: 1rem;
+  font-weight: 500;
+  color: #4b4b4b;
+}
+.num-bdd-inputs p,
+.heading-table-date-end-bdd p {
+  font-size: 1.2rem;
   font-weight: 500;
   color: #4b4b4b;
 }
@@ -723,13 +731,16 @@ aside .sidebar a:hover span {
   display: flex;
   gap: 1rem;
 }
-.heading-table-text-add-bdr {
+.heading-table-text-add-bdr,
+.heading-table-text-add-bdd {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 0.6rem;
 }
-.input-num-bdr {
+.input-num-bdr,
+.input-num-bdd,
+.input-date-bdd {
   font-size: 1.1rem;
   padding: 0.4rem;
   border-radius: 15px;
@@ -841,7 +852,8 @@ aside .sidebar a:hover span {
 }
 .table-container-add-bdr,
 .table-container-verif-bdci,
-.table-container-see-bdci {
+.table-container-see-bdci,
+.table-container-bdd {
   width: auto;
   max-height: 49.6vh;
   overflow-y: auto;
@@ -856,7 +868,8 @@ aside .sidebar a:hover span {
 .table-container-add-bdr table th,
 .table-container-show-bdr table th,
 .table-container-verif-bdci table th,
-.table-container-see-bdci table th {
+.table-container-see-bdci table th,
+.table-container-bdd table th {
   width: 22rem;
 }
 
@@ -1124,20 +1137,28 @@ table tbody tr:last-child td {
 .quantity-verif,
 .quantity-verif-RD,
 .quantity-verif-M,
-.quantity-verif-D {
+.quantity-verif-D,
+.reference {
   position: relative;
 }
 .quantity span,
 .quantity-verif span,
 .quantity-verif-RD span,
 .quantity-verif-M span,
-.quantity-verif-D span {
+.quantity-verif-D span,
+.reference span {
   position: absolute;
 }
 .green-qt {
   width: 4rem;
   font-weight: 600;
   margin-left: 3.5rem;
+  font-size: 1.5rem;
+  color: #49bf20;
+}
+.green-ref {
+  width: 13rem;
+  font-weight: 600;
   font-size: 1.5rem;
   color: #49bf20;
 }
@@ -1416,7 +1437,8 @@ table tbody tr:last-child td {
 .add-bdr-container,
 .show-bdr-container,
 .verif-bdci-container,
-.see-bdci-container {
+.see-bdci-container,
+.bdd-container {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -1452,7 +1474,8 @@ table tbody tr:last-child td {
 .big-container-bdr-add,
 .big-container-bdci,
 .big-container-verif-bdci,
-.big-container-see-bdci {
+.big-container-see-bdci,
+.big-container-verif-bdd {
   margin: 0 auto;
 }
 .add-product-bdc-cart,
@@ -1568,6 +1591,19 @@ table tbody tr:last-child td {
 .add-bdr-cart,
 .verif-bdci-cart {
   width: 75rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column !important;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 1.6rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+  position: relative;
+  overflow: hidden;
+}
+.bdd-cart {
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -2334,7 +2370,8 @@ a.password-icon:active {
 .results-bdci-produits,
 .results-bdr-produits,
 .results-bdci-produits-verif,
-.results-bdci-produits-see {
+.results-bdci-produits-see,
+.results-bdd-produits {
   position: relative;
 }
 .container-select-bdc {
