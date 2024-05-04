@@ -1,4 +1,4 @@
-import View from '../View.js';
+import View from '../view.js';
 class DeleteBonReception extends View {
   _btnOpen = document.querySelector('.btn-delete-bdr');
   _window = document.querySelector('.container-supp-bdr');

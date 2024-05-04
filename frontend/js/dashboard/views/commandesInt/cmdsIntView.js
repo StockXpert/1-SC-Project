@@ -48,7 +48,7 @@ export class CmdsIntView extends CmdsView {
     ${
       this._role.includes('Consommateur')
         ? `
-        <td class="td-view-bdc">
+        <td class="td-view-bdci">
           <button class="details-btn print-bdci-btn">
           <span class="material-icons-sharp info-icon">
             info
