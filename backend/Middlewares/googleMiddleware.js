@@ -2,6 +2,7 @@ const {google} =require('googleapis');
 const fs = require('fs');
 const path=require('path');
 const { inherits } = require('util');
+const { content } = require('googleapis/build/src/apis/content');
 const credentialsPath = path.join(__dirname,'credentials.json');
 async function updateCel(pos,content,spreadsheetId)
 {
@@ -78,12 +79,20 @@ async function addRow(ligne,Content,idCopy,type)
                 ec=2
                 break;
             case 'reception':
+                console.log(Content.quantite)
                 valuesToInsert = [rowIndex-10,Content.designation,'','','',Content.quantite];
-                sc=1,
+                console.log(valuesToInsert)
+                sc=1;
                 ec=5;
+                break;
             case 'sortie':
                 valuesToInsert = [rowIndex-4,Content.designation,Content.quantite_demande,Content.quantite_servie,'',''];
-                 break;    
+                ec=6;
+                 break; 
+            case 'decharge':
+                valuesToInsert = [Content.designation,Content.reference,Content.observation];
+                ec=3;
+                 break;      
             default:
                 break;
         }
@@ -99,7 +108,7 @@ async function addRow(ligne,Content,idCopy,type)
         };
         const response = await sheets.spreadsheets.values.update(updateRequest);
         console.log('New row inserted at index', rowIndex, 'with values', valuesToInsert);
-        if(type!='sortie'){  
+        if(type!='sortie'&&type!='decharge'){  
         const res = await sheets.spreadsheets.batchUpdate({
             spreadsheetId:idCopy,
             requestBody:{
@@ -118,7 +127,7 @@ async function addRow(ligne,Content,idCopy,type)
         })}
         else
         {
-            for(sc=0;sc<6;sc++)
+            for(sc=0;sc<ec;sc++)
             {
                 const res2=await sheets.spreadsheets.batchUpdate({
                     spreadsheetId:idCopy,
@@ -359,6 +368,33 @@ async function generatePDF(idCopy,folder,filename)
         console.error('Error:', error);
     }
 }
+async function generateCSV(idCopy,folder,filename)
+{
+    try {
+        const auth= new google.auth.GoogleAuth(
+            {
+                keyFile:credentialsPath,
+                scopes:['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.file']
+            }
+        )
+        console.log("auth")
+
+        // Créer une instance de l'API Google Sheets
+        let drive=await google.drive({version:"v3",auth});
+        // Exporter la copie en PDF
+        const pdfExportResponse = await drive.files.export({
+            fileId: idCopy,
+            mimeType: 'application/csv',         
+        }, { responseType: 'stream' });
+        let CSVpath= path.join('backend',folder,`${filename}.pdf`);
+        const csvFile = fs.createWriteStream(CSVpath);
+        pdfExportResponse.data.pipe(csvFile);
+
+        console.log('CSV exported successfully.');
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 async function deleteRows(ligneD,ligneF,id)
 {
     try {
@@ -467,4 +503,4 @@ async function addBorder(rowIndex,idCopy,sc,ec)
         console.error('Error inserting row:', error);
     }
 }
-module.exports={generatePDF,getCopy,updateCel,addRow,deleteRows,addBorder};
+module.exports={generatePDF,getCopy,updateCel,addRow,deleteRows,addBorder,generateCSV};

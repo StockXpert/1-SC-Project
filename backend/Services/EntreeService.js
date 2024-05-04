@@ -176,7 +176,9 @@ async function genererBonReception(produits,numCommande,fournisseur,dateCommande
     await googleMiddleware.updateCel('A7',`N° du Bon de commande : ${numCommande}`,Id)
     await googleMiddleware.updateCel('D7',`Date du Bon de Commande : ${dateCommande}`,Id)
     let i = 11;
+    console.log(produits)
     for (const produit of produits) {
+        console.log(produit)
         await googleMiddleware.addRow(i, produit,Id,'reception');
         await googleMiddleware.addBorder(i,Id,0,1);
         await googleMiddleware.addBorder(i,Id,1,5);
