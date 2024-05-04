@@ -1655,6 +1655,7 @@ const controlValidateCmdsInt = async () => {
       validateCmdsIntView._btnClose.click();
       cmdsIntView.renderSpinner('Approving...');
       returnValue = await model.magAppCmdInt(appObject);
+      cmdsIntView.unrenderSpinner('');
       await controlLoadCmdsInt();
       console.log(returnValue);
       break;
