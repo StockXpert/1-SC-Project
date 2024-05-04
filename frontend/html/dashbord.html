@@ -3890,6 +3890,137 @@
         </div>
       </div>
       <!-- fin section pour voir les bdci -->
+      <!-- debut section pour cree un état d'inventaire -->
+      <div class="big-container-inv hidden">
+        <div class="add-info-container">
+          <div class="add-info-cart">
+            <div class="heading-add-info">
+              <p>Raison</p>
+            </div>
+            <form class="inputs-info">
+              <div class="input-info">
+                <input
+                  name="justify"
+                  type="text"
+                  placeholder="Donnez la raison de la difference"
+                  id="justify"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+
+              <div class="btn-info">
+                <button class="cancel-btn-add-bdc cancel-btn-info">
+                  Annuler
+                </button>
+                <button class="add-btn-add-bdc add-btn-info">Confirmer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-inv-container">
+          <div class="inv-cart">
+            <p class="inv-title">Etat de l'inventaire</p>
+            <div class="table-container-inv">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Designation</p>
+                      </div>
+                    </th>
+                    <th>Quantité logique</th>
+                    <th>Quantité physique</th>
+                    <th>Justification</th>
+                  </tr>
+                </thead>
+                <tbody class="results-produits-inv">
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td>14</td>
+                    <td class="quantity-ph">
+                      <input class="red-qt" type="text" value="12" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="td-justify red-info">
+                      <button class="info-btn-inv">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td>14</td>
+                    <td class="quantity-ph">
+                      <input class="red-qt" type="text" value="13" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="td-justify green-info">
+                      <button class="info-btn-inv">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td>14</td>
+                    <td class="quantity-ph">
+                      <input class="green-qt" type="text" value="14" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <!-- cas ou les quantitees sont egales -->
+                    <td class="td-justify hidden">
+                      <button class="info-btn-inv">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-inv">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdr btn-cancel-inv"
+              >
+                Annuler
+              </button>
+              <button class="heading-table-btn-bdr add-users-btn btn-save-inv">
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin section pour cree un état d'inventaire -->
       <!-- debut section pour supp un bdr -->
       <div class="container-supp-bdr hidden">
         <form class="supp-bdr-cart">

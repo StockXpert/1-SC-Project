@@ -576,7 +576,8 @@ aside .sidebar a:hover span {
   padding: 0.6rem;
 }
 .heading-table-btns-add-bdr,
-.heading-table-btns-verif-bdci {
+.heading-table-btns-verif-bdci,
+.heading-table-btns-inv {
   width: 100%;
   display: flex;
   justify-content: end;
@@ -883,6 +884,7 @@ aside .sidebar a:hover span {
 }
 .table-container-add-bdr,
 .table-container-verif-bdci,
+.table-container-inv,
 .table-container-see-bdci,
 .table-container-bdd {
   width: auto;
@@ -899,6 +901,7 @@ aside .sidebar a:hover span {
 .table-container-add-bdr table th,
 .table-container-show-bdr table th,
 .table-container-verif-bdci table th,
+.table-container-inv table th,
 .table-container-see-bdci table th,
 .table-container-bdd table th {
   width: 22rem;
@@ -1094,12 +1097,29 @@ table tbody tr:last-child td {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+.add-info-container {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: calc(50% + 50rem);
+  /* left: 89.5%; */
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 .input-product-bdc,
 .input-product-bdci,
 .input-product-bdc-edit,
 .input-product-bdci-edit {
   transition: all 0.4s;
   width: 15rem;
+  border: 1px solid #477ce2;
+  border-radius: 15px;
+  padding: 0.4rem;
+}
+.input-info {
+  transition: all 0.4s;
+  width: 15rem;
+  height: auto;
   border: 1px solid #477ce2;
   border-radius: 15px;
   padding: 0.4rem;
@@ -1115,10 +1135,29 @@ table tbody tr:last-child td {
 .input-product-bdci-edit input {
   width: 100%;
 }
+.input-info input {
+  width: 100%;
+  height: 100%;
+}
 .add-product-bdc-cart,
 .edit-product-bdc-cart {
   width: 18rem;
   height: 19rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column !important;
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+  position: relative;
+  /* overflow: hidden; */
+}
+.add-info-cart {
+  width: 18rem;
+  height: auto;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -1167,12 +1206,24 @@ table tbody tr:last-child td {
 .blue-price {
   color: #477ce2;
 }
+.info-btn-inv {
+  background-color: transparent;
+}
+.red-info span {
+  color: red;
+  background-color: transparent;
+}
+.green-info span {
+  color: #49bf20;
+  background-color: transparent;
+}
 .quantity,
 .quantity-verif,
 .quantity-verif-RD,
 .quantity-verif-M,
 .quantity-verif-D,
-.reference {
+.reference,
+.quantity-ph {
   position: relative;
 }
 .quantity span,
@@ -1180,7 +1231,8 @@ table tbody tr:last-child td {
 .quantity-verif-RD span,
 .quantity-verif-M span,
 .quantity-verif-D span,
-.reference span {
+.reference span,
+.quantity-ph span {
   position: absolute;
 }
 .green-qt {
@@ -1189,6 +1241,13 @@ table tbody tr:last-child td {
   margin-left: 3.5rem;
   font-size: 1.5rem;
   color: #49bf20;
+}
+.red-qt {
+  width: 4rem;
+  font-weight: 600;
+  margin-left: 3.5rem;
+  font-size: 1.5rem;
+  color: red;
 }
 .green-ref {
   width: 13rem;
@@ -1479,6 +1538,7 @@ table tbody tr:last-child td {
 .add-bdr-container,
 .show-bdr-container,
 .verif-bdci-container,
+.add-inv-container,
 .see-bdci-container,
 .bdd-container {
   display: block;
@@ -1516,11 +1576,13 @@ table tbody tr:last-child td {
 .big-container-bdr-add,
 .big-container-bdci,
 .big-container-verif-bdci,
+.big-container-inv,
 .big-container-see-bdci,
 .big-container-bdd {
   margin: 0 auto;
 }
 .add-product-bdc-cart,
+.add-info-cart,
 .edit-product-bdc-cart,
 .edit-product-bdci-cart {
   display: flex;
@@ -1529,6 +1591,7 @@ table tbody tr:last-child td {
   padding: 0.6rem;
 }
 .inputs-add-product-bdc,
+.inputs-info,
 .inputs-add-product-bdci,
 .inputs-edit-product-bdc,
 .inputs-edit-product-bdci {
@@ -1538,6 +1601,7 @@ table tbody tr:last-child td {
   gap: 1.8rem;
 }
 .btn-product-bdc,
+.btn-info,
 .btn-product-bdci,
 .btn-product-bdc-edit,
 .btn-product-bdci-edit {
@@ -1545,6 +1609,7 @@ table tbody tr:last-child td {
   gap: 1rem;
 }
 .btn-product-bdc button,
+.btn-info button,
 .btn-product-bdc-edit button,
 .btn-product-bdci-edit button,
 .btn-product-bdci button {
@@ -1555,6 +1620,7 @@ table tbody tr:last-child td {
   border-radius: 20px;
 }
 .heading-add-product-bdc p,
+.heading-add-info p,
 .heading-add-product-bdci p,
 .heading-edit-product-bdc p,
 .heading-edit-product-bdci p {
@@ -1631,7 +1697,8 @@ table tbody tr:last-child td {
   overflow: hidden;
 }
 .add-bdr-cart,
-.verif-bdci-cart {
+.verif-bdci-cart,
+.inv-cart {
   width: 75rem;
   margin: 0 auto;
   display: flex;
@@ -2413,6 +2480,7 @@ a.password-icon:active {
 .results-bdci-produits,
 .results-bdr-produits,
 .results-bdci-produits-verif,
+.results-produits-inv,
 .results-bdci-produits-see,
 .results-bdd-produits {
   position: relative;
@@ -2672,6 +2740,7 @@ a.password-icon:active {
 }
 .bdc-title,
 .verif-bdci-title,
+.inv-title,
 .see-bdci-title,
 .bdci-title,
 .edit-bdci-title {
