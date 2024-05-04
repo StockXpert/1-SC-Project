@@ -363,7 +363,9 @@ async function genererBonReception(
       Id
     );
     let i = 11;
+    console.log(produits);
     for (const produit of produits) {
+      console.log(produit);
       await googleMiddleware.addRow(i, produit, Id, 'reception');
       await googleMiddleware.addBorder(i, Id, 0, 1);
       await googleMiddleware.addBorder(i, Id, 1, 5);

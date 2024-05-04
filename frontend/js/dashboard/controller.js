@@ -1082,9 +1082,9 @@ const controlDeleteBonRec = async function () {
     await model.deleteBonRec(el.num_bon, el.numCommande);
     bonReceptionView.unrenderSpinner(true);
     bonReceptionView.toggleWindow();
-    // back to main menu
-    await controlLoadCmds();
   });
+  // back to main menu
+  await controlLoadCmds();
 };
 /*
 const controlDeleteStructure = function () {

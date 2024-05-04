@@ -39,7 +39,7 @@ export class AddCmdsIntView extends AddCmdsView {
         '.add-product-bdci-container'
       );
       this.addHandlerShowAddProductWindow(
-        '.btn-add-product-bdci',
+        '.add-product-bdci',
         '.add-product-bdci-container'
       );
       this.addHandlerHideEditProductWindow(
@@ -50,7 +50,28 @@ export class AddCmdsIntView extends AddCmdsView {
         '.details-btn-bdci-add',
         '.edit-product-bdci-container'
       );
+      this.addHandlerCheckboxedBtn('.check-bdd');
     }
+  }
+  addHandlerCheckboxedBtn(btnClass = '.check-bdd') {
+    const toggleButton = () => {
+      const checkbox = document
+        .querySelector(btnClass)
+        .querySelector('input[type="checkbox"]');
+      const button = document.querySelector(btnClass);
+      if (checkbox.checked) {
+        checkbox.checked = false;
+        button.classList.remove('checked');
+      } else {
+        checkbox.checked = true;
+        button.classList.add('checked');
+      }
+    };
+    document
+      .querySelector(btnClass)
+      .querySelector('input[type="checkbox"]')
+      .addEventListener('change', toggleButton);
+    document.querySelector(btnClass).addEventListener('click', toggleButton);
   }
   // #F00 resultVisibilityTogglers()
   _generateMarkupPreview(result, perms = []) {

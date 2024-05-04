@@ -109,8 +109,9 @@ function updateQuantite(req, res) {
   const { numCommande, numFacture, numLivraison, dateReception } = req.body;
   const produits = JSON.parse(req.body.produits);
   console.log(produits);
-  const bonLivraisonLink = req.files['bonLivraison'][0].filename;
-  const factureLink = req.files['facture'][0].filename;
+  const bonLivraisonLink =
+    'bonLivraison/' + req.files['bonLivraison'][0].filename;
+  const factureLink = 'Facture/' + req.files['facture'][0].filename;
   console.log({ bonLivraisonLink, factureLink });
   EntreeService.changeQuantite(numCommande, produits)
     .then(response => {
