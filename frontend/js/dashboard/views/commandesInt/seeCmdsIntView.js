@@ -21,7 +21,7 @@ class SeeCmdsIntView extends SeeCmdsView {
   resetPointers() {
     //voir bon de commande
     this._btnOpen = document.querySelectorAll('.print-bdci-btn');
-    console.log(this._btnOpen);
+    // console.log(this._btnOpen);
   }
 
   changeDetails(cmd, products) {

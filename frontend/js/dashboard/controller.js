@@ -1155,7 +1155,7 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
-  console.log(model.state);
+  // console.log(model.state);
   cmdsIntHeaderView.render(model.state.me.role);
   // cmdsIntHeaderView.render('Magasinier');
   // cmdsIntHeaderView.render('Directeur');
@@ -1453,6 +1453,11 @@ const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
   //TODO: hide btn
   view.addHandlerEditProductBtns(controlEditProductBtnsInt);
   // numberRoleView.selectionUpdater('.table-container-bdc-produits');
+};
+
+const controlCommandeExterne = newState => {
+  model.state.commandesInt.selected.ext = newState;
+  console.log(newState);
 };
 
 const controlSavingBDCI = async function () {
@@ -1777,6 +1782,7 @@ addCmdsIntView.addHandlerAddProduct(
   controlAddProductInt,
   model.state.bdci_products
 );
+addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
 editCmdsIntView.addHandlerAddProduct(
   controlAddProductIntEdit,
   model.state.bdci_products

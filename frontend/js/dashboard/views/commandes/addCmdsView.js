@@ -398,7 +398,7 @@ export class AddCmdsView extends AddUserView {
         formDataObj[key] = value;
       });
       formDataObj.quantite = parseInt(formDataObj.quantite);
-      console.log(formDataObj);
+      // console.log(formDataObj);
       if (!productDesignations.includes(formDataObj.designation)) {
         this._product.changeInputValidity("Ce produit là n'existe pas");
         return;
@@ -453,7 +453,7 @@ export class AddCmdsView extends AddUserView {
     }
   }
   addHandlerDeleteAddedProducts(handler) {
-    console.log(this);
+    // console.log(this);
     this._btnDeleteProducts.addEventListener('click', e => {
       e.preventDefault();
       handler(this);
@@ -509,9 +509,9 @@ export class AddCmdsView extends AddUserView {
   addHandlerShowEditProductWindow(OpClassName, windowClassName) {
     this._windowEditProduct = document.querySelector(windowClassName);
     this._btnsOpenEditProduct = document.querySelectorAll(OpClassName);
-    console.log(this);
+    // console.log(this);
     this._btnsOpenEditProduct.forEach(btn => {
-      console.log(btn);
+      // console.log(btn);
       btn.addEventListener('click', e => {
         this._boundToggleEditProductWindow(e);
         this._productEdit.changeInputValidity('Nom de produit Valide !', true);
@@ -536,7 +536,6 @@ export class AddCmdsView extends AddUserView {
     const btnOpenArray = Array.from(this._btnsOpenEditProduct);
     btnOpenArray.forEach(async btn => {
       btn.addEventListener('click', async e => {
-        console.log(this);
         await controller(this, e);
       });
     });
@@ -598,10 +597,10 @@ export class AddCmdsView extends AddUserView {
           dataArr.find(([key, value]) => key === 'quantite')[1],
           10
         );
-        console.log(dataArr);
+        // console.log(dataArr);
         const data = Object.fromEntries(dataArr);
-        console.log(data);
-        console.log(productDesignations);
+        // console.log(data);
+        // console.log(productDesignations);
         if (!productDesignations.includes(data.designation)) {
           this._productEdit.changeInputValidity("Ce produit là n'existe pas !");
           return;

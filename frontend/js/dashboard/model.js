@@ -43,6 +43,7 @@ export const state = {
   commandesInt: {
     all: [],
     selected: {
+      ext: false,
       old: {
         numDemande: '',
         products: '',
@@ -642,7 +643,7 @@ export const loadCmdsInt = async function () {
   let commandesInt = await helpers.getJSON(
     `${API_URL}/Sorties/showAllDemandes`
   );
-  console.log(state.commandesInt);
+  // console.log(state.commandesInt);
   state.commandesInt.all = commandesInt.response;
   return commandesInt;
 };
@@ -694,9 +695,10 @@ export const createBDCI = async function () {
   const postBDCIOBJ = {
     produits: state.bdci_products.added,
     dateDemande: helpers.getFormattedDate(),
+    exterieur: state.commandesInt.selected.ext,
   };
   console.log(postBDCIOBJ);
-  await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
+  // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
 export const saveBDCI = async function () {
   let postBDCIOBJ = {
