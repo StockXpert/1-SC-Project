@@ -6,6 +6,6 @@ router.post('/createInventaire',authMiddleware('create inventaire'),inventaireCo
 router.post('/validInventaire',authMiddleware('valid inventaire'),inventaireController.validInventaire);
 router.get('/showInventaires',authMiddleware('show inventaires'),inventaireController.showInventaires)
 router.get('/showInventaire',authMiddleware('show inventaire'),inventaireController.showInventaire);
-router.get('/updateInventaire',authMiddleware('update inventaire'),inventaireController.updateInventaire);
+router.put('/updateInventaire',authMiddleware('update inventaire'),inventaireController.updateInventaire);
 router.delete('/deleteInventaire',authMiddleware('delete inventaire'),inventaireController.deleteInventaire);
 module.exports=router;

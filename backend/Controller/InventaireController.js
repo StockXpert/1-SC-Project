@@ -50,7 +50,9 @@ function deleteInventaire(req,res)
         else 
         {
             InventaireModel.deleteInventaire(numInventaire).then(()=>{
-                res.status(200).json({response:'deleted'})
+                InventaireModel.deleteCompter(numInventaire).then(()=>{
+                    res.status(200).json({response:'deleted'})
+                }).catch(()=>{res.status(500).json({response:'internal error'})})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
         }
     }).catch(()=>{res.status(500).json({response:'internal error'})})

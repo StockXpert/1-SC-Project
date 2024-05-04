@@ -1,4 +1,5 @@
 const mysql=require('mysql');
+const async=require('async')
 const connectionConfig = {
   host: 'bibznsnq8nf1q3j7r74o-mysql.services.clever-cloud.com',
   user: 'ucvk6cpbqavmyqnb',
@@ -10,7 +11,7 @@ function addInventaire(numInventaire,dateInventaire)
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
           
-        const query = `INSERT INTO inventaire (num_inventaire,date_inventaire) (?,?)`;
+        const query = `INSERT INTO inventaire (num_inventaire,date_inventaire) values (?,?)`;
         const values=[numInventaire,dateInventaire];
         connection.connect((err) => {
           if (err) {
@@ -65,7 +66,7 @@ function insertCompter(numInventaire, produits) {
                         const id_produit = rows[0].id_produit;
   
                         // Insérer les données dans ma_table avec l'ID produit récupéré
-                        connection.query('INSERT INTO compter (num_inventaire, id_produit, quantite_phys,) VALUES (?, ?, ?)', [numInventaire, id_produit, produit.quantitePhys], (err, result) => {
+                        connection.query('INSERT INTO compter (num_inventaire, id_produit, quantite_phys) VALUES (?, ?, ?)', [numInventaire, id_produit, produit.quantitePhys], (err, result) => {
                             if (err) {
                                 return callback(err);
                             }
@@ -294,5 +295,29 @@ function updateInventaire(numInventaire,produits)
         });
     });
 }
+function deleteCompter(numInventaire) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `delete from compter where num_inventaire=?`;
+    const values=[numInventaire];
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });}) }
 module.exports={addInventaire,insertCompter,validInvetaireStatus,getInvetaires,getInventaire,getInventaireStatus
-,deleteInventaire,updateInventaire}
+,deleteInventaire,updateInventaire,deleteCompter}
