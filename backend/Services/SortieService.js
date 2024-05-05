@@ -71,10 +71,11 @@ function genererBonDecharge(Id,products,numDecharge,dateDecharge,numDemande)
         await googleMiddleware.addRow(i,product,Id,'decharge')
         i++;
     }
-    let link=`bonDecharge/bonDecharge${numDecharge}`;
+    let link=`bonDecharge/bonDecharge${numDecharge}.`;
     await googleMiddleware.generatePDF(Id,'bonDecharge',`bonDecharge${numDecharge}`)
+    await googleMiddleware.generateCSV(Id,'bonDecharge',`bonDecharge${numDecharge}`)
     await googleMiddleware.deleteRows(6,i-1,Id);
-    SortieModel.insertDechargeLink(numDemande,link).then(()=>{
+    SortieModel.insertDechargeLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
         resolve('success')
     }).catch(()=>{reject('error')})
     })

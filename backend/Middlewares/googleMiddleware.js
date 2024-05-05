@@ -384,9 +384,9 @@ async function generateCSV(idCopy,folder,filename)
         // Exporter la copie en PDF
         const pdfExportResponse = await drive.files.export({
             fileId: idCopy,
-            mimeType: 'application/csv',         
+            mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',         
         }, { responseType: 'stream' });
-        let CSVpath= path.join('backend',folder,`${filename}.pdf`);
+        let CSVpath= path.join('backend',folder,`${filename}.xlsx`);
         const csvFile = fs.createWriteStream(CSVpath);
         pdfExportResponse.data.pipe(csvFile);
 

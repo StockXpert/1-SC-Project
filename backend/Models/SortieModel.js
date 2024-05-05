@@ -674,12 +674,12 @@ function readNotif(numDemande,notif)
         });
       });
 }
-function insertLink(numDemande,link)
+function insertLink(numDemande,link,link2)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set link=? where num_demande=?`;
-        const values = [link,numDemande];
+        const query = `update demande_fourniture set link=?,excel_link where num_demande=?`;
+        const values = [link,link2,numDemande];
       
         connection.connect((err) => {
           if (err) {

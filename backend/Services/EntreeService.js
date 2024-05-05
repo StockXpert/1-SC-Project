@@ -70,10 +70,11 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tv
                 i++;
             }
             await googleMiddleware.generatePDF(Id,`bonCommande`,`commande${num_commande}`);
+            await googleMiddleware.generateCSV(Id,`bonCommande`,`commande${num_commande}`)
             await googleMiddleware.updateCel(range,false,Id);
             await googleMiddleware.deleteRows(22,i-1,Id);
-            const link=`BonCommande/commande${num_commande}.pdf`
-            EntreeModel.insertLink(link,num_commande).then(()=>{
+            const link=`BonCommande/commande${num_commande}.`
+            EntreeModel.insertLink(link+'pdf',link+'xlsx',num_commande).then(()=>{
                 resolve(link)
             }).catch(()=>{reject("err")})
         }).catch((err)=>{console.log(err);reject(err)})
@@ -186,9 +187,10 @@ async function genererBonReception(produits,numCommande,fournisseur,dateCommande
         i++;
     }
     await googleMiddleware.generatePDF(Id,`BonReception`,`reception${numReception}`);
+    await googleMiddleware.generateCSV(Id,`BonReception`,`reception${numReception}`);
     await googleMiddleware.deleteRows(11,i-1,Id);
-    const link=`BonReception/reception${numReception}.pdf`
-    EntreeModel.insertReceptionLink(link,numReception).then(()=>{
+    const link=`BonReception/reception${numReception}.`
+    EntreeModel.insertReceptionLink(link+'pdf',link+'xlsx',numReception).then(()=>{
                 resolve(link)
      }).catch(()=>{reject("err")})
     })
