@@ -80,7 +80,7 @@ function showAllDemandes(req,res)
             statement="etat in ('visee par dg','pret','servie') or id_demandeur=?"
             break;
         case 'Directeur':
-            statement=`etat in ('visee par resp','visee par dg','pret','servie') or (etat="demande" and
+            statement=`etat in ('visee par resp','visee par dg','pret','servie') or (etat='demande' and
             id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?) or id_role=

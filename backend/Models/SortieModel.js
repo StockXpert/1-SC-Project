@@ -451,19 +451,18 @@ function getAllDemandes(etat,statement,email,role){
         let values=[]
         if(role==="Consommateur")
         {
-            query=`select num_demande,etat,date_demande from demande_fourniture where id_demandeur=?`
+            query=`select exterieur,num_demande,etat,date_demande from demande_fourniture where id_demandeur=?`
             values.push(email)
         }
-        else if(role==='Magasinier')
-        values.push(email)
         else{
          query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${statement}
         ${(etat==='en attente'&&role==='Responsable directe')?`id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`;
          values =[]
-        if(etat==='en attente') values.push(email)
+        if(etat==='en attente'&&role!='Magasinier') values.push(email)
         }
+        if(role==='Magasinier') values.push(email)
         console.log({query})
         connection.connect((err) => {
           if (err) {
@@ -675,12 +674,12 @@ function readNotif(numDemande,notif)
         });
       });
 }
-function insertLink(numDemande,link)
+function insertLink(numDemande,link,link2)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set link=? where num_demande=?`;
-        const values = [link,numDemande];
+        const query = `update demande_fourniture set link=?,excel_link where num_demande=?`;
+        const values = [link,link2,numDemande];
       
         connection.connect((err) => {
           if (err) {
