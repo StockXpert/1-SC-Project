@@ -1061,7 +1061,7 @@ const controlAddBRec = async function (
 
   addBonReception.renderSpinner();
   await model.addBonReception(newReception);
-  await controlLoadBRec();
+  bonReceptionView.addHandlerShow(controlLoadBRec);
   // await controlLoadCmds();
 };
 
@@ -1081,10 +1081,10 @@ const controlDeleteBonRec = async function () {
     );
     await model.deleteBonRec(el.num_bon, el.numCommande);
     bonReceptionView.unrenderSpinner(true);
-    bonReceptionView.toggleWindow();
+    // bonReceptionView.toggleWindow();
   });
   // back to main menu
-  await controlLoadCmds();
+  await controlLoadBRec();
 };
 /*
 const controlDeleteStructure = function () {
