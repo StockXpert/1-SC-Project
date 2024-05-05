@@ -451,7 +451,7 @@ function getAllDemandes(etat,statement,email,role){
         let values=[]
         if(role==="Consommateur")
         {
-            query=`select num_demande,etat,date_demande from demande_fourniture where id_demandeur=?`
+            query=`select exterieur,num_demande,etat,date_demande from demande_fourniture where id_demandeur=?`
             values.push(email)
         }
         else{
