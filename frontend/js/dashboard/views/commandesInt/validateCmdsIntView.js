@@ -15,7 +15,7 @@ class ValidateCmdsIntView extends EditCmdsIntView {
     this._window = document.querySelector(windowClassName);
     // console.log(this, this._window);
     this._btnOpen = document.querySelectorAll(OpClassName);
-    console.log(this._btnOpen);
+    // console.log(this._btnOpen);
     // Array.from(this._btnOpen)
     this._btnOpen.forEach(btn =>
       btn.addEventListener('click', this._boundToggleWindow)
@@ -124,7 +124,7 @@ class ValidateCmdsIntView extends EditCmdsIntView {
   }
 
   changeHeader() {
-    console.log(this._role);
+    // console.log(this._role);
     this._header.innerHTML = '';
     const html = `
         <th>

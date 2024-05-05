@@ -9,17 +9,20 @@ export class SeeCmdsView extends DeleteUserView {
   _trueParentElement = document.querySelector('.see-bdc-container');
   // _confirm = document.querySelector('.cancel-bdc-confirmer');
   toggleWindow() {
+    console.log(this._overlay);
     this._overlay.classList.toggle('hidden');
     this._window.classList.toggle('hidden');
   }
 
-  constructor() {
+  constructor(nerfed = false) {
     super();
-    this._btnClose.addEventListener('click', e => {
-      e.preventDefault();
-      this.toggleWindow.bind(this)();
-    });
-    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    if (!nerfed) {
+      this._btnClose.addEventListener('click', e => {
+        e.preventDefault();
+        this.toggleWindow.bind(this)();
+      });
+      this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    }
   }
 
   resetPointers() {
@@ -37,6 +40,7 @@ export class SeeCmdsView extends DeleteUserView {
   // }
   addSeeController(ctrler) {
     const toggleWindow = function () {
+      console.log(this._overlay);
       this._overlay.classList.toggle('hidden');
       this._window.classList.toggle('hidden');
     };

@@ -1,13 +1,5 @@
 import { SeeCmdsView } from '../commandes/seeCmdsView.js';
 class SeeCmdsIntView extends SeeCmdsView {
-  constructor() {
-    super();
-    this._btnClose.addEventListener('click', e => {
-      e.preventDefault();
-      this.toggleWindow.bind(this)();
-    });
-    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
-  }
   _window = document.querySelector('.big-container-see-bdci');
   _parentElement = document.querySelector('.results-bdci-produits-see');
   _overlay = document.querySelector('.overlaySeeBdci');
@@ -17,11 +9,23 @@ class SeeCmdsIntView extends SeeCmdsView {
   //TODO:
   // _btnClose = document.querySelector('.see-bdci-close');
   _trueParentElement = document.querySelector('.see-bdci-container');
+  constructor() {
+    super(true);
+    this._btnClose.addEventListener('click', e => {
+      e.preventDefault();
+      this.toggleWindow.bind(this)();
+    });
+    // this._overlay = document.querySelector('.overlaySeeBdci');
+    this._overlay.addEventListener('click', e => {
+      // console.log('SHOWING :', this._overlay);
+      this.toggleWindow.bind(this)();
+    });
+  }
 
   resetPointers() {
     //voir bon de commande
     this._btnOpen = document.querySelectorAll('.print-bdci-btn');
-    console.log(this._btnOpen);
+    // console.log(this._btnOpen);
   }
 
   changeDetails(cmd, products) {

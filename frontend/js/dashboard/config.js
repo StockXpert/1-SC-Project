@@ -92,6 +92,19 @@ export const GROUP_DEFINITIONS = {
     'approuve fourniture by director',
     'approuve fourniture by magasinier',
     'show all demandes',
+    'livrer',
+    'update approuve by responsable',
+    'update approuve by director',
+    'update approuve by magasinier',
+    'update demande by consommateur',
+  ],
+  Inventaire: [
+    'create inventaire',
+    'valid inventaire',
+    'show inventaires',
+    'show inventaire',
+    'delete inventaire',
+    'update inventaire',
   ],
 };
 export const PERM_NAMES = {
@@ -142,12 +155,31 @@ export const PERM_NAMES = {
   'show bon reception': 'Afficher les bons de réception',
   'demande fourniture': 'Créer un bon de commande interne',
   'approuve fourniture by responsable':
-    'Approuver les bon de commandes internes par un responsable directe',
+    'Approuver les bon de commandes internes (par un responsable directe)',
   'approuve fourniture by director':
-    'Approuver les bon de commandes internes par le directeur',
+    'Approuver les bon de commandes internes (par le directeur)',
   'approuve fourniture by magasinier':
-    'Accepter les bon de commandes internes par le magasinier',
-  'show all demandes': 'Voir toutes mes commandes',
+    'Approuver les bon de commandes internes (par le magasinier)',
+  'update approuve by responsable':
+    "Modifer une approbation d'un bon de commandes internes (par un responsable directe)",
+  'update approuve by director':
+    "Modifer une approbation d'un bon de commandes internes (par le directeur)",
+  'update approuve by magasinier':
+    "Modifer une approbation d'un bon de commandes internes (par le magasinier)",
+  'update demande by consommateur':
+    'Modifier un bon de commande interne (par le consommateur)',
+  'show all demandes': 'Voir toutes mes demandes Internes/Externes',
+  livrer:
+    'Livrer la demande Interne/Externe et générer le Bon de Sortie/Décharge',
+  'create inventaire': "Créer une nouvelle étude d'état de l'inventaire",
+  'valid inventaire': "Valider le nouveau état de l'inventaire",
+  'show inventaires':
+    "Voir l'historique de l'inventaire (tout les états précédents)",
+  'show inventaire':
+    "Voir un état de l'inventaire en détails (tout les états précédents)",
+  'show inventaire': "Voir un état de l'inventaire en détails",
+  'delete inventaire': "Supprimer un état de l'inventaire en détails",
+  'update inventaire': "Modifier un état de l'inventaire en détails",
 };
 
 export const GROUP_BTNS = {
@@ -207,6 +239,11 @@ export const GROUP_BTNS = {
   <h3>Articles</h3>
 </a>
   `,
+  Inventaire: `<a class="sidebar-btns inventaire-btn" href="">
+  <span class="material-icons-sharp"> inventory </span>
+  <h3>Inventaire</h3>
+</a>
+  `,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',
@@ -219,5 +256,6 @@ export const ORDER_OF_GROUPS = [
   'Chapitres',
   'Produits',
   'Articles',
+  'Inventaire',
   'Autre',
 ];

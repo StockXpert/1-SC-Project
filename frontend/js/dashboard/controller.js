@@ -1155,7 +1155,7 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
-  console.log(model.state);
+  // console.log(model.state);
   cmdsIntHeaderView.render(model.state.me.role);
   // cmdsIntHeaderView.render('Magasinier');
   // cmdsIntHeaderView.render('Directeur');
@@ -1455,6 +1455,11 @@ const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
   // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
+const controlCommandeExterne = newState => {
+  model.state.commandesInt.selected.ext = newState;
+  console.log(newState);
+};
+
 const controlSavingBDCI = async function () {
   if (model.state.bdci_products.added.length == 0) {
     helpers.renderError(
@@ -1655,6 +1660,7 @@ const controlValidateCmdsInt = async () => {
       validateCmdsIntView._btnClose.click();
       cmdsIntView.renderSpinner('Approving...');
       returnValue = await model.magAppCmdInt(appObject);
+      cmdsIntView.unrenderSpinner('');
       await controlLoadCmdsInt();
       console.log(returnValue);
       break;
@@ -1689,6 +1695,12 @@ const controlDeliverCmdsInt = async view => {
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
+/////// I N V E N T A I R E  #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+const controlLoadInv = () => {};
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 /////// B A C K  O '  B E Y O N D #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -1721,6 +1733,7 @@ const controllers = [
   ,
   controlLoadCmds,
   controlLoadCmdsInt,
+  controlLoadInv,
 ];
 
 addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);
@@ -1777,6 +1790,7 @@ addCmdsIntView.addHandlerAddProduct(
   controlAddProductInt,
   model.state.bdci_products
 );
+addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
 editCmdsIntView.addHandlerAddProduct(
   controlAddProductIntEdit,
   model.state.bdci_products

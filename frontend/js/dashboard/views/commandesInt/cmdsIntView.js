@@ -25,7 +25,7 @@ export class CmdsIntView extends CmdsView {
   // :
   // 1
   _generateMarkupPreview(result, perms = []) {
-    console.log(this._role);
+    // console.log(this._role);
     const html = `<tr>
     <td>
       <div class="checkbox-colomn">
@@ -48,7 +48,7 @@ export class CmdsIntView extends CmdsView {
     ${
       this._role.includes('Consommateur')
         ? `
-        <td class="td-view-bdc">
+        <td class="td-view-bdci">
           <button class="details-btn print-bdci-btn">
           <span class="material-icons-sharp info-icon">
             info

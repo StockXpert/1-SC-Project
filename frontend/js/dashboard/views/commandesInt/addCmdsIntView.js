@@ -9,6 +9,9 @@ export class AddCmdsIntView extends AddCmdsView {
   _product = document.querySelector('#bdci-product-add');
   _productEdit = document.querySelector('#bdci-product-edit');
   _editProductForm = document.querySelector('.inputs-edit-product-bdci');
+  _commandeExterne = document
+    .querySelector('.check-bdd')
+    .querySelector('input[type="checkbox"]');
   _btnDeleteProducts = document.querySelector('.btn-delete-produits-bdci');
   // _btnModifyProducts = document.querySelector('.btn-delete-produits-bdci');
   _checkboxesAddProduct;
@@ -39,7 +42,7 @@ export class AddCmdsIntView extends AddCmdsView {
         '.add-product-bdci-container'
       );
       this.addHandlerShowAddProductWindow(
-        '.btn-add-product-bdci',
+        '.add-product-bdci',
         '.add-product-bdci-container'
       );
       this.addHandlerHideEditProductWindow(
@@ -50,8 +53,36 @@ export class AddCmdsIntView extends AddCmdsView {
         '.details-btn-bdci-add',
         '.edit-product-bdci-container'
       );
+      // this.addHandlerCheckboxedBtn('.check-bdd');
     }
   }
+  addHandlerCheckboxedBtn(btnClass = '.check-bdd', handler) {
+    const toggleButton = () => {
+      const checkbox = document
+        .querySelector(btnClass)
+        .querySelector('input[type="checkbox"]');
+      const button = document.querySelector(btnClass);
+      if (checkbox.checked) {
+        checkbox.checked = false;
+        button.classList.remove('checked');
+      } else {
+        checkbox.checked = true;
+        button.classList.add('checked');
+      }
+      handler(checkbox.checked);
+    };
+    document
+      .querySelector(btnClass)
+      .querySelector('input[type="checkbox"]')
+      .addEventListener('change', toggleButton);
+    document.querySelector(btnClass).addEventListener('click', toggleButton);
+  }
+
+  // addHandlerCommandeExterne2(handler) {
+  //   this._commandeExterne.addEventListener('change', e => {
+  //     handler(this._commandeExterne.checked); //edit the state obj
+  //   });
+  // }
   // #F00 resultVisibilityTogglers()
   _generateMarkupPreview(result, perms = []) {
     return `

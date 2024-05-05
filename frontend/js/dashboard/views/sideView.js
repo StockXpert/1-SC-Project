@@ -18,6 +18,7 @@ class SideView extends View {
     document.querySelector('.produits-btn'),
     document.querySelector('.bon-de-commandes-btn'),
     document.querySelector('.bon-de-commandes-interne-btn'),
+    document.querySelector('.inventaire-btn'),
   ];
   divs = [
     document.getElementById('main-profile-table'),
@@ -33,6 +34,7 @@ class SideView extends View {
     document.getElementById('main-table-produits'),
     document.getElementById('main-table-bdc'),
     document.getElementById('main-table-bdci'),
+    document.getElementById('main-table-inv'),
   ];
 
   hideAllDivs() {
@@ -57,6 +59,7 @@ class SideView extends View {
       document.querySelector('.produits-btn'),
       document.querySelector('.bon-de-commandes-btn'),
       document.querySelector('.bon-de-commandes-interne-btn'),
+      document.querySelector('.inventaire-btn'),
     ];
     this.divs = [
       document.getElementById('main-profile-table'),
@@ -72,10 +75,12 @@ class SideView extends View {
       document.getElementById('main-table-produits'),
       document.getElementById('main-table-bdc'),
       document.getElementById('main-table-bdci'),
+      document.getElementById('main-table-inv'),
     ];
   }
 
   hideBtns(perms = []) {
+    console.log(perms);
     this.btns.forEach(btn => {
       if (perms.includes(btn.name)) {
         btn.classList.remove('hidden');
@@ -120,9 +125,10 @@ class SideView extends View {
 
   // TODO: MAKE A CONFIG ARRAY THAT HAS: KEY(PERM GROUP) VALUE(HTML)
   _generateMarkup() {
+    console.log(this._data);
     return `
     ${this._data.map(el => this._generateMarkupPerview(el.groupName)).join('')} 
-    <a class="sidebar-btns" href="">
+    <a class="sidebar-btns" href="/frontend/html/login.html">
       <span class="material-icons-sharp"> logout </span>
       <h3>Se deconnecter</h3>
     </a>`;
