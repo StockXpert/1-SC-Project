@@ -454,16 +454,15 @@ function getAllDemandes(etat,statement,email,role){
             query=`select num_demande,etat,date_demande from demande_fourniture where id_demandeur=?`
             values.push(email)
         }
-        else if(role==='Magasinier')
-        values.push(email)
         else{
          query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${statement}
         ${(etat==='en attente'&&role==='Responsable directe')?`id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`;
          values =[]
-        if(etat==='en attente') values.push(email)
+        if(etat==='en attente'&&role!='Magasinier') values.push(email)
         }
+        if(role==='Magasinier') values.push(email)
         console.log({query})
         connection.connect((err) => {
           if (err) {
