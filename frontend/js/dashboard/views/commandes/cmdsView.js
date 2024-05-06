@@ -22,6 +22,8 @@ export class CmdsView extends UsersView {
   addEventListenerCheckboxesChange(handler = '') {
     // this._btnDeleteBdc = document.querySelector('.btn-delete-bdc');
     // this._btnCancelBdc = document.querySelector('.btn-cancel-bdc');
+    console.log('nice');
+    console.log(this._btnDeleteBdc, this._btnModifyBdc, this._btnCancelBdc);
     this._btnDeleteBdc.disabled = true;
     this._btnCancelBdc.disabled = true;
     if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;

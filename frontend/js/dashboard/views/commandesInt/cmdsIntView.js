@@ -182,8 +182,7 @@ export class CmdsIntView extends CmdsView {
             this._btnModifyBdc
               ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
               : '';
-          }
-          if (
+          } else if (
             this._data[
               helpers.findNodeIndex(
                 this._checkboxes,

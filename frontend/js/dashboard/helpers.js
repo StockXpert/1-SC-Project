@@ -78,7 +78,7 @@ export const formatDate = inputDate => {
 
 export const getJSON = async function (url) {
   try {
-    console.log(localStorage.getItem('JWT'));
+    // console.log(localStorage.getItem('JWT'));
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',
