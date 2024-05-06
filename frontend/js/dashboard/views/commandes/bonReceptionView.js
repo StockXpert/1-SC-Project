@@ -11,8 +11,6 @@ class BonReceptionView extends View {
 
   constructor() {
     super();
-    this._addHandlerShowWindow();
-    // this._addHandlerHideWindow();
   }
   toggleWindow() {
     this._window.classList.toggle('hidden');
@@ -46,10 +44,10 @@ class BonReceptionView extends View {
     });
   }
 
-  // f() {
-  //   this._addHandlerShowWindow();
-  //   this._addHandlerHideWindow();
-  // }
+  addHandlerToggleWindow() {
+    this._addHandlerShowWindow();
+    this._addHandlerHideWindow();
+  }
 
   _generateMarkup() {
     console.log(this._data);

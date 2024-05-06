@@ -742,7 +742,7 @@ const controlLoadCmds = async function () {
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
   cmdsView.resetPointers();
-  bonReceptionView.f();
+  bonReceptionView.addHandlerToggleWindow();
   bonReceptionView.addHandlerShow(controlLoadBRec);
   // const filter1Obj = {
 
