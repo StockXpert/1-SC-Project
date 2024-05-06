@@ -104,7 +104,7 @@ export class CmdsIntView extends CmdsView {
       <td class="td-print-bdciii">${
         result.etat.includes('servie')
           ? `
-    <a class="print-bdci-btnnn" href="../../backend/sortie/sortie${result.num_demande}.pdf">
+    <a class="print-bdci-btnnn" href="../../backend/sortie/sortie${result.num_demande}.pdf" target="_blank">
       <span class="material-icons-sharp info-icon">
         print
       </span>
