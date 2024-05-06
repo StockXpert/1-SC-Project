@@ -117,6 +117,17 @@ async function addRow(ligne, Content, idCopy, type) {
         ];
         ec = 3;
         break;
+      case 'registre':
+        valuesToInsert = [
+          Content.id_produit,
+          Content.dateI,
+          Content.date,
+          Content.designation,
+          Content.fournisseur,
+          Content.value,
+        ];
+        ec = 6;
+        break;
       default:
         break;
     }
@@ -139,7 +150,7 @@ async function addRow(ligne, Content, idCopy, type) {
       'with values',
       valuesToInsert
     );
-    if (type != 'sortie' && type != 'decharge') {
+    if (type != 'sortie' && type != 'decharge' && type != 'registre') {
       const res = await sheets.spreadsheets.batchUpdate({
         spreadsheetId: idCopy,
         requestBody: {
