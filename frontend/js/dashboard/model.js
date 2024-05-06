@@ -761,12 +761,12 @@ export const loadBonRec = async function (numCommande) {
   console.log(state.bdr.all);
 };
 
-export const loadBonRecProducts = async function (numReception) {
+export const loadBonCmdProducts = async function (numCommande) {
   const uploadData = {
-    numReception: numReception,
+    numCommande: numCommande,
   };
   const data = await helpers.sendJSON(
-    `${API_URL}/Entrees/showBonReceptionProducts`,
+    `${API_URL}/Entrees/showCommandeProducts`,
     uploadData
   );
 
