@@ -1704,19 +1704,18 @@ const controlDeliverCmdsInt = async view => {
 //////////////////////////////////////////////////////////////////
 const controlLoadInv = async () => {
   console.log(model.state.me.permissions.all);
-  invView.renderSpinner('', true);
+  invView.renderSpinner();
   invHeaderView.render({}, true, model.state.me.permissions.all);
   if (!(await model.loadAllInv())) {
     sideView.btns[0].click();
     return;
   }
   console.log(model.state.inventaires.all);
-  invView.render(
-    model.state.inventaires.all,
-    true,
-    model.state.me.permissions.all
-  );
-  invView.unrenderSpinner(true);
+  // invView.render(
+  //   model.state.inventaires.all,
+  //   true,
+  //   model.state.me.permissions.all
+  // );
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
