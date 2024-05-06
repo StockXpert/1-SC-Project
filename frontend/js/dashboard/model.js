@@ -649,7 +649,10 @@ export const loadCmdsInt = async function () {
     `${API_URL}/Sorties/showAllDemandes`
   );
   // console.log(state.commandesInt);
-  state.commandesInt.all = commandesInt.response;
+  state.commandesInt.all = commandesInt.response.sort(
+    (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
+  );
+  console.log(state.commandesInt.all);
   return commandesInt;
 };
 export const loadCommandeproducts = async function (numCommande) {
