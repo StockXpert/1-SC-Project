@@ -253,6 +253,32 @@ export const postJSONReturnResResp = async function (url, uploadData) {
   // }
 };
 
+export const getJSONReturnResResp = async function (url) {
+  // try {
+  const res = await Promise.race([
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+    }),
+    timeout(TIMEOUT_SEC),
+  ]);
+  const data = await res.json();
+  console.log(res);
+  console.log(data);
+  if (!res.ok && res.status !== 403) {
+    // return res;
+    throw new Error(`${res.statusText} (${res.status}) : ${data.error}
+  `);
+  }
+  return [res, data];
+  // } catch (err) {
+  //   throw err;
+  // }
+};
+
 // export const sendJSON = async function (url, uploadData) {
 //   try {
 //     const fetchPro = fetch(url, {

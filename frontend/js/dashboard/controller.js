@@ -24,6 +24,7 @@ import deleteStructureView from './views/deleteStructureView.js';
 import cmdsView from './views/commandes/cmdsView.js';
 import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import cmdsIntHeaderView from './views/commandesInt/cmdsIntHeaderView.js';
+import invHeaderView from './views/inventaires/InvHeaderView.js';
 import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
@@ -39,6 +40,7 @@ import seeCmdsIntView from './views/commandesInt/seeCmdsIntView.js';
 import addBonReception from './views/commandes/addBonReception.js';
 import View from './views/view.js';
 import deleteBonReception from './views/commandes/deleteBonReception.js';
+import invView from './views/inventaires/InvView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1698,7 +1700,22 @@ const controlDeliverCmdsInt = async view => {
 /////// I N V E N T A I R E  #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
-const controlLoadInv = () => {};
+const controlLoadInv = async () => {
+  console.log(model.state.me.permissions.all);
+  invView.renderSpinner('', true);
+  invHeaderView.render({}, true, model.state.me.permissions.all);
+  if (!(await model.loadAllInv())) {
+    sideView.btns[0].click();
+    return;
+  }
+  console.log(model.state.inventaires.all);
+  invView.render(
+    model.state.inventaires.all,
+    true,
+    model.state.me.permissions.all
+  );
+  invView.unrenderSpinner(true);
+};
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// B A C K  O '  B E Y O N D #fff
