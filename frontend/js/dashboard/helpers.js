@@ -644,3 +644,12 @@ export function fillMissingProperties(array) {
       item.quantite === null || item.quantite === undefined ? 0 : item.quantite,
   }));
 }
+export const getVisibleHeight = function (element) {
+  const elementRect = element.getBoundingClientRect();
+  const parentRect = element.parentElement.getBoundingClientRect();
+
+  const visibleTop = Math.max(elementRect.top, parentRect.top);
+  const visibleBottom = Math.min(elementRect.bottom, parentRect.bottom);
+
+  return visibleBottom - visibleTop;
+};
