@@ -1,4 +1,5 @@
 import { SeeCmdsView } from '../commandes/seeCmdsView.js';
+import * as helpers from '../../helpers.js';
 class SeeCmdsIntView extends SeeCmdsView {
   _window = document.querySelector('.big-container-see-bdci');
   _parentElement = document.querySelector('.results-bdci-produits-see');
@@ -30,7 +31,9 @@ class SeeCmdsIntView extends SeeCmdsView {
 
   changeDetails(cmd, products) {
     const heading = this._window.querySelector('.see-bdci-title');
-    heading.innerHTML = `Commande N°${cmd.num_demande}`;
+    heading.innerHTML = `Commande N°${cmd.num_demande} - ${helpers.formatDate(
+      cmd.date_demande
+    )}`;
 
     let productsHTML =
       products.length != 0
