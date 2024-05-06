@@ -1027,9 +1027,9 @@ const controlLoadBRec = async function () {
   bonReceptionView.unrenderSpinner(true);
   // bonReceptionView._clear();
   bonReceptionView.render(model.state.bdr.all);
-  // addBonReception.f();
+  addBonReception.f();
   addBonReception._clear();
-  await model.loadBonRecProducts(model.state.bdc.selected);
+  await model.loadBonCmdProducts(model.state.bdc.selected);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
   addBonReception.handleUpdate(controlAddBRec);

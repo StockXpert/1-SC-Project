@@ -46,8 +46,6 @@ class AddBonReception extends AddUserView {
   }
 
   _generateMarkupPreview(result) {
-    const inputQuatite =
-      this._parentElement.querySelector('input[type="text"]');
     return `
       <tr>
         <td>
@@ -58,8 +56,13 @@ class AddBonReception extends AddUserView {
         <td>${result.designation}</td>
 
         <td>${result.quantite}</td>
+        <td>${
+          result.quantite - result.quantite_recu < 0
+            ? 0
+            : result.quantite - result.quantite_recu
+        }</td>
         <td class="quantity">
-          <input class="green-qt" type="text" value="0" />
+          <input class="green-qt" type="number" value="0" min="0" max="30" />
           <span class="material-icons-sharp">
             drive_file_rename_outline
           </span>
@@ -69,6 +72,10 @@ class AddBonReception extends AddUserView {
   }
 
   async handleUpdate(control) {
+    const numberInputs = this._parentElement.querySelectorAll(
+      'input[type="number"]'
+    );
+
     const bonLivraisonInput = this._window.querySelector(
       'input[name="bonLivraison"]'
     );
@@ -79,15 +86,49 @@ class AddBonReception extends AddUserView {
     const numFacture = this._window.querySelector('input[name="num-facture"');
     const tableRows = this._parentElement.querySelectorAll('tr');
     console.log('handleUpdate');
+    const results = new Array(tableRows.length).fill(1);
+    tableRows.forEach((row, i) => {
+      const elementQuantite = +row.querySelector('td:nth-child(4)').textContent;
+      row.querySelector('input[type="number"]').addEventListener('input', e => {
+        const enteredValue = parseInt(e.target.value);
+        if (isNaN(enteredValue)) {
+          // If entered value is not a number, reset to empty string
+          e.target.value = '';
+        } else if (enteredValue < 0 || enteredValue > elementQuantite) {
+          // If entered value is outside the range, reset to the nearest limit
+          e.target.value = Math.min(Math.max(enteredValue, 0), elementQuantite);
+        }
+
+        results[i] = e.target.value - elementQuantite;
+        if (results.every(el => el === 0)) {
+          factureInput.parentElement.classList.remove('hidden');
+          numFacture.parentElement.classList.remove('hidden');
+        } else if (!factureInput.parentElement.classList.contains('hidden')) {
+          factureInput.parentElement.classList.add('hidden');
+          numFacture.parentElement.classList.add('hidden');
+        }
+      });
+    });
+    // numberInputs.forEach(input =>
+    //   input.addEventListener('input', () => {
+    //     if (results.every(el => el === 0)) {
+    //       factureInput.parentElement.classList.remove('hidden');
+    //       numFacture.parentElement.classList.remove('hidden');
+    //     } else if (!factureInput.parentElement.classList.contains('hidden')) {
+    //       factureInput.parentElement.classList.add('hidden');
+    //       numFacture.parentElement.classList.add('hidden');
+    //     }
+    //   })
+    // );
     this._sauvgarde.addEventListener('click', async e => {
       e.preventDefault();
 
       const dataArray = [];
       tableRows.forEach(row => {
-        const inputQuatite = +row.querySelector('input[type="text"]').value;
         console.log(inputQuatite);
         const elementQuantite =
           +row.querySelector('td:nth-child(3)').textContent;
+        const inputQuatite = +row.querySelector('input[type="number"]').value;
         console.log(elementQuantite);
         if (!inputQuatite) return;
         if (inputQuatite <= elementQuantite) {
