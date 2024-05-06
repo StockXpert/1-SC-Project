@@ -120,12 +120,12 @@ function insertBonReception(numCommande, date,livraisonLink,factureLink,numFactu
       });
   });
 }
-function insertLink(link,n_commande)
+function insertLink(link,link2,n_commande)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = "update bon_de_commande set link=? where num_commande=?";
-        const values = [link,n_commande];
+        const query = "update bon_de_commande set link=?,excel_link=? where num_commande=?";
+        const values = [link,link2,n_commande];
       
         connection.connect((err) => {
           if (err) {
@@ -147,12 +147,12 @@ function insertLink(link,n_commande)
         });
       });
 }
-function insertReceptionLink(link,numReception)
+function insertReceptionLink(link,link2,numReception)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = "update bon_de_reception set link=? where num_bon=?";
-        const values = [link,numReception];
+        const query = "update bon_de_reception set link=?,excel_link=? where num_bon=?";
+        const values = [link,link2,numReception];
       
         connection.connect((err) => {
           if (err) {
@@ -841,7 +841,7 @@ function getCommandeProducts(numCommande)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select p.designation ,c.quantite , c.prix_unitaire from commande c,produit p
+    const query = `select p.designation ,c.quantite ,c.quantite_recu, c.prix_unitaire from commande c,produit p
                    where c.id_commande=? and p.id_produit=c.id_produit `;           
     connection.connect((err) => {
       if (err) {

@@ -1,3 +1,4 @@
+const { json } = require('express');
 const EntreeModel=require('../Models/EntreeModel');
 const { getArticleIdTva } = require('../Models/NomenclatureModel');
 const EntreeService=require('../Services/EntreeService')
@@ -62,9 +63,11 @@ function showCommandes(req,res)
 function updateQuantite(req,res)
 {
    console.log(req.file)
-   const {numCommande,produits,numFacture,numLivraison,dateReception}=req.body;
-   const bonLivraisonLink = req.files['bonLivraison'][0].filename
-   const factureLink = req.files['facture'][0].filename
+   const {numCommande,numFacture,numLivraison,dateReception}=req.body;
+   const produits=JSON.parse(req.body.produits);
+   console.log(produits);
+   const bonLivraisonLink = 'bonLivraison/'+req.files['bonLivraison'][0].filename
+   const factureLink = 'Facture/'+req.files['facture'][0].filename
    console.log({bonLivraisonLink,factureLink});
    EntreeService.changeQuantite(numCommande,produits).then((response)=>{
       EntreeService.uploadvalidity(numCommande).then((response)=>{
@@ -128,7 +131,7 @@ function updateReception(req,res)
 
                if(numFacture||numLivraison||dateReception)
          {
-            EntreeModel.updateReception(numReception,numLivraison,numFacture).then(()=>{
+             EntreeModel.updateReception(numReception,numLivraison,numFacture).then(()=>{
                res.status(200).json({response:'Reception updated'})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
          }

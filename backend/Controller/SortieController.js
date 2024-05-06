@@ -1,10 +1,13 @@
 const SortieService=require('../Services/SortieService')
 const SortieModel=require('../Models/SortieModel');
 const { response } = require('express');
+const { isErrored } = require('nodemailer/lib/xoauth2');
+const { google } = require('googleapis');
+const { updateCel } = require('../Middlewares/googleMiddleware');
 function demandeFourniture(req,res){
-const {produits,dateDemande}=req.body;
+const {produits,dateDemande,exterieur}=req.body;
 const {email}=req
-SortieModel.addFourniture(email,dateDemande).then((numDemande)=>{
+SortieModel.addFourniture(email,dateDemande,exterieur).then((numDemande)=>{
     SortieModel.insertFournir(numDemande,produits).then(()=>{
         res.status(200).json({response:'demande added'})
     }).catch(()=>{res.status(500).json({response:'internal error'})})
@@ -36,14 +39,23 @@ function fournitureMagApp(req,res){
 }
 function livrer(req,res)
 {
-    const {numDemande,dateSortie}=req.body;
+    const {numDemande,dateSortie,numDecharge,dateDecharge,products}=req.body;
     SortieModel.getDemandeProducts(numDemande).then((produits)=>{
         SortieService.subtituteQuantite(produits).then(()=>{
             SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
-                SortieModel.insertDateSortie(numDemande,dateSortie).then(()=>{
-                    SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E').then((link)=>{
-                        res.status(200).json({response:link})
-                    }).catch(()=>{res.status(500).json({response:'internal error'})})
+                SortieModel.isExterior(numDemande).then((exterior)=>{
+                    if(exterior)
+                    {
+                        SortieService.addDecharge('16OHtJBVOxUOwHddI7cUglv3PpWtwTXJjnoM8DyaFTg4',products,numDecharge,dateDecharge,numDecharge).then(()=>{
+                            res.status(200).json({response:'gererated'})
+                        }).catch(()=>{res.status(500).json({response:'internal error'})})
+                    }
+                    else
+                    {
+                        SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E').then((link)=>{
+                            res.status(200).json({response:link})
+                        }).catch(()=>{res.status(500).json({response:'internal error'})})
+                    }
                 }).catch(()=>{res.status(500).json({response:'internal error'})})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
         }).catch(()=>{res.status(500).json({response:'internal error'})})
@@ -64,14 +76,15 @@ function showAllDemandes(req,res)
     let statement;
     let etat=''
     switch (role) {
-        case 'magasinier':
-            statement="etat in ('visee par dir','pret','livree')"
+        case 'Magasinier':
+            statement="etat in ('visee par dg','pret','servie') or id_demandeur=?"
             break;
         case 'Directeur':
-            statement=`etat in ('visee par resp','visee par dg','pret','livree') or (etat="demande" and
+            statement=`etat in ('visee par resp','visee par dg','pret','servie') or (etat='demande' and
             id_demandeur in
         (select email from utilisateur where id_structure=
-         (select id_structure from structure where id_resp=?)))`
+         (select id_structure from structure where id_resp=?) or id_role=
+        (select id_role from role where designation='Magasinier')))`
             etat="en attente"
             break;
         case 'Responsable directe':
