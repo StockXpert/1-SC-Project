@@ -124,7 +124,7 @@ function validInvetaireStatus(numInventaire)
           connection.end(); // Fermer la connexion après l'exécution de la requête
         });})
 }    
-function getInvetaires()
+function getInventaires()
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
@@ -154,7 +154,7 @@ function getInventaire(numInventaire)
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
           
-        const query = `select c.quantite_phys,p.quantite 
+        const query = `select c.quantite_phys,p.quantite,p.designation 
         from compter c,produit p where p.id_produit=c.id_produit and c.num_inventaire=?`;
         const values=[numInventaire]
         connection.connect((err) => {
@@ -319,5 +319,143 @@ function deleteCompter(numInventaire) {
       
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });}) }
-module.exports={addInventaire,insertCompter,validInvetaireStatus,getInvetaires,getInventaire,getInventaireStatus
-,deleteInventaire,updateInventaire,deleteCompter}
+function inscriptionDate(produit,year)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select min(b.date_reception) from bon_de_reception b,livre l
+    where b.num_bon=l.num_bon and l.id_produit=? and year(b.date_reception)=?`;
+    const values=[produit,year];
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})
+}
+function avgProductValue(produit,year)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select avg(c.prix_unitaire) from bon_de_commande b,commande c
+    where b.num_commande=c.id_commande and  c.id_produit=? and year(b.date_commande)=?`;
+    const values=[produit,year];
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})
+}
+function getProductFournisseur(produit,year)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select f.raison_sociale,count(c.id_produit) as nombre  from bon_de_commande b,commande c,fournisseur f
+    where b.num_commande=c.id_commande and  c.id_produit=? and year(b.date_commande)=?
+    and f.id_fournisseur=b.id_fournisseur
+     Group by f.raison_sociale
+     order by nombre desc limit 1 `;
+    const values=[produit,year];
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results[0].raison_sociale);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})
+}
+function getInventaireYear(numInventaire)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select year(date_inventaire) as year ,date_inventaire from inventaire where num_inventaire=?`;
+    const values=[numInventaire];
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results[0].year);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})
+}
+function getInventaireProducts(numInventaire)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select id_produit as id_produit , p.designation from compter c,produit p
+     where c.num_inventaire=?  c.id_produit=p.id_produit`;
+    const values=[numInventaire];
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})
+}
+module.exports={addInventaire,insertCompter,validInvetaireStatus,getInventaires,getInventaire,getInventaireStatus
+,deleteInventaire,updateInventaire,deleteCompter,getProductFournisseur,avgProductValue,inscriptionDate,
+getInventaireYear,getInventaireProducts}

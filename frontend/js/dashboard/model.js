@@ -136,6 +136,10 @@ export const state = {
     results: [],
     selected: 0,
   },
+  inventaires: {
+    all: {},
+    selected: {},
+  },
 };
 export const getMyPerms = async function () {
   const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
@@ -837,4 +841,24 @@ export const magLivrerCmdInt = async function (appObject) {
     appObject
   );
   return responseArray;
+};
+export const loadAllInv = async function () {
+  try {
+    let responseArray = await helpers.getJSONReturnResResp(
+      `${API_URL}/Inventaire/showInventaires`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car vous semblez manquer des permissions suivantes: <br/>
+        show inventaires:
+        Voir l'historique de l'inventaire (tout les états précédents)
+        `
+      );
+      return false;
+    } else state.inventaires.all = responseArray[1].response;
+    return responseArray[1].response;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
 };
