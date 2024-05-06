@@ -1017,16 +1017,17 @@ const controlLoadBRec = async function () {
     target
   );
   bonReceptionView._clear();
+  // console.log(model.state.bdc.allCommandes[targetIndex]);
+  model.state.bdc.selected =
+    model.state.bdc.allCommandes[targetIndex].num_commande;
   bonReceptionView.renderSpinner('', true);
-  await model.loadBonRec(
-    model.state.bdc.allCommandes[targetIndex].num_commande
-  );
+  await model.loadBonRec(model.state.bdc.selected);
   bonReceptionView.unrenderSpinner(true);
   // bonReceptionView._clear();
   bonReceptionView.render(model.state.bdr.all);
-  addBonReception.f();
+  // addBonReception.f();
   addBonReception._clear();
-  await model.loadBonRecProducts(model.state.bdr.all[0].num_bon);
+  await model.loadBonRecProducts(model.state.bdc.selected);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
   addBonReception.handleUpdate(controlAddBRec);
@@ -1081,10 +1082,11 @@ const controlDeleteBonRec = async function () {
     );
     await model.deleteBonRec(el.num_bon, el.numCommande);
     bonReceptionView.unrenderSpinner(true);
-    // bonReceptionView.toggleWindow();
+    bonReceptionView.toggleWindow();
   });
   // back to main menu
-  await controlLoadBRec();
+  // controlLoadCmds();
+  window.location.reload();
 };
 /*
 const controlDeleteStructure = function () {

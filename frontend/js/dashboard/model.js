@@ -58,6 +58,7 @@ export const state = {
   bdc: {
     allCommandes: [],
     filtersState: [],
+    selected: '',
   },
   bdr: {
     all: [],
@@ -747,7 +748,8 @@ export const loadBonRec = async function (numCommande) {
     `${API_URL}/Entrees/showBonReception`,
     uploadData
   );
-  data.response[0].numCommande = numCommande;
+  console.log(data.response[0], numCommande);
+
   state.bdr.all = data.response;
   console.log(state.bdr.all);
 };
