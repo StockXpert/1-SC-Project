@@ -455,7 +455,7 @@ function getAllDemandes(etat,statement,email,role){
             values.push(email)
         }
         else{
-         query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${statement}
+         query = `select exterieur,num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${statement}
         ${(etat==='en attente'&&role==='Responsable directe')?`id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`;
@@ -678,7 +678,7 @@ function insertLink(numDemande,link,link2)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set link=?,excel_link where num_demande=?`;
+        const query = `update demande_fourniture set link=?,excel_link=? where num_demande=?`;
         const values = [link,link2,numDemande];
       
         connection.connect((err) => {
@@ -810,12 +810,12 @@ function getDemande(numDemande,role,quantiteType)
         });
       });
 }
-function insertDechargeLink(numDemande,dechargeLink)
+function insertDechargeLink(numDemande,dechargeLink,link2)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
         const query = `update demande_fourniture set link_decharge=? where num_demande=?`;
-        const values = [dechargeLink,numDemande];
+        const values = [dechargeLink,link2,numDemande];
       
         connection.connect((err) => {
           if (err) {
