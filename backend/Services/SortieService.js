@@ -36,8 +36,8 @@ function genererBonSortie(numDemande,dateSortie,produits,id)
         }
         await googleMiddleware.generatePDF(id,`sortie`,`sortie${numDemande}`);
         await googleMiddleware.deleteRows(5,i-1,id);
-        const link=`sortie/sortie${numDemande}.pdf`
-        SortieModel.insertLink(numDemande,link).then(()=>{
+        const link=`sortie/sortie${numDemande}.`
+        SortieModel.insertLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
             resolve(link)
         }).catch(()=>{reject("err")})
     })

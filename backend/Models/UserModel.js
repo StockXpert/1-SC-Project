@@ -888,13 +888,38 @@ function canDeleteRolePermission(role,permission)
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });})  
 }
+function updateToken(token,email)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query ='update utilisateur set token=? where email=? ';
+    const values=[token,email]
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });}) 
+}
 module.exports={insertUser,verifyUser,getPassword,getUsers,getUser,changePassword,
                 updateInformations,deletePerson,getStructurId,addStructure
                 ,getStructures,
                  getRole,updateStatus,canDeletePerson,
                  getRolePermissons,getRoles,getPermissions,
                  insertRole,insertRoleDroit,deleteRoleDroit,deleteRole,canDeleteRole,updateStructure,canDeleteStructure,
-                rattacher,deleteStructure,getRolePermissons,HaveConsumers,isResponsable,isUsedRole};
+                rattacher,deleteStructure,getRolePermissons,HaveConsumers,isResponsable,isUsedRole,updateToken};
 
 
 

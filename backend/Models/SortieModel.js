@@ -810,12 +810,12 @@ function getDemande(numDemande,role,quantiteType)
         });
       });
 }
-function insertDechargeLink(numDemande,dechargeLink)
+function insertDechargeLink(numDemande,dechargeLink,link2)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
         const query = `update demande_fourniture set link_decharge=? where num_demande=?`;
-        const values = [dechargeLink,numDemande];
+        const values = [dechargeLink,link2,numDemande];
       
         connection.connect((err) => {
           if (err) {
