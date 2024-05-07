@@ -1,13 +1,17 @@
 const { reject } = require('async');
 const InventaireModel=require('../Models/InventaireModel');
+const googleMiddleware=require('../Middlewares/googleMiddleware')
 function addRegistre(numInventaire)
 {
   return new Promise((resolve,reject)=>{
     InventaireModel.getInventaireYear(numInventaire).then((results)=>{
         const {date_inventaire,year}=results;
+        console.log({year})
         InventaireModel.getInventaireProducts(numInventaire).then((produits)=>{
-            constructProductsTable(produits,year,date_inventaire).then(()=>{
-               genererRegistre(produits,numInventaire,'1asTIrZrT9BYmoUXjRaNxh_ej_1YgwCp5mWJAJWdmXDs').then(()=>{
+            console.log(produits)
+            constructProductsTable(produits,year,date_inventaire).then((products)=>{
+                console.log(products)
+               genererRegistre(products,numInventaire,'1asTIrZrT9BYmoUXjRaNxh_ej_1YgwCp5mWJAJWdmXDs').then(()=>{
                 resolve('');
                }).catch(()=>{reject('')})
             }).catch(()=>{reject('')})
@@ -27,11 +31,14 @@ function constructProductsTable(produits,year,date)
                             produit.value=avg;
                             produit.dateI=dateI;
                             produit.fournisseur=fournisseur;
+                            console.log({produit:produit.value})
+                            console.log({produit:produit.dateI})
+                            console.log({produit:produit.fournisseur})
                         }).catch(()=>{reject('')})
                     }).catch(()=>{reject('')})
                 }).catch(()=>{reject('')})
             }
-            resolve('')
+            resolve(produits)
     })
 }
 function genererRegistre(produits,numInventaire,Id)
@@ -45,8 +52,8 @@ function genererRegistre(produits,numInventaire,Id)
         }
         await googleMiddleware.generatePDF(Id,`registre`,`registre${numInventaire}`);
         await googleMiddleware.deleteRows(2,i-1,Id);
-        const link=`registre/registre${numDemande}.`
-        InventaireModel.insertLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
+        const link=`registre/registre${numInventaire}.`
+        InventaireModel.insertLink(numInventaire,link+'pdf',link+'xlsx').then(()=>{
             resolve(link)
         }).catch(()=>{reject("err")})
     })
