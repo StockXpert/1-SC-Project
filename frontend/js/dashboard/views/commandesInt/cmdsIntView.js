@@ -223,6 +223,18 @@ export class CmdsIntView extends CmdsView {
       );
     });
   }
+  addHandlerCmdsIntSearch(handler, filterHandler) {
+    this._searchBox.addEventListener('input', e => {
+      // const event = new Event('change');
+      // this._filters.dispatchEvent(event);
+      handler(this._searchBox.value);
+      filterHandler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
+  }
   _restricted = [, 'none'];
 }
 export default new CmdsIntView();

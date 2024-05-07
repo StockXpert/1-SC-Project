@@ -1146,10 +1146,10 @@ const controlSavingBDC = async function () {
 /////// B O N S  D E  C O M M A N D E S  I N T E R N E S #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
-const controlFilters = filterValuesArr => {
+const controlCmdsIntFilters = filterValuesArr => {
   console.log(filterValuesArr);
-  const beforeFilters = model.state.commandesInt.all; //TODO:
-  // console.log(beforeFilters);
+  // const beforeFilters = model.state.commandesInt.all; //TODO:
+  const beforeFilters = model.state.commandesInt.afterSearch; //TODO:
   let afterFilters = [];
   switch (filterValuesArr[0]) {
     case 'dcd':
@@ -1188,6 +1188,29 @@ const controlFilters = filterValuesArr => {
       break;
   }
   cmdsIntView.render(afterFilters);
+  model.state.commandesInt.afterFilters = afterFilters;
+};
+
+const controlCmdsIntSearch = searchInput => {
+  const beforeSearch = model.state.commandesInt.all; //TODO:
+  let afterSearch = [];
+  const fuze = model.fuseMakerCmdsInt(beforeSearch);
+  const results = fuze.search(searchInput);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  // console.log(extractItems(results));
+  afterSearch = extractItems(results);
+  if (afterSearch.length == 0) {
+    if (searchInput !== '') {
+      afterSearch = [{ num_demande: 'NOTHING FOUND ! ' }];
+      console.log('NOTHING FOUND ! ');
+    } else {
+      afterSearch = beforeSearch;
+    }
+  }
+  cmdsIntView.render(afterSearch);
+  model.state.commandesInt.afterSearch = afterSearch;
 };
 const controlLoadCmdsInt = async function () {
   if (
@@ -1202,7 +1225,11 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
-  cmdsIntView.addChangeFiltersHandler(controlFilters);
+  cmdsIntView.addChangeFiltersHandler(controlCmdsIntFilters);
+  cmdsIntView.addHandlerCmdsIntSearch(
+    controlCmdsIntSearch,
+    controlCmdsIntFilters
+  );
   // console.log(model.state);
   cmdsIntHeaderView.render(model.state.me.role);
   // cmdsIntHeaderView.render('Magasinier');

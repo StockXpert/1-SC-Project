@@ -8,6 +8,7 @@ import {
   ORDER_OF_GROUPS,
   FUSE_OPTIONS_FOURNISSEURS,
   FUSE_OPTIONS_ARTICLES,
+  FUSE_OPTIONS_CMDSINT,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -42,6 +43,8 @@ export const state = {
   },
   commandesInt: {
     all: [],
+    afterSearch: [],
+    afterFilters: [],
     selected: {
       ext: false,
       old: {
@@ -498,6 +501,7 @@ export const fuseMakerFournisseurs = data =>
   new Fuse(data, FUSE_OPTIONS_FOURNISSEURS);
 export const fuseMakerArticles = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
 export const fuseMakerProducts = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
+export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
 
 export const loadRoles = async function () {
   try {
@@ -653,6 +657,8 @@ export const loadCmdsInt = async function () {
     (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
   );
   console.log(state.commandesInt.all);
+  state.commandesInt.afterFilters = state.commandesInt.all;
+  state.commandesInt.afterSearch = state.commandesInt.all;
   return commandesInt;
 };
 export const loadCommandeproducts = async function (numCommande) {
