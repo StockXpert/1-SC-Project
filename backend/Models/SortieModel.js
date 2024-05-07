@@ -419,9 +419,10 @@ function getNewDemandes(role,etat,email,notif)
         const connection = mysql.createConnection(connectionConfig);
         const query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${notif}=true and etat=? 
         ${role==="Consommateur"?"and id_demande=?":''}
-        ${(etat==='demande'||role==="Directeur")?`and id_demandeur in
+        ${(etat==='demande'||role==="Directeur")?` and id_demandeur in
         (select email from utilisateur where id_structure=
-         (select id_structure from structure where id_resp=?))`:''}`
+         (select id_structure from structure where id_resp=?) or id_role=
+        (select id_role from role where designation='Magasinier'))`:''}`
         const values = [etat];
         if(etat==='demande') values.push(email)
         connection.connect((err) => {
