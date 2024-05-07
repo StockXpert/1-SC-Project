@@ -51,7 +51,13 @@ class BonReceptionView extends View {
 
   _generateMarkup() {
     console.log(this._data);
-    if (this._data.length === 0) return `<div><p>No data yet</p></div>`;
+    if (this._data.length === 0)
+      return `<tr><td colspan=${
+        document
+          .querySelector('.table-container-bdc')
+          .querySelector('thead')
+          .querySelectorAll('th').length
+      }><b>Aucun Bon de Réception est trouvée</b></td></tr>`;
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');
