@@ -1193,6 +1193,8 @@ const controlCmdsIntFilters = filterValuesArr => {
   seeCmdsIntView.addSeeController(controlViewCmdInt);
   cmdsIntView.resetPointers();
   validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   model.state.commandesInt.afterFilters = afterFilters;
 };
 
@@ -1220,6 +1222,8 @@ const controlCmdsIntSearch = searchInput => {
   seeCmdsIntView.addSeeController(controlViewCmdInt);
   cmdsIntView.resetPointers();
   validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   model.state.commandesInt.afterSearch = afterSearch;
 };
 const controlLoadCmdsInt = async function () {
@@ -1235,6 +1239,7 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
+  cmdsIntView.resetSearchInputs();
   cmdsIntView.addChangeFiltersHandler(controlCmdsIntFilters);
   cmdsIntView.addHandlerCmdsIntSearch(
     controlCmdsIntSearch,
@@ -1598,11 +1603,11 @@ const controlModifyCmdsInt = async function () {
     checkbox => checkbox.checked
   );
   // #ffa TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
-  const numDemande = model.state.commandesInt.all[targetIndex].num_demande;
+  const numDemande = model.state.commandesInt.rendered[targetIndex].num_demande;
 
   editCmdsIntView.renderSpinner('', true);
   let selectedCmdIntProducts = await model.loadCommandeIntProducts(
-    model.state.commandesInt.all[targetIndex].num_demande
+    model.state.commandesInt.rendered[targetIndex].num_demande
   );
   editCmdsIntView.unrenderSpinner(true);
   selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
@@ -1684,19 +1689,13 @@ const controlValidatingCmdsInt = async e => {
   console.log(
     helpers.findNodeIndex(validateCmdsIntView._btnOpen, e.currentTarget)
   );
-  console.log(model.state.commandesInt.all);
-  console.log(
-    model.state.commandesInt.all[
-      helpers.findNodeIndex(validateCmdsIntView._btnOpen, e.currentTarget)
-    ]
-  );
   const targetIndex = helpers.findNodeIndex(
     validateCmdsIntView._btnOpen,
     e.currentTarget
   );
   validateCmdsIntView.renderSpinner('');
   let selectedCmdIntProducts = await model.loadCommandeIntProducts(
-    model.state.commandesInt.all[targetIndex].num_demande
+    model.state.commandesInt.rendered[targetIndex].num_demande
   );
   validateCmdsIntView.unrenderSpinner('');
   selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
@@ -1706,7 +1705,7 @@ const controlValidatingCmdsInt = async e => {
   );
   validateCmdsIntView.changeDetails(
     selectedCmdIntProducts,
-    model.state.commandesInt.all[targetIndex].num_demande
+    model.state.commandesInt.rendered[targetIndex].num_demande
   );
 
   // {
@@ -1760,14 +1759,14 @@ const controlDeliverCmdsInt = async view => {
   // console.log(helpers.getFormattedDate());
   cmdsIntView.renderSpinner(
     `Validation finale de la commande N°${
-      model.state.commandesInt.all[
+      model.state.commandesInt.rendered[
         Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
       ].num_demande
     } ...`
   );
   let postObj = {
     numDemande:
-      model.state.commandesInt.all[
+      model.state.commandesInt.rendered[
         Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
       ].num_demande,
     dateSortie: helpers.getFormattedDate(),

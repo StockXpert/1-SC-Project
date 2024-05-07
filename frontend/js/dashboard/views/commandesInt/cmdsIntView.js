@@ -246,6 +246,12 @@ export class CmdsIntView extends CmdsView {
       );
     });
   }
+  resetSearchInputs() {
+    this._searchBox.value = '';
+    this._filters
+      .querySelectorAll('select')
+      .forEach(filter => (filter.selectedIndex = 0));
+  }
   _restricted = [, 'none'];
 }
 export default new CmdsIntView();

@@ -2510,7 +2510,7 @@ a.password-icon:active {
   padding: 0.2rem;
 }
 .btn-add-bdci-product,
-.add-product {
+.btn-add-product-bdci {
   display: flex;
   align-items: center;
   background-color: #477ce2;
@@ -2555,6 +2555,7 @@ a.password-icon:active {
   cursor: pointer;
 }
 .btn-add-bdci-product button,
+.btn-add-product-bdci button,
 .add-product button {
   width: 8rem;
   height: 2.3rem;
@@ -2572,6 +2573,7 @@ a.password-icon:active {
   cursor: pointer;
 }
 .btn-add-bdci-product span,
+.btn-add-product-bdci span,
 .add-product span {
   font-size: 1.2rem;
   padding: 0.2rem;
