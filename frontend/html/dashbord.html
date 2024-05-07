@@ -1586,7 +1586,7 @@
                   />
                 </form>
               </div>
-              <div class="container-filter-bdci">
+              <form class="container-filter-bdci">
                 <div class="dropbtn-text-bdci">
                   <select
                     name="date-bdci"
@@ -1595,7 +1595,7 @@
                     placeholder="Date"
                     required
                   >
-                    <option value="all" disabled="" selected="">Date:</option>
+                    <option value="dcd" disabled="" selected="">Date:</option>
                     <option value="acd">Acendant</option>
                     <option value="dcd">Decendant</option>
                   </select>
@@ -1610,13 +1610,16 @@
                   >
                     <option value="all" disabled="" selected="">Statut:</option>
                     <option value="all">Toutes</option>
-                    <option value="en-attente">En attente</option>
-                    <option value="v-responsable">Visée Responsable</option>
-                    <option value="v-directeur">Visée Directeur</option>
-                    <option value="Livrée">Livrée</option>
+                    <option value="demande">demandée</option>
+                    <option value="visee par resp">
+                      Visée par un Responsable
+                    </option>
+                    <option value="visee par dg">Visée Directeur</option>
+                    <option value="pret">Prête</option>
+                    <option value="servie">Servie</option>
                   </select>
                 </div>
-              </div>
+              </form>
             </div>
             <div class="add-bdci">
               <button class="add-bdci-btn">Créer un bon</button>

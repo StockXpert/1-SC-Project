@@ -1146,6 +1146,49 @@ const controlSavingBDC = async function () {
 /////// B O N S  D E  C O M M A N D E S  I N T E R N E S #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
+const controlFilters = filterValuesArr => {
+  console.log(filterValuesArr);
+  const beforeFilters = model.state.commandesInt.all; //TODO:
+  // console.log(beforeFilters);
+  let afterFilters = [];
+  switch (filterValuesArr[0]) {
+    case 'dcd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(b.date_demande) - new Date(a.date_demande)
+      );
+      break;
+    case 'acd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
+      );
+      break;
+  }
+  switch (filterValuesArr[1]) {
+    case 'all':
+      afterFilters = beforeFilters;
+      break;
+    case 'demande':
+      afterFilters = beforeFilters.filter(entry => entry.etat == 'demande');
+      break;
+    case 'visee par resp':
+      afterFilters = beforeFilters.filter(
+        entry => entry.etat == 'visee par resp'
+      );
+      break;
+    case 'visee par dg':
+      afterFilters = beforeFilters.filter(
+        entry => entry.etat == 'visee par dg'
+      );
+      break;
+    case 'pret':
+      afterFilters = beforeFilters.filter(entry => entry.etat == 'pret');
+      break;
+    case 'servie':
+      afterFilters = beforeFilters.filter(entry => entry.etat == 'servie');
+      break;
+  }
+  cmdsIntView.render(afterFilters);
+};
 const controlLoadCmdsInt = async function () {
   if (
     !model.state.me.permissions.all.find(
@@ -1159,22 +1202,23 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
+  cmdsIntView.addChangeFiltersHandler(controlFilters);
   // console.log(model.state);
   cmdsIntHeaderView.render(model.state.me.role);
   // cmdsIntHeaderView.render('Magasinier');
   // cmdsIntHeaderView.render('Directeur');
   // cmdsIntHeaderView.render('Responsable directe');
-  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
-  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
-  // addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
-  // editCmdsIntView.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
+  addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
+  editCmdsIntView.allowSavingBDC(false, '.btn-save-edit-bdci-qt');
   model.state.bdci_products.added = [];
   addCmdsIntView.render(model.state.bdci_products.added);
   cmdsIntView.renderSpinner('Chagement des produits ...');
   await controlUpdateAllProducts();
   cmdsIntView.unrenderSpinner();
   cmdsIntView.renderSpinner('Chagement des commandes internes ...');
-  // TODO:
+
   // TODO: cancelCmdsView.restrict(model.state.me.permissions.all);
   // TODO: addCmdsView.restrict(model.state.me.permissions.all);
   // TODO: deleteCmdsView.restrict(model.state.me.permissions.all);
@@ -1209,7 +1253,6 @@ const controlLoadCmdsInt = async function () {
     model.state.me.permissions.all
   );
   seeCmdsIntView.resetPointers();
-  // TODO:
   seeCmdsIntView.addSeeController(controlViewCmdInt);
   cmdsIntView.resetPointers();
   validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
@@ -1223,7 +1266,6 @@ const controlLoadCmdsInt = async function () {
 
 const controlAddProductInt = newProduct => {
   // ON SUBMIT:
-  //TODO:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
   let oldProducts;
   oldProducts = model.state.bdci_products.added;

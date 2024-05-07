@@ -14,6 +14,7 @@ export class CmdsIntView extends CmdsView {
   _btnModifyBdc = document.querySelector('.btn-edit-bdci');
   _btnLivrerBdci = document.querySelector('.btn-deliver-bdci');
   _role;
+  _filters = document.querySelector('.container-filter-bdci');
 
   // date_demande
   // :
@@ -211,6 +212,16 @@ export class CmdsIntView extends CmdsView {
         }
       })
     );
+  }
+
+  addChangeFiltersHandler(handler) {
+    this._filters.addEventListener('change', e => {
+      handler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
   }
   _restricted = [, 'none'];
 }
