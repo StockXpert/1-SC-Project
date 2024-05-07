@@ -324,7 +324,7 @@ function inscriptionDate(produit,year)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select min(b.date_reception) from bon_de_reception b,livre l
+    const query = `select min(b.date_reception) as date from bon_de_reception b,livre l
     where b.num_bon=l.num_bon and l.id_produit=? and year(b.date_reception)=?`;
     const values=[produit,year];
     connection.connect((err) => {
@@ -340,7 +340,7 @@ function inscriptionDate(produit,year)
           reject("request error");
           return;
         }
-        resolve(results);
+        resolve(results[0].date);
       });
       
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -351,7 +351,7 @@ function avgProductValue(produit,year)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select avg(c.prix_unitaire) from bon_de_commande b,commande c
+    const query = `select avg(c.prix_unitaire) as avg from bon_de_commande b,commande c
     where b.num_commande=c.id_commande and  c.id_produit=? and year(b.date_commande)=?`;
     const values=[produit,year];
     connection.connect((err) => {
@@ -367,7 +367,7 @@ function avgProductValue(produit,year)
           reject("request error");
           return;
         }
-        resolve(results);
+        resolve(results[0].avg);
       });
       
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -382,7 +382,7 @@ function getProductFournisseur(produit,year)
     where b.num_commande=c.id_commande and  c.id_produit=? and year(b.date_commande)=?
     and f.id_fournisseur=b.id_fournisseur
      Group by f.raison_sociale
-     order by nombre desc limit 1 `;
+     order by nombre desc limit 1`;
     const values=[produit,year];
     connection.connect((err) => {
       if (err) {
@@ -397,6 +397,7 @@ function getProductFournisseur(produit,year)
           reject("request error");
           return;
         }
+        console.log({results:results})
         resolve(results[0].raison_sociale);
       });
       
@@ -423,7 +424,7 @@ function getInventaireYear(numInventaire)
           reject("request error");
           return;
         }
-        resolve(results[0].year);
+        resolve(results[0]);
       });
       
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -434,8 +435,8 @@ function getInventaireProducts(numInventaire)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select id_produit as id_produit , p.designation from compter c,produit p
-     where c.num_inventaire=?  c.id_produit=p.id_produit`;
+    const query = `select c.id_produit as id_produit , p.designation from compter c,produit p
+     where c.num_inventaire=? and c.id_produit=p.id_produit`;
     const values=[numInventaire];
     connection.connect((err) => {
       if (err) {
@@ -460,7 +461,7 @@ function insertLink(numInventaire,link,link2)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `update inventaire set link=?,excel_link=? where num_inventaire=?`;
+    const query = `update inventaire set link=?,link_excel=? where num_inventaire=?`;
     const values = [link,link2,numInventaire];
   
     connection.connect((err) => {
