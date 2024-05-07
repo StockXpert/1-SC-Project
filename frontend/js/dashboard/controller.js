@@ -1146,10 +1146,9 @@ const controlSavingBDC = async function () {
 /////// B O N S  D E  C O M M A N D E S  I N T E R N E S #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
+
 const controlCmdsIntFilters = filterValuesArr => {
-  console.log(filterValuesArr);
-  // const beforeFilters = model.state.commandesInt.all; //TODO:
-  const beforeFilters = model.state.commandesInt.afterSearch; //TODO:
+  const beforeFilters = model.state.commandesInt.afterSearch;
   let afterFilters = [];
   switch (filterValuesArr[0]) {
     case 'dcd':
@@ -1199,19 +1198,17 @@ const controlCmdsIntFilters = filterValuesArr => {
 };
 
 const controlCmdsIntSearch = searchInput => {
-  const beforeSearch = model.state.commandesInt.all; //TODO:
+  const beforeSearch = model.state.commandesInt.all;
   let afterSearch = [];
   const fuze = model.fuseMakerCmdsInt(beforeSearch);
   const results = fuze.search(searchInput);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
-  // console.log(extractItems(results));
   afterSearch = extractItems(results);
   if (afterSearch.length == 0) {
     if (searchInput !== '') {
       afterSearch = [];
-      console.log('NOTHING FOUND ! ');
     } else {
       afterSearch = beforeSearch;
     }
@@ -1395,21 +1392,14 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   let productsArray;
   switch (view.constructor.name) {
     case 'EditCmdsIntView':
-      console.log('hello');
       productsArray = model.state.commandesInt.selected.products;
       break;
     case 'AddCmdsIntView':
-      console.log('hi');
       productsArray = model.state.bdci_products.added;
       break;
   }
-  console.log(view.constructor.name);
   const target = e.currentTarget;
   const targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
-  console.log(target);
-  console.log(view);
-  console.log(targetIndex);
-  console.log(productsArray);
   //Use it to extract the input data from the state object
   view.changeInputs(productsArray[targetIndex]);
   model.state.bdci_products.changed = targetIndex;
@@ -1546,7 +1536,6 @@ const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
 
 const controlCommandeExterne = newState => {
   model.state.commandesInt.selected.ext = newState;
-  console.log(newState);
 };
 
 const controlSavingBDCI = async function () {
@@ -1686,9 +1675,6 @@ const controlSavingBDCIEdit = async function () {
 };
 const controlValidatingCmdsInt = async e => {
   //ONCLICK OF A VALIDATE BUTTON
-  console.log(
-    helpers.findNodeIndex(validateCmdsIntView._btnOpen, e.currentTarget)
-  );
   const targetIndex = helpers.findNodeIndex(
     validateCmdsIntView._btnOpen,
     e.currentTarget
@@ -1699,7 +1685,6 @@ const controlValidatingCmdsInt = async e => {
   );
   validateCmdsIntView.unrenderSpinner('');
   selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
-  console.log(helpers.fillMissingProperties(selectedCmdIntProducts));
   selectedCmdIntProducts = helpers.fillMissingProperties(
     selectedCmdIntProducts
   );
@@ -1721,8 +1706,6 @@ const controlValidatingCmdsInt = async e => {
 const controlValidateCmdsInt = async () => {
   let appObject = validateCmdsIntView.extractObject();
   let returnValue;
-  console.log(appObject);
-  console.log(validateCmdsIntView._role);
   switch (validateCmdsIntView._role) {
     case 'Responsable directe':
       validateCmdsIntView._btnClose.click();
@@ -1730,14 +1713,12 @@ const controlValidateCmdsInt = async () => {
       returnValue = await model.resAppCmdInt(appObject);
       cmdsIntView.unrenderSpinner('');
       await controlLoadCmdsInt();
-      console.log(returnValue);
       break;
     case 'Directeur':
       validateCmdsIntView._btnClose.click();
       cmdsIntView.renderSpinner('Approving...');
       returnValue = await model.dirAppCmdInt(appObject);
       await controlLoadCmdsInt();
-      console.log(returnValue);
       break;
     case 'Magasinier':
       validateCmdsIntView._btnClose.click();
@@ -1745,7 +1726,6 @@ const controlValidateCmdsInt = async () => {
       returnValue = await model.magAppCmdInt(appObject);
       cmdsIntView.unrenderSpinner('');
       await controlLoadCmdsInt();
-      console.log(returnValue);
       break;
   }
 };
@@ -1771,7 +1751,6 @@ const controlDeliverCmdsInt = async view => {
       ].num_demande,
     dateSortie: helpers.getFormattedDate(),
   };
-  console.log(postObj);
   await model.magLivrerCmdInt(postObj);
   cmdsIntView.unrenderSpinner('');
   await controlLoadCmdsInt();
@@ -1782,14 +1761,12 @@ const controlDeliverCmdsInt = async view => {
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 const controlLoadInv = async () => {
-  console.log(model.state.me.permissions.all);
   invView.renderSpinner();
   invHeaderView.render({}, true, model.state.me.permissions.all);
   if (!(await model.loadAllInv())) {
     sideView.btns[0].click();
     return;
   }
-  console.log(model.state.inventaires.all);
   // invView.render(
   //   model.state.inventaires.all,
   //   true,
