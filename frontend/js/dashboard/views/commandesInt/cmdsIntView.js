@@ -25,6 +25,17 @@ export class CmdsIntView extends CmdsView {
   // num_demande
   // :
   // 1
+
+  _generateMarkup() {
+    if (this._data.length == 0)
+      return `<tr><td colspan=${
+        document.querySelector('.load-bdci-container').querySelectorAll('th')
+          .length
+      }><b>Aucune Commande Interne n'a été trouvée</b></td></tr>`;
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
+  }
   _generateMarkupPreview(result, perms = []) {
     // console.log(this._role);
     const html = `<tr>

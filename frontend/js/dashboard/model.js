@@ -45,6 +45,7 @@ export const state = {
     all: [],
     afterSearch: [],
     afterFilters: [],
+    rendered: [],
     selected: {
       ext: false,
       old: {

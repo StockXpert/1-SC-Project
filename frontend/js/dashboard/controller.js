@@ -1188,6 +1188,11 @@ const controlCmdsIntFilters = filterValuesArr => {
       break;
   }
   cmdsIntView.render(afterFilters);
+  model.state.commandesInt.rendered = afterFilters;
+  seeCmdsIntView.resetPointers();
+  seeCmdsIntView.addSeeController(controlViewCmdInt);
+  cmdsIntView.resetPointers();
+  validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
   model.state.commandesInt.afterFilters = afterFilters;
 };
 
@@ -1203,13 +1208,18 @@ const controlCmdsIntSearch = searchInput => {
   afterSearch = extractItems(results);
   if (afterSearch.length == 0) {
     if (searchInput !== '') {
-      afterSearch = [{ num_demande: 'NOTHING FOUND ! ' }];
+      afterSearch = [];
       console.log('NOTHING FOUND ! ');
     } else {
       afterSearch = beforeSearch;
     }
   }
   cmdsIntView.render(afterSearch);
+  model.state.commandesInt.rendered = afterSearch;
+  seeCmdsIntView.resetPointers();
+  seeCmdsIntView.addSeeController(controlViewCmdInt);
+  cmdsIntView.resetPointers();
+  validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
   model.state.commandesInt.afterSearch = afterSearch;
 };
 const controlLoadCmdsInt = async function () {
@@ -1279,6 +1289,7 @@ const controlLoadCmdsInt = async function () {
     true,
     model.state.me.permissions.all
   );
+  model.state.commandesInt.rendered = model.state.commandesInt.all;
   seeCmdsIntView.resetPointers();
   seeCmdsIntView.addSeeController(controlViewCmdInt);
   cmdsIntView.resetPointers();
@@ -1555,7 +1566,7 @@ const controlViewCmdInt = async function (target) {
   seeCmdsIntView.renderSpinner('', true);
   // TODO:
   const products = await model.loadCommandeIntProducts(
-    model.state.commandesInt.all[targetIndex].num_demande
+    model.state.commandesInt.rendered[targetIndex].num_demande
   );
   seeCmdsIntView.unrenderSpinner(true);
   if (!products[0].ok) {
@@ -1567,7 +1578,7 @@ const controlViewCmdInt = async function (target) {
     // model.state.user = model.state.search.queryResults[targetIndex];
     //Use it to extract the input data from the state object
     seeCmdsIntView.changeDetails(
-      model.state.commandesInt.all[targetIndex],
+      model.state.commandesInt.rendered[targetIndex],
       products[1].demande
     );
   }
