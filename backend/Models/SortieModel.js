@@ -838,12 +838,12 @@ function insertDechargeLink(numDemande,dechargeLink,link2)
         });
       });
 }
-function insertDateNumDecharge(numDemande,numDecharge,dateDecharge)
+function insertDateDecharge(numDemande,dateDecharge)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set date_decharge=?,num_decharge=? where num_demande=?`;
-        const values = [dateDecharge,numDecharge,numDemande];
+        const query = `update demande_fourniture set date_decharge=?, where num_demande=?`;
+        const values = [dateDecharge,numDemande];
       
         connection.connect((err) => {
           if (err) {
@@ -944,4 +944,4 @@ module.exports={addFourniture,insertFournir,updateAccordedQuantite,changeDemande
                deleteFourniture,canDeleteFourniture,getNewDemandes,getAllDemandes,updateDemandedQuantite,
             getDemandeStatus,deleteProductsFournir,readNotif,insertLink,
             getDemandeProducts,insertDateSortie,readAllNotif,getDemande,isExterior,insertDechargeLink
-        ,insertDateNumDecharge,insertDecharge}
+        ,insertDateDecharge,insertDecharge}
