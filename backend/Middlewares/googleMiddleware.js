@@ -95,7 +95,9 @@ async function addRow(ligne, Content, idCopy, type) {
           Content.quantite,
         ];
         console.log(valuesToInsert);
-        (sc = 1), (ec = 5);
+        sc = 1;
+        ec = 5;
+        break;
       case 'sortie':
         valuesToInsert = [
           rowIndex - 4,
@@ -105,20 +107,30 @@ async function addRow(ligne, Content, idCopy, type) {
           '',
           '',
         ];
+        ec = 6;
+        break;
+      case 'decharge':
+        valuesToInsert = [
+          Content.designation,
+          Content.reference,
+          Content.observation,
+        ];
+        ec = 3;
+        break;
+      case 'registre':
+        valuesToInsert = [
+          Content.id_produit,
+          Content.dateI,
+          Content.date,
+          Content.designation,
+          Content.fournisseur,
+          Content.value,
+        ];
+        ec = 6;
         break;
       default:
         break;
     }
-    if (type === 'reception')
-      valuesToInsert = [
-        rowIndex - 10,
-        Content.designation,
-        '',
-        '',
-        '',
-        Content.quantite,
-      ];
-    console.log(valuesToInsert);
     const range = `A${rowIndex}:${String.fromCharCode(
       64 + valuesToInsert.length
     )}${rowIndex}`;
@@ -138,7 +150,7 @@ async function addRow(ligne, Content, idCopy, type) {
       'with values',
       valuesToInsert
     );
-    if (type != 'sortie') {
+    if (type != 'sortie' && type != 'decharge' && type != 'registre') {
       const res = await sheets.spreadsheets.batchUpdate({
         spreadsheetId: idCopy,
         requestBody: {
@@ -158,7 +170,7 @@ async function addRow(ligne, Content, idCopy, type) {
         },
       });
     } else {
-      for (sc = 0; sc < 6; sc++) {
+      for (sc = 0; sc < ec; sc++) {
         const res2 = await sheets.spreadsheets.batchUpdate({
           spreadsheetId: idCopy,
           requestBody: {
@@ -400,6 +412,37 @@ async function generatePDF(idCopy, folder, filename) {
     console.error('Error:', error);
   }
 }
+async function generateCSV(idCopy, folder, filename) {
+  try {
+    const auth = new google.auth.GoogleAuth({
+      keyFile: credentialsPath,
+      scopes: [
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file',
+      ],
+    });
+    console.log('auth');
+
+    // Créer une instance de l'API Google Sheets
+    let drive = await google.drive({ version: 'v3', auth });
+    // Exporter la copie en PDF
+    const pdfExportResponse = await drive.files.export(
+      {
+        fileId: idCopy,
+        mimeType:
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      },
+      { responseType: 'stream' }
+    );
+    let CSVpath = path.join('backend', folder, `${filename}.xlsx`);
+    const csvFile = fs.createWriteStream(CSVpath);
+    pdfExportResponse.data.pipe(csvFile);
+
+    console.log('CSV exported successfully.');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 async function deleteRows(ligneD, ligneF, id) {
   try {
     // Charger les informations d'identification OAuth 2.0 depuis le fichier
@@ -510,4 +553,5 @@ module.exports = {
   addRow,
   deleteRows,
   addBorder,
+  generateCSV,
 };

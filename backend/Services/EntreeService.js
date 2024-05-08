@@ -150,10 +150,15 @@ async function genererBondeCommande(
           `bonCommande`,
           `commande${num_commande}`
         );
+        await googleMiddleware.generateCSV(
+          Id,
+          `bonCommande`,
+          `commande${num_commande}`
+        );
         await googleMiddleware.updateCel(range, false, Id);
         await googleMiddleware.deleteRows(22, i - 1, Id);
-        const link = `BonCommande/commande${num_commande}.pdf`;
-        EntreeModel.insertLink(link, num_commande)
+        const link = `BonCommande/commande${num_commande}.`;
+        EntreeModel.insertLink(link + 'pdf', link + 'xlsx', num_commande)
           .then(() => {
             resolve(link);
           })
@@ -363,7 +368,9 @@ async function genererBonReception(
       Id
     );
     let i = 11;
+    console.log(produits);
     for (const produit of produits) {
+      console.log(produit);
       await googleMiddleware.addRow(i, produit, Id, 'reception');
       await googleMiddleware.addBorder(i, Id, 0, 1);
       await googleMiddleware.addBorder(i, Id, 1, 5);
@@ -375,9 +382,14 @@ async function genererBonReception(
       `BonReception`,
       `reception${numReception}`
     );
+    await googleMiddleware.generateCSV(
+      Id,
+      `BonReception`,
+      `reception${numReception}`
+    );
     await googleMiddleware.deleteRows(11, i - 1, Id);
-    const link = `BonReception/reception${numReception}.pdf`;
-    EntreeModel.insertReceptionLink(link, numReception)
+    const link = `BonReception/reception${numReception}.`;
+    EntreeModel.insertReceptionLink(link + 'pdf', link + 'xlsx', numReception)
       .then(() => {
         resolve(link);
       })

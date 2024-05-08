@@ -1,11 +1,11 @@
-import { UsersView } from '../usersView.js';
 import * as helpers from '../../helpers.js';
+import View from '../view.js';
 
-class BonReceptionView extends UsersView {
+class BonReceptionView extends View {
   _btnOpen = document.querySelectorAll('.view-btr-btn');
   _window = document.querySelector('.big-container-bdr');
   _overlay = document.querySelector('.overlayBDR');
-  _btnClose = document.getElementById('bdr-close');
+  _btnClose = document.querySelector('#bdr-close');
   _parentElement = document.querySelector('.results-bdrs');
   _trueParentElement = document.querySelector('.show-bdr-cart');
 
@@ -32,24 +32,32 @@ class BonReceptionView extends UsersView {
     btnsOpen.forEach(btn => btn.addEventListener('click', controller));
   }
   _addHandlerHideWindow() {
-    document.getElementById('bdr-close').addEventListener('click', e => {
+    const btnClose = this._btnClose;
+    const overlay = this._overlay;
+    btnClose.addEventListener('click', e => {
       e.preventDefault();
       this.toggleWindow();
     });
-    this._overlay.addEventListener('click', e => {
+    overlay.addEventListener('click', e => {
       e.preventDefault();
       this.toggleWindow();
     });
   }
 
-  f() {
+  addHandlerToggleWindow() {
     this._addHandlerShowWindow();
     this._addHandlerHideWindow();
   }
 
   _generateMarkup() {
     console.log(this._data);
-    if (this._data.length === 0) return `<div><p>No data yet</p></div>`;
+    if (this._data.length === 0)
+      return `<tr><td colspan=${
+        document
+          .querySelector('.table-container-bdc')
+          .querySelector('thead')
+          .querySelectorAll('th').length
+      }><b>Aucun Bon de Réception est trouvée</b></td></tr>`;
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');

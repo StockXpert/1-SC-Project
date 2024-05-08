@@ -909,6 +909,31 @@ function canDeleteRolePermission(role, permission) {
     });
   });
 }
+function updateToken(token, email) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+
+    const query = 'update utilisateur set token=? where email=? ';
+    const values = [token, email];
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        resolve(results);
+      });
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 module.exports = {
   insertUser,
   verifyUser,
@@ -940,4 +965,5 @@ module.exports = {
   HaveConsumers,
   isResponsable,
   isUsedRole,
+  updateToken,
 };

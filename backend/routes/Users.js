@@ -505,4 +505,5 @@ router.put('/addPermissions',authMiddleware('add permissions'),UserController.ad
 router.delete('/deletePermissions',authMiddleware('delete permissions'),UserController.deletePermissions)
 router.put('/updateStructure',authMiddleware('update structure'),UserController.updateStructure)
 router.delete('/deleteStructure',authMiddleware('delete structure'),UserController.deleteStructure)
+router.post('/saveToken',authMiddleware('save token'),UserController.saveToken)
 module.exports=router;

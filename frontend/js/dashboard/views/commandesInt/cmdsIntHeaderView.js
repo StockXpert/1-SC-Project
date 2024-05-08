@@ -1,5 +1,5 @@
 import { CmdsIntView } from './cmdsIntView.js';
-class CmdsIntHeaderView extends CmdsIntView {
+export class CmdsIntHeaderView extends CmdsIntView {
   constructor() {
     super();
   }

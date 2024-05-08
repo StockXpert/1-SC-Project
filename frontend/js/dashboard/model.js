@@ -8,6 +8,7 @@ import {
   ORDER_OF_GROUPS,
   FUSE_OPTIONS_FOURNISSEURS,
   FUSE_OPTIONS_ARTICLES,
+  FUSE_OPTIONS_CMDSINT,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -42,7 +43,11 @@ export const state = {
   },
   commandesInt: {
     all: [],
+    afterSearch: [],
+    afterFilters: [],
+    rendered: [],
     selected: {
+      ext: false,
       old: {
         numDemande: '',
         products: '',
@@ -57,6 +62,7 @@ export const state = {
   bdc: {
     allCommandes: [],
     filtersState: [],
+    selected: '',
   },
   bdr: {
     all: [],
@@ -133,6 +139,10 @@ export const state = {
   structures: {
     results: [],
     selected: 0,
+  },
+  inventaires: {
+    all: {},
+    selected: {},
   },
 };
 export const getMyPerms = async function () {
@@ -492,6 +502,7 @@ export const fuseMakerFournisseurs = data =>
   new Fuse(data, FUSE_OPTIONS_FOURNISSEURS);
 export const fuseMakerArticles = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
 export const fuseMakerProducts = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
+export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
 
 export const loadRoles = async function () {
   try {
@@ -642,8 +653,13 @@ export const loadCmdsInt = async function () {
   let commandesInt = await helpers.getJSON(
     `${API_URL}/Sorties/showAllDemandes`
   );
-  console.log(state.commandesInt);
-  state.commandesInt.all = commandesInt.response;
+  // console.log(state.commandesInt);
+  state.commandesInt.all = commandesInt.response.sort(
+    (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
+  );
+  console.log(state.commandesInt.all);
+  state.commandesInt.afterFilters = state.commandesInt.all;
+  state.commandesInt.afterSearch = state.commandesInt.all;
   return commandesInt;
 };
 export const loadCommandeproducts = async function (numCommande) {
@@ -694,9 +710,10 @@ export const createBDCI = async function () {
   const postBDCIOBJ = {
     produits: state.bdci_products.added,
     dateDemande: helpers.getFormattedDate(),
+    exterieur: state.commandesInt.selected.ext,
   };
   console.log(postBDCIOBJ);
-  await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
+  // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
 export const saveBDCI = async function () {
   let postBDCIOBJ = {
@@ -745,17 +762,18 @@ export const loadBonRec = async function (numCommande) {
     `${API_URL}/Entrees/showBonReception`,
     uploadData
   );
-  data.response[0].numCommande = numCommande;
+  console.log(data.response[0], numCommande);
+
   state.bdr.all = data.response;
   console.log(state.bdr.all);
 };
 
-export const loadBonRecProducts = async function (numReception) {
+export const loadBonCmdProducts = async function (numCommande) {
   const uploadData = {
-    numReception: numReception,
+    numCommande: numCommande,
   };
   const data = await helpers.sendJSON(
-    `${API_URL}/Entrees/showBonReceptionProducts`,
+    `${API_URL}/Entrees/showCommandeProducts`,
     uploadData
   );
 
@@ -833,4 +851,24 @@ export const magLivrerCmdInt = async function (appObject) {
     appObject
   );
   return responseArray;
+};
+export const loadAllInv = async function () {
+  try {
+    let responseArray = await helpers.getJSONReturnResResp(
+      `${API_URL}/Inventaire/showInventaires`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car vous semblez manquer des permissions suivantes: <br/>
+        show inventaires:
+        Voir l'historique de l'inventaire (tout les états précédents)
+        `
+      );
+      return false;
+    } else state.inventaires.all = responseArray[1].response;
+    return responseArray[1].response;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
 };

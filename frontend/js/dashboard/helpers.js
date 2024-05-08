@@ -78,6 +78,7 @@ export const formatDate = inputDate => {
 
 export const getJSON = async function (url) {
   try {
+    // console.log(localStorage.getItem('JWT'));
     const res = await Promise.race([
       fetch(url, {
         method: 'GET',
@@ -99,7 +100,7 @@ export const getJSON = async function (url) {
     const data = await res.json();
     // console.log(data);
     // console.log(res);
-    if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
     return data;
   } catch (err) {
     throw err;
@@ -249,6 +250,32 @@ export const postJSONReturnResResp = async function (url, uploadData) {
   // return data;
   // } catch (err) {
   // throw err;
+  // }
+};
+
+export const getJSONReturnResResp = async function (url) {
+  // try {
+  const res = await Promise.race([
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+    }),
+    timeout(TIMEOUT_SEC),
+  ]);
+  const data = await res.json();
+  console.log(res);
+  console.log(data);
+  if (!res.ok && res.status !== 403) {
+    // return res;
+    throw new Error(`${res.statusText} (${res.status}) : ${data.error}
+  `);
+  }
+  return [res, data];
+  // } catch (err) {
+  //   throw err;
   // }
 };
 
@@ -617,3 +644,12 @@ export function fillMissingProperties(array) {
       item.quantite === null || item.quantite === undefined ? 0 : item.quantite,
   }));
 }
+export const getVisibleHeight = function (element) {
+  const elementRect = element.getBoundingClientRect();
+  const parentRect = element.parentElement.getBoundingClientRect();
+
+  const visibleTop = Math.max(elementRect.top, parentRect.top);
+  const visibleBottom = Math.min(elementRect.bottom, parentRect.bottom);
+
+  return visibleBottom - visibleTop;
+};

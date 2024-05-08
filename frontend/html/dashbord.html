@@ -1709,11 +1709,11 @@
                   <input
                     type="text"
                     class="searchbar-text-bdci"
-                    placeholder="Chercher une commande interne..."
+                    placeholder="Chercher par N° Commande Interne ..."
                   />
                 </form>
               </div>
-              <div class="container-filter-bdci">
+              <form class="container-filter-bdci">
                 <div class="dropbtn-text-bdci">
                   <select
                     name="date-bdci"
@@ -1722,7 +1722,7 @@
                     placeholder="Date"
                     required
                   >
-                    <option value="all" disabled="" selected="">Date:</option>
+                    <option value="dcd" disabled="" selected="">Date:</option>
                     <option value="acd">Acendant</option>
                     <option value="dcd">Decendant</option>
                   </select>
@@ -1737,13 +1737,16 @@
                   >
                     <option value="all" disabled="" selected="">Statut:</option>
                     <option value="all">Toutes</option>
-                    <option value="en-attente">En attente</option>
-                    <option value="v-responsable">Visée Responsable</option>
-                    <option value="v-directeur">Visée Directeur</option>
-                    <option value="Livrée">Livrée</option>
+                    <option value="demande">demandée</option>
+                    <option value="visee par resp">
+                      Visée par un Responsable
+                    </option>
+                    <option value="visee par dg">Visée Directeur</option>
+                    <option value="pret">Prête</option>
+                    <option value="servie">Servie</option>
                   </select>
                 </div>
-              </div>
+              </form>
             </div>
             <div class="add-bdci">
               <button class="add-bdci-btn">Créer un bon</button>
@@ -1988,6 +1991,643 @@
         </div>
         <!------ fin de content for consommateur : 5 - eleboration-bon-de-commande-interne----- -->
         <!------------------------------ II- END ServiceAchat FONCTIONS ------------------------------->
+        <!-------------------------- III- BEGIN Inventaire table ---------------------------------->
+        <div class="main-table hidden" id="main-table-inv">
+          <div class="heading">
+            <h1>Les états d'inventaire</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="inv-searchbar">
+            <div class="container-searchbar-inv">
+              <div class="main-search-inv">
+                <form class="searchbar-inv">
+                  <span class="material-icons-sharp"> search </span>
+                  <input
+                    type="text"
+                    class="searchbar-text-inv"
+                    placeholder="Chercher un état d'inventaire..."
+                  />
+                </form>
+              </div>
+              <div class="container-filter-inv">
+                <div class="dropbtn-text-inv">
+                  <select
+                    name="date-inv"
+                    class="filters-inv"
+                    id="filter-inv-date"
+                    placeholder="Date"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Date:</option>
+                    <option value="acd">Acendant</option>
+                    <option value="dcd">Decendant</option>
+                  </select>
+                </div>
+                <div class="dropbtn-text-inv">
+                  <select
+                    name="status"
+                    class="filters-inv"
+                    id="filter-inv-status"
+                    placeholder="Selectionnés un status"
+                    required
+                  >
+                    <option value="all" disabled="" selected="">Statut:</option>
+                    <option value="all">Toutes</option>
+                    <option value="en-attente">non valide</option>
+                    <option value="v-responsable">valide</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="add-inv">
+              <button class="add-inv-btn">Créer un état d'inventaire</button>
+            </div>
+          </div>
+
+          <!-- tableau principale -->
+
+          <!-- heading tbale -->
+          <div class="table-top-inv">
+            <div class="heading-table-inv">
+              <div class="container-heading-table-inv">
+                <div class="heading-table-text-inv"></div>
+                <div class="heading-table-btns-inv">
+                  <button
+                    class="heading-table-btn btn-delete-inv disabled-delete-button"
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    class="heading-table-btn btn-edit-inv disabled-button"
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    class="heading-table-btn btn-maj-inv disabled-save-button"
+                  >
+                    Mettre a jour
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <!--fin  heading tbale -->
+
+            <!------------debut du tableau ------------------------>
+            <div class="table-container-inv">
+              <table>
+                <thead class="load-inv-container"></thead>
+                <tbody class="results-inv">
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn">
+                        <input type="checkbox" id="checkbox-table" />
+                        <p class="colomn-tags-name">24299</p>
+                      </div>
+                    </td>
+                    <td>21/12/2023</td>
+                    <td>
+                      <p class="status-inv novalide-status">non valide</p>
+                    </td>
+
+                    <!-- btns pour info pour Magasinier -->
+                    <!-- <td class="td-view-inv">
+                      <button class="details-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td> -->
+                    <!-- btns verif+print pour Directeur -->
+                    <!-- <td class="td-verif-inv">
+                      <button class="verif-inv">
+                        <span class="material-icons-sharp verif-icon">
+                          check_circle
+                        </span>
+                      </button>
+                    </td> -->
+                    <td class="td-print-inv">
+                      <button class="details-btn print-inv-btn">
+                        <span class="material-icons-sharp info-icon">
+                          print
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+        <!------------------------- III- END Inventaire table ---------------------------------->
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
       <!--------------------------------- I- BEGIN ADMIN FONCTIONS --------------------------------------->
@@ -3436,7 +4076,7 @@
                       type="number"
                     />
                   </div>
-                  <div class="heading-table-file-add-1-bdr">
+                  <div class="heading-table-file-add-1-bdr hidden">
                     <p>Entez le numero de la facture :</p>
                     <input
                       class="input-num-bdr"
@@ -3456,7 +4096,7 @@
                       id="bonLivraisonInput"
                     />
                   </div>
-                  <div class="heading-table-file-add-2-bdr">
+                  <div class="heading-table-file-add-2-bdr hidden">
                     <p>Entez la Facture :</p>
                     <input
                       name="facture"
@@ -3484,8 +4124,8 @@
                     <th>Designation</th>
                     <th>Quantité</th>
                     <!-- <th>Prix Unitaire</th> -->
+                    <th>Reste a Livrer</th>
                     <th>Qt Recue</th>
-                    <!-- <th>Reste a Livrer</th> -->
                   </tr>
                 </thead>
                 <tbody class="results-bdr-produits">
@@ -3604,7 +4244,7 @@
         </div>
       </div>
       <!-- debut section pour add un nv bdci -->
-      <div class="big-container-bdci">
+      <div class="big-container-bdci hidden">
         <div class="edit-product-bdci-container hidden">
           <div class="edit-product-bdci-cart">
             <div class="heading-edit-product-bdci">
@@ -3691,7 +4331,7 @@
             </form>
           </div>
         </div>
-        <div class="add-bdc-container hidden">
+        <div class="add-bdc-container">
           <form class="add-bdc-cart">
             <div class="container-select-bdci">
               <p class="bdci-title">Ajouter Une Commande Interne</p>
@@ -3712,15 +4352,15 @@
                   >
                     Modifier
                   </button> -->
-                  <div class="btn-add-product btn-add-product-bdci">
-                    <div class="add-product">
+                  <div class="btn-add-product">
+                    <div class="add-product add-product-bdci">
                       <button>Ajouter Produit</button>
                       <span class="material-icons-sharp"> add </span>
                     </div>
                     <!-- add classe checked whene it is checked -->
                     <div class="check-bdd">
                       <input type="checkbox" id="checkbox-bdd" />
-                      <button>Commande externe</button>
+                      <span>Commande externe</span>
                     </div>
                   </div>
                   <div>
@@ -3896,9 +4536,7 @@
                   >
                     Modifier
                   </button> -->
-                  <div
-                    class="btn-add-product btn-add-product-bdci btn-add-product-edit-bdci"
-                  >
+                  <div class="btn-add-product-bdci btn-add-product-edit-bdci">
                     <button>Ajouter Produit</button>
                     <span class="material-icons-sharp"> add </span>
                   </div>
@@ -4061,6 +4699,137 @@
         </div>
       </div>
       <!-- fin section pour voir les bdci -->
+      <!-- debut section pour cree un état d'inventaire -->
+      <div class="big-container-inv hidden">
+        <div class="add-info-container">
+          <div class="add-info-cart">
+            <div class="heading-add-info">
+              <p>Raison</p>
+            </div>
+            <form class="inputs-info">
+              <div class="input-info">
+                <input
+                  name="justify"
+                  type="text"
+                  placeholder="Donnez la raison de la difference"
+                  id="justify"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+
+              <div class="btn-info">
+                <button class="cancel-btn-add-bdc cancel-btn-info">
+                  Annuler
+                </button>
+                <button class="add-btn-add-bdc add-btn-info">Confirmer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-inv-container">
+          <div class="inv-cart">
+            <p class="inv-title">Etat de l'inventaire</p>
+            <div class="table-container-inv">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Designation</p>
+                      </div>
+                    </th>
+                    <th>Quantité logique</th>
+                    <th>Quantité physique</th>
+                    <th>Justification</th>
+                  </tr>
+                </thead>
+                <tbody class="results-produits-inv">
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td>14</td>
+                    <td class="quantity-ph">
+                      <input class="red-qt" type="text" value="12" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="td-justify red-info">
+                      <button class="info-btn-inv">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- fin  d'une ligne nrml  -->
+                  <!--une ligne selected  -->
+                  <tr class="selected-row">
+                    <!--ajoute selected-row for selected lines-->
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td>14</td>
+                    <td class="quantity-ph">
+                      <input class="red-qt" type="text" value="13" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <td class="td-justify green-info">
+                      <button class="info-btn-inv">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!--fin d'une ligne selected  -->
+                  <tr>
+                    <td>
+                      <div class="colomn-product-des">
+                        <p class="colomn-des-name-product">Pc dell xps</p>
+                      </div>
+                    </td>
+                    <td>14</td>
+                    <td class="quantity-ph">
+                      <input class="green-qt" type="text" value="14" />
+                      <span class="material-icons-sharp">
+                        drive_file_rename_outline
+                      </span>
+                    </td>
+                    <!-- cas ou les quantitees sont egales -->
+                    <td class="td-justify hidden">
+                      <button class="info-btn-inv">
+                        <span class="material-icons-sharp info-icon">
+                          info
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="heading-table-btns-inv">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdr btn-cancel-inv"
+              >
+                Annuler
+              </button>
+              <button class="heading-table-btn-bdr add-users-btn btn-save-inv">
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin section pour cree un état d'inventaire -->
       <!-- debut section pour supp un bdr -->
       <div class="container-supp-bdr hidden">
         <form class="supp-bdr-cart">
@@ -4076,7 +4845,7 @@
         </form>
       </div>
       <!-- fin section pour supprimer bdr  -->
-      <!-- fin section pour bdd  -->
+      <!-- debut section pour bdd  -->
       <div class="big-container-bdd hidden">
         <div class="bdd-container">
           <div class="bdd-cart">
@@ -4203,3 +4972,21 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->
   </body>
 </html>
+
+<!--
+  <tr>
+    <th>
+      <div class="checkbox-colomn-bdci">
+        <p class="colomn-tags-inv">N° D'état d'inventaire</p>
+      </div>
+    </th>
+
+    <th>Date</th>
+    <th>Statut</th>
+    btns pour Magasinier
+    <th class="view-bdc">Détails</th>
+    btns pour directeur
+    <th class="verif-Magasinier">Valider</th>
+    <th class="print-bdci">Imprimer</th>
+  </tr>
+-->

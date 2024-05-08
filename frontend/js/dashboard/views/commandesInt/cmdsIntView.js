@@ -14,6 +14,7 @@ export class CmdsIntView extends CmdsView {
   _btnModifyBdc = document.querySelector('.btn-edit-bdci');
   _btnLivrerBdci = document.querySelector('.btn-deliver-bdci');
   _role;
+  _filters = document.querySelector('.container-filter-bdci');
 
   // date_demande
   // :
@@ -24,8 +25,19 @@ export class CmdsIntView extends CmdsView {
   // num_demande
   // :
   // 1
+
+  _generateMarkup() {
+    if (this._data.length == 0)
+      return `<tr><td colspan=${
+        document.querySelector('.load-bdci-container').querySelectorAll('th')
+          .length
+      }><b>Aucune Commande Interne n'a été trouvée</b></td></tr>`;
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
+  }
   _generateMarkupPreview(result, perms = []) {
-    console.log(this._role);
+    // console.log(this._role);
     const html = `<tr>
     <td>
       <div class="checkbox-colomn">
@@ -48,7 +60,7 @@ export class CmdsIntView extends CmdsView {
     ${
       this._role.includes('Consommateur')
         ? `
-        <td class="td-view-bdc">
+        <td class="td-view-bdci">
           <button class="details-btn print-bdci-btn">
           <span class="material-icons-sharp info-icon">
             info
@@ -104,7 +116,7 @@ export class CmdsIntView extends CmdsView {
       <td class="td-print-bdciii">${
         result.etat.includes('servie')
           ? `
-    <a class="print-bdci-btnnn" href="../../backend/sortie/sortie${result.num_demande}.pdf">
+    <a class="print-bdci-btnnn" href="../../backend/sortie/sortie${result.num_demande}.pdf" target="_blank">
       <span class="material-icons-sharp info-icon">
         print
       </span>
@@ -182,8 +194,7 @@ export class CmdsIntView extends CmdsView {
             this._btnModifyBdc
               ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
               : '';
-          }
-          if (
+          } else if (
             this._data[
               helpers.findNodeIndex(
                 this._checkboxes,
@@ -212,6 +223,34 @@ export class CmdsIntView extends CmdsView {
         }
       })
     );
+  }
+
+  addChangeFiltersHandler(handler) {
+    this._filters.addEventListener('change', e => {
+      handler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
+  }
+  addHandlerCmdsIntSearch(handler, filterHandler) {
+    this._searchBox.addEventListener('input', e => {
+      // const event = new Event('change');
+      // this._filters.dispatchEvent(event);
+      handler(this._searchBox.value);
+      filterHandler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
+  }
+  resetSearchInputs() {
+    this._searchBox.value = '';
+    this._filters
+      .querySelectorAll('select')
+      .forEach(filter => (filter.selectedIndex = 0));
   }
   _restricted = [, 'none'];
 }
