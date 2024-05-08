@@ -18,7 +18,9 @@ router.delete(
   authMiddleware('delete commande'),
   EntreeController.deleteCommande
 );
-router.post('/updateQuantite', multer, EntreeController.updateQuantite);
+router.post('/updateQuantite',authMiddleware('update quantite') ,multer, EntreeController.updateQuantite);
+router.put('/uploadBonCommande',authMiddleware('upload bon de commande'),multer,(req,res)=>res.status(200))
+router.put('/uploadBonReception',authMiddleware('upload bon de reception'),multer,(req,res)=>res.status(200))
 router.post(
   '/cancelCommande',
   authMiddleware('cancel commande'),
