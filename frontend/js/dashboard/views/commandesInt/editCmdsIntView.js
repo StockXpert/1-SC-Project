@@ -10,7 +10,7 @@ export class EditCmdsIntView extends AddCmdsIntView {
         '.add-product-edit-bdci-container'
       );
       this.addHandlerShowAddProductWindow(
-        '.add-product-bdci',
+        '.btn-add-product-edit-bdci',
         '.add-product-edit-bdci-container'
       );
       this.addHandlerHideEditProductWindow(
