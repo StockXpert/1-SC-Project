@@ -41,6 +41,7 @@ import addBonReception from './views/commandes/addBonReception.js';
 import View from './views/view.js';
 import deleteBonReception from './views/commandes/deleteBonReception.js';
 import invView from './views/inventaires/InvView.js';
+import deliverCmdsExtView from './views/commandesInt/deliverCmdsExtView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1716,6 +1717,7 @@ const controlValidateCmdsInt = async () => {
       break;
     case 'Directeur':
       validateCmdsIntView._btnClose.click();
+      // console.log(validateCmdsIntView._btnClose);
       cmdsIntView.renderSpinner('Approving...');
       returnValue = await model.dirAppCmdInt(appObject);
       await controlLoadCmdsInt();
@@ -1731,27 +1733,97 @@ const controlValidateCmdsInt = async () => {
 };
 
 const controlDeliverCmdsInt = async view => {
-  // console.log(
-  //   model.state.commandesInt.all[
-  //     Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
-  //   ]
-  // );
-  // console.log(helpers.getFormattedDate());
-  cmdsIntView.renderSpinner(
-    `Validation finale de la commande N°${
+  let postObj;
+  // {
+  //   "exterieur": null,
+  //   "num_demande": 9,
+  //   "etat": "pret",
+  //   "id_demandeur": "C1@esi-sba.dz",
+  //   "date_demande": "2024-04-25T23:00:00.000Z"
+  // }
+  if (
+    model.state.commandesInt.rendered[
+      Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
+    ].exterieur
+  ) {
+    //afficher fenetre
+    deliverCmdsExtView.toggleWindow();
+    //spinner in that window
+    deliverCmdsExtView.renderSpinner('');
+    //loading products
+    let products = await model.loadCommandeIntProducts(
       model.state.commandesInt.rendered[
         Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
       ].num_demande
-    } ...`
-  );
-  let postObj = {
-    numDemande:
+    );
+    products = products[1].demande;
+    console.log(products);
+    let newArrProducts = [];
+    products.forEach(product => {
+      for (let i = 1; i <= product.quantite_servie; i++) {
+        newArrProducts.push({
+          designation: product.designation,
+        });
+      }
+    });
+    model.state.commandesInt.deliver.products = newArrProducts;
+    model.state.commandesInt.deliver.numDemande =
       model.state.commandesInt.rendered[
         Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
-      ].num_demande,
-    dateSortie: helpers.getFormattedDate(),
+      ].num_demande;
+    console.log(newArrProducts);
+    deliverCmdsExtView.render(newArrProducts);
+    deliverCmdsExtView.resetPointers();
+  } else {
+    cmdsIntView.renderSpinner(
+      `Validation finale de la commande N°${
+        model.state.commandesInt.rendered[
+          Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
+        ].num_demande
+      } ...`
+    );
+    postObj = {
+      numDemande:
+        model.state.commandesInt.rendered[
+          Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
+        ].num_demande,
+      dateSortie: helpers.getFormattedDate(),
+    };
+    await model.magLivrerCmdInt(postObj);
+    // cmdsIntView.unrenderSpinner('');
+    // await controlLoadCmdsInt();
+  }
+  // console.log(postObj);
+};
+
+const controlDechargerCmdsInt = async dataObj => {
+  let postObj = {
+    numDemande: model.state.commandesInt.deliver.numDemande,
+    dateDecharge: helpers.getFormattedDate(),
+    numDecharge: dataObj.numDecharge,
+    products: [],
   };
-  await model.magLivrerCmdInt(postObj);
+  console.log(model.state.commandesInt.deliver.products);
+  dataObj.refrencesArray.forEach((refrence, index) => {
+    postObj.products.push({
+      designation: model.state.commandesInt.deliver.products[index].designation,
+      reference: refrence,
+    });
+  });
+  console.log(postObj);
+  cmdsIntView.renderSpinner(
+    `Validation finale de la commande N°${
+      model.state.commandesInt.rendered[
+        Array.from(cmdsIntView._checkboxes).findIndex(
+          cbx => cbx.checked == true
+        )
+      ].num_demande
+    } ...`
+  );
+  if (!(await model.dechargerCmdsInt(postObj))) {
+    sideView.btns[0].click();
+    return;
+  }
   cmdsIntView.unrenderSpinner('');
   await controlLoadCmdsInt();
 };
@@ -1894,3 +1966,8 @@ editCmdsIntView.addHandlerChangeProduct(
 await editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);
 validateCmdsIntView.addHandlerValidate(controlValidateCmdsInt);
 validateCmdsIntView.addHandlerDeliver(controlDeliverCmdsInt);
+deliverCmdsExtView.addHandlerHideWindow(
+  '.btn-cancel-livrer-bdd',
+  '.big-container-bdd'
+);
+deliverCmdsExtView.addHandlerDeliver(controlDechargerCmdsInt);

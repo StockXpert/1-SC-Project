@@ -1,5 +1,5 @@
 export const API_URL = 'http://localhost:3000';
-export const TIMEOUT_SEC = 10;
+export const TIMEOUT_SEC = 30;
 export const MODAL_CLOSE_SEC = 2.5;
 export const FUSE_OPTIONS = {
   isCaseSensitive: false,
@@ -36,7 +36,7 @@ export const FUSE_OPTIONS_CMDSINT = {
   includeScore: true,
   shouldSort: true,
   threshold: 0.3,
-  keys: ['num_demande'],
+  keys: ['num_demande', 'id_demandeur'],
 };
 
 export const GROUP_DEFINITIONS = {

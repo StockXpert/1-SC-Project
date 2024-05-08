@@ -1582,7 +1582,7 @@
                   <input
                     type="text"
                     class="searchbar-text-bdci"
-                    placeholder="Chercher par N° Commande Interne ..."
+                    placeholder="Chercher par N° Commande Interne ou par Email..."
                   />
                 </form>
               </div>
@@ -1601,6 +1601,7 @@
                   </select>
                 </div>
                 <div class="dropbtn-text-bdci">
+                  <span>Statut: </span>
                   <select
                     name="status"
                     class="filters-bdci"
@@ -1608,15 +1609,17 @@
                     placeholder="Selectionnés un status"
                     required
                   >
-                    <option value="all" disabled="" selected="">Statut:</option>
-                    <option value="all">Toutes</option>
-                    <option value="demande">demandée</option>
+                    <!-- <option value="all" disabled="" selected="">Statut:</option> -->
+                    <option value="all">Tout les statuts</option>
+                    <option value="demande">Demandées</option>
                     <option value="visee par resp">
-                      Visée par un Responsable
+                      Visées par un Responsable
                     </option>
-                    <option value="visee par dg">Visée Directeur</option>
-                    <option value="pret">Prête</option>
-                    <option value="servie">Servie</option>
+                    <option value="visee par dg">
+                      Visées par un Directeur
+                    </option>
+                    <option value="pret">Prêtes</option>
+                    <option value="servie">Servies</option>
                   </select>
                 </div>
               </form>
@@ -3992,7 +3995,9 @@
                     Modifier
                   </button> -->
                   <div class="btn-add-product">
-                    <div class="add-product add-product-bdci">
+                    <div
+                      class="add-product add-product-bdci btn-add-product-bdci"
+                    >
                       <button>Ajouter Produit</button>
                       <span class="material-icons-sharp"> add </span>
                     </div>
@@ -4236,7 +4241,7 @@
       <!-- debut section pour verif un bdci -->
       <div class="big-container-verif-bdci hidden">
         <div class="verif-bdci-container">
-          <div class="verif-bdci-cart">
+          <form class="verif-bdci-cart">
             <p class="verif-bdci-title">Commande N°08</p>
             <div class="table-container-verif-bdci">
               <table>
@@ -4272,7 +4277,7 @@
                 Sauvegarder
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- fin section pour verif un bdci -->
@@ -4487,11 +4492,17 @@
       <!-- debut section pour bdd  -->
       <div class="big-container-bdd hidden">
         <div class="bdd-container">
-          <div class="bdd-cart">
+          <form class="bdd-cart">
             <div class="heading-table-text-add-bdd">
               <div class="num-bdd-inputs">
                 <p>Entez le numero du Bon de décharge :</p>
-                <input class="input-num-bdd" name="num-bdd" type="number" />
+                <input
+                  class="input-num-bdd"
+                  name="num-bdd"
+                  type="number"
+                  autocomplete="off"
+                  required
+                />
               </div>
             </div>
             <div class="table-container-bdd">
@@ -4572,17 +4583,17 @@
             </div>
             <div class="heading-table-btns-verif-bdci">
               <button
-                class="heading-table-btn-bdr cancel-btn-add-bdr btn-cancel-verif-bdci-qt"
+                class="heading-table-btn-bdr cancel-btn-add-bdr btn-cancel-livrer-bdd"
               >
                 Annuler
               </button>
               <button
-                class="heading-table-btn-bdr add-users-btn btn-save-verif-bdci-qt"
+                class="heading-table-btn-bdr add-users-btn btn-save-livrer-bdd"
               >
                 Sauvegarder
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- fin section pour bdd  -->
@@ -4606,6 +4617,7 @@
       <div class="overlay overlayBDCI hidden"></div>
       <div class="overlay overlayEditBDCI hidden"></div>
       <div class="overlay overlayValidateBDCI hidden"></div>
+      <div class="overlay overlayBDD hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

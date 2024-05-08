@@ -58,6 +58,9 @@ export const state = {
       products: [], //selecter bdci products
       changed: '',
     },
+    deliver: {
+      products: [{ reference: '', designation: '' }],
+    },
   },
   bdc: {
     allCommandes: [],
@@ -653,9 +656,9 @@ export const loadCmdsInt = async function () {
   let commandesInt = await helpers.getJSON(
     `${API_URL}/Sorties/showAllDemandes`
   );
-  // console.log(state.commandesInt);
+  console.log(state.commandesInt);
   state.commandesInt.all = commandesInt.response.sort(
-    (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
+    (a, b) => new Date(b.date_demande) - new Date(a.date_demande)
   );
   console.log(state.commandesInt.all);
   state.commandesInt.afterFilters = state.commandesInt.all;
@@ -713,7 +716,7 @@ export const createBDCI = async function () {
     exterieur: state.commandesInt.selected.ext,
   };
   console.log(postBDCIOBJ);
-  // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
+  await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
 export const saveBDCI = async function () {
   let postBDCIOBJ = {
@@ -846,6 +849,7 @@ export const magAppCmdInt = async function (appObject) {
   return responseArray;
 };
 export const magLivrerCmdInt = async function (appObject) {
+  console.log(appObject);
   let responseArray = await helpers.postJSONReturnResResp(
     `${API_URL}/Sorties/livrer`,
     appObject
@@ -868,6 +872,28 @@ export const loadAllInv = async function () {
       return false;
     } else state.inventaires.all = responseArray[1].response;
     return responseArray[1].response;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const dechargerCmdsInt = async function (postObj) {
+  try {
+    let responseArray = await helpers.postJSONReturnResRespNoTO(
+      `${API_URL}/Sorties/livrer`,
+      postObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car vous semblez manquer des permissions suivantes: <br/>
+        livrer:
+        'Livrer la demande Interne/Externe et générer le Bon de Sortie/Décharge',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }

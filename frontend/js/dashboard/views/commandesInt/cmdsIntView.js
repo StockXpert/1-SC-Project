@@ -91,7 +91,10 @@ export class CmdsIntView extends CmdsView {
         ? `
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
-          result.etat.includes('visee par resp') ? '' : 'hidden'
+          result.etat.includes('visee par resp') ||
+          (result.etat.includes('demande') && result.exterieur)
+            ? ''
+            : 'hidden'
         }">
           <span class="material-icons-sharp verif-icon">
             check_circle
