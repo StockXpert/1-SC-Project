@@ -39,14 +39,14 @@ function fournitureMagApp(req,res){
 }
 function livrer(req,res)
 {
-    const {numDemande,dateSortie,numDecharge,dateDecharge,products}=req.body;
+    const {numDemande,dateSortie,dateDecharge,products}=req.body;
     SortieModel.getDemandeProducts(numDemande).then((produits)=>{
         SortieService.subtituteQuantite(produits).then(()=>{
             SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
                 SortieModel.isExterior(numDemande).then((exterior)=>{
                     if(exterior)
                     {
-                        SortieService.addDecharge('16OHtJBVOxUOwHddI7cUglv3PpWtwTXJjnoM8DyaFTg4',products,numDecharge,dateDecharge,numDecharge).then(()=>{
+                        SortieService.addDecharge('16OHtJBVOxUOwHddI7cUglv3PpWtwTXJjnoM8DyaFTg4',products,dateDecharge,numDemande).then(()=>{
                             res.status(200).json({response:'gererated'})
                         }).catch(()=>{res.status(500).json({response:'internal error'})})
                     }
