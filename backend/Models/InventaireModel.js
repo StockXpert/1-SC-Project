@@ -340,6 +340,7 @@ function inscriptionDate(produit,year)
           reject("request error");
           return;
         }
+        console.log({dateIns:results})
         resolve(results[0].date);
       });
       

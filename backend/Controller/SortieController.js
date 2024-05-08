@@ -182,12 +182,12 @@ function showNewDemandes(req, res) {
   const { role, email } = req;
   let etat;
   switch (role) {
-    case 'consommateur':
+    case 'Consommateur':
       etat = 'pret';
-    case 'magasinier':
+    case 'Magasinier':
       etat = 'visee par dir';
       break;
-    case 'directeur':
+    case 'Directeur':
       etat = 'visee par resp';
     default:
       etat = 'demande';
