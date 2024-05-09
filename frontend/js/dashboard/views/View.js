@@ -122,8 +122,9 @@ export default class View {
     }
   }
   renderSpinner = function (message = '', isTrueParent = false) {
+    let height = helpers.getVisibleHeight2(this._parentElement);
     const markup = `
-      <div class="spinner-parent">
+      <div class="spinner-parent" style="max-height: ${height}px;">
       <b>${!message ? '' : `<div class="spinner"></div>`} ${message}</b>
       ${message ? '' : `<div class="spinner"></div>`}
       </div>

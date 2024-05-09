@@ -1579,6 +1579,15 @@ const controlViewCmdInt = async function (target) {
   }
 };
 
+const controlDeleteCmdsInt = async function () {
+  //ONCLICK OF the DELETE BUTTON
+  //CONFIRM MSG
+  const targetIndex = Array.from(cmdsIntView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numDemande = model.state.commandesInt.rendered[targetIndex].num_demande;
+};
+
 const controlModifyCmdsInt = async function () {
   //ONCLICK OF the EDIT BUTTON
   //Get the index of the selected CmdInt
@@ -1839,11 +1848,11 @@ const controlLoadInv = async () => {
     sideView.btns[0].click();
     return;
   }
-  // invView.render(
-  //   model.state.inventaires.all,
-  //   true,
-  //   model.state.me.permissions.all
-  // );
+  invView.render(
+    model.state.inventaires.all,
+    true,
+    model.state.me.permissions.all
+  );
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -1963,7 +1972,7 @@ editCmdsIntView.addHandlerChangeProduct(
 //   numberRoleView.render(model.state);
 // };
 
-await editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);
+editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);
 validateCmdsIntView.addHandlerValidate(controlValidateCmdsInt);
 validateCmdsIntView.addHandlerDeliver(controlDeliverCmdsInt);
 deliverCmdsExtView.addHandlerHideWindow(

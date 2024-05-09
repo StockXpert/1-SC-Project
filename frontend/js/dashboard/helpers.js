@@ -672,3 +672,45 @@ export const getVisibleHeight = function (element) {
 
   return visibleBottom - visibleTop;
 };
+export function findParentWithCustomMaxHeight(element) {
+  let parent = element.parentElement;
+
+  while (parent) {
+    const maxHeight = window.getComputedStyle(parent).maxHeight;
+    if (maxHeight && maxHeight !== 'none' && maxHeight !== 'auto') {
+      // Check if the max-height is custom
+      return parent;
+    }
+    parent = parent.parentElement;
+  }
+
+  // If no parent with custom max-height is found, return null
+  return null;
+}
+export function getPosition(element) {
+  var xPosition = 0;
+  var yPosition = 0;
+
+  while (element) {
+    xPosition += element.offsetLeft - element.scrollLeft + element.clientLeft;
+    yPosition += element.offsetTop - element.scrollTop + element.clientTop;
+    element = element.offsetParent;
+  }
+
+  return { x: xPosition, y: yPosition };
+}
+
+export function getVisibleHeight2(element) {
+  const rect = element.getBoundingClientRect();
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight;
+  let parentEl = findParentWithCustomMaxHeight(element);
+  const rect2 = parentEl?.getBoundingClientRect();
+  // Calculate the visible top and bottom of the element relative to the viewport
+  const visibleTop = Math.max(rect.top, 0);
+  const visibleBottom = Math.max(rect.bottom, rect2?.bottom);
+
+  // Calculate the visible height
+  const visibleHeight = visibleBottom - visibleTop;
+  return Math.min(visibleHeight, parentEl?.offsetHeight);
+}
