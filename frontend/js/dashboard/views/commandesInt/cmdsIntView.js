@@ -255,6 +255,19 @@ export class CmdsIntView extends CmdsView {
       .querySelectorAll('select')
       .forEach(filter => (filter.selectedIndex = 0));
   }
+  restrictUsingRole(role) {
+    switch (role) {
+      case 'Magasinier':
+        document.querySelector('.btn-deliver-bdci').classList.remove('hidden');
+        break;
+      case 'Consommateur':
+        document.querySelector('.btn-delete-bdci').classList.remove('hidden');
+        document.querySelector('.btn-edit-bdci').classList.remove('hidden');
+        break;
+      default:
+        break;
+    }
+  }
   _restricted = [, 'none'];
 }
 export default new CmdsIntView();

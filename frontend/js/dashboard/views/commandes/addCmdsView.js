@@ -73,7 +73,7 @@ export class AddCmdsView extends AddUserView {
       ? btn.classList.remove('disabled-save-button')
       : btn.classList.add('disabled-save-button');
   }
-
+  //TODO: FORM INSTEAD OF SAVE
   addHandlerSavingBDC(handler, state) {
     // const typeInput = this._type;
     // const fourInput = this._four;

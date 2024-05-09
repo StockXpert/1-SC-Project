@@ -96,6 +96,9 @@ export const GROUP_DEFINITIONS = {
   ],
   'Commandes Internes': [
     'demande fourniture',
+    'delete fourniture',
+    'show demande',
+    'show new demandes',
     'approuve fourniture by responsable',
     'approuve fourniture by director',
     'approuve fourniture by magasinier',
@@ -162,6 +165,9 @@ export const PERM_NAMES = {
   'delete reception': 'Supprimmer un bon de réception',
   'show bon reception': 'Afficher les bons de réception',
   'demande fourniture': 'Créer un bon de commande interne',
+  'delete fourniture': 'Supprimmer une commande interne',
+  'show new demandes': 'Voir les nouvelles demandes (Commandes Internes)',
+  'show demande': "Voir les détails d'une commadne interne",
   'approuve fourniture by responsable':
     'Approuver les bon de commandes internes (par un responsable directe)',
   'approuve fourniture by director':
