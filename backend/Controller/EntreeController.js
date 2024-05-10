@@ -111,7 +111,8 @@ function updateQuantite(req, res) {
   console.log(produits);
   console.log(req.files);
   const factureLink =
-    'Facture/' + (req.files ? req.files['facture'][0].filename : null);
+    'Facture/' +
+    (req.files['facture'] ? req.files['facture'][0].filename : null);
   const bonLivraisonLink =
     'bonLivraison/' + req.files['bonLivraison'][0].filename;
   console.log({ bonLivraisonLink, factureLink });

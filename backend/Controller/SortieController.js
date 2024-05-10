@@ -78,8 +78,7 @@ function fournitureMagApp(req, res) {
     });
 }
 function livrer(req, res) {
-  const { numDemande, dateSortie, numDecharge, dateDecharge, products } =
-    req.body;
+  const { numDemande, dateSortie, dateDecharge, products } = req.body;
   SortieModel.getDemandeProducts(numDemande)
     .then(produits => {
       SortieService.subtituteQuantite(produits)
@@ -92,9 +91,8 @@ function livrer(req, res) {
                     SortieService.addDecharge(
                       '16OHtJBVOxUOwHddI7cUglv3PpWtwTXJjnoM8DyaFTg4',
                       products,
-                      numDecharge,
                       dateDecharge,
-                      numDecharge
+                      numDemande
                     )
                       .then(() => {
                         res.status(200).json({ response: 'gererated' });

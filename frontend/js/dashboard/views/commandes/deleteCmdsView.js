@@ -6,22 +6,23 @@ export class DeleteCmdsView extends DeleteUserView {
   _btnClose = document.querySelector('.supp-bdc-annuler');
   _confirm = document.querySelector('.supp-bdc-confirmer');
 
-  constructor() {
-    super();
-    this._btnClose.addEventListener('click', e => {
-      e.preventDefault();
-      this.toggleWindow.bind(this)();
-    });
-    this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
-    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+  constructor(nerfed = false) {
+    super(true);
+    if (!nerfed) {
+      this._btnClose.addEventListener('click', e => {
+        e.preventDefault();
+        this.toggleWindow.bind(this)();
+      });
+      this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    }
   }
 
-  addDeleteController(ctrler) {
+  addDeleteController(controller) {
     const closeBtn = this._btnClose;
     this._confirm.addEventListener('click', async function (e) {
       e.preventDefault();
       closeBtn.click();
-      await ctrler();
+      await controller();
     });
   }
 

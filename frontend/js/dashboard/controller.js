@@ -42,6 +42,7 @@ import View from './views/view.js';
 import deleteBonReception from './views/commandes/deleteBonReception.js';
 import invView from './views/inventaires/InvView.js';
 import deliverCmdsExtView from './views/commandesInt/deliverCmdsExtView.js';
+import deleteCmdsIntView from './views/commandesInt/deleteCmdsIntView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1242,6 +1243,7 @@ const controlLoadCmdsInt = async function () {
     );
     return;
   }
+  cmdsIntView.restrictUsingRole(model.state.me.role);
   cmdsIntView.resetSearchInputs();
   cmdsIntView.addChangeFiltersHandler(controlCmdsIntFilters);
   cmdsIntView.addHandlerCmdsIntSearch(
@@ -1269,17 +1271,6 @@ const controlLoadCmdsInt = async function () {
   // TODO: deleteCmdsView.restrict(model.state.me.permissions.all);
   await model.loadCmdsInt();
   cmdsIntView.unrenderSpinner();
-  switch (model.state.me.role) {
-    case 'Magasinier':
-      document.querySelector('.btn-deliver-bdci').classList.remove('hidden');
-      break;
-    case 'Consommateur':
-      document.querySelector('.btn-delete-bdci').classList.remove('hidden');
-      document.querySelector('.btn-edit-bdci').classList.remove('hidden');
-      break;
-    default:
-      break;
-  }
   cmdsIntView._role = model.state.me.role;
   validateCmdsIntView._role = model.state.me.role;
   // validateCmdsIntView._max = model.state.me.role;
@@ -1393,8 +1384,6 @@ const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
 // };
 const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   //ONCLICK OF A EDIT BUTTON
-  //Get the index of the clicked edit button here
-  // const productsArray = (typeof view == 'EditCmdsIntView')?model.state.commandesInt.selected.products:;
   let productsArray;
   switch (view.constructor.name) {
     case 'EditCmdsIntView':
@@ -1552,8 +1541,9 @@ const controlSavingBDCI = async function () {
       <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
     );
   } else {
+    cmdsIntView.renderSpinner('Sauvegaaaarde en cours... ');
     await model.createBDCI();
-    // addCmdsView._boundToggleWindow();
+    cmdsIntView.unrenderSpinner();
     await controlLoadCmdsInt();
   }
 };
@@ -1584,42 +1574,41 @@ const controlViewCmdInt = async function (target) {
   }
 };
 
-const controlModifyCmdsInt = async function () {
-  //ONCLICK OF the EDIT BUTTON
-  //Get the index of the selected CmdInt
-  // const target = this;
-  // const targetIndex = helpers.findNodeIndex(editUserView._btnOpen, target);
-
-  // const targetIndex = helpers.findNodeIndex(
-  //   Array.from(cmdsIntView._checkboxes).find(checkbox => checkbox.checked),
-  //   Array.from(cmdsIntView._checkboxes).find(checkbox => checkbox.checked)
-  // );
+const controlDeleteCmdsInt = async function () {
+  //ONCLICK OF the DELETE BUTTON
+  //CONFIRM MSG
   const targetIndex = Array.from(cmdsIntView._checkboxes).findIndex(
     checkbox => checkbox.checked
   );
-  // #ffa TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
   const numDemande = model.state.commandesInt.rendered[targetIndex].num_demande;
+  cmdsIntView.renderSpinner('Suppression en cours...');
+  await model.deleteCmdInt(numDemande);
+  cmdsIntView.unrenderSpinner();
+  await controlLoadCmdsInt();
+};
 
+const controlModifyCmdsInt = async function () {
+  //ONCLICK OF the EDIT BUTTON
+  const targetIndex = Array.from(cmdsIntView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numDemande = model.state.commandesInt.rendered[targetIndex].num_demande;
   editCmdsIntView.renderSpinner('', true);
   let selectedCmdIntProducts = await model.loadCommandeIntProducts(
     model.state.commandesInt.rendered[targetIndex].num_demande
   );
   editCmdsIntView.unrenderSpinner(true);
   selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
-  // #ffa TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
   selectedCmdIntProducts = selectedCmdIntProducts.map(el => {
     return {
       designation: el.designation,
       quantite: el.quantite_demande,
     };
   });
-  // Use it to extract the input data from the state object
-  // editCmdsIntView.changeInputs(numDemande, selectedCmdIntProducts);
 
   model.state.commandesInt.selected.numDemande = numDemande;
   model.state.commandesInt.selected.new.numDemande = numDemande;
   model.state.commandesInt.selected.old.numDemande = numDemande;
-  // model.state.commandesInt.selected.new.DELETED && ADDED ARE TBD
 
   model.state.commandesInt.selected.products = selectedCmdIntProducts;
   model.state.commandesInt.selected.old.products = selectedCmdIntProducts;
@@ -1627,7 +1616,6 @@ const controlModifyCmdsInt = async function () {
   editCmdsIntView._checkboxesAddProduct =
     editCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
   editCmdsIntView.AddHandlerAddedProductsCheckboxes();
-  //TODO: edit btns
   editCmdsIntView.addHandlerShowEditProductWindow(
     '.details-btn-edit-bdci-add',
     '.edit-product-edit-bdci-container'
@@ -1648,19 +1636,14 @@ const controlAddProductIntEdit = newProduct => {
     editCmdsIntView.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
     selectedBDCIProdsCurrState.push(newProduct);
     editCmdsIntView.changeDetails(selectedBDCIProdsCurrState);
-    // #fad
     editCmdsIntView._checkboxesAddProduct =
       editCmdsIntView._parentElement.querySelectorAll('input[type="checkbox"]');
     editCmdsIntView.AddHandlerAddedProductsCheckboxes();
-    //TODO: edit btns
     editCmdsIntView.addHandlerShowEditProductWindow(
       '.details-btn-edit-bdci-add',
       '.edit-product-edit-bdci-container'
     );
-    // editUserView.addHandlerEdit(controlEditUser);
-    //TODO: hide btn
     editCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-    // #fad
   }
 };
 
@@ -1675,7 +1658,6 @@ const controlSavingBDCIEdit = async function () {
     cmdsIntView.renderSpinner('Sauvegarde en cours...');
     let response = await model.saveBDCI();
     cmdsIntView.unrenderSpinner();
-    // addCmdsView._boundToggleWindow();
     await controlLoadCmdsInt();
   }
 };
@@ -1698,15 +1680,6 @@ const controlValidatingCmdsInt = async e => {
     selectedCmdIntProducts,
     model.state.commandesInt.rendered[targetIndex].num_demande
   );
-
-  // {
-  //     "designation": "Duplicopieur - Monochrome - A3",
-  //     "seuil": 5,
-  //     "quantite_demande": 420,
-  //     "quantite_accorde": 0,
-  //     "quantite_servie": 0,
-  //     "quantite": 50
-  // }
 };
 
 const controlValidateCmdsInt = async () => {
@@ -1715,21 +1688,20 @@ const controlValidateCmdsInt = async () => {
   switch (validateCmdsIntView._role) {
     case 'Responsable directe':
       validateCmdsIntView._btnClose.click();
-      cmdsIntView.renderSpinner('Approving...');
+      cmdsIntView.renderSpinner('Approbation ...');
       returnValue = await model.resAppCmdInt(appObject);
       cmdsIntView.unrenderSpinner('');
       await controlLoadCmdsInt();
       break;
     case 'Directeur':
       validateCmdsIntView._btnClose.click();
-      // console.log(validateCmdsIntView._btnClose);
-      cmdsIntView.renderSpinner('Approving...');
+      cmdsIntView.renderSpinner('Approbation ...');
       returnValue = await model.dirAppCmdInt(appObject);
       await controlLoadCmdsInt();
       break;
     case 'Magasinier':
       validateCmdsIntView._btnClose.click();
-      cmdsIntView.renderSpinner('Approving...');
+      cmdsIntView.renderSpinner('Approbation ...');
       returnValue = await model.magAppCmdInt(appObject);
       cmdsIntView.unrenderSpinner('');
       await controlLoadCmdsInt();
@@ -1795,8 +1767,8 @@ const controlDeliverCmdsInt = async view => {
       dateSortie: helpers.getFormattedDate(),
     };
     await model.magLivrerCmdInt(postObj);
-    // cmdsIntView.unrenderSpinner('');
-    // await controlLoadCmdsInt();
+    cmdsIntView.unrenderSpinner('');
+    await controlLoadCmdsInt();
   }
   // console.log(postObj);
 };
@@ -1844,11 +1816,11 @@ const controlLoadInv = async () => {
     sideView.btns[0].click();
     return;
   }
-  // invView.render(
-  //   model.state.inventaires.all,
-  //   true,
-  //   model.state.me.permissions.all
-  // );
+  invView.render(
+    model.state.inventaires.all,
+    true,
+    model.state.me.permissions.all
+  );
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -1968,7 +1940,7 @@ editCmdsIntView.addHandlerChangeProduct(
 //   numberRoleView.render(model.state);
 // };
 
-await editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);
+editCmdsIntView.addHandlerEdit(controlModifyCmdsInt);
 validateCmdsIntView.addHandlerValidate(controlValidateCmdsInt);
 validateCmdsIntView.addHandlerDeliver(controlDeliverCmdsInt);
 deliverCmdsExtView.addHandlerHideWindow(
@@ -1976,3 +1948,4 @@ deliverCmdsExtView.addHandlerHideWindow(
   '.big-container-bdd'
 );
 deliverCmdsExtView.addHandlerDeliver(controlDechargerCmdsInt);
+deleteCmdsIntView.addDeleteController(controlDeleteCmdsInt);

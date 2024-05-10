@@ -156,6 +156,7 @@ export const getMyPerms = async function () {
     all: myPerms,
     wellFormed: organizePermissionsByGroup(myPerms, false, false),
   };
+  console.log(state.me);
   return state.me;
 };
 
@@ -887,6 +888,30 @@ export const dechargerCmdsInt = async function (postObj) {
         `${responseArray[1].error} car vous semblez manquer des permissions suivantes: <br/>
         livrer:
         'Livrer la demande Interne/Externe et générer le Bon de Sortie/Décharge',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const deleteCmdInt = async function (numDemande) {
+  try {
+    let delObj = { numDemande: numDemande };
+    console.log(delObj);
+    let responseArray = await helpers.delJSONReturnResResp(
+      `${API_URL}/Sorties/deleteFourniture`,
+      delObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        delete fourniture:
+        'Supprimmer une commande interne',
         `
       );
       return false;
