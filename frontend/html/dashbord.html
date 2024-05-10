@@ -985,7 +985,7 @@
         <!--------------------------------- I- END ADMIN FONCTIONS --------------------------------------->
         <!------------------------------ II- BEGIN ServiceAchat FONCTIONS ---------------------------------->
         <!------ debut de content for ServiceAchat : 1 - Chapitres tables----- -->
-        <div class="main-table hidden" id="main-table-chapitres">
+        <div class="main-table hidden " id="main-table-chapitres">
           <div class="heading">
             <h1>Chapitres</h1>
             <hr class="line-style" />
@@ -2755,14 +2755,14 @@
       <!-- fin de section  ajouter un  fournisseur -->
       <!-- debut de section pour modifier un  fournisseur -->
 
-      <div class="add-user-container ">
+      <div class="add-user-container hidden">
         <div class="add-user-cart add-fournisseur-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
           <div class="heading-add-user heading-add-fournisseur">
-            <h1 class="heading-primary-add-user heading-primary-add-fournisseur">Ajouter un fournisseur</h1>
+            <h1 class="heading-primary-add-user heading-primary-add-fournisseur">modifier un fournisseur</h1>
           </div>
           <!-- for inputs -->
           <form class="add-user-inputs">
@@ -2967,6 +2967,80 @@
         </div>
       </div>
       <!-- fin de section  voir details d'un  fournisseur -->
+      <!-- debut de section pour ajouter un chapitre -->
+            <div class="add-structure-container add-chapitre-container hidden">
+              <div class="add-structure-cart add-chapitre-cart">
+                <button class="close-btn">
+                  <span class="material-icons-sharp">close</span>
+                </button>
+      
+                <div class="heading-add-user">
+                  <h1 class="heading-primary-add-structure heading-primary-add-chapitre">Ajouter un chapitre</h1>
+                </div>
+                <!-- for inputs -->
+                <form class="add-structure-inputs add-chapitre-inputs">
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Nom du chapitre"
+                    />
+                  </div>
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Numero du chapitre"
+                    />
+                  </div>
+                  <div class="create-btn">
+                    <button>Crée le chapitre</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+      <!-- fin de section  ajouter un chapitre -->
+      <!-- debut de section pour modifier un chapitre -->
+            <div class="add-structure-container add-chapitre-container hidden">
+              <div class="add-structure-cart add-chapitre-cart">
+                <button class="close-btn">
+                  <span class="material-icons-sharp">close</span>
+                </button>
+      
+                <div class="heading-add-user">
+                  <h1 class="heading-primary-add-structure heading-primary-add-chapitre">Ajouter un chapitre</h1>
+                </div>
+                <!-- for inputs -->
+                <form class="add-structure-inputs add-chapitre-inputs">
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Nom du chapitre"
+                    />
+                  </div>
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Numero du chapitre"
+                    />
+                  </div>
+                  <div class="create-btn">
+                    <button>Crée le chapitre</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+      <!-- fin de section  modifier un chapitre -->
       <!-- debut de section pour ajouter un  user -->
 
       <div class="add-user-container hidden">
@@ -3443,6 +3517,20 @@
         </div>
       </div>
       <!-- fin section for supprimer fournisseur -->
+      <!-- debut section pour supprimer un chapitre etes vous sure de vouloir supprimer -->
+      <div class="container-supp-user hidden">
+        <div class="supp-user-cart">
+          <p class="supp-user-text">
+            Êtes-vous sûr de vouloir supprimer cet chapitre ? Cette action
+            est irréversible et toutes les données associées seront perdues.
+          </p>
+          <div class="supp-user-btns">
+            <button class="btn-supp supp-user-annuler">Annuler</button>
+            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+          </div>
+        </div>
+      </div>
+      <!-- fin section for supprimer chapitre -->
       <!-- fin popup pour modifier user  -->
       <!-- debut section pour supprimer user etes vous sure de vouloir supprimer -->
       <div class="container-supp-user hidden">
