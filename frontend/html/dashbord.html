@@ -985,7 +985,7 @@
         <!--------------------------------- I- END ADMIN FONCTIONS --------------------------------------->
         <!------------------------------ II- BEGIN ServiceAchat FONCTIONS ---------------------------------->
         <!------ debut de content for ServiceAchat : 1 - Chapitres tables----- -->
-        <div class="main-table hidden" id="main-table-chapitres">
+        <div class="main-table hidden " id="main-table-chapitres">
           <div class="heading">
             <h1>Chapitres</h1>
             <hr class="line-style" />
@@ -2753,6 +2753,120 @@
         </div>
       </div>
       <!-- fin de section  ajouter un  fournisseur -->
+      <!-- debut de section pour modifier un  fournisseur -->
+
+      <div class="add-user-container hidden">
+        <div class="add-user-cart add-fournisseur-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-user heading-add-fournisseur">
+            <h1 class="heading-primary-add-user heading-primary-add-fournisseur">modifier un fournisseur</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-user-inputs">
+            
+            <div class="groupe-1-add">
+             
+              <div class="input-groupe-add">
+                <input
+                  name="raison-social"
+                  type="text"
+                  class="input raison-social"
+                  placeholder="raison-social"
+                />
+                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="name"
+                  type="text"
+                  class="input input-add-name"
+                  placeholder="Nom"
+                />
+                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="date-naissance"
+                  type="date"
+                  class="input date_naissance"
+                  id="add--date"
+                  placeholder="Entrez la date de naissance"
+                />
+                <ion-icon
+                  class="input-icon"
+                  name="calendar-number-outline"
+                ></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="number-telephone"
+                  type="number"
+                  class="input Telephone"
+                  autocomplete="Numéro Telephone"
+                  placeholder="Entrez Numéro Telephone"
+                  required
+                />
+
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
+            </div>
+            <div class="groupe-2-add">
+              <div class="input-groupe-add">
+                <input
+                  name="num-nif"
+                  type="number"
+                  class="input "
+                  placeholder="Entrez le nif"
+                  autocomplete="new-nifs"
+                  required
+                />
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="fax"
+                  type="number"
+                  class="input "
+                  placeholder="Fax"
+                  autocomplete="Fax"
+                />
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="num-registre"
+                  type="number"
+                  class="input "
+                  placeholder="Entrez le num de num-registre"
+                  autocomplete="new-num-registre"
+                  required
+                />
+                <ion-icon class="input-icon" name="book-outline"></ion-icon>
+                
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="rib-rip"
+                  type="text"
+                  class="input "
+                  placeholder="Entrez le Rip ou Rib"
+                  autocomplete="new-rip/rib"
+                  required
+                />
+                <ion-icon class="input-icon" name="card-outline"></ion-icon>
+              </div>
+            </div>
+
+            <div class="create-btn">
+              <button>Modifier</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin de section  modifier un  fournisseur -->
       <!-- debut de section pour voir details d'un  fournisseur -->
 
       <div class="add-fournisseur-container hidden">
@@ -2853,6 +2967,80 @@
         </div>
       </div>
       <!-- fin de section  voir details d'un  fournisseur -->
+      <!-- debut de section pour ajouter un chapitre -->
+            <div class="add-structure-container add-chapitre-container hidden">
+              <div class="add-structure-cart add-chapitre-cart">
+                <button class="close-btn">
+                  <span class="material-icons-sharp">close</span>
+                </button>
+      
+                <div class="heading-add-user">
+                  <h1 class="heading-primary-add-structure heading-primary-add-chapitre">Ajouter un chapitre</h1>
+                </div>
+                <!-- for inputs -->
+                <form class="add-structure-inputs add-chapitre-inputs">
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Nom du chapitre"
+                    />
+                  </div>
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Numero du chapitre"
+                    />
+                  </div>
+                  <div class="create-btn">
+                    <button>Crée le chapitre</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+      <!-- fin de section  ajouter un chapitre -->
+      <!-- debut de section pour modifier un chapitre -->
+            <div class="add-structure-container add-chapitre-container hidden">
+              <div class="add-structure-cart add-chapitre-cart">
+                <button class="close-btn">
+                  <span class="material-icons-sharp">close</span>
+                </button>
+      
+                <div class="heading-add-user">
+                  <h1 class="heading-primary-add-structure heading-primary-add-chapitre">Ajouter un chapitre</h1>
+                </div>
+                <!-- for inputs -->
+                <form class="add-structure-inputs add-chapitre-inputs">
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Nom du chapitre"
+                    />
+                  </div>
+                  <div class="input-groupe">
+                    <input
+                      name="name"
+                      type="text"
+                      class="input"
+                      id="name-chapitre"
+                      placeholder="Numero du chapitre"
+                    />
+                  </div>
+                  <div class="create-btn">
+                    <button>Crée le chapitre</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+      <!-- fin de section  modifier un chapitre -->
       <!-- debut de section pour ajouter un  user -->
 
       <div class="add-user-container hidden">
@@ -3329,6 +3517,20 @@
         </div>
       </div>
       <!-- fin section for supprimer fournisseur -->
+      <!-- debut section pour supprimer un chapitre etes vous sure de vouloir supprimer -->
+      <div class="container-supp-user hidden">
+        <div class="supp-user-cart">
+          <p class="supp-user-text">
+            Êtes-vous sûr de vouloir supprimer cet chapitre ? Cette action
+            est irréversible et toutes les données associées seront perdues.
+          </p>
+          <div class="supp-user-btns">
+            <button class="btn-supp supp-user-annuler">Annuler</button>
+            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+          </div>
+        </div>
+      </div>
+      <!-- fin section for supprimer chapitre -->
       <!-- fin popup pour modifier user  -->
       <!-- debut section pour supprimer user etes vous sure de vouloir supprimer -->
       <div class="container-supp-user hidden">
