@@ -58,6 +58,9 @@ export const state = {
       products: [], //selecter bdci products
       changed: '',
     },
+    deliver: {
+      products: [{ reference: '', designation: '' }],
+    },
   },
   bdc: {
     allCommandes: [],
@@ -153,6 +156,7 @@ export const getMyPerms = async function () {
     all: myPerms,
     wellFormed: organizePermissionsByGroup(myPerms, false, false),
   };
+  console.log(state.me);
   return state.me;
 };
 
@@ -653,9 +657,9 @@ export const loadCmdsInt = async function () {
   let commandesInt = await helpers.getJSON(
     `${API_URL}/Sorties/showAllDemandes`
   );
-  // console.log(state.commandesInt);
+  console.log(state.commandesInt);
   state.commandesInt.all = commandesInt.response.sort(
-    (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
+    (a, b) => new Date(b.date_demande) - new Date(a.date_demande)
   );
   console.log(state.commandesInt.all);
   state.commandesInt.afterFilters = state.commandesInt.all;
@@ -713,7 +717,7 @@ export const createBDCI = async function () {
     exterieur: state.commandesInt.selected.ext,
   };
   console.log(postBDCIOBJ);
-  // await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
+  await helpers.sendJSON(`${API_URL}/Sorties/demandeFourniture`, postBDCIOBJ);
 };
 export const saveBDCI = async function () {
   let postBDCIOBJ = {
@@ -762,7 +766,7 @@ export const loadBonRec = async function (numCommande) {
     `${API_URL}/Entrees/showBonReception`,
     uploadData
   );
-  console.log(data.response[0], numCommande);
+  console.log(data, numCommande);
 
   state.bdr.all = data.response;
   console.log(state.bdr.all);
@@ -794,24 +798,23 @@ export const deleteBonRec = async function (numReception, numCommande) {
 };
 
 export const addBonReception = async function (newReception) {
-  const data = await fetch(`${API_URL}/Entrees/updateQuantite`, {
-    method: 'POST',
-    body: newReception,
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log('File uploaded successfully');
-        // Handle successful upload
-      } else {
-        console.error('Failed to upload file');
-        // Handle upload failure
-      }
-    })
-    .catch(error => {
-      console.error('Error uploading file:', error);
-      // Handle error
+  try {
+    const res = await fetch(`${API_URL}/Entrees/updateQuantite`, {
+      method: 'POST',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+      body: newReception,
     });
-  console.log('data', data);
+
+    const data = res.json();
+    console.log(res);
+    console.log(data);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const loadCommandeIntProducts = async function (numDemande) {
@@ -846,6 +849,7 @@ export const magAppCmdInt = async function (appObject) {
   return responseArray;
 };
 export const magLivrerCmdInt = async function (appObject) {
+  console.log(appObject);
   let responseArray = await helpers.postJSONReturnResResp(
     `${API_URL}/Sorties/livrer`,
     appObject
@@ -868,6 +872,52 @@ export const loadAllInv = async function () {
       return false;
     } else state.inventaires.all = responseArray[1].response;
     return responseArray[1].response;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const dechargerCmdsInt = async function (postObj) {
+  try {
+    let responseArray = await helpers.postJSONReturnResRespNoTO(
+      `${API_URL}/Sorties/livrer`,
+      postObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car vous semblez manquer des permissions suivantes: <br/>
+        livrer:
+        'Livrer la demande Interne/Externe et générer le Bon de Sortie/Décharge',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const deleteCmdInt = async function (numDemande) {
+  try {
+    let delObj = { numDemande: numDemande };
+    console.log(delObj);
+    let responseArray = await helpers.delJSONReturnResResp(
+      `${API_URL}/Sorties/deleteFourniture`,
+      delObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        delete fourniture:
+        'Supprimmer une commande interne',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }

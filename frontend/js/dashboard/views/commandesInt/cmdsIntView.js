@@ -91,7 +91,10 @@ export class CmdsIntView extends CmdsView {
         ? `
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
-          result.etat.includes('visee par resp') ? '' : 'hidden'
+          result.etat.includes('visee par resp') ||
+          (result.etat.includes('demande') && result.exterieur)
+            ? ''
+            : 'hidden'
         }">
           <span class="material-icons-sharp verif-icon">
             check_circle
@@ -251,6 +254,19 @@ export class CmdsIntView extends CmdsView {
     this._filters
       .querySelectorAll('select')
       .forEach(filter => (filter.selectedIndex = 0));
+  }
+  restrictUsingRole(role) {
+    switch (role) {
+      case 'Magasinier':
+        document.querySelector('.btn-deliver-bdci').classList.remove('hidden');
+        break;
+      case 'Consommateur':
+        document.querySelector('.btn-delete-bdci').classList.remove('hidden');
+        document.querySelector('.btn-edit-bdci').classList.remove('hidden');
+        break;
+      default:
+        break;
+    }
   }
   _restricted = [, 'none'];
 }

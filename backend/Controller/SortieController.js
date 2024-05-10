@@ -78,8 +78,7 @@ function fournitureMagApp(req, res) {
     });
 }
 function livrer(req, res) {
-  const { numDemande, dateSortie, numDecharge, dateDecharge, products } =
-    req.body;
+  const { numDemande, dateSortie, dateDecharge, products } = req.body;
   SortieModel.getDemandeProducts(numDemande)
     .then(produits => {
       SortieService.subtituteQuantite(produits)
@@ -92,9 +91,8 @@ function livrer(req, res) {
                     SortieService.addDecharge(
                       '16OHtJBVOxUOwHddI7cUglv3PpWtwTXJjnoM8DyaFTg4',
                       products,
-                      numDecharge,
                       dateDecharge,
-                      numDecharge
+                      numDemande
                     )
                       .then(() => {
                         res.status(200).json({ response: 'gererated' });
@@ -182,12 +180,12 @@ function showNewDemandes(req, res) {
   const { role, email } = req;
   let etat;
   switch (role) {
-    case 'consommateur':
+    case 'Consommateur':
       etat = 'pret';
-    case 'magasinier':
+    case 'Magasinier':
       etat = 'visee par dir';
       break;
-    case 'directeur':
+    case 'Directeur':
       etat = 'visee par resp';
     default:
       etat = 'demande';

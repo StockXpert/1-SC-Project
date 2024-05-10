@@ -346,7 +346,8 @@ aside .sidebar a:hover span {
 .container-searchbar,
 .container-searchbar-chapitre,
 .container-searchbar-article,
-.container-searchbar-produit,.container-searchbar-fournisseur,
+.container-searchbar-produit,
+.container-searchbar-fournisseur,
 .container-searchbar-permission,
 .container-searchbar-bdc,
 .container-searchbar-bdci,
@@ -710,8 +711,10 @@ aside .sidebar a:hover span {
 .cancel-btn-add-bdc:hover,
 .cancel-btn-edit-bdc:hover,
 .cancel-btn-edit-bdci:hover,
-.cancel-btn-edit-edit-bdci:hover .cancel-btn-add-bdci:hover {
-  transform: translateY(-4px);
+.cancel-btn-edit-edit-bdci:hover,
+.cancel-btn-add-bdci:hover,
+.cancel-btn-add-bdr:hover {
+  transform: translateY(-2px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 .btn-edit:active,
@@ -746,7 +749,8 @@ aside .sidebar a:hover span {
 .btn-delete-produits:active,
 .btn-delete-fournisseur:active,
 .btn-delete-bdc:active,
-.btn-cancel-bdc:active,.btn-delete-fournisseur:active{
+.btn-cancel-bdc:active,
+.btn-delete-fournisseur:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
   background-color: #b53939;
 }
@@ -876,7 +880,6 @@ aside .sidebar a:hover span {
 .table-container-articles,
 .table-container-produits,
 .table-container-fournisseur,
-
 .table-container-bdc,
 .table-container-bdci,
 .table-container-inv {
@@ -1274,6 +1277,9 @@ table tbody tr:last-child td {
   font-weight: 600;
   font-size: 1.5rem;
   color: #49bf20;
+  border: 1px solid #545454;
+  padding: 0rem 0.2rem;
+  border-radius: 0.5rem;
 }
 .red-reste {
   /* color: #e1d901; */
@@ -2503,7 +2509,6 @@ a.password-icon:active {
 .results-articles,
 .results-produits,
 .results-fournisseur,
-
 .results-bdc-produits,
 .results-bdci-produits,
 .results-bdr-produits,
