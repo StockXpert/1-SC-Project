@@ -251,11 +251,11 @@ export class CmdsIntView extends CmdsView {
   restrictUsingRole(role) {
     switch (role) {
       case 'Magasinier':
-        document.querySelector('.btn-deliver-bdci').classList.remove('hidden');
+        this._btnLivrerBdci.classList.remove('hidden');
         break;
       case 'Consommateur':
-        document.querySelector('.btn-delete-bdci').classList.remove('hidden');
-        document.querySelector('.btn-edit-bdci').classList.remove('hidden');
+        this._btnDeleteBdc.classList.remove('hidden');
+        this._btnModifyBdc.classList.remove('hidden');
         break;
       default:
         break;
