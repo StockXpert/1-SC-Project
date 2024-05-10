@@ -765,7 +765,7 @@ export const loadBonRec = async function (numCommande) {
     `${API_URL}/Entrees/showBonReception`,
     uploadData
   );
-  console.log(data.response[0], numCommande);
+  console.log(data, numCommande);
 
   state.bdr.all = data.response;
   console.log(state.bdr.all);
@@ -797,24 +797,23 @@ export const deleteBonRec = async function (numReception, numCommande) {
 };
 
 export const addBonReception = async function (newReception) {
-  const data = await fetch(`${API_URL}/Entrees/updateQuantite`, {
-    method: 'POST',
-    body: newReception,
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log('File uploaded successfully');
-        // Handle successful upload
-      } else {
-        console.error('Failed to upload file');
-        // Handle upload failure
-      }
-    })
-    .catch(error => {
-      console.error('Error uploading file:', error);
-      // Handle error
+  try {
+    const res = await fetch(`${API_URL}/Entrees/updateQuantite`, {
+      method: 'POST',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+      body: newReception,
     });
-  console.log('data', data);
+
+    const data = res.json();
+    console.log(res);
+    console.log(data);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const loadCommandeIntProducts = async function (numDemande) {

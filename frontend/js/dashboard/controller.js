@@ -1014,15 +1014,17 @@ const controlCancelCmds = async function () {
 };
 
 const controlLoadBRec = async function () {
-  const target = this;
-  const targetIndex = helpers.findNodeIndex(
-    document.querySelectorAll('.view-btr-btn'),
-    target
-  );
-  bonReceptionView._clear();
-  // console.log(model.state.bdc.allCommandes[targetIndex]);
-  model.state.bdc.selected =
-    model.state.bdc.allCommandes[targetIndex].num_commande;
+  if (model.state.bdc.selected === '') {
+    const target = this;
+    const targetIndex = helpers.findNodeIndex(
+      document.querySelectorAll('.view-btr-btn'),
+      target
+    );
+    bonReceptionView._clear();
+    model.state.bdc.selected =
+      model.state.bdc.allCommandes[targetIndex].num_commande;
+  }
+  console.log(model.state.bdc.selected);
   bonReceptionView.renderSpinner('', true);
   await model.loadBonRec(model.state.bdc.selected);
   bonReceptionView.unrenderSpinner(true);
@@ -1043,10 +1045,10 @@ function fun() {
 
 const controlAddBRec = async function (
   numBonLivraison,
-  numFacture,
   products,
   linkLivraison,
-  linkFacture
+  numFacture = '',
+  linkFacture = ''
 ) {
   const currentDay = new Date();
   const year = currentDay.getFullYear();
@@ -1055,17 +1057,19 @@ const controlAddBRec = async function (
   console.log(`${year}-${month}-${day}`);
 
   const newReception = new FormData();
-  newReception.append('numCommande', model.state.bdr.all[0].numCommande);
+  newReception.append('numCommande', model.state.bdc.selected);
   newReception.append('numLivraison', numBonLivraison);
-  newReception.append('numFacture', numFacture);
   newReception.append('produits', JSON.stringify(products));
-  newReception.append('facture', linkFacture);
   newReception.append('bonLivraison', linkLivraison);
   newReception.append('dateReception', `${year}-${month}-${day}`);
+  if (numFacture && linkFacture) {
+    newReception.append('numFacture', numFacture);
+    newReception.append('facture', linkFacture);
+  }
 
-  addBonReception.renderSpinner();
+  console.log([...newReception]);
   await model.addBonReception(newReception);
-  bonReceptionView.addHandlerShow(controlLoadBRec);
+  // await controlLoadBRec(model.state.bdc.selected);
   // await controlLoadCmds();
 };
 
@@ -1083,6 +1087,7 @@ const controlDeleteBonRec = async function () {
       "Suppression d'un bon de reception  " + el.num_bon + '...',
       true
     );
+    bonReceptionView.renderSpinner('', true);
     await model.deleteBonRec(el.num_bon, el.numCommande);
     bonReceptionView.unrenderSpinner(true);
     bonReceptionView.toggleWindow();

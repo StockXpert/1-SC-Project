@@ -1,4 +1,5 @@
 import { AddUserView } from '../addUserView.js';
+import * as helpers from '../../helpers.js';
 
 class AddBonReception extends AddUserView {
   _btnOpen = document.querySelector('.btn-add-bdr');
@@ -68,13 +69,15 @@ class AddBonReception extends AddUserView {
         <td>${result.designation}</td>
 
         <td>${result.quantite}</td>
-        <td>${
+        <td class="red-qt">${
           result.quantite - result.quantite_recu < 0
             ? 0
             : result.quantite - result.quantite_recu
         }</td>
         <td class="quantity">
-          <input class="green-qt" type="number" value="0" min="0" max="30" />
+          <input class="green-qt" type="number" value="0"  ${
+            result.quantite - result.quantite_recu <= 0 ? 'disabled' : ''
+          }/>
           <span class="material-icons-sharp">
             drive_file_rename_outline
           </span>
@@ -129,7 +132,6 @@ class AddBonReception extends AddUserView {
 
       const dataArray = [];
       tableRows.forEach(row => {
-        console.log(inputQuatite);
         const elementQuantite =
           +row.querySelector('td:nth-child(3)').textContent;
         const inputQuatite = +row.querySelector('input[type="number"]').value;
@@ -144,22 +146,40 @@ class AddBonReception extends AddUserView {
           dataArray.push(dataObject);
         } else throw new Error('Quantité Errorr');
       });
-      if (dataArray.length === 0) return console.log('No modification');
+      if (dataArray.length === 0)
+        return helpers.renderError(
+          'Aucune modification',
+          'Click sur anuler si vous ne voulez pas ajouter un bon de réception'
+        );
       console.log('SAUVGARDE', numBonLivraison.value, numFacture.value);
-      if (bonLivraisonInput.files.length > 0)
-        console.log(bonLivraisonInput.files[0]);
-      else console.log('no bon Livraison');
-      if (factureInput.files.length > 0) console.log(factureInput.files[0]);
-      else console.log('no facture');
+      if (bonLivraisonInput.files.length === 0 && !numBonLivraison.value)
+        return helpers.renderError(
+          'Tu doit ajouté un bon de livraison ',
+          'Le bon de livraison est obligatoire'
+        );
+      if (!mustIncludeFacture) {
+        console.log(dataArray);
+        await control(
+          +numBonLivraison.value,
+          dataArray,
+          bonLivraisonInput.files[0]
+        );
+      } else {
+        if (factureInput.files.length === 0 && !numFacture.value)
+          return helpers.renderError(
+            'Tu doit ajouté une facture',
+            'La facture est obligatoire lorsque tous les produit sont livré'
+          );
+        console.log(dataArray);
+        await control(
+          +numBonLivraison.value,
+          dataArray,
+          bonLivraisonInput.files[0],
+          factureInput.files[0] + numFacture.value
+        );
+      }
 
-      console.log(dataArray);
-      await control(
-        +numBonLivraison.value,
-        +numFacture.value,
-        dataArray,
-        bonLivraisonInput.files[0],
-        factureInput.files[0]
-      );
+      this.toggleWindow();
     });
   }
 }
