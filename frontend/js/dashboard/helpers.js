@@ -726,8 +726,8 @@ export function customSortForCmdsInt(a, b) {
   // Define the order based on the 'etat' property
   const order = {
     demande: 1,
-    'vise par rd': 2,
-    'vise par dg': 3,
+    'visee par resp': 2,
+    'visee par dg': 3,
     pret: 4,
     servie: 5,
   };

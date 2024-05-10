@@ -20,10 +20,6 @@ export class CmdsView extends UsersView {
   _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
 
   addEventListenerCheckboxesChange(handler = '') {
-    // this._btnDeleteBdc = document.querySelector('.btn-delete-bdc');
-    // this._btnCancelBdc = document.querySelector('.btn-cancel-bdc');
-    console.log('nice');
-    console.log(this._btnDeleteBdc, this._btnModifyBdc, this._btnCancelBdc);
     this._btnDeleteBdc.disabled = true;
     this._btnCancelBdc.disabled = true;
     if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;
@@ -31,11 +27,17 @@ export class CmdsView extends UsersView {
       cbx.addEventListener('change', e => {
         const tthis = e.currentTarget;
         if (tthis.checked) {
+          helpers.findClosestTrParent(tthis).classList.add('selected-row');
           this._checkboxes.forEach(otherCheckbox => {
             if (otherCheckbox !== tthis) {
+              helpers
+                .findClosestTrParent(otherCheckbox)
+                .classList.remove('selected-row');
               otherCheckbox.checked = false;
             }
           });
+        } else {
+          helpers.findClosestTrParent(tthis).classList.remove('selected-row');
         }
         this._checkedCheckboxes = this._parentElement.querySelectorAll(
           'input[type="checkbox"]:checked'

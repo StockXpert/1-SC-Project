@@ -141,6 +141,7 @@ export class CmdsIntView extends CmdsView {
     this._btnCancelBdc.disabled = true;
     if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;
     if (this._btnLivrerBdci) this._btnLivrerBdci.disabled = true;
+
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
         const tthis = e.currentTarget;
@@ -154,6 +155,8 @@ export class CmdsIntView extends CmdsView {
               otherCheckbox.checked = false;
             }
           });
+        } else {
+          helpers.findClosestTrParent(tthis).classList.remove('selected-row');
         }
         this._checkedCheckboxes = this._parentElement.querySelectorAll(
           'input[type="checkbox"]:checked'
@@ -163,6 +166,7 @@ export class CmdsIntView extends CmdsView {
           this._btnDeleteBdc.disabled = true;
           this._btnLivrerBdci ? (this._btnLivrerBdci.disabled = true) : '';
           this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
+
           this._btnCancelBdc.classList.add('disabled-delete-button');
           this._btnDeleteBdc.classList.add('disabled-delete-button');
           this._btnModifyBdc
@@ -230,8 +234,6 @@ export class CmdsIntView extends CmdsView {
   }
   addHandlerCmdsIntSearch(handler, filterHandler) {
     this._searchBox.addEventListener('input', e => {
-      // const event = new Event('change');
-      // this._filters.dispatchEvent(event);
       handler(this._searchBox.value);
       filterHandler(
         Array.from(this._filters.querySelectorAll('select')).map(
