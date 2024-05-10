@@ -714,3 +714,36 @@ export function getVisibleHeight2(element) {
   const visibleHeight = visibleBottom - visibleTop;
   return Math.min(visibleHeight, parentEl?.offsetHeight);
 }
+export function findClosestTrParent(checkboxElement) {
+  // Traverse up the DOM tree until a <tr> parent element is found
+  let currentElement = checkboxElement.parentElement;
+  while (currentElement && currentElement.tagName !== 'TR') {
+    currentElement = currentElement.parentElement;
+  }
+  return currentElement; // Returns the closest <tr> parent element or null if not found
+}
+export function customSortForCmdsInt(a, b) {
+  // Define the order based on the 'etat' property
+  const order = {
+    demande: 1,
+    'vise par rd': 2,
+    'vise par dg': 3,
+    pret: 4,
+    servie: 5,
+  };
+
+  // Compare the 'etat' properties
+  const etatComparison = order[a.etat] - order[b.etat];
+  if (etatComparison !== 0) {
+    return etatComparison;
+  }
+
+  // If 'etat' is the same, compare the 'date_demande'
+  const dateComparison = new Date(b.date_demande) - new Date(a.date_demande);
+  if (dateComparison !== 0) {
+    return dateComparison;
+  }
+
+  // If 'date_demande' is the same, compare the 'num_demande'
+  return b.num_demande - a.num_demande;
+}
