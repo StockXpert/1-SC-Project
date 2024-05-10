@@ -91,7 +91,10 @@ export class CmdsIntView extends CmdsView {
         ? `
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
-          result.etat.includes('visee par resp') ? '' : 'hidden'
+          result.etat.includes('visee par resp') ||
+          (result.etat.includes('demande') && result.exterieur)
+            ? ''
+            : 'hidden'
         }">
           <span class="material-icons-sharp verif-icon">
             check_circle
@@ -134,21 +137,26 @@ export class CmdsIntView extends CmdsView {
     return html;
   }
   addEventListenerCheckboxesChange(handler = '') {
-    // this._btnDeleteBdc = document.querySelector('.btn-delete-bdc');
-    // this._btnCancelBdc = document.querySelector('.btn-cancel-bdc');
     this._btnDeleteBdc.disabled = true;
     this._btnCancelBdc.disabled = true;
     if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;
     if (this._btnLivrerBdci) this._btnLivrerBdci.disabled = true;
+
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
         const tthis = e.currentTarget;
         if (tthis.checked) {
+          helpers.findClosestTrParent(tthis).classList.add('selected-row');
           this._checkboxes.forEach(otherCheckbox => {
             if (otherCheckbox !== tthis) {
+              helpers
+                .findClosestTrParent(otherCheckbox)
+                .classList.remove('selected-row');
               otherCheckbox.checked = false;
             }
           });
+        } else {
+          helpers.findClosestTrParent(tthis).classList.remove('selected-row');
         }
         this._checkedCheckboxes = this._parentElement.querySelectorAll(
           'input[type="checkbox"]:checked'
@@ -158,26 +166,16 @@ export class CmdsIntView extends CmdsView {
           this._btnDeleteBdc.disabled = true;
           this._btnLivrerBdci ? (this._btnLivrerBdci.disabled = true) : '';
           this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
-          this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
-          this._btnDeleteBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
+
+          this._btnCancelBdc.classList.add('disabled-delete-button');
+          this._btnDeleteBdc.classList.add('disabled-delete-button');
           this._btnModifyBdc
             ? this._btnModifyBdc.classList.add('disabled-button')
-            : ''; // Apply disabled appearance)
+            : '';
           this._btnLivrerBdci
             ? this._btnLivrerBdci.classList.add('disabled-save-button')
             : '';
         } else if (this._checkedCheckboxes.length === 1) {
-          console.log(
-            helpers.findNodeIndex(this._checkboxes, this._checkedCheckboxes[0])
-          );
-          console.log(
-            this._data[
-              helpers.findNodeIndex(
-                this._checkboxes,
-                this._checkedCheckboxes[0]
-              )
-            ].etat
-          );
           if (
             this._data[
               helpers.findNodeIndex(
@@ -189,10 +187,10 @@ export class CmdsIntView extends CmdsView {
             this._btnCancelBdc.disabled = false;
             this._btnDeleteBdc.disabled = false;
             this._btnModifyBdc ? (this._btnModifyBdc.disabled = false) : '';
-            this._btnCancelBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
-            this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
+            this._btnCancelBdc.classList.remove('disabled-delete-button');
+            this._btnDeleteBdc.classList.remove('disabled-delete-button');
             this._btnModifyBdc
-              ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
+              ? this._btnModifyBdc.classList.remove('disabled-button')
               : '';
           } else if (
             this._data[
@@ -211,10 +209,10 @@ export class CmdsIntView extends CmdsView {
             this._btnDeleteBdc.disabled = true;
             this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
             this._btnLivrerBdci ? (this._btnLivrerBdci.disabled = true) : '';
-            this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
-            this._btnDeleteBdc.classList.add('disabled-delete-button'); // Remove disabled appearance
+            this._btnCancelBdc.classList.add('disabled-delete-button');
+            this._btnDeleteBdc.classList.add('disabled-delete-button');
             this._btnModifyBdc
-              ? this._btnModifyBdc.classList.add('disabled-button') // Remove disabled appearance
+              ? this._btnModifyBdc.classList.add('disabled-button')
               : '';
             this._btnLivrerBdci
               ? this._btnLivrerBdci.classList.add('disabled-save-button')
@@ -236,8 +234,6 @@ export class CmdsIntView extends CmdsView {
   }
   addHandlerCmdsIntSearch(handler, filterHandler) {
     this._searchBox.addEventListener('input', e => {
-      // const event = new Event('change');
-      // this._filters.dispatchEvent(event);
       handler(this._searchBox.value);
       filterHandler(
         Array.from(this._filters.querySelectorAll('select')).map(
@@ -251,6 +247,19 @@ export class CmdsIntView extends CmdsView {
     this._filters
       .querySelectorAll('select')
       .forEach(filter => (filter.selectedIndex = 0));
+  }
+  restrictUsingRole(role) {
+    switch (role) {
+      case 'Magasinier':
+        document.querySelector('.btn-deliver-bdci').classList.remove('hidden');
+        break;
+      case 'Consommateur':
+        document.querySelector('.btn-delete-bdci').classList.remove('hidden');
+        document.querySelector('.btn-edit-bdci').classList.remove('hidden');
+        break;
+      default:
+        break;
+    }
   }
   _restricted = [, 'none'];
 }

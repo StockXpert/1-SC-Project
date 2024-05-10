@@ -329,6 +329,7 @@ aside .sidebar a:hover span {
 .chapitres-searchbar,
 .articles-searchbar,
 .produits-searchbar,
+.fournisseur-searchbar,
 .bdc-searchbar,
 .bdci-searchbar,
 .inv-searchbar {
@@ -343,6 +344,7 @@ aside .sidebar a:hover span {
 .main-search-chapitre,
 .main-search-article,
 .main-search-produit,
+.main-search-fournisseur,
 .main-search-permission,
 .main-search-bdc,
 .main-search-bdci,
@@ -355,6 +357,7 @@ aside .sidebar a:hover span {
 .container-searchbar-chapitre,
 .container-searchbar-article,
 .container-searchbar-produit,
+.container-searchbar-fournisseur,
 .container-searchbar-permission,
 .container-searchbar-bdc,
 .container-searchbar-bdci,
@@ -371,6 +374,7 @@ aside .sidebar a:hover span {
 .searchbar-article,
 .searchbar-produit,
 .searchbar-permission,
+.searchbar-fournisseur,
 .searchbar-bdc,
 .searchbar-bdci,
 .searchbar-inv {
@@ -394,6 +398,7 @@ aside .sidebar a:hover span {
 .searchbar-text-chapitre,
 .searchbar-text-article,
 .searchbar-text-produit,
+.searchbar-text-fournisseur,
 .searchbar-text-bdc,
 .searchbar-text-bdci,
 .searchbar-text-inv {
@@ -406,6 +411,7 @@ aside .sidebar a:hover span {
 .searchbar-text::placeholder,
 .searchbar-text-chapitre::placeholder,
 .searchbar-text-article::placeholder,
+.searchbar-text-fournisseur::placeholder,
 .searchbar-text-produit::placeholder {
   color: #9a9a9a;
 }
@@ -413,6 +419,7 @@ aside .sidebar a:hover span {
 .add-chapitres,
 .add-articles,
 .add-produits,
+.add-fournisseur,
 .add-bdc,
 .add-bdci,
 .add-inv {
@@ -427,6 +434,8 @@ aside .sidebar a:hover span {
 .add-users-btn,
 .add-chapitres-btn,
 .add-articles-btn,
+.add-fo-btn,
+.add-fournisseur-btn,
 .add-produits-btn {
   width: 12rem;
   height: 3rem;
@@ -483,6 +492,7 @@ aside .sidebar a:hover span {
 .add-chapitres-btn:hover,
 .add-articles-btn:hover,
 .add-produits-btn:hover,
+.add-fournisseur-btn:hover,
 .add-bdc-btn:hover,
 .add-btn-add-bdc:hover,
 .add-btn-edit-bdc:hover,
@@ -499,6 +509,7 @@ aside .sidebar a:hover span {
 .add-chapitres-btn:active,
 .add-articles-btn:active,
 .add-produits-btn:active,
+.add-fournisseur-btn:active,
 .add-bdc-btn:active,
 .add-btn-add-bdc:active,
 .add-btn-edit-bdc:active,
@@ -551,6 +562,7 @@ aside .sidebar a:hover span {
 .heading-table-btns-chapitres,
 .heading-table-btns-articles,
 .heading-table-btns-produits,
+.heading-table-btns-fournisseur,
 .heading-table-btns-bdc,
 .heading-table-btns-bdci,
 .heading-table-btns-inv,
@@ -709,8 +721,10 @@ aside .sidebar a:hover span {
 .cancel-btn-add-bdc:hover,
 .cancel-btn-edit-bdc:hover,
 .cancel-btn-edit-bdci:hover,
-.cancel-btn-edit-edit-bdci:hover .cancel-btn-add-bdci:hover {
-  transform: translateY(-4px);
+.cancel-btn-edit-edit-bdci:hover,
+.cancel-btn-add-bdci:hover,
+.cancel-btn-add-bdr:hover {
+  transform: translateY(-2px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 .btn-edit:active,
@@ -729,6 +743,7 @@ aside .sidebar a:hover span {
 .btn-delete-chapitres,
 .btn-delete-articles,
 .btn-delete-produits,
+.btn-delete-fournisseur,
 .btn-delete-bdc,
 .btn-delete-bdci,
 .btn-delete-inv,
@@ -742,8 +757,10 @@ aside .sidebar a:hover span {
 .btn-delete-chapitres:active,
 .btn-delete-articles:active,
 .btn-delete-produits:active,
+.btn-delete-fournisseur:active,
 .btn-delete-bdc:active,
-.btn-cancel-bdc:active {
+.btn-cancel-bdc:active,
+.btn-delete-fournisseur:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
   background-color: #b53939;
 }
@@ -751,6 +768,7 @@ aside .sidebar a:hover span {
 .btn-delete-chapitres:hover,
 .btn-delete-articles:hover,
 .btn-delete-produits:hover,
+.btn-delete-fournisseur:hover,
 .btn-delete-bdc:hover,
 .btn-cancel-bdc:hover,
 .cancel-permission-btn:hover {
@@ -764,6 +782,7 @@ aside .sidebar a:hover span {
 .heading-table-text-chapitres,
 .heading-table-text-articles,
 .heading-table-text-produits,
+.heading-table-text-fournisseur,
 .heading-table-text-bdc,
 .heading-table-text-bdci,
 .heading-table-text-inv,
@@ -870,6 +889,7 @@ aside .sidebar a:hover span {
 .table-container-chapitres,
 .table-container-articles,
 .table-container-produits,
+.table-container-fournisseur,
 .table-container-bdc,
 .table-container-bdci,
 .table-container-inv {
@@ -998,6 +1018,7 @@ table tbody tr:last-child td {
 #checkbox-table-chapitres,
 #checkbox-table-articles,
 #checkbox-table-produits,
+#checkbox-table-fournisseur,
 #checkbox-table-bdc-add,
 #checkbox-table-bdr-add,
 #checkbox-table-bdr-show {
@@ -1028,6 +1049,7 @@ table tbody tr:last-child td {
 #checkbox-table:checked,
 #checkbox-table-chapitres:checked,
 #checkbox-table-articles:checked,
+#checkbox-table-fournisseur:checked,
 #checkbox-table-produits:checked {
   background-color: #4b4b4b;
   border: none;
@@ -1038,6 +1060,7 @@ table tbody tr:last-child td {
 .details-btn-chapitres,
 .details-btn-articles,
 .details-btn-produits,
+.details-btn-fournisseur,
 .details-btn-bdc-add,
 .details-btn-bdci-add,
 .details-btn-edit-bdci-add,
@@ -1264,6 +1287,9 @@ table tbody tr:last-child td {
   font-weight: 600;
   font-size: 1.5rem;
   color: #49bf20;
+  border: 1px solid #545454;
+  padding: 0rem 0.2rem;
+  border-radius: 0.5rem;
 }
 .red-reste {
   /* color: #e1d901; */
@@ -1290,7 +1316,9 @@ table tbody tr:last-child td {
 .checkbox-colomn-chapitres,
 .checkbox-colomn-articles,
 .checkbox-colomn-produits,
+.checkbox-colomn-fournisseur,
 .checkbox-colomn-permissions,
+.checkbox-colomn-fournisseur,
 .checkbox-colomn-bdc,
 .checkbox-colomn-bdci,
 .checkbox-colomn-inv,
@@ -1443,6 +1471,10 @@ table tbody tr:last-child td {
 
 .add-user-container,
 .add-structure-container,
+.add-fournisseur-container,
+.add-article-container,
+.add-produits-container,
+.add-chapitre-container,
 .add-role-container {
   display: block;
   position: fixed;
@@ -2487,6 +2519,7 @@ a.password-icon:active {
 .results-chapitres,
 .results-articles,
 .results-produits,
+.results-fournisseur,
 .results-bdc-produits,
 .results-bdci-produits,
 .results-bdr-produits,

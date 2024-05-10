@@ -1,4 +1,3 @@
-// import icons from '../../../img/icons.svg';
 import * as helpers from '../helpers.js';
 import * as model from '../model.js';
 
@@ -11,7 +10,6 @@ HTMLInputElement.prototype.changeInputValidity = function (
   const validityDiv = parent.querySelector('.validity-message');
   // Check if the message is empty (neutral)
   if (validityMessage.length == 0) {
-    console.log('length == 0');
     validityDiv.classList.add('hidden');
     validityDiv.style.color = '#313131';
     parent.classList.remove('input-product--invalid');
@@ -122,8 +120,11 @@ export default class View {
     }
   }
   renderSpinner = function (message = '', isTrueParent = false) {
+    let height = helpers.getVisibleHeight2(this._parentElement);
     const markup = `
-      <div class="spinner-parent">
+      <div class="spinner-parent" ${
+        !isTrueParent ? `style="max-height: ${height}px;` : ''
+      }">
       <b>${!message ? '' : `<div class="spinner"></div>`} ${message}</b>
       ${message ? '' : `<div class="spinner"></div>`}
       </div>

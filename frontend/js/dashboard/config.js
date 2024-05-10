@@ -1,5 +1,5 @@
 export const API_URL = 'http://localhost:3000';
-export const TIMEOUT_SEC = 10;
+export const TIMEOUT_SEC = 30;
 export const MODAL_CLOSE_SEC = 2.5;
 export const FUSE_OPTIONS = {
   isCaseSensitive: false,
@@ -36,7 +36,7 @@ export const FUSE_OPTIONS_CMDSINT = {
   includeScore: true,
   shouldSort: true,
   threshold: 0.3,
-  keys: ['num_demande'],
+  keys: ['num_demande', 'id_demandeur'],
 };
 
 export const GROUP_DEFINITIONS = {
@@ -96,6 +96,9 @@ export const GROUP_DEFINITIONS = {
   ],
   'Commandes Internes': [
     'demande fourniture',
+    'delete fourniture',
+    'show demande',
+    'show new demandes',
     'approuve fourniture by responsable',
     'approuve fourniture by director',
     'approuve fourniture by magasinier',
@@ -162,6 +165,9 @@ export const PERM_NAMES = {
   'delete reception': 'Supprimmer un bon de réception',
   'show bon reception': 'Afficher les bons de réception',
   'demande fourniture': 'Créer un bon de commande interne',
+  'delete fourniture': 'Supprimmer une commande interne',
+  'show new demandes': 'Voir les nouvelles demandes (Commandes Internes)',
+  'show demande': "Voir les détails d'une commadne interne",
   'approuve fourniture by responsable':
     'Approuver les bon de commandes internes (par un responsable directe)',
   'approuve fourniture by director':

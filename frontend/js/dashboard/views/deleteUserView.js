@@ -7,11 +7,13 @@ export class DeleteUserView extends AddUserView {
   _btnClose = document.querySelector('.supp-user-annuler');
   _confirm = document.querySelector('.supp-user-confirmer');
 
-  constructor() {
+  constructor(nerfed = false) {
     super();
-    this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
-    this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
-    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    if (!nerfed) {
+      this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
+      this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+      this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    }
   }
 
   addDeleteController(ctrler) {

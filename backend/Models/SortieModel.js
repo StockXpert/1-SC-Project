@@ -419,9 +419,10 @@ function getNewDemandes(role,etat,email,notif)
         const connection = mysql.createConnection(connectionConfig);
         const query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${notif}=true and etat=? 
         ${role==="Consommateur"?"and id_demande=?":''}
-        ${(etat==='demande'||role==="Directeur")?`and id_demandeur in
+        ${(etat==='demande'||role==="Directeur")?` and id_demandeur in
         (select email from utilisateur where id_structure=
-         (select id_structure from structure where id_resp=?))`:''}`
+         (select id_structure from structure where id_resp=?) or id_role=
+        (select id_role from role where designation='Magasinier'))`:''}`
         const values = [etat];
         if(etat==='demande') values.push(email)
         connection.connect((err) => {
@@ -837,12 +838,12 @@ function insertDechargeLink(numDemande,dechargeLink,link2)
         });
       });
 }
-function insertDateNumDecharge(numDemande,numDecharge,dateDecharge)
+function insertDateDecharge(numDemande,dateDecharge)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set date_decharge=?,num_decharge=? where num_demande=?`;
-        const values = [dateDecharge,numDecharge,numDemande];
+        const query = `update demande_fourniture set date_decharge=?, where num_demande=?`;
+        const values = [dateDecharge,numDemande];
       
         connection.connect((err) => {
           if (err) {
@@ -943,4 +944,4 @@ module.exports={addFourniture,insertFournir,updateAccordedQuantite,changeDemande
                deleteFourniture,canDeleteFourniture,getNewDemandes,getAllDemandes,updateDemandedQuantite,
             getDemandeStatus,deleteProductsFournir,readNotif,insertLink,
             getDemandeProducts,insertDateSortie,readAllNotif,getDemande,isExterior,insertDechargeLink
-        ,insertDateNumDecharge,insertDecharge}
+        ,insertDateDecharge,insertDecharge}
