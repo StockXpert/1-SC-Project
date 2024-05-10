@@ -659,7 +659,9 @@ export const loadCmdsInt = async function () {
   );
   console.log(state.commandesInt);
   state.commandesInt.all = commandesInt.response.sort(
-    (a, b) => new Date(b.date_demande) - new Date(a.date_demande)
+    // (a, b) => new Date(b.date_demande) - new Date(a.date_demande)
+    // (a, b) => b.num_demande - a.num_demande
+    helpers.customSortForCmdsInt
   );
   console.log(state.commandesInt.all);
   state.commandesInt.afterFilters = state.commandesInt.all;
@@ -871,7 +873,10 @@ export const loadAllInv = async function () {
       );
       return false;
     } else state.inventaires.all = responseArray[1].response;
-    return responseArray[1].response;
+    let response = responseArray[1].response.sort(
+      (a, b) => b.num_inventaire - a.num_inventaire
+    );
+    return response;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
