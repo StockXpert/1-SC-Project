@@ -226,10 +226,11 @@ export class CmdsIntView extends CmdsView {
             case 'pret':
               enableBtns([this._btnLivrerBdci]);
               break;
-            case 'non valide':
+            case 'no valid':
+              console.log([this._btnDeleteInv, this._btnModifyInv]);
               enableBtns([this._btnDeleteInv, this._btnModifyInv]);
               break;
-            case 'valide':
+            case 'valid':
               enableBtns([this._btnUpdateInv]);
               break;
             default:
