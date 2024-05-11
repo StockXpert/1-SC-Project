@@ -52,6 +52,7 @@ class AddBonReception extends AddUserView {
       this._data.every(result => result.quantite - result.quantite_recu === 0)
     ) {
       helpers.renderError('Tout Est livré', 'Il rest plus a livré');
+      this._sauvgarde.classList.toggle('hidden');
     }
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))

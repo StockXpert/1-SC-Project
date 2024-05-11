@@ -147,6 +147,9 @@ export const state = {
     all: {},
     selected: {},
   },
+  chapters: {
+    all: [],
+  },
 };
 export const getMyPerms = async function () {
   const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
@@ -926,5 +929,15 @@ export const deleteCmdInt = async function (numDemande) {
     return responseArray;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+
+export const loadChapitres = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Nomenclatures/showChapters`);
+    console.log(data.response);
+    state.chapters.all = data.response;
+  } catch (error) {
+    console.error('Error loadChapitres :' + error);
   }
 };
