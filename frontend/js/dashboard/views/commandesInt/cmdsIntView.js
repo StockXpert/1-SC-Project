@@ -173,23 +173,15 @@ export class CmdsIntView extends CmdsView {
     return html;
   }
   addEventListenerCheckboxesChange(handler = '') {
-    // this._btnDeleteBdci.disabled = true;
-    // this._btnCancelBdc.disabled = true;
-    // this._btnDeleteInv && (this._btnDeleteInv.disabled = true);
-    // this._btnModifyInv && (this._btnModifyInv.disabled = true);
-    // this._btnUpdateInv && (this._btnUpdateInv.disabled = true);
-    // this._btnModifyBdci && (this._btnModifyBdci.disabled = true);
-    // this._btnLivrerBdci && (this._btnLivrerBdci.disabled = true);
-
-    disableBtns(
+    disableBtns([
       this._btnDeleteBdci,
       this._btnCancelBdc,
       this._btnDeleteInv,
       this._btnModifyInv,
       this._btnUpdateInv,
       this._btnModifyBdci,
-      this._btnLivrerBdci
-    );
+      this._btnLivrerBdci,
+    ]);
 
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
