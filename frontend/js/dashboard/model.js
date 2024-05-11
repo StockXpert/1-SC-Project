@@ -145,7 +145,24 @@ export const state = {
   },
   inventaires: {
     all: {},
-    selected: {},
+    new: {
+      numInventaire: '',
+      dateInventaire: '',
+      produits: [
+        {
+          designation: '',
+          quantitePhys: '',
+          raison: '',
+        },
+        {},
+      ],
+      selectedProduct: '',
+    },
+    selected: {
+      numInventaire: '',
+      oldProduits: {},
+      currentProduits: {},
+    },
   },
 };
 export const getMyPerms = async function () {
@@ -926,4 +943,41 @@ export const deleteCmdInt = async function (numDemande) {
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
+};
+// export const loadAllProducts = async function () {
+//   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+//   return products.response;
+// };
+export const loadAllProductsPerms = async function () {
+  try {
+    let responseArray = await helpers.getJSONReturnResResp(
+      `${API_URL}/Nomenclatures/showProducts`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        show products :
+        'Afficher les produits',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const prepareNewInventaire = async function (productsArr = []) {
+  const newInv = productsArr.map(product => {
+    return {
+      raison: '',
+      designation: product.designation,
+      quantiteLog: product.quantite,
+      quantitePhys: '',
+    };
+  });
+  state.inventaires.new.produits = newInv;
+  return newInv;
 };

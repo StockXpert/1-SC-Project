@@ -43,6 +43,7 @@ import deleteBonReception from './views/commandes/deleteBonReception.js';
 import invView from './views/inventaires/InvView.js';
 import deliverCmdsExtView from './views/commandesInt/deliverCmdsExtView.js';
 import deleteCmdsIntView from './views/commandesInt/deleteCmdsIntView.js';
+import addInvView from './views/inventaires/addInvView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1385,20 +1386,29 @@ const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
 const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   //ONCLICK OF A EDIT BUTTON
   let productsArray;
+  let target = e.currentTarget;
+  let targetIndex;
   switch (view.constructor.name) {
     case 'EditCmdsIntView':
       productsArray = model.state.commandesInt.selected.products;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       break;
     case 'AddCmdsIntView':
       productsArray = model.state.bdci_products.added;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      break;
+    case 'AddInvView':
+      productsArray = model.state.inventaires.new.produits;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      console.log(productsArray[targetIndex]);
       break;
   }
-  const target = e.currentTarget;
-  const targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+
   //Use it to extract the input data from the state object
   view.changeInputs(productsArray[targetIndex]);
   model.state.bdci_products.changed = targetIndex;
   model.state.commandesInt.selected.changed = targetIndex;
+  model.state.inventaires.new.selectedProduct = targetIndex;
 };
 
 const controlChangeProductInt = function (
@@ -1770,7 +1780,6 @@ const controlDeliverCmdsInt = async view => {
     cmdsIntView.unrenderSpinner('');
     await controlLoadCmdsInt();
   }
-  // console.log(postObj);
 };
 
 const controlDechargerCmdsInt = async dataObj => {
@@ -1787,7 +1796,6 @@ const controlDechargerCmdsInt = async dataObj => {
       reference: refrence,
     });
   });
-  console.log(postObj);
   cmdsIntView.renderSpinner(
     `Validation finale de la commande N°${
       model.state.commandesInt.rendered[
@@ -1823,6 +1831,28 @@ const controlLoadInv = async () => {
     model.state.me.permissions.all
   );
   invView.resetPointers();
+};
+// const controlModifyCmdsInt = async function () {
+export const controlSetRemark = remark => {
+  model.state.inventaires.new.produits[
+    model.state.inventaires.new.selectedProduct
+  ].raison = remark;
+  model.state.inventaires.new.produits[
+    model.state.inventaires.new.selectedProduct
+  ].quantitePhys =
+    addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
+  addInvView.render(model.state.inventaires.new);
+  addInvView.resetPointers();
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+const controlAddInv = async function () {
+  //ONCLICK OF the Créer un état inventaire BUTTON
+  addInvView.renderSpinner('');
+  const allProducts = await model.loadAllProductsPerms();
+  model.prepareNewInventaire(allProducts[1].response);
+  addInvView.render(model.state.inventaires.new);
+  addInvView.resetPointers();
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -1951,3 +1981,6 @@ deliverCmdsExtView.addHandlerHideWindow(
 );
 deliverCmdsExtView.addHandlerDeliver(controlDechargerCmdsInt);
 deleteCmdsIntView.addDeleteController(controlDeleteCmdsInt);
+
+addInvView.addHandlerEdit(controlAddInv);
+addInvView.addHandlerSetRemark(controlSetRemark);

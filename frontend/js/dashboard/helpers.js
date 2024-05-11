@@ -614,8 +614,8 @@ export const validateInputPrice = function (input) {
 
 // inputValidation.js
 
-export const validateIntegerInput = function (input, maxValue) {
-  input.addEventListener('input', event => {
+export const validateIntegerInput = function (input, maxValue = 0) {
+  input?.addEventListener('input', event => {
     let value = event.target.value;
 
     // Remove leading zeros
@@ -631,7 +631,7 @@ export const validateIntegerInput = function (input, maxValue) {
     if (isNaN(intValue) || intValue < 0) {
       intValue = 0;
     } else if (intValue >= maxValue) {
-      intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
+      if (maxValue) intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
     }
 
     // Update input value

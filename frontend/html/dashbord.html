@@ -5203,15 +5203,15 @@
       <!-- fin section pour voir les bdci -->
       <!-- debut section pour cree un état d'inventaire -->
       <div class="big-container-inv hidden">
-        <div class="add-info-container">
-          <div class="add-info-cart">
-            <div class="heading-add-info">
+        <div class="edit-info-container hidden">
+          <div class="edit-info-cart">
+            <div class="heading-edit-info">
               <p>Raison</p>
             </div>
             <form class="inputs-info">
               <div class="input-info">
                 <input
-                  name="justify"
+                  name="raison"
                   type="text"
                   placeholder="Donnez la raison de la difference"
                   id="justify"
@@ -5221,10 +5221,8 @@
               </div>
 
               <div class="btn-info">
-                <button class="cancel-btn-add-bdc cancel-btn-info">
-                  Annuler
-                </button>
-                <button class="add-btn-add-bdc add-btn-info">Confirmer</button>
+                <button class="cancel-btn-edit-info">Annuler</button>
+                <button class="edit-btn-info">Confirmer</button>
               </div>
             </form>
           </div>
@@ -5270,7 +5268,7 @@
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
-                  <tr class="selected-row">
+                  <tr>
                     <!--ajoute selected-row for selected lines-->
                     <td>
                       <div class="colomn-product-des">
@@ -5477,6 +5475,7 @@
       <div class="overlay overlayEditBDCI hidden"></div>
       <div class="overlay overlayValidateBDCI hidden"></div>
       <div class="overlay overlayBDD hidden"></div>
+      <div class="overlay overlayInv hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

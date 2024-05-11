@@ -495,6 +495,8 @@ aside .sidebar a:hover span {
 .add-fournisseur-btn:hover,
 .add-bdc-btn:hover,
 .add-btn-add-bdc:hover,
+.add-btn-info:hover,
+.edit-btn-info:hover,
 .add-btn-edit-bdc:hover,
 .add-btn-edit-bdci:hover,
 .add-btn-add-bdci:hover,
@@ -512,6 +514,8 @@ aside .sidebar a:hover span {
 .add-fournisseur-btn:active,
 .add-bdc-btn:active,
 .add-btn-add-bdc:active,
+.add-btn-add-info:active,
+.add-btn-edit-info:active,
 .add-btn-edit-bdc:active,
 .add-btn-edit-bdci:active,
 .add-btn-add-bdci:active,
@@ -693,14 +697,19 @@ aside .sidebar a:hover span {
 .add-btn-edit-bdci,
 .add-btn-add-bdci,
 .btn-deliver-bdci,
+.add-btn-info,
+.edit-btn-info,
 .btn-maj-inv {
   color: white;
   background: #477ce2;
+  cursor: pointer;
 }
 .cancel-btn-add-bdc,
 .cancel-btn-edit-bdc,
 .cancel-btn-edit-bdci,
 .cancel-btn-edit-edit-bdci,
+.cancel-btn-add-info,
+.cancel-btn-edit-info,
 .cancel-btn-add-bdci {
   cursor: pointer;
   color: #000000;
@@ -1130,7 +1139,8 @@ table tbody tr:last-child td {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.add-info-container {
+.add-info-container,
+.edit-info-container {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -1188,6 +1198,7 @@ table tbody tr:last-child td {
   position: relative;
   /* overflow: hidden; */
 }
+.edit-info-cart,
 .add-info-cart {
   width: 18rem;
   height: auto;
@@ -1626,6 +1637,7 @@ table tbody tr:last-child td {
 }
 .add-product-bdc-cart,
 .add-info-cart,
+.edit-info-cart,
 .edit-product-bdc-cart,
 .edit-product-bdci-cart {
   display: flex;
@@ -1664,6 +1676,7 @@ table tbody tr:last-child td {
 }
 .heading-add-product-bdc p,
 .heading-add-info p,
+.heading-edit-info p,
 .heading-add-product-bdci p,
 .heading-edit-product-bdc p,
 .heading-edit-product-bdci p {
