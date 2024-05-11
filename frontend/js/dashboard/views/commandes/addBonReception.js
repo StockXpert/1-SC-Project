@@ -175,7 +175,8 @@ class AddBonReception extends AddUserView {
           +numBonLivraison.value,
           dataArray,
           bonLivraisonInput.files[0],
-          factureInput.files[0] + numFacture.value
+          numFacture.value,
+          factureInput.files[0]
         );
       }
 

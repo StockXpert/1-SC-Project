@@ -805,11 +805,12 @@ export const addBonReception = async function (newReception) {
       method: 'POST',
       headers: {
         Authorization: localStorage.getItem('JWT'),
-        'Content-Type': 'application/json',
       },
       body: newReception,
     });
-
+    if (!res.ok) {
+      throw new Error('Erreur lors de la requête');
+    }
     const data = res.json();
     console.log(res);
     console.log(data);

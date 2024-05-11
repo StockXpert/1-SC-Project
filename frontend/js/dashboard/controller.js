@@ -1055,7 +1055,7 @@ const controlAddBRec = async function (
   const year = currentDay.getFullYear();
   const month = String(currentDay.getMonth() + 1).padStart(2, '0');
   const day = String(currentDay.getDate()).padStart(2, '0');
-  console.log(`${year}-${month}-${day}`);
+  console.log(`${year}/${month}/${day}`);
 
   const newReception = new FormData();
   newReception.append('numCommande', model.state.bdc.selected);
@@ -1063,7 +1063,7 @@ const controlAddBRec = async function (
   newReception.append('produits', JSON.stringify(products));
   newReception.append('bonLivraison', linkLivraison);
   newReception.append('dateReception', `${year}-${month}-${day}`);
-  if (numFacture && linkFacture) {
+  if (numFacture.length != 0 && linkFacture.length != 0) {
     newReception.append('numFacture', numFacture);
     newReception.append('facture', linkFacture);
   }
