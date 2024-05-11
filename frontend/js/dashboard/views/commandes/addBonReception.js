@@ -48,17 +48,19 @@ class AddBonReception extends AddUserView {
           .querySelector('thead')
           .querySelectorAll('th').length
       }><b>Aucun Produit est trouvé pour ce bon de Commande </b></td></tr>`;
-    // if (
-    //   this._data.every(result => result.quantite - result.quantite_recu <= 0)
-    // ) {
-    //TODO:
-    // }
+    if (
+      this._data.every(result => result.quantite - result.quantite_recu === 0)
+    ) {
+      helpers.renderError('Tout Est livré', 'Il rest plus a livré');
+    }
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');
   }
 
   _generateMarkupPreview(result) {
+    const qtRest = result.quantite - result.quantite_recu;
+    console.log(qtRest);
     return `
       <tr>
         <td>
@@ -69,18 +71,18 @@ class AddBonReception extends AddUserView {
         <td>${result.designation}</td>
 
         <td>${result.quantite}</td>
-        <td class="red-qt">${
-          result.quantite - result.quantite_recu < 0
-            ? 0
-            : result.quantite - result.quantite_recu
-        }</td>
+        <td class="red-qt">${qtRest < 0 ? 0 : qtRest}</td>
         <td class="quantity">
-          <input class="green-qt" type="number" value="0"  ${
-            result.quantite - result.quantite_recu <= 0 ? 'disabled' : ''
-          }/>
-          <span class="material-icons-sharp">
-            drive_file_rename_outline
-          </span>
+          ${
+            qtRest > 0
+              ? `
+              <input class="green-qt" type="number" value="0"/>
+                <span class="material-icons-sharp">
+                  drive_file_rename_outline
+                </span>
+              `
+              : '<p>Ce produit est livré</p>'
+          }
         </td>
       </tr>
     `;
@@ -105,26 +107,31 @@ class AddBonReception extends AddUserView {
     let mustIncludeFacture;
     tableRows.forEach((row, i) => {
       const elementQuantite = +row.querySelector('td:nth-child(4)').textContent;
-      row.querySelector('input[type="number"]').addEventListener('input', e => {
-        const enteredValue = parseInt(e.target.value);
-        if (isNaN(enteredValue)) {
-          // If entered value is not a number, reset to empty string
-          e.target.value = '';
-        } else if (enteredValue < 0 || enteredValue > elementQuantite) {
-          // If entered value is outside the range, reset to the nearest limit
-          e.target.value = Math.min(Math.max(enteredValue, 0), elementQuantite);
-        }
+      row
+        .querySelector('input[type="number"]')
+        ?.addEventListener('input', e => {
+          const enteredValue = parseInt(e.target.value);
+          if (isNaN(enteredValue)) {
+            // If entered value is not a number, reset to empty string
+            e.target.value = '';
+          } else if (enteredValue < 0 || enteredValue > elementQuantite) {
+            // If entered value is outside the range, reset to the nearest limit
+            e.target.value = Math.min(
+              Math.max(enteredValue, 0),
+              elementQuantite
+            );
+          }
 
-        results[i] = e.target.value - elementQuantite;
-        mustIncludeFacture = results.every(el => el === 0);
-        if (mustIncludeFacture) {
-          factureInput.parentElement.classList.remove('hidden');
-          numFacture.parentElement.classList.remove('hidden');
-        } else if (!factureInput.parentElement.classList.contains('hidden')) {
-          factureInput.parentElement.classList.add('hidden');
-          numFacture.parentElement.classList.add('hidden');
-        }
-      });
+          results[i] = e.target.value - elementQuantite;
+          mustIncludeFacture = results.every(el => el === 0);
+          if (mustIncludeFacture) {
+            factureInput.parentElement.classList.remove('hidden');
+            numFacture.parentElement.classList.remove('hidden');
+          } else if (!factureInput.parentElement.classList.contains('hidden')) {
+            factureInput.parentElement.classList.add('hidden');
+            numFacture.parentElement.classList.add('hidden');
+          }
+        });
     });
 
     this._sauvgarde.addEventListener('click', async e => {
@@ -134,7 +141,12 @@ class AddBonReception extends AddUserView {
       tableRows.forEach(row => {
         const elementQuantite =
           +row.querySelector('td:nth-child(3)').textContent;
-        const inputQuatite = +row.querySelector('input[type="number"]').value;
+        let inputQuatite;
+        try {
+          inputQuatite = +row.querySelector('input[type="number"]').value;
+        } catch (error) {
+          helpers.renderError('Tout Est livré', 'Il rest plus a livré');
+        }
         console.log(elementQuantite);
         if (!inputQuatite) return;
         if (inputQuatite <= elementQuantite) {

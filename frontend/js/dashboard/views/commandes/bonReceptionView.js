@@ -92,9 +92,15 @@ class BonReceptionView extends View {
           </a>
         </td>
         <td class="td-view-fac">
-          <a class="view-fac-btn" href="../../backend/${result.link_facture}">
-            <p>Voir Facture</p>
-          </a>
+        ${
+          result.num_facture
+            ? `
+            <a class="view-fac-btn" href="../../backend/${result.link_facture}">
+              <p>Voir Facture</p>
+            </a>`
+            : '<p>Pas de facture</p>'
+        }
+          
         </td>
         <td>
           <a
