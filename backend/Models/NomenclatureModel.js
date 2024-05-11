@@ -756,7 +756,7 @@ function getChapters()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'select designation from chapitre ';
+    const query = 'select designation,num_chap from chapitre ';
     
   
     connection.connect((err) => {
