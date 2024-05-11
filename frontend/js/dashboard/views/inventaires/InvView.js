@@ -67,6 +67,7 @@ export class InvView extends CmdsIntView {
         this._btnUpdateInv.classList.remove('hidden');
         break;
       case 'Magasinier':
+        console.log(this);
         this._btnDeleteInv.classList.remove('hidden');
         this._btnModifyInv.classList.remove('hidden');
         this._btnAddInv.classList.remove('hidden');

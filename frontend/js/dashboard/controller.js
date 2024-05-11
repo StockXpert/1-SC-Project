@@ -1810,7 +1810,7 @@ const controlDechargerCmdsInt = async dataObj => {
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 const controlLoadInv = async () => {
-  invView.restrictActionsUsingRoleInv();
+  invView.restrictActionsUsingRoleInv(model.state.me.role);
   invView.renderSpinner();
   invHeaderView.render({}, true, model.state.me.permissions.all);
   if (!(await model.loadAllInv())) {
