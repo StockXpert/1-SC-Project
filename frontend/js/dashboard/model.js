@@ -164,6 +164,9 @@ export const state = {
       currentProduits: {},
     },
   },
+  chapters: {
+    all: [],
+  },
 };
 export const getMyPerms = async function () {
   const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
@@ -822,11 +825,12 @@ export const addBonReception = async function (newReception) {
       method: 'POST',
       headers: {
         Authorization: localStorage.getItem('JWT'),
-        'Content-Type': 'application/json',
       },
       body: newReception,
     });
-
+    if (!res.ok) {
+      throw new Error('Erreur lors de la requête');
+    }
     const data = res.json();
     console.log(res);
     console.log(data);
@@ -980,4 +984,14 @@ export const prepareNewInventaire = async function (productsArr = []) {
   });
   state.inventaires.new.produits = newInv;
   return newInv;
+};
+
+export const loadChapitres = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Nomenclatures/showChapters`);
+    console.log(data.response);
+    state.chapters.all = data.response;
+  } catch (error) {
+    console.error('Error loadChapitres :' + error);
+  }
 };

@@ -615,6 +615,11 @@ aside .sidebar a:hover span {
   gap: 1rem;
   align-items: center;
 }
+.num-inv-inputs {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 .heading-table-file-add-1-bdr,
 .heading-table-file-add-2-bdr,
 .heading-table-date-end-bdd {
@@ -628,7 +633,8 @@ aside .sidebar a:hover span {
   color: #4b4b4b;
 }
 .num-bdd-inputs p,
-.heading-table-date-end-bdd p {
+.heading-table-date-end-bdd p,
+.num-inv-inputs p {
   font-size: 1.2rem;
   font-weight: 500;
   color: #4b4b4b;
@@ -806,9 +812,14 @@ aside .sidebar a:hover span {
   gap: 1rem;
   padding: 0.6rem;
 }
+.heading-table-text-add-inv {
+  /* width: 100%; */
+  padding: 0.6rem;
+}
 .input-num-bdr,
 .input-num-bdd,
-.input-date-bdd {
+.input-date-bdd,
+.input-num-inv {
   font-size: 1.1rem;
   padding: 0.4rem;
   border-radius: 15px;

@@ -38,12 +38,13 @@ import cancelCmdsView from './views/commandes/cancelCmdsView.js';
 import seeCmdsView from './views/commandes/seeCmdsView.js';
 import seeCmdsIntView from './views/commandesInt/seeCmdsIntView.js';
 import addBonReception from './views/commandes/addBonReception.js';
-import View from './views/view.js';
+// import View from './views/view.js';
 import deleteBonReception from './views/commandes/deleteBonReception.js';
 import invView from './views/inventaires/InvView.js';
 import deliverCmdsExtView from './views/commandesInt/deliverCmdsExtView.js';
 import deleteCmdsIntView from './views/commandesInt/deleteCmdsIntView.js';
 import addInvView from './views/inventaires/addInvView.js';
+import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1056,7 +1057,7 @@ const controlAddBRec = async function (
   const year = currentDay.getFullYear();
   const month = String(currentDay.getMonth() + 1).padStart(2, '0');
   const day = String(currentDay.getDate()).padStart(2, '0');
-  console.log(`${year}-${month}-${day}`);
+  console.log(`${year}/${month}/${day}`);
 
   const newReception = new FormData();
   newReception.append('numCommande', model.state.bdc.selected);
@@ -1064,7 +1065,7 @@ const controlAddBRec = async function (
   newReception.append('produits', JSON.stringify(products));
   newReception.append('bonLivraison', linkLivraison);
   newReception.append('dateReception', `${year}-${month}-${day}`);
-  if (numFacture && linkFacture) {
+  if (numFacture.length != 0 && linkFacture.length != 0) {
     newReception.append('numFacture', numFacture);
     newReception.append('facture', linkFacture);
   }
@@ -1867,6 +1868,39 @@ editCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
 deleteCmdsView.addDeleteController(controlDeleteCmds);
 cancelCmdsView.addCancelController(controlCancelCmds);
 
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// Nomenclaturess #f00
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+const controlLoadChapters = async function () {
+  try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show chapters'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
+    chaptersView;
+    chaptersView.restrict(model.state.me.permissions.all);
+    // AddStructureView.restrict(model.state.me.permissions.all);
+    // deleteStructureView.restrict(model.state.me.permissions.all);
+    chaptersView.renderSpinner('Loading Chapters');
+    await model.loadChapitres();
+    chaptersView.render(model.state.chapters.all);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
@@ -1884,7 +1918,7 @@ const controllers = [
   ,
   ,
   ,
-  ,
+  controlLoadChapters,
   ,
   controlLoadCmds,
   controlLoadCmdsInt,
