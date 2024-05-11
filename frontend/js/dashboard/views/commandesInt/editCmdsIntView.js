@@ -24,7 +24,7 @@ export class EditCmdsIntView extends AddCmdsIntView {
     }
   }
   _btnOpen = document.querySelector('.btn-edit-bdci');
-  _btnModifyBdc = document.querySelector('.btn-edit-bdci');
+  _btnModifyBdci = document.querySelector('.btn-edit-bdci');
   _overlay = document.querySelector('.overlayEditBDCI');
   _window = document.querySelector('.big-container-edit-bdci');
   _btnClose = document.querySelector('#edit-bdci-close');
