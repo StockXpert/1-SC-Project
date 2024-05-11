@@ -66,7 +66,7 @@ function insertCompter(numInventaire, produits) {
                         const id_produit = rows[0].id_produit;
   
                         // Insérer les données dans ma_table avec l'ID produit récupéré
-                        connection.query('INSERT INTO compter (num_inventaire, id_produit, quantite_phys) VALUES (?, ?, ?)', [numInventaire, id_produit, produit.quantitePhys], (err, result) => {
+                        connection.query('INSERT INTO compter (num_inventaire, id_produit, quantite_phys) VALUES (?, ?, ?)', [numInventaire, id_produit, produit.quantitePhys,produit.raison], (err, result) => {
                             if (err) {
                                 return callback(err);
                             }
