@@ -1097,7 +1097,7 @@
         </div>
         <!------ fin de content for ServiceAchat : 1 - Chapitres tables----- -->
         <!------ debut de content for ServiceAchat : 2 - articles tables----- -->
-        <div class="main-table hidden" id="main-table-articles">
+        <div class="main-table hidden " id="main-table-articles">
           <div class="heading">
             <h1>Articles</h1>
             <hr class="line-style" />
@@ -1218,7 +1218,7 @@
         </div>
         <!------ fin de content for ServiceAchat : 2 - articles tables----- -->
         <!------ debut de content for ServiceAchat : 3 - fournisseur tables----- -->
-        <div class="main-table hidden" id="main-table-fournisseur">
+        <div class="main-table hidden " id="main-table-fournisseur">
           <div class="heading">
             <h1>fournisseur</h1>
             <hr class="line-style" />
@@ -1281,12 +1281,12 @@
                         <p class="colomn-tags">Numéro</p>
                       </div>
                     </th>
-                    <th>Nom fournisseur</th>
+                    <th>Raison Sociale</th>
                     <th>Adresse</th>
 
                     <th>Telephone</th>
                     <th>date d'ajout</th>
-                    <th>Det</th>
+                    <th>Details</th>
                   </tr>
                 </thead>
                 <tbody class="results-fournisseur">
@@ -1298,7 +1298,7 @@
                           type="checkbox"
                           id="checkbox-table-fournisseur"
                         />
-                        <p class="colomn-tags-name">05151</p>
+                        <p class="colomn-tags-name">1</p>
                       </div>
                     </td>
                     <td>fournisseur 1</td>
@@ -1324,13 +1324,13 @@
                           type="checkbox"
                           id="checkbox-table-fournisseur"
                         />
-                        <p class="colomn-tags-name">21-12 .8</p>
+                        <p class="colomn-tags-name">2</p>
                       </div>
                     </td>
-                    <td>Duplicopieur - Monochrome - A3</td>
+                    <td>fournisseur 1</td>
 
-                    <td>trés beau produit</td>
-                    <td>12</td>
+                    <td>lamacta</td>
+                    <td>192612626</td>
                     <td>19/04/2004</td>
                     <td>
                       <button class="details-btn-fournisseur">
@@ -2922,58 +2922,48 @@
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
       <!--------------------------------- I- BEGIN ADMIN FONCTIONS --------------------------------------->
-      <!-- debut de section pour ajouter un  fournisseur -->
+      <!-- debut de section pour ajouter un fournisseur -->
 
-      <div class="add-user-container hidden">
-        <div class="add-user-cart add-fournisseur-cart">
+      <div class="add-fournisseur-container hidden">
+        <div class=" add-fournisseur-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user heading-add-fournisseur">
+          <div class="heading-add-fournisseur">
             <h1
-              class="heading-primary-add-user heading-primary-add-fournisseur"
+              class="heading-primary-add-fournisseur"
             >
               Ajouter un fournisseur
             </h1>
           </div>
           <!-- for inputs -->
-          <form class="add-user-inputs">
+          <form class="add-fournisseur-inputs">
             <div class="groupe-1-add">
+              
+              
               <div class="input-groupe-add">
                 <input
-                  name="raison-social"
+                  name="raisonSociale"
                   type="text"
                   class="input raison-social"
-                  placeholder="raison-social"
+                  placeholder=" Entrez La Raison Sociale"
                 />
                 <ion-icon class="input-icon" name="person-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="name"
+                  name="adresse"
                   type="text"
                   class="input input-add-name"
-                  placeholder="Nom"
+                  placeholder="Entrez l'Adresse"
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+              <ion-icon class="input-icon" name="home-outline"></ion-icon>
+                
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="date-naissance"
-                  type="date"
-                  class="input date_naissance"
-                  id="add--date"
-                  placeholder="Entrez la date de naissance"
-                />
-                <ion-icon
-                  class="input-icon"
-                  name="calendar-number-outline"
-                ></ion-icon>
-              </div>
-              <div class="input-groupe-add">
-                <input
-                  name="number-telephone"
+                  name="telephone"
                   type="number"
                   class="input Telephone"
                   autocomplete="Numéro Telephone"
@@ -2983,14 +2973,24 @@
 
                 <ion-icon class="input-icon" name="call-outline"></ion-icon>
               </div>
+              <div class="input-groupe-add">
+                <input
+                  name="fax"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez le Fax"
+                  autocomplete="Fax"
+                />
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
             </div>
             <div class="groupe-2-add">
               <div class="input-groupe-add">
                 <input
-                  name="num-nif"
+                  name="nif"
                   type="number"
                   class="input"
-                  placeholder="Entrez le nif"
+                  placeholder="Entrez le Nif"
                   autocomplete="new-nifs"
                   required
                 />
@@ -2998,20 +2998,22 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="fax"
+                  name="nis"
                   type="number"
                   class="input"
-                  placeholder="Fax"
-                  autocomplete="Fax"
+                  placeholder="Entrez le Nis"
+                  autocomplete="new-nifs"
+                  required
                 />
-                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
               </div>
+              
               <div class="input-groupe-add">
                 <input
-                  name="num-registre"
+                  name="numRegistre"
                   type="number"
                   class="input"
-                  placeholder="Entrez le num de num-registre"
+                  placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
                 />
@@ -3019,11 +3021,11 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="rib-rip"
+                  name="rib"
                   type="text"
                   class="input"
-                  placeholder="Entrez le Rip ou Rib"
-                  autocomplete="new-rip/rib"
+                  placeholder="Entrez le Rib"
+                  autocomplete="new-rib"
                   required
                 />
                 <ion-icon class="input-icon" name="card-outline"></ion-icon>
@@ -3038,57 +3040,46 @@
       </div>
       <!-- fin de section  ajouter un  fournisseur -->
       <!-- debut de section pour modifier un  fournisseur -->
-
-      <div class="add-user-container hidden">
-        <div class="add-user-cart add-fournisseur-cart">
+      <div class="edit-fournisseur-container hidden">
+        <div class=" edit-fournisseur-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user heading-add-fournisseur">
+          <div class="heading-edit-fournisseur">
             <h1
-              class="heading-primary-add-user heading-primary-add-fournisseur"
+              class="heading-primary-edit-fournisseur"
             >
-              modifier un fournisseur
+              Modifier un fournisseur
             </h1>
           </div>
           <!-- for inputs -->
-          <form class="add-user-inputs">
+          <form class="edit-fournisseur-inputs">
             <div class="groupe-1-add">
+              
+              
               <div class="input-groupe-add">
                 <input
-                  name="raison-social"
+                  name="raisonSociale"
                   type="text"
                   class="input raison-social"
-                  placeholder="raison-social"
+                  placeholder=" Entrez La Raison Sociale"
                 />
                 <ion-icon class="input-icon" name="person-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="name"
+                  name="adresse"
                   type="text"
                   class="input input-add-name"
-                  placeholder="Nom"
+                  placeholder="Entrez l'Adresse"
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+              <ion-icon class="input-icon" name="home-outline"></ion-icon>
+                
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="date-naissance"
-                  type="date"
-                  class="input date_naissance"
-                  id="add--date"
-                  placeholder="Entrez la date de naissance"
-                />
-                <ion-icon
-                  class="input-icon"
-                  name="calendar-number-outline"
-                ></ion-icon>
-              </div>
-              <div class="input-groupe-add">
-                <input
-                  name="number-telephone"
+                  name="telephone"
                   type="number"
                   class="input Telephone"
                   autocomplete="Numéro Telephone"
@@ -3098,14 +3089,24 @@
 
                 <ion-icon class="input-icon" name="call-outline"></ion-icon>
               </div>
+              <div class="input-groupe-add">
+                <input
+                  name="fax"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez le Fax"
+                  autocomplete="Fax"
+                />
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
             </div>
             <div class="groupe-2-add">
               <div class="input-groupe-add">
                 <input
-                  name="num-nif"
+                  name="nif"
                   type="number"
                   class="input"
-                  placeholder="Entrez le nif"
+                  placeholder="Entrez le Nif"
                   autocomplete="new-nifs"
                   required
                 />
@@ -3113,20 +3114,22 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="fax"
+                  name="nis"
                   type="number"
                   class="input"
-                  placeholder="Fax"
-                  autocomplete="Fax"
+                  placeholder="Entrez le Nis"
+                  autocomplete="new-nifs"
+                  required
                 />
-                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
               </div>
+              
               <div class="input-groupe-add">
                 <input
-                  name="num-registre"
+                  name="numRegistre"
                   type="number"
                   class="input"
-                  placeholder="Entrez le num de num-registre"
+                  placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
                 />
@@ -3134,11 +3137,11 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="rib-rip"
+                  name="rib"
                   type="text"
                   class="input"
-                  placeholder="Entrez le Rip ou Rib"
-                  autocomplete="new-rip/rib"
+                  placeholder="Entrez le Rib"
+                  autocomplete="new-rib"
                   required
                 />
                 <ion-icon class="input-icon" name="card-outline"></ion-icon>
@@ -3153,101 +3156,125 @@
       </div>
       <!-- fin de section  modifier un  fournisseur -->
       <!-- debut de section pour voir details d'un  fournisseur -->
-
-      <div class="add-fournisseur-container hidden">
-        <div class="add-user-cart add-fournisseur-cart">
+      <div class="view-fournisseur-container hidden">
+        <div class=" view-fournisseur-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user">
-            <h1 class="heading-primary-add-user">Details d'un fournisseur</h1>
+          <div class="heading-view-fournisseur">
+            <h1
+              class="heading-primary-view-fournisseur"
+            >
+              Details
+            </h1>
           </div>
           <!-- for inputs -->
-          <form class="add-user-inputs">
+          <form class="view-fournisseur-inputs">
             <div class="groupe-1-add">
+              
+              
               <div class="input-groupe-add">
                 <input
-                  disabled
-                  name="name"
+                disabled
+                  name="raisonSociale"
                   type="text"
-                  class="input input-add-name"
-                  placeholder="raison-social"
+                  class="input raison-social"
+                  placeholder=" Entrez La Raison Sociale"
                 />
                 <ion-icon class="input-icon" name="person-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  disabled
-                  name="name"
+                disabled
+                  name="adresse"
                   type="text"
                   class="input input-add-name"
-                  placeholder="Nom"
+                  placeholder="Entrez l'Adresse"
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+              <ion-icon class="input-icon" name="home-outline"></ion-icon>
+                
               </div>
               <div class="input-groupe-add">
                 <input
-                  disabled
-                  name="date"
-                  type="date"
-                  class="input"
-                  id="add--date"
-                  placeholder="Entrez la date de naissance"
-                />
-                <ion-icon
-                  class="input-icon"
-                  name="calendar-number-outline"
-                ></ion-icon>
-              </div>
-              <div class="input-groupe-add">
-                <input
-                  disabled
-                  name="number"
+                disabled
+                  name="telephone"
                   type="number"
-                  class="input"
+                  class="input Telephone"
                   autocomplete="Numéro Telephone"
                   placeholder="Entrez Numéro Telephone"
                   required
                 />
-                <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                disabled
+                  name="fax"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez le Fax"
+                  autocomplete="Fax"
+                />
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
               </div>
             </div>
             <div class="groupe-2-add">
               <div class="input-groupe-add">
                 <input
-                  disabled
-                  name="fax"
+                disabled
+                  name="nif"
                   type="number"
                   class="input"
-                  placeholder="Fax"
-                  autocomplete="Fax"
+                  placeholder="Entrez le Nif"
+                  autocomplete="new-nifs"
+                  required
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  disabled
-                  name="num-registre"
+                disabled
+                  name="nis"
                   type="number"
                   class="input"
-                  placeholder="Entrez le num de num-registre"
+                  placeholder="Entrez le Nis"
+                  autocomplete="new-nifs"
+                  required
+                />
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
+              </div>
+              
+              <div class="input-groupe-add">
+                <input
+                disabled
+                  name="numRegistre"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
                 />
+                <ion-icon class="input-icon" name="book-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  disabled
-                  name="rib-rip"
+                disabled
+                  name="rib"
                   type="text"
                   class="input"
-                  placeholder="Entrez le Rip ou Rib"
-                  autocomplete="new-rip/rib"
+                  placeholder="Entrez le Rib"
+                  autocomplete="new-rib"
                   required
                 />
+                <ion-icon class="input-icon" name="card-outline"></ion-icon>
               </div>
             </div>
+            <div>
+
+            </div>
+            
           </form>
         </div>
       </div>
@@ -3294,7 +3321,7 @@
       </div>
       <!-- fin de section  ajouter un chapitre -->
       <!-- debut de section pour modifier un chapitre -->
-      <div class=" edit-chapitre-container ">
+      <div class=" edit-chapitre-container hidden">
         <div class="edit-chapitre-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
