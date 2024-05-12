@@ -146,7 +146,6 @@ class AddInvView extends AddCmdsIntView {
     this._form.addEventListener('submit', e => {
       e.preventDefault();
       handler(this.getValidityState());
-      this._btnClose.click();
     });
   }
 }
