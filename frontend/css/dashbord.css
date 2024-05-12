@@ -2001,6 +2001,7 @@ table tbody tr:last-child td {
 /*------------ Inputs -------------- */
 .add-user-inputs,
 .add-structure-inputs,
+.add-chapitre-inputs,
 .edit-structure-inputs,
 .add-role-inputs {
   display: flex;

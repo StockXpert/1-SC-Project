@@ -10,7 +10,6 @@ import numberView from './views/numberView.js';
 import editUserView from './views/editUserView.js';
 import deleteUserView from './views/deleteUserView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
-import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
 import numberStructuresView from './views/numberStructuresView.js';
 import editStructureView from './views/editStructureView.js';
@@ -47,6 +46,7 @@ import deleteInvView from './views/inventaires/deleteInvView.js';
 import addInvView from './views/inventaires/addInvView.js';
 import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
 import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersView.js';
+import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -252,12 +252,12 @@ const controlLoadStructures = async function () {
       return;
     }
     structuresView.restrict(model.state.me.permissions.all);
-    AddStructureView.restrict(model.state.me.permissions.all);
+    addStructureView.restrict(model.state.me.permissions.all);
     deleteStructureView.restrict(model.state.me.permissions.all);
     structuresView.renderSpinner('Loading Structures');
     await model.loadStructures();
     const emails = await model.getResponsiblesEmail();
-    AddStructureView.addToSelection(emails, 'search-responsable');
+    addStructureView.addToSelection(emails, 'search-responsable');
     editStructureView.addToSelection(emails, 'search-structure-edit');
     structuresView.render(
       model.state.structures.results,
@@ -282,10 +282,10 @@ const controlAddStructure = async function (newStructure) {
     await model.uploadStructure(newStructure);
     console.log(model.state.structures.results);
     await controlLoadStructures();
-    AddStructureView.clearForm();
+    addStructureView.clearForm();
     //Close Window
     setTimeout(function () {
-      AddStructureView.toggleWindow();
+      addStructureView.toggleWindow();
     }, MODAL_CLOSE_SEC * 1000);
   } catch (error) {
     console.error(error);
@@ -295,7 +295,7 @@ const controlAddStructure = async function (newStructure) {
 const controlShowUsersEmail = async function () {
   try {
     const emails = await model.getResponsiblesEmail();
-    AddStructureView.addToSelection(emails, 'search-responsable');
+    addStructureView.addToSelection(emails, 'search-responsable');
     editStructureView.addToSelection(emails, 'search-structure-edit');
   } catch (error) {
     console.error('🤔 ' + error);
@@ -1927,27 +1927,62 @@ const controlLoadChapters = async function () {
       );
       return;
     }
-    chaptersView;
     chaptersView.restrict(model.state.me.permissions.all);
-    // AddStructureView.restrict(model.state.me.permissions.all);
+    // addChapterView.restrict(model.state.me.permissions.all);
     // deleteStructureView.restrict(model.state.me.permissions.all);
     chaptersView.renderSpinner('Loading Chapters');
     await model.loadChapitres();
     chaptersView.render(model.state.chapters.all);
     // deleteStructureView.addDeleteController(controlDeleteStructure);
+
     numberChaptersView.render(model.state.chapters);
     numberChaptersView.updateMasterCheckbox();
     numberChaptersView.addHandlerNumber(controleSelectChapters);
     numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    chaptersView.addSearchController(controlSearchChapter);
   } catch (error) {
     console.error(error);
   }
 };
 
-const controleSelectChapters = function () {
+const controleSelectChapters = function (searched) {
   numberChaptersView._clear();
+  if (searched) {
+    model.state.chapters.searched.selected =
+      numberChaptersView.calculateCheckboxes();
+    numberChaptersView.render(model.state.chapters.searched);
+    return;
+  }
   model.state.chapters.selected = numberChaptersView.calculateCheckboxes();
   numberChaptersView.render(model.state.chapters);
+};
+
+const controlAddChapter = async function (newChapter) {
+  try {
+    await model.addChapter(newChapter);
+    await controlLoadChapters();
+    console.log(model.state.chapters.all);
+    addChapterView.clearForm();
+    //Close Window
+    setTimeout(function () {
+      addChapterView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlSearchChapter = async function (query) {
+  model.state.chapters.searched.all = model.state.chapters.all.filter(chapter =>
+    chapter.designation.toLowerCase().includes(query)
+  );
+  // console.log(results);
+
+  chaptersView.render(model.state.chapters.searched.all);
+  numberChaptersView.render(model.state.chapters.searched);
+  numberChaptersView.updateMasterCheckbox();
+  numberChaptersView.addHandlerNumber(controleSelectChapters, true);
+  numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
 };
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
@@ -1993,7 +2028,7 @@ deleteUserView.addDeleteController(controlDeleteUsers);
 editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
 // controlShowUsersEmail();
 numberRoleView.addHandlerNumber(controlNumberRoles);
-AddStructureView.addHandlerUpload(controlAddStructure);
+addStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
 editStructureView.addHandlerShowWindow();
@@ -2001,6 +2036,7 @@ editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
 sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
+addChapterView.addHandlerUpload(controlAddChapter);
 
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 // #F00

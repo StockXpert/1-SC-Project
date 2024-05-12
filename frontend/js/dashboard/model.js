@@ -167,6 +167,10 @@ export const state = {
   chapters: {
     all: [],
     selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
   },
 };
 export const getMyPerms = async function () {
@@ -1028,6 +1032,18 @@ export const loadChapitres = async function () {
     state.chapters.all = data.response;
   } catch (error) {
     console.error('Error loadChapitres :' + error);
+  }
+};
+
+export const addChapter = async function (newChapter) {
+  try {
+    const res = await helpers.sendJSON(
+      `${API_URL}/Nomenclatures/addChapter`,
+      newChapter
+    );
+    console.log(res);
+  } catch (error) {
+    console.error('Error addChapter :' + error);
   }
 };
 

@@ -2,9 +2,17 @@ import View from '../../view.js';
 
 class ChaptersView extends View {
   _parentElement = document.querySelector('.results-chapitres');
+  _searchQuery = document.querySelector('.searchbar-text-chapitre');
+
+  addSearchController(controller) {
+    this._searchQuery.addEventListener('input', e => {
+      const query = e.target.value;
+      controller(query);
+    });
+  }
 
   _generateMarkup() {
-    console.log(this._data);
+    // console.log(this._data);
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');
@@ -21,7 +29,7 @@ class ChaptersView extends View {
       </td>
       <td>${result.designation}</td>
       <td>
-         <button class="details-btn">
+         <button class="details-btn-chapitres">
            <span class="material-icons-sharp info-icon">
             edit
            </span>

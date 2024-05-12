@@ -47,7 +47,7 @@ class NumberChaptersView extends View {
   **/
 
   _generateMarkup() {
-    console.log(this._data);
+    // console.log(this._data);
     //TODO: displayed, change the Tout les utilisateurs dynamically
     return `
       <p class="table-text">
@@ -65,7 +65,7 @@ class NumberChaptersView extends View {
     `;
   }
 
-  addHandlerMasterCheckbox(controller) {
+  addHandlerMasterCheckbox(controller, paramatres = false) {
     const checkboxes = this._checkboxes;
     const masterCheckbox = this._masterCheckbox;
 
@@ -77,7 +77,7 @@ class NumberChaptersView extends View {
 
     this._masterCheckbox.addEventListener('change', function (e) {
       toggleCheckboxes();
-      controller();
+      controller(paramatres);
     });
   }
 
@@ -93,15 +93,15 @@ class NumberChaptersView extends View {
     masterCheckbox.checked = allChecked;
   }
 
-  addHandlerNumber(fn) {
-    fn();
+  addHandlerNumber(controller, paramatres = false) {
+    // fn();
     this._table = document.querySelector('.results-chapitres');
     this._checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
 
     this._checkboxes.forEach(el =>
       el.addEventListener('change', e => {
         this.updateMasterCheckbox();
-        fn();
+        controller(paramatres);
       })
     );
   }
