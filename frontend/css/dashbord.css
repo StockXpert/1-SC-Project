@@ -1495,6 +1495,8 @@ table tbody tr:last-child td {
 .add-user-container,
 .add-structure-container,
 .add-fournisseur-container,
+.edit-fournisseur-container,
+.view-fournisseur-container,
 .add-article-container,
 .add-produits-container,
 .add-chapitre-container,
@@ -1508,7 +1510,10 @@ table tbody tr:last-child td {
   transform: translate(-50%, -50%);
 }
 
-.add-user-cart {
+.add-user-cart,
+.add-fournisseur-cart,
+.view-fournisseur-cart,
+.edit-fournisseur-cart{
   width: 46rem;
   height: auto;
   margin: 0 auto;
@@ -1580,6 +1585,9 @@ table tbody tr:last-child td {
   height: 1.3rem;
 }
 .heading-primary-add-user,
+.heading-primary-add-fournisseur,
+.heading-primary-edit-fournisseur,
+.heading-primary-view-fournisseur,
 .heading-primary-add-chapitre,
 .heading-primary-edit-chapitre {
   font-size: 1.8rem;
@@ -1594,7 +1602,7 @@ table tbody tr:last-child td {
   color: white;
 }
 .heading-primary-add-structure,
-.heading-primary-edit-chapitre,
+.heading-primary-edit-structure,
 .heading-primary-add-role {
   font-size: 1.8rem;
   padding: 0.2rem;
@@ -2008,6 +2016,9 @@ table tbody tr:last-child td {
 .add-user-inputs,
 .add-structure-inputs,
 .add-chapitre-inputs,
+.add-fournisseur-inputs,
+.edit-fournisseur-inputs,
+.view-fournisseur-inputs,
 .edit-chapitre-inputs,
 .edit-structure-inputs,
 .add-role-inputs {
@@ -2338,6 +2349,9 @@ a.password-icon:active {
 
 .inputs-edit,
 .add-user-inputs,
+.add-fournisseur-inputs,
+.edit-fournisseur-inputs,
+.view-fournisseur-inputs,
 .inputs-profile {
   display: grid;
   grid-template-columns: 1fr 1fr;
