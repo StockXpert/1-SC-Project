@@ -1029,3 +1029,28 @@ export const loadChapitres = async function () {
     console.error('Error loadChapitres :' + error);
   }
 };
+
+export const deleteInv = async function (numInventaire) {
+  try {
+    let delObj = { numInventaire };
+    console.log(delObj);
+    let responseArray = await helpers.delJSONReturnResResp(
+      `${API_URL}/Inventaire/deleteInventaire`,
+      delObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        delete inventaire:
+        "Supprimer un état de l'inventaire",
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};

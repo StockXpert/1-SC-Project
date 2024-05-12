@@ -192,7 +192,7 @@ export const PERM_NAMES = {
   'show inventaire':
     "Voir un état de l'inventaire en détails (tout les états précédents)",
   'show inventaire': "Voir un état de l'inventaire en détails",
-  'delete inventaire': "Supprimer un état de l'inventaire en détails",
+  'delete inventaire': "Supprimer un état de l'inventaire",
   'update inventaire': "Modifier un état de l'inventaire en détails",
 };
 

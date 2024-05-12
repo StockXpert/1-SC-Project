@@ -547,7 +547,7 @@ export const getStatusClass = function (status) {
       return 'v-directeur-status';
     case 'visee par resp':
       return 'v-responsable-status';
-    case 'demande':
+    case 'demandee':
       return 'enattente-status';
     default:
       return '';

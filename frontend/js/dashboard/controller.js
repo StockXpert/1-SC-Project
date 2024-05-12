@@ -43,6 +43,7 @@ import deleteBonReception from './views/commandes/deleteBonReception.js';
 import invView from './views/inventaires/InvView.js';
 import deliverCmdsExtView from './views/commandesInt/deliverCmdsExtView.js';
 import deleteCmdsIntView from './views/commandesInt/deleteCmdsIntView.js';
+import deleteInvView from './views/inventaires/deleteInvView.js';
 import addInvView from './views/inventaires/addInvView.js';
 import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
@@ -1232,6 +1233,7 @@ const controlCmdsIntSearch = searchInput => {
   addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   model.state.commandesInt.afterSearch = afterSearch;
 };
+
 const controlLoadCmdsInt = async function () {
   if (
     !model.state.me.permissions.all.find(
@@ -1877,6 +1879,20 @@ const controlSaveInv = async function (validityState, numInv) {
   }
 };
 
+const controlDeleteInv = async function () {
+  //ONCLICK OF the DELETE BUTTON
+  //CONFIRM MSG
+  const targetIndex = Array.from(invView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numInventaire = model.state.inventaires.all[targetIndex].num_inventaire;
+  invView.renderSpinner('Suppression en cours...');
+  // console.log();
+  await model.deleteInv(numInventaire);
+  invView.unrenderSpinner();
+  await controlLoadInv();
+};
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// B A C K  O '  B E Y O N D #fff
@@ -2037,6 +2053,7 @@ deliverCmdsExtView.addHandlerHideWindow(
 );
 deliverCmdsExtView.addHandlerDeliver(controlDechargerCmdsInt);
 deleteCmdsIntView.addDeleteController(controlDeleteCmdsInt);
+deleteInvView.addDeleteController(controlDeleteInv);
 
 addInvView.addHandlerEdit(controlAddInv);
 addInvView.addHandlerSetRemark(controlSetRemark);

@@ -2218,6 +2218,7 @@ a.password-icon:active {
 .container-supp-role,
 .container-supp-bdc,
 .container-supp-bdci,
+.container-supp-inv,
 .container-supp-bdr {
   display: block;
   position: fixed;
@@ -2278,6 +2279,7 @@ a.password-icon:active {
 .supp-role-confirmer,
 .supp-bdc-confirmer,
 .supp-bdci-confirmer,
+.supp-inv-confirmer,
 .supp-bdr-confirmer {
   background-color: #e24747;
   color: white;
@@ -2287,6 +2289,7 @@ a.password-icon:active {
 .supp-role-confirmer:hover,
 .supp-bdc-confirmer:hover,
 .supp-bdci-confirmer:hover,
+.supp-inv-confirmer:hover,
 .supp-bdr-confirmer:hover {
   background-color: #9e3232;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -2296,6 +2299,7 @@ a.password-icon:active {
 .supp-role-annuler,
 .supp-bdc-annuler,
 .supp-bdci-annuler,
+.supp-inv-annuler,
 .supp-bdr-annuler {
   color: #4b4b4b;
 }
@@ -2304,6 +2308,7 @@ a.password-icon:active {
 .supp-role-annuler:hover,
 .supp-bdc-annuler:hover,
 .supp-bdci-annuler:hover,
+.supp-inv-annuler:hover,
 .supp-bdr-annuler:hover {
   background-color: #cccccc;
 }
