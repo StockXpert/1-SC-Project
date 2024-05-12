@@ -973,6 +973,28 @@ export const loadAllProductsPerms = async function () {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 };
+export const createInv = async function () {
+  // try {
+  //   let responseArray = await helpers.getJSONReturnResResp(
+  //     `${API_URL}/Nomenclatures/showProducts`
+  //   );
+  //   if (!responseArray[0].ok) {
+  //     helpers.renderError(
+  //       'ERREUR!',
+  //       `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+  //       show products :
+  //       'Afficher les produits',
+  //       `
+  //     );
+  //     return false;
+  //   }
+  //   console.log(responseArray);
+  //   return responseArray;
+  // } catch (err) {
+  //   helpers.renderError('FATAL ERROR!', `${err}`);
+  // }
+  console.log(state.inventaires.new);
+};
 export const prepareNewInventaire = async function (productsArr = []) {
   const newInv = productsArr.map(product => {
     return {

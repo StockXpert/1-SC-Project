@@ -6,6 +6,7 @@ class AddInvView extends AddCmdsIntView {
   _inputs = this._window.querySelectorAll('.quantity-ph input');
   _parentElement = document.querySelector('.results-produits-inv');
   _window = document.querySelector('.big-container-inv');
+  _form = this._window.querySelector('.inv-cart');
   _overlay = document.querySelector('.overlayInv');
   _btnOpen = document.querySelector('.add-inv-btn');
   _product = document.querySelector('#justify');
@@ -13,6 +14,7 @@ class AddInvView extends AddCmdsIntView {
   _windowEditProduct;
   _btnsOpenEditProduct;
   _btnCloseEditProduct;
+  _save = this._window.querySelector('.btn-save-inv');
   constructor(isNerfed = false) {
     super(true);
     if (!isNerfed) {
@@ -49,7 +51,7 @@ class AddInvView extends AddCmdsIntView {
   //   });
   // }
 
-  resetPointers() {
+  resetPointers(controlInput) {
     this.addHandlerShowEditProductWindow(
       '.info-btn-inv',
       '.edit-info-container',
@@ -60,6 +62,7 @@ class AddInvView extends AddCmdsIntView {
       helpers.validateIntegerInput(input);
       input.addEventListener('input', e => {
         let currentIndex = helpers.findNodeIndex(this._inputs, e.currentTarget);
+        controlInput(input.value, currentIndex);
         if (
           e.currentTarget.value == this._data.produits[currentIndex].quantiteLog
         ) {
@@ -101,7 +104,9 @@ class AddInvView extends AddCmdsIntView {
     </td>
     <td>${result.quantiteLog}</td>
     <td class="quantity-ph">
-      <input class="red-qt" type="text" value="${result.quantitePhys}">
+      <input class="${
+        result.quantitePhys == result.quantiteLog ? 'green-qt' : 'red-qt'
+      }" type="text" value="${result.quantitePhys}" required autocomplete="off">
       <span class="material-icons-sharp">
         drive_file_rename_outline
       </span>
@@ -109,7 +114,7 @@ class AddInvView extends AddCmdsIntView {
     <td class="td-justify">
       <button class="info-btn-inv ${
         result.raison == '' ? 'red-info' : 'green-info'
-      }">
+      } ${result.quantitePhys == result.quantiteLog ? 'hidden' : ''}">
         <span class="material-icons-sharp info-icon">
           info
         </span>
@@ -117,6 +122,32 @@ class AddInvView extends AddCmdsIntView {
     </td>
   </tr>`;
     return html;
+  }
+  getValidityState() {
+    console.log(this._inputs);
+    let arrayFromNodeList = [...this._inputs];
+    return arrayFromNodeList.every(input => {
+      return (
+        (input.classList.contains('green-qt') &&
+          this._btnsOpenEditProduct[
+            helpers.findNodeIndex(this._inputs, input)
+          ].classList.contains('hidden')) ||
+        (input.classList.contains('red-qt') &&
+          !this._btnsOpenEditProduct[
+            helpers.findNodeIndex(this._inputs, input)
+          ].classList.contains('hidden') &&
+          this._btnsOpenEditProduct[
+            helpers.findNodeIndex(this._inputs, input)
+          ].classList.contains('green-info'))
+      );
+    });
+  }
+  addHandlerSavingInv(handler) {
+    this._form.addEventListener('submit', e => {
+      e.preventDefault();
+      handler(this.getValidityState());
+      this._btnClose.click();
+    });
   }
 }
 export default new AddInvView();

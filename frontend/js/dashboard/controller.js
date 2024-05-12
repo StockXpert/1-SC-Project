@@ -1552,7 +1552,7 @@ const controlSavingBDCI = async function () {
       <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
     );
   } else {
-    cmdsIntView.renderSpinner('Sauvegaaaarde en cours... ');
+    cmdsIntView.renderSpinner('Sauvegarde en cours... ');
     await model.createBDCI();
     cmdsIntView.unrenderSpinner();
     await controlLoadCmdsInt();
@@ -1833,17 +1833,21 @@ const controlLoadInv = async () => {
   );
   invView.resetPointers();
 };
+const controlInput = (value, index) => {
+  model.state.inventaires.new.produits[index].quantitePhys = parseInt(value);
+};
 // const controlModifyCmdsInt = async function () {
-export const controlSetRemark = remark => {
+const controlSetRemark = remark => {
   model.state.inventaires.new.produits[
     model.state.inventaires.new.selectedProduct
   ].raison = remark;
-  model.state.inventaires.new.produits[
-    model.state.inventaires.new.selectedProduct
-  ].quantitePhys =
-    addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
+  // model.state.inventaires.new.produits[
+  //   model.state.inventaires.new.selectedProduct
+  // ].quantitePhys =
+  //   addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
   addInvView.render(model.state.inventaires.new);
-  addInvView.resetPointers();
+  addInvView.resetPointers(controlInput);
+  console.log(model.state.inventaires.new);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 const controlAddInv = async function () {
@@ -1852,9 +1856,26 @@ const controlAddInv = async function () {
   const allProducts = await model.loadAllProductsPerms();
   model.prepareNewInventaire(allProducts[1].response);
   addInvView.render(model.state.inventaires.new);
-  addInvView.resetPointers();
+  addInvView.resetPointers(controlInput);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
+
+const controlSaveInv = async function (validityState) {
+  if (!validityState) {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Remplir les raisons pour les valeurs physiques de produits.</b></p>
+      <p class="error-message">Certains produits ont leur valeur physique réglée sur une valeur différente de leur valeur logique, mais aucune raison n'a été fournie. Revenez en arrière et recherchez tous les boutons rouges (i), cliquez dessus pour ouvrir l'interface de remplissage des raisons et fournissez une raison valide pour la différence de quantités.</p`
+    );
+    return;
+  } else {
+    addInvView.renderSpinner('Sauvegarde en cours... ');
+    await model.createInv();
+    addInvView.unrenderSpinner();
+    await controlLoadInv();
+  }
+};
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// B A C K  O '  B E Y O N D #fff
@@ -2018,3 +2039,4 @@ deleteCmdsIntView.addDeleteController(controlDeleteCmdsInt);
 
 addInvView.addHandlerEdit(controlAddInv);
 addInvView.addHandlerSetRemark(controlSetRemark);
+addInvView.addHandlerSavingInv(controlSaveInv);

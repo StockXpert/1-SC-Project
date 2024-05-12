@@ -1263,6 +1263,7 @@ table tbody tr:last-child td {
 }
 .info-btn-inv {
   background-color: transparent;
+  cursor: pointer;
 }
 .red-info span {
   color: red;

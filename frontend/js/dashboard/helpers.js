@@ -747,3 +747,6 @@ export function customSortForCmdsInt(a, b) {
   // If 'date_demande' is the same, compare the 'num_demande'
   return b.num_demande - a.num_demande;
 }
+export function xor(a, b) {
+  return a !== b;
+}
