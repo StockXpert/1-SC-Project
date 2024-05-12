@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockxpertapp1/network/DioHelper.dart';
+import 'package:stockxpertapp1/screens/directeurScreen.dart';
 import 'package:stockxpertapp1/screens/loginScreen.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: loginScreen(),
+      home: DirecteurScreen(),
     );
   }
 }

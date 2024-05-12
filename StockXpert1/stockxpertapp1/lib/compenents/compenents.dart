@@ -39,3 +39,43 @@ Widget defaultButton(
                       fontSize: size),
                   textAlign: TextAlign.center)),
     );
+
+Widget buildBonComand(article, context) => Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Column(children: [
+      Row(children: [
+        Text(
+          'N Commande :',
+          style: TextStyle(color: Colors.black, fontSize: 15),
+        ),
+        Text(
+          '23651',
+          style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
+        ),
+      ]),
+      SizedBox(
+        height: 10,
+      ),
+      Row(children: [
+        Text(
+          'Date :',
+          style: TextStyle(color: Colors.black, fontSize: 15),
+        ),
+        Text(
+          '26/03/2024',
+          style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
+        ),
+      ]),
+      SizedBox(
+        height: 15,
+      ),
+      Container(
+        height: 20,
+        width: 107,
+        decoration: BoxDecoration(
+          color: Color(0xffFFE500),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Center(child: Text('En attente')),
+      ),
+    ]));
