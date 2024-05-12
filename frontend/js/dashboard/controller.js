@@ -1868,7 +1868,7 @@ const controlSaveInv = async function (validityState, numInv) {
     helpers.renderError(
       `Erreur lors de l'introduction des données `,
       `<p class="error-message"><b>Remplir les raisons pour les valeurs physiques de produits.</b></p>
-      <p class="error-message">Certains produits ont leur valeur physique réglée sur une valeur différente de leur valeur logique, mais aucune raison n'a été fournie. Revenez en arrière et recherchez tous les boutons rouges (i), cliquez dessus pour ouvrir l'interface de remplissage des raisons et fournissez une raison valide pour la différence de quantités.</p`
+      `
     );
     return;
   } else {

@@ -980,18 +980,21 @@ export const loadAllProductsPerms = async function () {
 };
 export const createInv = async function (numInv) {
   try {
+    console.log(state.inventaires.new.produits);
+    let newProduitsArr = state.inventaires.new.produits.map(produit => {
+      const { designation, quantitePhys, quantiteLog, raison } = produit;
+      return {
+        designation,
+        quantitePhys,
+        raison: quantiteLog === quantitePhys ? '' : raison,
+      };
+    });
+    console.log(newProduitsArr);
     let postObj = {
       numInventaire: numInv,
       dateInventaire: helpers.getFormattedDate(),
-      produits: state.inventaires.new.produits.map(produit => {
-        return {
-          designation: produit.designation,
-          quantitePhys: produit.quantitePhys,
-          raison: produit.raison,
-        };
-      }),
+      produits: newProduitsArr,
     };
-    // console.log(postObj);
     let responseArray = await helpers.postJSONReturnResResp(
       `${API_URL}/Inventaire/createInventaire`,
       postObj
@@ -1010,7 +1013,8 @@ export const createInv = async function (numInv) {
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
-  return postObj;
+  // return postObj;
+  // return;
 };
 export const prepareNewInventaire = async function (productsArr = []) {
   const newInv = productsArr.map(product => {

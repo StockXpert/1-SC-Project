@@ -549,6 +549,8 @@ export const getStatusClass = function (status) {
       return 'v-responsable-status';
     case 'demandee':
       return 'enattente-status';
+    case 'refusee':
+      return 'canceled-status';
     default:
       return '';
   }
@@ -722,8 +724,10 @@ export function findClosestTrParent(checkboxElement) {
   }
   return currentElement; // Returns the closest <tr> parent element or null if not found
 }
+
 export function customSortForCmdsInt(a, b) {
   // Define the order based on the 'etat' property
+  //TODO: use custom orders for each role ? maybe the dg sees a diff order?
   const order = {
     demandee: 1,
     'visee par resp': 2,

@@ -62,6 +62,7 @@ class AddInvView extends AddCmdsIntView {
     this._inputs.forEach(input => {
       helpers.validateIntegerInput(input);
       input.addEventListener('input', e => {
+        //TODO: make the raison go away if the phy==log
         let currentIndex = helpers.findNodeIndex(this._inputs, e.currentTarget);
         controlInput(input.value, currentIndex);
         if (
@@ -148,7 +149,7 @@ class AddInvView extends AddCmdsIntView {
       // // Get the form element
       // const formElement = this._form;
 
-      // // TODO: Create a new FormData object from the form - to console.log it if you need
+      // Create a new FormData object from the form - to console.log it if you need
       // const formData = new FormData(formElement);
       // console.log(formData);
       // formData.forEach((value, key) => {
