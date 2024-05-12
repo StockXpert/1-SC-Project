@@ -973,10 +973,10 @@ export const loadAllProductsPerms = async function () {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 };
-export const createInv = async function () {
+export const createInv = async function (numInv) {
   try {
     let postObj = {
-      numInventaire: 5122024,
+      numInventaire: numInv,
       dateInventaire: helpers.getFormattedDate(),
       produits: state.inventaires.new.produits.map(produit => {
         return {
@@ -986,6 +986,7 @@ export const createInv = async function () {
         };
       }),
     };
+    // console.log(postObj);
     let responseArray = await helpers.postJSONReturnResResp(
       `${API_URL}/Inventaire/createInventaire`,
       postObj

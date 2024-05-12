@@ -1860,7 +1860,7 @@ const controlAddInv = async function () {
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 
-const controlSaveInv = async function (validityState) {
+const controlSaveInv = async function (validityState, numInv) {
   if (!validityState) {
     helpers.renderError(
       `Erreur lors de l'introduction des données `,
@@ -1871,7 +1871,7 @@ const controlSaveInv = async function (validityState) {
   } else {
     addInvView._btnClose.click();
     invView.renderSpinner('Sauvegarde en cours... ');
-    await model.createInv();
+    await model.createInv(numInv);
     invView.unrenderSpinner();
     await controlLoadInv();
   }

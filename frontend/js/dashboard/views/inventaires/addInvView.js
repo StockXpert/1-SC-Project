@@ -7,6 +7,7 @@ class AddInvView extends AddCmdsIntView {
   _parentElement = document.querySelector('.results-produits-inv');
   _window = document.querySelector('.big-container-inv');
   _form = this._window.querySelector('.inv-cart');
+  _numInventaire = this._window.querySelector('.input-num-inv');
   _overlay = document.querySelector('.overlayInv');
   _btnOpen = document.querySelector('.add-inv-btn');
   _product = document.querySelector('#justify');
@@ -144,8 +145,28 @@ class AddInvView extends AddCmdsIntView {
   }
   addHandlerSavingInv(handler) {
     this._form.addEventListener('submit', e => {
+      // // Get the form element
+      // const formElement = this._form;
+
+      // // TODO: Create a new FormData object from the form - to console.log it if you need
+      // const formData = new FormData(formElement);
+      // console.log(formData);
+      // formData.forEach((value, key) => {
+      //   console.log(key + ': ' + value);
+      // });
+
+      // // Update form fields with new values
+      // for (const key in NewInputValuesObj) {
+      //   if (NewInputValuesObj.hasOwnProperty(key)) {
+      //     const input = formElement.elements[key];
+      //     if (input) {
+      //       input.value = NewInputValuesObj[key];
+      //     }
+      //   }
+      // }
+      const numInventaire = this._numInventaire.value;
       e.preventDefault();
-      handler(this.getValidityState());
+      handler(this.getValidityState(), numInventaire);
     });
   }
 }
