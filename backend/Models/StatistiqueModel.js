@@ -277,5 +277,73 @@ function commandesStat(dateD,dateF)
         });
       });
 }
+function bciStat(dateD,dateF,consommateur,structure)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    let query
+    if(consommateur)
+      {
+        query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
+    COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
+    from bon_de_commande (where id_demandeur=?
+    ${dateD?" and d.date_commande between ? and ?":""}
+    )` 
+      }
+    else if(structure)
+      {
+        query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
+    COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
+    from bon_de_commande (where id_demandeur in 
+      (select email from utilisateur where id_structure=
+        (select id_structure from structure where designation=?)
+      )
+    ${dateD?" and d.date_commande between ? and ?":""}
+    )` 
+      }  
+    else
+    {  
+    query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
+    COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
+    from bon_de_commande
+    ${dateD?"(where d.date_commande between ? and ?)":""}` 
+    }
+    let values=[]
+    if(consommateur) values.push(consommateur);
+    if(structure) values.push(values);
+    if(dateD) values.push(dateD,dateF)    
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 module.exports={MostDemandedProduct,MostUsedFournisseur,RapidFournisseur,topDemandeurs,mostCommandedProducts,productDemandePerYear,
-    articleDemandePerYear,commandesStat}
+    articleDemandePerYear,commandesStat,bciStat}

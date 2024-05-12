@@ -15,6 +15,8 @@ router.post('/mostUsedFournisseur',authMiddleware("mostUsedFournisseur"),Statist
 router.post('/mostdemmandedProduct',authMiddleware("mostdemmandedProduct"),StatistiqueController.mostdemmandedProduct)
 router.post('/commandesStat',authMiddleware("commandesStat"),StatistiqueController.commandesStat)
 router.post('/consumerMostdemmandedProduct',authMiddleware("consumerMostdemmandedProduct"),StatistiqueController.consumerMostdemmandedProduct)
+router.post('/bciStat',authMiddleware("bciStat"),StatistiqueController.bciStat)
+router.post('/bciConsommateurStat',authMiddleware("bciConsommateurStat"),StatistiqueController.bciConsommateurStat)
 module.exports=router
 
 

@@ -154,7 +154,7 @@ function getInventaire(numInventaire)
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
           
-        const query = `select c.quantite_phys,p.quantite,p.designation 
+        const query = `select c.quantite_phys,p.quantite,p.designation,c.raison 
         from compter c,produit p where p.id_produit=c.id_produit and c.num_inventaire=?`;
         const values=[numInventaire]
         connection.connect((err) => {
@@ -262,7 +262,7 @@ function updateInventaire(numInventaire,produits)
                         const id_produit = rows[0].id_produit;
   
                         // Insérer les données dans ma_table avec l'ID produit récupéré
-                        connection.query('update compter set quantite_phys=? where id_produit=? and num_inventaire=?', [produit.quantitePhys, id_produit,numInventaire], (err, result) => {
+                        connection.query('update compter set quantite_phys=? where id_produit=? and num_inventaire=?', [produit.quantitePhys,produit.raison,id_produit,numInventaire], (err, result) => {
                             if (err) {
                                 return callback(err);
                             }
