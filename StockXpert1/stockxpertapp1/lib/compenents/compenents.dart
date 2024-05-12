@@ -43,7 +43,7 @@ Widget defaultButton(
 Widget buildBonComand(article, context) => Padding(
     padding: const EdgeInsets.all(10.0),
     child: Column(children: [
-      Row(children: [
+      const Row(children: [
         Text(
           'N Commande :',
           style: TextStyle(color: Colors.black, fontSize: 15),
@@ -53,10 +53,10 @@ Widget buildBonComand(article, context) => Padding(
           style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
         ),
       ]),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
-      Row(children: [
+      const Row(children: [
         Text(
           'Date :',
           style: TextStyle(color: Colors.black, fontSize: 15),
@@ -66,16 +66,16 @@ Widget buildBonComand(article, context) => Padding(
           style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
         ),
       ]),
-      SizedBox(
+      const SizedBox(
         height: 15,
       ),
       Container(
         height: 20,
         width: 107,
         decoration: BoxDecoration(
-          color: Color(0xffFFE500),
+          color: const Color(0xffFFE500),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Center(child: Text('En attente')),
+        child: const Center(child: Text('En attente')),
       ),
     ]));

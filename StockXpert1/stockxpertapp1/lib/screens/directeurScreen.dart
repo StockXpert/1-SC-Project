@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stockxpertapp1/compenents/compenents.dart';
 
 class DirecteurScreen extends StatelessWidget {
   const DirecteurScreen({super.key});
@@ -18,24 +17,24 @@ class DirecteurScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 280),
                     child: IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.notifications_rounded,
                         color: Colors.black,
                         size: 35,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Container(
+                  SizedBox(
                     height: 46,
                     child: TextFormField(
                       validator: (value) {
@@ -47,7 +46,7 @@ class DirecteurScreen extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       controller: TextEditingController(),
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: const Icon(Icons.search),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -65,14 +64,55 @@ class DirecteurScreen extends StatelessWidget {
                     ),
                   ),
 
-                  Container(
+                  SizedBox(
                     height: 550,
                     width: 350,
                     child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            buildBonComand(1, context),
-                        separatorBuilder: (context, index) => SizedBox(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(children: [
+                              const Row(children: [
+                                Text(
+                                  'N Commande :',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 15),
+                                ),
+                                Text(
+                                  '23651',
+                                  style: TextStyle(
+                                      fontSize: 15, color: Color(0xff4772E2)),
+                                ),
+                              ]),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Row(children: [
+                                Text(
+                                  'Date :',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 15),
+                                ),
+                                Text(
+                                  '26/03/2024',
+                                  style: TextStyle(
+                                      fontSize: 15, color: Color(0xff4772E2)),
+                                ),
+                              ]),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                height: 20,
+                                width: 107,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffFFE500),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Center(child: Text('En attente')),
+                              ),
+                            ])),
+                        separatorBuilder: (context, index) => const SizedBox(
                               height: 25,
                             ),
                         itemCount: 10),
