@@ -974,26 +974,37 @@ export const loadAllProductsPerms = async function () {
   }
 };
 export const createInv = async function () {
-  // try {
-  //   let responseArray = await helpers.getJSONReturnResResp(
-  //     `${API_URL}/Nomenclatures/showProducts`
-  //   );
-  //   if (!responseArray[0].ok) {
-  //     helpers.renderError(
-  //       'ERREUR!',
-  //       `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
-  //       show products :
-  //       'Afficher les produits',
-  //       `
-  //     );
-  //     return false;
-  //   }
-  //   console.log(responseArray);
-  //   return responseArray;
-  // } catch (err) {
-  //   helpers.renderError('FATAL ERROR!', `${err}`);
-  // }
-  console.log(state.inventaires.new);
+  try {
+    let postObj = {
+      numInventaire: 5122024,
+      dateInventaire: helpers.getFormattedDate(),
+      produits: state.inventaires.new.produits.map(produit => {
+        return {
+          designation: produit.designation,
+          quantitePhys: produit.quantitePhys,
+          raison: produit.raison,
+        };
+      }),
+    };
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Inventaire/createInventaire`,
+      postObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        create inventaire :
+        'Créer un nouvel état d'état de l'inventaire',
+        `
+      );
+      return false;
+    }
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+  return postObj;
 };
 export const prepareNewInventaire = async function (productsArr = []) {
   const newInv = productsArr.map(product => {

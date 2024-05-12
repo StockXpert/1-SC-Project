@@ -1870,9 +1870,9 @@ const controlSaveInv = async function (validityState) {
     return;
   } else {
     addInvView._btnClose.click();
-    addInvView.renderSpinner('Sauvegarde en cours... ');
+    invView.renderSpinner('Sauvegarde en cours... ');
     await model.createInv();
-    addInvView.unrenderSpinner();
+    invView.unrenderSpinner();
     await controlLoadInv();
   }
 };
