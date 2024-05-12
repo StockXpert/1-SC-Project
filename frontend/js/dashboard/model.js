@@ -145,7 +145,32 @@ export const state = {
   },
   inventaires: {
     all: {},
-    selected: {},
+    new: {
+      numInventaire: '',
+      dateInventaire: '',
+      produits: [
+        {
+          designation: '',
+          quantitePhys: '',
+          raison: '',
+        },
+        {},
+      ],
+      selectedProduct: '',
+    },
+    selected: {
+      numInventaire: '',
+      oldProduits: {},
+      currentProduits: {},
+    },
+  },
+  chapters: {
+    all: [],
+    selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
   },
 };
 export const getMyPerms = async function () {
@@ -805,11 +830,12 @@ export const addBonReception = async function (newReception) {
       method: 'POST',
       headers: {
         Authorization: localStorage.getItem('JWT'),
-        'Content-Type': 'application/json',
       },
       body: newReception,
     });
-
+    if (!res.ok) {
+      throw new Error('Erreur lors de la requête');
+    }
     const data = res.json();
     console.log(res);
     console.log(data);
@@ -917,6 +943,124 @@ export const deleteCmdInt = async function (numDemande) {
         `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
         delete fourniture:
         'Supprimmer une commande interne',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+// export const loadAllProducts = async function () {
+//   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+//   return products.response;
+// };
+export const loadAllProductsPerms = async function () {
+  try {
+    let responseArray = await helpers.getJSONReturnResResp(
+      `${API_URL}/Nomenclatures/showProducts`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        show products :
+        'Afficher les produits',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const createInv = async function (numInv) {
+  try {
+    let postObj = {
+      numInventaire: numInv,
+      dateInventaire: helpers.getFormattedDate(),
+      produits: state.inventaires.new.produits.map(produit => {
+        return {
+          designation: produit.designation,
+          quantitePhys: produit.quantitePhys,
+          raison: produit.raison,
+        };
+      }),
+    };
+    // console.log(postObj);
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Inventaire/createInventaire`,
+      postObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        create inventaire :
+        'Créer un nouvel état d'état de l'inventaire',
+        `
+      );
+      return false;
+    }
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+  return postObj;
+};
+export const prepareNewInventaire = async function (productsArr = []) {
+  const newInv = productsArr.map(product => {
+    return {
+      raison: '',
+      designation: product.designation,
+      quantiteLog: product.quantite,
+      quantitePhys: '',
+    };
+  });
+  state.inventaires.new.produits = newInv;
+  return newInv;
+};
+
+export const loadChapitres = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Nomenclatures/showChapters`);
+    console.log(data.response);
+    state.chapters.all = data.response;
+  } catch (error) {
+    console.error('Error loadChapitres :' + error);
+  }
+};
+
+export const addChapter = async function (newChapter) {
+  try {
+    const res = await helpers.sendJSON(
+      `${API_URL}/Nomenclatures/addChapter`,
+      newChapter
+    );
+    console.log(res);
+  } catch (error) {
+    console.error('Error addChapter :' + error);
+  }
+};
+
+export const deleteInv = async function (numInventaire) {
+  try {
+    let delObj = { numInventaire };
+    console.log(delObj);
+    let responseArray = await helpers.delJSONReturnResResp(
+      `${API_URL}/Inventaire/deleteInventaire`,
+      delObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        delete inventaire:
+        "Supprimer un état de l'inventaire",
         `
       );
       return false;

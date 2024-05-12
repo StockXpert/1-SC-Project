@@ -1,14 +1,10 @@
-import View from './view.js';
-import { truncateEmail } from '../helpers.js';
-
-class addStructureView extends View {
-  _window = document.querySelector('.add-structure-container');
-  _overlay = document.querySelector('.overlayAddStr');
-  _btnOpen = document.getElementById('add-btn-structure');
+import View from '../../view.js';
+class AddChapterView extends View {
+  _window = document.querySelector('.add-chapitre-container');
+  _overlay = document.querySelector('.overlayAddChapter');
+  _btnOpen = document.querySelector('.add-chapitres-btn');
   _btnClose = this._window.querySelector('.close-btn');
-  _parentElement = document.querySelector('.add-structure-inputs');
-
-  _selectionUsers = document.getElementById('search-responsable');
+  _parentElement = document.querySelector('.add-chapitre-inputs');
 
   constructor() {
     super();
@@ -59,7 +55,7 @@ class addStructureView extends View {
 
   _generateMarkup() {}
 
-  _restricted = [['#add-btn-structure', 'add structure'], 'none'];
+  _restricted = [['.add-chapitres-btn', 'add chapter'], 'none'];
 }
 
-export default new addStructureView();
+export default new AddChapterView();

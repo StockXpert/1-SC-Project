@@ -185,14 +185,14 @@ export const PERM_NAMES = {
   'show all demandes': 'Voir toutes mes demandes Internes/Externes',
   livrer:
     'Livrer la demande Interne/Externe et générer le Bon de Sortie/Décharge',
-  'create inventaire': "Créer une nouvelle étude d'état de l'inventaire",
-  'valid inventaire': "Valider le nouveau état de l'inventaire",
+  'create inventaire': "Créer un nouvel état d'état de l'inventaire",
+  'valid inventaire': "Valider un nouvel état de l'inventaire",
   'show inventaires':
     "Voir l'historique de l'inventaire (tout les états précédents)",
   'show inventaire':
     "Voir un état de l'inventaire en détails (tout les états précédents)",
   'show inventaire': "Voir un état de l'inventaire en détails",
-  'delete inventaire': "Supprimer un état de l'inventaire en détails",
+  'delete inventaire': "Supprimer un état de l'inventaire",
   'update inventaire': "Modifier un état de l'inventaire en détails",
 };
 

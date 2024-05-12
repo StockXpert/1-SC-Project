@@ -66,7 +66,7 @@ function insertCompter(numInventaire, produits) {
                         const id_produit = rows[0].id_produit;
   
                         // Insérer les données dans ma_table avec l'ID produit récupéré
-                        connection.query('INSERT INTO compter (num_inventaire, id_produit, quantite_phys) VALUES (?, ?, ?)', [numInventaire, id_produit, produit.quantitePhys], (err, result) => {
+                        connection.query('INSERT INTO compter (num_inventaire, id_produit, quantite_phys) VALUES (?, ?, ?)', [numInventaire, id_produit, produit.quantitePhys,produit.raison], (err, result) => {
                             if (err) {
                                 return callback(err);
                             }
@@ -154,7 +154,7 @@ function getInventaire(numInventaire)
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
           
-        const query = `select c.quantite_phys,p.quantite,p.designation 
+        const query = `select c.quantite_phys,p.quantite,p.designation,c.raison 
         from compter c,produit p where p.id_produit=c.id_produit and c.num_inventaire=?`;
         const values=[numInventaire]
         connection.connect((err) => {
@@ -262,7 +262,7 @@ function updateInventaire(numInventaire,produits)
                         const id_produit = rows[0].id_produit;
   
                         // Insérer les données dans ma_table avec l'ID produit récupéré
-                        connection.query('update compter set quantite_phys=? where id_produit=? and num_inventaire=?', [produit.quantitePhys, id_produit,numInventaire], (err, result) => {
+                        connection.query('update compter set quantite_phys=? where id_produit=? and num_inventaire=?', [produit.quantitePhys,produit.raison,id_produit,numInventaire], (err, result) => {
                             if (err) {
                                 return callback(err);
                             }
@@ -324,7 +324,7 @@ function inscriptionDate(produit,year)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select min(b.date_reception) as date from bon_de_reception b,livre l
+    const query = `select CONCAT(year(min(b.date_reception)), '-', DATE_FORMAT(min(b.date_reception), '%m'), '-', DATE_FORMAT(min(b.date_reception), '%d')) as date from bon_de_reception b,livre l
     where b.num_bon=l.num_bon and l.id_produit=? and year(b.date_reception)=?`;
     const values=[produit,year];
     connection.connect((err) => {
@@ -410,7 +410,7 @@ function getInventaireYear(numInventaire)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select year(date_inventaire) as year ,date_inventaire from inventaire where num_inventaire=?`;
+    const query = `select year(date_inventaire) as year ,CONCAT(year(date_inventaire), '-', DATE_FORMAT(date_inventaire, '%m'), '-', DATE_FORMAT(date_inventaire, '%d')) as date_inventaire from inventaire where num_inventaire=?`;
     const values=[numInventaire];
     connection.connect((err) => {
       if (err) {

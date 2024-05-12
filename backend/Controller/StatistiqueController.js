@@ -1,118 +1,180 @@
-const { response } = require('express');
 const StatistiqueModel=require('../Models/StatistiqueModel');
 const StatistiqueService=require('../Services/StatistiqueService');
+const UserModel=require('../Models/UserModel');
 function  consumerMostdemmandedProduct(req,res)
 {
-    const {dateD,dateF,consommateur}=req.body
+    const {dateD,dateF}=req.body
+    const consommateur=req.email
     StatistiqueModel.MostDemandedProduct(dateD,dateF,consommateur).then((data)=>{
-     data=StatistiqueService.changeDataFormat(data);
-     res.status(200).json({response:data})
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
 function mostdemmandedProduct(req,res)
 {
     const {dateD,dateF}=req.body
     StatistiqueModel.MostDemandedProduct(dateD,dateF).then((data)=>{
-     data=StatistiqueService.changeDataFormat(data);
-     res.status(200).json({response:data})
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
 function  structureMostdemmandedProduct(req,res)
 {
     const {dateD,dateF,structure}=req.body
     StatistiqueModel.MostDemandedProduct(dateD,dateF,structure).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
 function responsableStructureMostdemmandedProduct(req,res)
 {
     const {dateD,dateF}=req.body
     const resp=req.email
-    StatistiqueModel.MostDemandedProduct(dateD,dateF,structure).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
+    UserModel.isResponsable(resp).then((structure)=>{
+        StatistiqueModel.MostDemandedProduct(dateD,dateF,structure).then((data)=>{
+            if(data.length)
+                {data=StatistiqueService.changeDataFormat(data);
+                res.status(200).json({response:data})}
+                else res.status(200).json({response:'no data'})
+        }).catch(()=>res.status(500).json({response:'internal error'}))
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
-function mostUsedFournissuer(req,res)
+function mostUsedFournisseur(req,res)
 {
     const {dateD,dateF}=req.body
     
-    StatistiqueModel.MostUsedFournissuer(dateD,dateF).then((data)=>{
-     data=StatistiqueService.changeDataFormat(data);
-     res.status(200).json({response:data})
+    StatistiqueModel.MostUsedFournisseur(dateD,dateF).then((data)=>{
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
-function rapidFournissuer(req,res)
+function rapidFournisseur(req,res)
 {
     const {dateD,dateF}=req.body
-    
-    StatistiqueModel.RapidFournissuer(dateD,dateF).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
-    }).catch(()=>res.status(500).json({response:'internal error'}))
+    StatistiqueModel.RapidFournisseur(dateD,dateF).then((data)=>{
+        if(data.length)
+        {data=StatistiqueService.changeDataFormat(data);
+        res.status(200).json({response:data})}
+        else  res.status(200).json({response:'no data'})
+    }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function topDemandeurs(req,res)
 {
     const {dateD,dateF}=req.body
     
     StatistiqueModel.topDemandeurs(dateD,dateF).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
-    }).catch(()=>res.status(500).json({response:'internal error'}))
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
+    }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function structureTopDemandeurs(req,res)
 {
     const {dateD,dateF,structure}=req.body
     
     StatistiqueModel.topDemandeurs(dateD,dateF,structure).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
 function respStructureTopDemandeurs(req,res)
 {
     const {dateD,dateF}=req.body;
     const resp=req.email
-    StatistiqueModel.topDemandeurs(dateD,dateF,structure).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
+    UserModel.isResponsable(resp).then((structure)=>{
+        StatistiqueModel.topDemandeurs(dateD,dateF,structure).then((data)=>{
+            if(data.length)
+                {data=StatistiqueService.changeDataFormat(data);
+                res.status(200).json({response:data})}
+                else res.status(200).json({response:'no data'})
+        }).catch(()=>res.status(500).json({response:'internal error'}))
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
 function mostCommandedProducts(req,res)
 {
     const {dateD,dateF}=req.body;
     StatistiqueModel.mostCommandedProducts(dateD,dateF).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
 function productDemandePerYear(req,res)
 {
     const {product,year}=req.body;
     StatistiqueModel.productDemandePerYear(year,product).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
+        if(data.length)
+            {data=StatistiqueService.changeDataFormat(data);
+            res.status(200).json({response:data})}
+            else res.status(200).json({response:'no data'})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
 function articleDemandePerYear(req,res)
 {
     const {article,year}=req.body;
     StatistiqueModel.articleDemandePerYear(year,article).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
-        res.status(200).json({response:data})
-    }).catch(()=>res.status(500).json({response:'internal error'}))
+        if(data.length)
+        {data=StatistiqueService.changeDataFormat(data);
+        res.status(200).json({response:data})}
+        else res.status(200).json({response:'no data'})
+    }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function commandesStat(req,res)
 {
     const {dateD,dateF}=req.body
     
-    StatistiqueModel.MostUsedFournissuer(dateD,dateF).then((data)=>{
-        data=StatistiqueService.changeDataFormat(data);
+    StatistiqueModel.commandesStat(dateD,dateF).then((data)=>{
         res.status(200).json({response:data})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
-module.exports={articleDemandePerYear,commandesStat,consumerMostdemmandedProduct,mostCommandedProducts,mostUsedFournissuer,
-    productDemandePerYear,rapidFournissuer,respStructureTopDemandeurs,responsableStructureMostdemmandedProduct,
-    structureMostdemmandedProduct,structureTopDemandeurs,topDemandeurs,mostdemmandedProduct
+function bciConsommateurStat(req,res)
+{
+    const {dateD,dateF,consommateur}=req.body
+    
+    StatistiqueModel.bciStat(dateD,dateF,consommateur).then((data)=>{
+        res.status(200).json({response:data})
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
+function bciStructureStat(req,res)
+{
+    const {dateD,dateF,structure}=req.body
+    
+    StatistiqueModel.bciStat(dateD,dateF,structure).then((data)=>{
+        res.status(200).json({response:data})
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
+function respBciStat(req,res)
+{
+    const {dateD,dateF}=req.body;
+    const resp=req.email;
+    UserModel.isResponsable(resp).then((structure)=>{
+        StatistiqueModel.bciStat(dateD,dateF,structure).then((data)=>{
+            res.status(200).json({response:data})
+        }).catch(()=>res.status(500).json({response:'internal error'}))
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
+function bciStat(req,res)
+{
+    const {dateD,dateF}=req.body
+    
+    StatistiqueModel.bciStat(dateD,dateF).then((data)=>{
+        res.status(200).json({response:data})
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
+module.exports={articleDemandePerYear,commandesStat,consumerMostdemmandedProduct,mostCommandedProducts,mostUsedFournisseur,
+    productDemandePerYear,rapidFournisseur,respStructureTopDemandeurs,responsableStructureMostdemmandedProduct,
+    structureMostdemmandedProduct,structureTopDemandeurs,topDemandeurs,mostdemmandedProduct,bciStat,bciConsommateurStat,
+    respBciStat,bciStructureStat
 }

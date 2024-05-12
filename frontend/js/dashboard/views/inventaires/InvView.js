@@ -4,6 +4,10 @@ export class InvView extends CmdsIntView {
   constructor() {
     super();
   }
+  _btnAddInv = document.querySelector('.add-inv-btn');
+  _btnUpdateInv = document.querySelector('.btn-maj-inv');
+  _btnDeleteInv = document.querySelector('.btn-delete-inv');
+  _btnModifyInv = document.querySelector('.btn-edit-inv');
   _parentElement = document.querySelector('.results-inv');
   _trueParentElement = document.querySelector('.table-top-inv');
   _searchBox = document.querySelector('.searchbar-text-inv');
@@ -57,5 +61,21 @@ export class InvView extends CmdsIntView {
     </td>
   </tr>`;
   }
+  restrictActionsUsingRoleInv(role) {
+    switch (role) {
+      case 'Directeur':
+        this._btnUpdateInv.classList.remove('hidden');
+        break;
+      case 'Magasinier':
+        console.log(this);
+        this._btnDeleteInv.classList.remove('hidden');
+        this._btnModifyInv.classList.remove('hidden');
+        this._btnAddInv.classList.remove('hidden');
+        break;
+      default:
+        break;
+    }
+  }
 }
+
 export default new InvView();

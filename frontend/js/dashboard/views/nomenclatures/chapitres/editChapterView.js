@@ -1,11 +1,11 @@
 import View from './view.js';
 
-class EditStructureView extends View {
-  _window = document.querySelector('.edit-structure-container');
-  _overlay = document.querySelector('.overlayEditStr');
-  _btnOpen = document.querySelectorAll('.details-btn-structures');
+class EditChapterView extends View {
+  _window = document.querySelector('.add-chapitre-container');
+  _overlay = document.querySelector('.overlayEdit');
+  _btnOpen = document.querySelectorAll('.details-btn-chapitres');
   _parentElement = document.querySelector('.edit-structure-cart');
-  _form = document.querySelector('.edit-structure-inputs');
+  _form = document.querySelector('.edit-chapter-inputs');
   _btnClose = this._parentElement.querySelector('.close-btn');
   currTarget;
   currStructure;
@@ -85,4 +85,4 @@ class EditStructureView extends View {
   }
 }
 
-export default new EditStructureView();
+export default new EditChapterView();

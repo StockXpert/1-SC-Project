@@ -984,7 +984,7 @@
         <!------ debut de content for Admin : 4 - Permissions tables----- -->
         <!--------------------------------- I- END ADMIN FONCTIONS --------------------------------------->
         <!------------------------------ II- BEGIN ServiceAchat FONCTIONS ---------------------------------->
-        <!------ debut de content for ServiceAchat : 1 - Chapitres tables----- -->
+        <!------ debut de content for ServiceAchat : 1 - Chapitres tables #fff----- -->
         <div class="main-table hidden" id="main-table-chapitres">
           <div class="heading">
             <h1>Chapitres</h1>
@@ -1016,12 +1016,12 @@
             <div class="heading-table">
               <div class="container-heading-table">
                 <div class="heading-table-text-chapitres">
-                  <!-- <p class="table-text">
+                  <p class="table-text">
                     Tout les Utilisateurs (<b class="number-users">245</b>)
                   </p>
                   <p class="table-text">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p> -->
+                  </p>
                 </div>
                 <div class="heading-table-btns-chapitres">
                   <button class="heading-table-btn btn-delete-chapitres">
@@ -1037,7 +1037,7 @@
 
             <!------------debut du tableau ------------------------>
             <!-- <div class="users-table"> -->
-            <div class="table-container-chapitres hidden">
+            <div class="table-container-chapitres">
               <table>
                 <thead>
                   <tr>
@@ -1048,7 +1048,6 @@
                       </div>
                     </th>
                     <th>Nom</th>
-                    <th>date d'ajout</th>
                     <th>Modifier</th>
                   </tr>
                 </thead>
@@ -1062,7 +1061,6 @@
                       </div>
                     </td>
                     <td>Fournitures</td>
-                    <td>21/12/2024</td>
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
@@ -1082,7 +1080,6 @@
                       </div>
                     </td>
                     <td>Matériel et mobilier</td>
-                    <td>21/12/2024</td>
                     <td>
                       <button class="details-btn-chapitres">
                         <span class="material-icons-sharp info-icon">
@@ -1261,13 +1258,9 @@
                   </p> -->
                 </div>
                 <div class="heading-table-btns-fournisseur">
-                  <button class="heading-table-btn btn-edit-bdci">
-                    modifier
-                  </button>
                   <button class="heading-table-btn btn-delete-fournisseur">
                     Supprimer
                   </button>
-                 
                 </div>
               </div>
               <div class="heading-table-line">
@@ -1784,16 +1777,19 @@
                   </button> -->
                   <button
                     class="heading-table-btn btn-delete-bdci disabled-delete-button hidden"
+                    data-type="red"
                   >
                     Supprimer
                   </button>
                   <button
                     class="heading-table-btn btn-edit-bdci disabled-button hidden"
+                    data-type="white"
                   >
                     Modifier
                   </button>
                   <button
                     class="heading-table-btn btn-deliver-bdci disabled-save-button hidden"
+                    data-type="blue"
                   >
                     Livrer
                   </button>
@@ -2052,7 +2048,9 @@
               </div>
             </div>
             <div class="add-inv">
-              <button class="add-inv-btn">Créer un état d'inventaire</button>
+              <button class="add-inv-btn hidden">
+                Créer un état d'inventaire
+              </button>
             </div>
           </div>
 
@@ -2065,17 +2063,20 @@
                 <div class="heading-table-text-inv"></div>
                 <div class="heading-table-btns-inv">
                   <button
-                    class="heading-table-btn btn-delete-inv disabled-delete-button"
+                    class="heading-table-btn btn-delete-inv disabled-delete-button hidden"
+                    data-type="red"
                   >
                     Supprimer
                   </button>
                   <button
-                    class="heading-table-btn btn-edit-inv disabled-button"
+                    class="heading-table-btn btn-edit-inv disabled-button hidden"
+                    data-type="white"
                   >
                     Modifier
                   </button>
                   <button
-                    class="heading-table-btn btn-maj-inv disabled-save-button"
+                    class="heading-table-btn btn-maj-inv disabled-save-button hidden"
+                    data-type="blue"
                   >
                     Mettre a jour
                   </button>
@@ -2639,6 +2640,285 @@
           </div>
         </div>
         <!------------------------- III- END Inventaire table ---------------------------------->
+        <!-------------------------- IV- BEGIN Statistiques table ---------------------------------->
+        <div class="main-table-statistiques hidden">
+          <div class="heading">
+            <h1>Les Statistiques</h1>
+            <hr class="line-style" />
+          </div>
+          <!-- searchbarre + btn ajouter -->
+          <div class="container-mini-carts">
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-down-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="mini-carts">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">Total Users</p>
+                  <ion-icon
+                    name="arrow-up-outline"
+                    class="statistiques-icons"
+                  ></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number">140</p>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statistiques principale -->
+          <div class="container-statistiques">
+            <div class="grid-statistiques">
+              <div class="grid-2">
+                <div class="top-statistiques-cart">
+                  <p class="cart-description-statistiques">Fournisseurs</p>
+                  <div class="statistiques-filters">
+                    <select
+                      name="date-statistiques"
+                      class="filters-bdci"
+                      id="filter-statistiques-date"
+                      placeholder="Date"
+                      required
+                    >
+                      <option value="dcd" disabled="" selected="">Date:</option>
+                      <option value="acd">Acendant</option>
+                      <option value="dcd">Decendant</option>
+                    </select>
+                    <select
+                      name="option-statistiques"
+                      class="filters-bdci"
+                      id="filter-statistiques-option"
+                      placeholder="Structure"
+                      required
+                    >
+                      <option value="dcd" disabled="" selected="">
+                        Structures:
+                      </option>
+                      <option value="acd">CPI</option>
+                      <option value="dcd">SC</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="graph-statistiques">
+                  <canvas></canvas>
+                </div>
+              </div>
+              <div class="grid-2">
+                <p class="cart-description-statistiques">Produits</p>
+                <div class="graph-statistiques">
+                  <canvas></canvas>
+                </div>
+              </div>
+              <div class="grid-1">
+                <div class="top-statistiques-cart">
+                  <p class="cart-description-statistiques">Consommateurs</p>
+                  <div class="statistiques-filters">
+                    <select
+                      name="date-statistiques"
+                      class="filters-bdci"
+                      id="filter-statistiques-date"
+                      placeholder="Date"
+                      required
+                    >
+                      <option value="dcd" disabled="" selected="">Date:</option>
+                      <option value="acd">Acendant</option>
+                      <option value="dcd">Decendant</option>
+                    </select>
+                    <select
+                      name="option-statistiques"
+                      class="filters-bdci"
+                      id="filter-statistiques-option"
+                      placeholder="Structure"
+                      required
+                    >
+                      <option value="dcd" disabled="" selected="">
+                        Structures:
+                      </option>
+                      <option value="acd">CPI</option>
+                      <option value="dcd">SC</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="graph-statistiques">
+                  <canvas></canvas>
+                </div>
+              </div>
+              <div class="grid-2">
+                <p class="cart-description-statistiques">Fournisseurs</p>
+              </div>
+              <div class="grid-2">
+                <p class="cart-description-statistiques">Produits</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-------------------------- IV- END Statistiques table ---------------------------------->
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
       <!--------------------------------- I- BEGIN ADMIN FONCTIONS --------------------------------------->
@@ -2766,13 +3046,15 @@
           </button>
 
           <div class="heading-add-user heading-add-fournisseur">
-            <h1 class="heading-primary-add-user heading-primary-add-fournisseur">modifier un fournisseur</h1>
+            <h1
+              class="heading-primary-add-user heading-primary-add-fournisseur"
+            >
+              modifier un fournisseur
+            </h1>
           </div>
           <!-- for inputs -->
           <form class="add-user-inputs">
-            
             <div class="groupe-1-add">
-             
               <div class="input-groupe-add">
                 <input
                   name="raison-social"
@@ -2822,7 +3104,7 @@
                 <input
                   name="num-nif"
                   type="number"
-                  class="input "
+                  class="input"
                   placeholder="Entrez le nif"
                   autocomplete="new-nifs"
                   required
@@ -2833,7 +3115,7 @@
                 <input
                   name="fax"
                   type="number"
-                  class="input "
+                  class="input"
                   placeholder="Fax"
                   autocomplete="Fax"
                 />
@@ -2843,19 +3125,18 @@
                 <input
                   name="num-registre"
                   type="number"
-                  class="input "
+                  class="input"
                   placeholder="Entrez le num de num-registre"
                   autocomplete="new-num-registre"
                   required
                 />
                 <ion-icon class="input-icon" name="book-outline"></ion-icon>
-                
               </div>
               <div class="input-groupe-add">
                 <input
                   name="rib-rip"
                   type="text"
-                  class="input "
+                  class="input"
                   placeholder="Entrez le Rip ou Rib"
                   autocomplete="new-rip/rib"
                   required
@@ -2972,69 +3253,86 @@
       </div>
       <!-- fin de section  voir details d'un  fournisseur -->
       <!-- debut de section pour ajouter un chapitre -->
-            <div class="add-chapitre-container hidden">
-              <div class="add-chapitre-cart">
-                <button class="close-btn">
-                  <span class="material-icons-sharp">close</span>
-                </button>
-      
-                <div class="heading-add-chapitre">
-                  <h1 class="heading-primary-add-chapitre">Ajouter un chapitre</h1>
-                </div>
-                <!-- for inputs -->
-                <form class="add-chapitre-inputs">
-                  <div class="input-groupe">
-                    <input
-                      name="name"
-                      type="text"
-                      class="input"
-                      id="name-chapitre"
-                      placeholder="Nom du chapitre"
-                    />
-                  </div>
-                  <div class="input-groupe">
-                    <input
-                      name="name"
-                      type="text"
-                      class="input"
-                      id="name-chapitre"
-                      placeholder="Numero du chapitre"
-                    />
-                  </div>
-                  <div class="create-btn">
-                    <button>Crée le chapitre</button>
-                  </div>
-                </form>
-              </div>
+      <div class="add-structure-container add-chapitre-container hidden">
+        <div class="add-structure-cart add-chapitre-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-user">
+            <h1
+              class="heading-primary-add-structure heading-primary-add-chapitre"
+            >
+              Ajouter un chapitre
+            </h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-chapitre-inputs">
+            <div class="input-groupe">
+              <input
+                name="designation"
+                type="text"
+                class="input"
+                id="name-chapitre"
+                placeholder="Nom du chapitre"
+              />
             </div>
+            <div class="input-groupe">
+              <input
+                name="numChap"
+                type="text"
+                class="input"
+                id="num-chapitre"
+                placeholder="Numero du chapitre"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Crée le chapitre</button>
+            </div>
+          </form>
+        </div>
+      </div>
       <!-- fin de section  ajouter un chapitre -->
       <!-- debut de section pour modifier un chapitre -->
-            <div class="edit-chapitre-container hidden ">
-              <div class="edit-chapitre-cart">
-                <button class="close-btn">
-                  <span class="material-icons-sharp">close</span>
-                </button>
-      
-                <div class="heading-edit-chapitre">
-                  <h1 class="heading-primary-edit-chapitre">Modifier un chapitre</h1>
-                </div>
-                <!-- for inputs -->
-                <form class="edit-chapitre-inputs">
-                  <div class="input-groupe">
-                    <input
-                      name="name"
-                      type="text"
-                      class="input"
-                      id="name-chapitre"
-                      placeholder="Nom du chapitre"
-                    />
-                  </div>
-                  <div class="create-btn">
-                    <button>Modifier</button>
-                  </div>
-                </form>
-              </div>
+      <div class="add-structure-container add-chapitre-container hidden">
+        <div class="add-structure-cart add-chapitre-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-user">
+            <h1
+              class="heading-primary-add-structure heading-primary-add-chapitre"
+            >
+              Ajouter un chapitre
+            </h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-structure-inputs add-chapitre-inputs">
+            <div class="input-groupe">
+              <input
+                name="name"
+                type="text"
+                class="input"
+                id="name-chapitre"
+                placeholder="Nom du chapitre"
+              />
             </div>
+            <div class="input-groupe">
+              <input
+                name="name"
+                type="text"
+                class="input"
+                id="name-chapitre"
+                placeholder="Numero du chapitre"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Crée le chapitre</button>
+            </div>
+          </form>
+        </div>
+      </div>
       <!-- fin de section  modifier un chapitre -->
       <!-- debut de section pour ajouter un  user -->
 
@@ -3043,6 +3341,7 @@
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
+
           <div class="heading-add-user">
             <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
           </div>
@@ -3515,8 +3814,8 @@
       <div class="container-supp-user hidden">
         <div class="supp-user-cart">
           <p class="supp-user-text">
-            Êtes-vous sûr de vouloir supprimer cet chapitre ? Cette action
-            est irréversible et toutes les données associées seront perdues.
+            Êtes-vous sûr de vouloir supprimer cet chapitre ? Cette action est
+            irréversible et toutes les données associées seront perdues.
           </p>
           <div class="supp-user-btns">
             <button class="btn-supp supp-user-annuler">Annuler</button>
@@ -3596,6 +3895,21 @@
         </form>
       </div>
       <!-- fin section pour supprimer bdci  -->
+      <!-- debut section pour supprimer inv  -->
+      <div class="container-supp-inv hidden">
+        <form class="supp-bdc-cart">
+          <p class="supp-bdc-text">
+            Êtes-vous sûr de vouloir supprimer cet état d'Inventaire ?
+            <br />Cette action est irréversible et toutes les données associées
+            seront perdues.
+          </p>
+          <div class="supp-bdc-btns">
+            <button class="btn-supp supp-inv-annuler">Annuler</button>
+            <button class="btn-supp supp-inv-confirmer">Confirmer</button>
+          </div>
+        </form>
+      </div>
+      <!-- fin section pour supprimer inv  -->
       <!-- fin section pour supprimer bdc  -->
       <!-- debut section pour annuler bdc  -->
       <div class="container-supp-bdc container-cancel-bdc hidden">
@@ -4901,15 +5215,15 @@
       <!-- fin section pour voir les bdci -->
       <!-- debut section pour cree un état d'inventaire -->
       <div class="big-container-inv hidden">
-        <div class="add-info-container">
-          <div class="add-info-cart">
-            <div class="heading-add-info">
+        <div class="edit-info-container hidden">
+          <div class="edit-info-cart">
+            <div class="heading-edit-info">
               <p>Raison</p>
             </div>
             <form class="inputs-info">
               <div class="input-info">
                 <input
-                  name="justify"
+                  name="raison"
                   type="text"
                   placeholder="Donnez la raison de la difference"
                   id="justify"
@@ -4919,17 +5233,27 @@
               </div>
 
               <div class="btn-info">
-                <button class="cancel-btn-add-bdc cancel-btn-info">
-                  Annuler
-                </button>
-                <button class="add-btn-add-bdc add-btn-info">Confirmer</button>
+                <button class="cancel-btn-edit-info">Annuler</button>
+                <button class="edit-btn-info">Confirmer</button>
               </div>
             </form>
           </div>
         </div>
         <div class="add-inv-container">
-          <div class="inv-cart">
+          <form class="inv-cart">
             <p class="inv-title">Etat de l'inventaire</p>
+            <div class="heading-table-text-add-inv">
+              <div class="num-inv-inputs">
+                <p>Entez le numero de l'état d'inventaire :</p>
+                <input
+                  class="input-num-inv"
+                  name="numInventaire"
+                  type="number"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
             <div class="table-container-inv">
               <table>
                 <thead>
@@ -4968,7 +5292,7 @@
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
-                  <tr class="selected-row">
+                  <tr>
                     <!--ajoute selected-row for selected lines-->
                     <td>
                       <div class="colomn-product-des">
@@ -5026,7 +5350,7 @@
                 Sauvegarder
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- fin section pour cree un état d'inventaire -->
@@ -5160,6 +5484,7 @@
       <div class="overlay overlayDel hidden"></div>
       <div class="overlay overlayDelBdc hidden"></div>
       <div class="overlay overlayDelBdci hidden"></div>
+      <div class="overlay overlayDelInv hidden"></div>
       <div class="overlay overlayCancelBdc hidden"></div>
       <div class="overlay overlaySeeBdc hidden"></div>
       <div class="overlay overlaySeeBdci hidden"></div>
@@ -5175,6 +5500,9 @@
       <div class="overlay overlayEditBDCI hidden"></div>
       <div class="overlay overlayValidateBDCI hidden"></div>
       <div class="overlay overlayBDD hidden"></div>
+      <div class="overlay overlayInv hidden"></div>
+      <div class="overlay overlayEditChapter hidden"></div>
+      <div class="overlay overlayAddChapter hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

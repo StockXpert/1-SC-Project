@@ -547,7 +547,7 @@ export const getStatusClass = function (status) {
       return 'v-directeur-status';
     case 'visee par resp':
       return 'v-responsable-status';
-    case 'demande':
+    case 'demandee':
       return 'enattente-status';
     default:
       return '';
@@ -614,8 +614,8 @@ export const validateInputPrice = function (input) {
 
 // inputValidation.js
 
-export const validateIntegerInput = function (input, maxValue) {
-  input.addEventListener('input', event => {
+export const validateIntegerInput = function (input, maxValue = 0) {
+  input?.addEventListener('input', event => {
     let value = event.target.value;
 
     // Remove leading zeros
@@ -631,7 +631,7 @@ export const validateIntegerInput = function (input, maxValue) {
     if (isNaN(intValue) || intValue < 0) {
       intValue = 0;
     } else if (intValue >= maxValue) {
-      intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
+      if (maxValue) intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
     }
 
     // Update input value
@@ -725,11 +725,12 @@ export function findClosestTrParent(checkboxElement) {
 export function customSortForCmdsInt(a, b) {
   // Define the order based on the 'etat' property
   const order = {
-    demande: 1,
-    'vise par rd': 2,
-    'vise par dg': 3,
-    pret: 4,
+    demandee: 1,
+    'visee par resp': 2,
+    'visee par dg': 3,
+    prete: 4,
     servie: 5,
+    refusee: 6,
   };
 
   // Compare the 'etat' properties
@@ -746,4 +747,7 @@ export function customSortForCmdsInt(a, b) {
 
   // If 'date_demande' is the same, compare the 'num_demande'
   return b.num_demande - a.num_demande;
+}
+export function xor(a, b) {
+  return a !== b;
 }
