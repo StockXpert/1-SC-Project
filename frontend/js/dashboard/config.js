@@ -117,6 +117,29 @@ export const GROUP_DEFINITIONS = {
     'delete inventaire',
     'update inventaire',
   ],
+  Statistiques: [
+    'articleDemandePerYear',
+    'rapidFournisseur',
+    'respStructureTopDemandeurs',
+    'responsableStructureMostdemmandedProduct',
+    'topDemandeurs',
+    'productDemandePerYear',
+    'structureMostdemmandedProduct',
+    'structureTopDemandeurs',
+    'mostCommandedProducts',
+    'mostUsedFournisseur',
+    'mostdemmandedProduct',
+    'commandesStat',
+    'consumerMostdemmandedProduct',
+    'productDemandePerYear',
+    'structureMostdemmandedProduct',
+    'structureTopDemandeurs',
+    'mostCommandedProducts',
+    'mostUsedFournisseur',
+    'mostdemmandedProduct',
+    'commandesStat',
+    'consumerMostdemmandedProduct',
+  ],
 };
 export const PERM_NAMES = {
   register: 'Inscrire un nouvel utilisateur',
@@ -258,6 +281,11 @@ export const GROUP_BTNS = {
   <h3>Inventaire</h3>
 </a>
   `,
+  Statistiques: `<a class="sidebar-btns statistiques-btn" href="">
+  <span class="material-icons-sharp"> query_stats </span>
+  <h3>Statistiques</h3>
+</a>
+  `,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',
@@ -271,5 +299,6 @@ export const ORDER_OF_GROUPS = [
   'Produits',
   'Articles',
   'Inventaire',
+  'Statistiques',
   'Autre',
 ];
