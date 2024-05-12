@@ -317,6 +317,14 @@ function updateStructure(req,res)
     res.status(200).json({response:'structure updated'})
   }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
+function saveToken(req,res)
+{
+  const email=req.email;
+  const token=req.body.email;
+  userModel.updateToken(token,email).then(()=>{
+    res.status(200).json({response:'token added'})
+  }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
 module.exports = {
   login,
   register,
@@ -341,5 +349,6 @@ module.exports = {
   addPermissions,
   deletePermissions,
   showRoles,
-  showPermissions
+  showPermissions,
+  saveToken
 };

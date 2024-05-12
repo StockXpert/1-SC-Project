@@ -24,29 +24,38 @@ function fournitureRespApp(req,res){
 function fournitureDirApp(req,res){
     const {produits,numDemande}=req.body;
     SortieModel.updateAccordedQuantite(numDemande,produits).then(()=>{
-        SortieModel.changeDemandeStatNotif(numDemande,'visee par dg','other_notif').then(()=>{
+        if(SortieService.allZero)
+            {
+                SortieModel.changeDemandeStatNotif(numDemande,'refusee','other_notif').then(()=>{
+                    res.status(200).json({response:'Dir refused'})
+                    }).catch(()=>{res.status(500).json({response:'internal error'})})
+            }
+        else    
+        {
+            SortieModel.changeDemandeStatNotif(numDemande,'visee par dg','other_notif').then(()=>{
             res.status(200).json({response:'Dir approuved'})
-        }).catch(()=>{res.status(500).json({response:'internal error'})})
+            }).catch(()=>{res.status(500).json({response:'internal error'})})
+        }
     }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 function fournitureMagApp(req,res){
     const {produits,numDemande}=req.body;
     SortieModel.updateLivredQuantite(numDemande,produits).then(()=>{
-        SortieModel.changeDemandeStatNotif(numDemande,'pret','other_notif').then(()=>{
+        SortieModel.changeDemandeStatNotif(numDemande,'prete','other_notif').then(()=>{
             res.status(200).json({response:'Mag approuved'})
         }).catch(()=>{res.status(500).json({response:'internal error'})})
     }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 function livrer(req,res)
 {
-    const {numDemande,dateSortie,numDecharge,dateDecharge,products}=req.body;
+    const {numDemande,dateSortie,dateDecharge,products}=req.body;
     SortieModel.getDemandeProducts(numDemande).then((produits)=>{
         SortieService.subtituteQuantite(produits).then(()=>{
             SortieModel.changeDemandeStatNotif(numDemande,'servie','cons_notif').then(()=>{
                 SortieModel.isExterior(numDemande).then((exterior)=>{
                     if(exterior)
                     {
-                        SortieService.addDecharge('16OHtJBVOxUOwHddI7cUglv3PpWtwTXJjnoM8DyaFTg4',products,numDecharge,dateDecharge,numDecharge).then(()=>{
+                        SortieService.addDecharge('16OHtJBVOxUOwHddI7cUglv3PpWtwTXJjnoM8DyaFTg4',products,dateDecharge,numDemande).then(()=>{
                             res.status(200).json({response:'gererated'})
                         }).catch(()=>{res.status(500).json({response:'internal error'})})
                     }
@@ -77,10 +86,10 @@ function showAllDemandes(req,res)
     let etat=''
     switch (role) {
         case 'Magasinier':
-            statement="etat in ('visee par dg','pret','servie') or id_demandeur=?"
+            statement="etat in ('visee par dg','prete','servie') or id_demandeur=?"
             break;
         case 'Directeur':
-            statement=`etat in ('visee par resp','visee par dg','pret','servie') or (etat='demande' and
+            statement=`etat in ('visee par resp','visee par dg','prete','servie') or (etat='demandee' and
             id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?) or id_role=
@@ -103,15 +112,15 @@ function showNewDemandes(req,res)
     const {role,email}=req;
     let etat;
     switch (role) {
-        case 'consommateur':
-            etat='pret'
-        case 'magasinier':
+        case 'Consommateur':
+            etat='prete'
+        case 'Magasinier':
             etat='visee par dir'
             break;
-        case 'directeur':
+        case 'Directeur':
             etat='visee par resp' 
         default:
-            etat='demande'
+            etat='demandee'
             break;
     }
     SortieModel.getNewDemandes(role,etat,email,role==='consommateur'?'cons_notif':'other_notif').then((demandes)=>{
@@ -163,14 +172,14 @@ function readAllNotif(req,res)
     let etat;
     switch (role) {
         case 'consommateur':
-            etat='pret'
+            etat='prete'
         case 'magasinier':
             etat='visee par dir'
             break;
         case 'directeur':
             etat='visee par resp' 
         default:
-            etat='demande'
+            etat='demandee'
             break;
     }
     let numDemandes=[]

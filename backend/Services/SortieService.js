@@ -9,7 +9,7 @@ function canUpdate(numDemande,role)
         SortieModel.getDemandeStatus(numDemande).then((status)=>{
             switch (role) {
                 case 'Magasinier':
-                    if(status==="pret") resolve('')
+                    if(status==="prete") resolve('')
                     reject('')   
                     break;
                 case 'Directeur':
@@ -35,9 +35,10 @@ function genererBonSortie(numDemande,dateSortie,produits,id)
             i++;
         }
         await googleMiddleware.generatePDF(id,`sortie`,`sortie${numDemande}`);
+        await googleMiddleware.generateCSV(id,`sortie`,`sortie${numDemande}`);
         await googleMiddleware.deleteRows(5,i-1,id);
-        const link=`sortie/sortie${numDemande}.pdf`
-        SortieModel.insertLink(numDemande,link).then(()=>{
+        const link=`sortie/sortie${numDemande}.`
+        SortieModel.insertLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
             resolve(link)
         }).catch(()=>{reject("err")})
     })
@@ -58,12 +59,12 @@ function subtituteQuantite(produits)
         resolve('success')
     })
 }
-function genererBonDecharge(Id,products,numDecharge,dateDecharge,numDemande)
+function genererBonDecharge(Id,products,dateDecharge,numDemande)
 {
     return new Promise(async(resolve,reject)=>{
     console.log(products)
     changeProductsStructure(products)
-    await googleMiddleware.updateCel('B3',"DECHARGE "+numDecharge,Id);
+    await googleMiddleware.updateCel('B3',"DECHARGE "+numDemande,Id);
     await googleMiddleware.updateCel('B10',`Sidi Bel Abbés le ${dateDecharge}`,Id)
     let i=6; 
     for(let product of products )
@@ -71,9 +72,9 @@ function genererBonDecharge(Id,products,numDecharge,dateDecharge,numDemande)
         await googleMiddleware.addRow(i,product,Id,'decharge')
         i++;
     }
-    let link=`bonDecharge/bonDecharge${numDecharge}.`;
-    await googleMiddleware.generatePDF(Id,'bonDecharge',`bonDecharge${numDecharge}`)
-    await googleMiddleware.generateCSV(Id,'bonDecharge',`bonDecharge${numDecharge}`)
+    let link=`bonDecharge/bonDecharge${numDemande}.`;
+    await googleMiddleware.generatePDF(Id,'bonDecharge',`bonDecharge${numDemande}`)
+    await googleMiddleware.generateCSV(Id,'bonDecharge',`bonDecharge${numDemande}`)
     await googleMiddleware.deleteRows(6,i-1,Id);
     SortieModel.insertDechargeLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
         resolve('success')
@@ -91,17 +92,26 @@ function changeProductsStructure(products)
       else designation=product.designation;  
    }
 }
-function addDecharge(Id,products,numDecharge,dateDecharge,numDemande)
+function addDecharge(Id,products,dateDecharge,numDemande)
 {
     return new Promise((resolve,reject)=>{
         
-        SortieModel.insertDateNumDecharge(numDemande,numDecharge,dateDecharge).then(()=>{
+        SortieModel.insertDateDecharge(numDemande,dateDecharge).then(()=>{
             SortieModel.insertDecharge(numDemande,products).then(()=>{
-                genererBonDecharge(Id,products,numDecharge,dateDecharge,numDemande).then(()=>{
+                genererBonDecharge(Id,products,dateDecharge,numDemande).then(()=>{
                     resolve('');
                 }).catch(()=>{reject('')})
             }).catch(()=>{reject('')})
         }).catch(()=>{reject('')})
     })
 }
-module.exports={canUpdate,genererBonSortie,subtituteQuantite,addDecharge}
+function allZero(products)
+{
+    for(let product of products)
+        {
+            if(product.quanite!=0)
+                return false
+        }
+    return true    
+}
+module.exports={canUpdate,genererBonSortie,subtituteQuantite,addDecharge,allZero}
