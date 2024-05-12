@@ -324,7 +324,7 @@ function inscriptionDate(produit,year)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select min(b.date_reception) as date from bon_de_reception b,livre l
+    const query = `select CONCAT(year(min(b.date_reception)), '-', DATE_FORMAT(min(b.date_reception), '%m'), '-', DATE_FORMAT(min(b.date_reception), '%d')) as date from bon_de_reception b,livre l
     where b.num_bon=l.num_bon and l.id_produit=? and year(b.date_reception)=?`;
     const values=[produit,year];
     connection.connect((err) => {
@@ -410,7 +410,7 @@ function getInventaireYear(numInventaire)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select year(date_inventaire) as year ,date_inventaire from inventaire where num_inventaire=?`;
+    const query = `select year(date_inventaire) as year ,CONCAT(year(date_inventaire), '-', DATE_FORMAT(date_inventaire, '%m'), '-', DATE_FORMAT(date_inventaire, '%d')) as date_inventaire from inventaire where num_inventaire=?`;
     const values=[numInventaire];
     connection.connect((err) => {
       if (err) {
