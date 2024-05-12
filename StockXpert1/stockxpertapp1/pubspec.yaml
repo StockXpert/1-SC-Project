@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   dio: ^5.4.3+1
+  shared_preferences: ^2.2.3
   conditional_builder_null_safety: ^0.0.6
   bloc: ^8.1.4
   flutter_bloc: ^8.1.5
