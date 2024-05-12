@@ -8,7 +8,7 @@ export class AddCmdsView extends AddUserView {
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
   _btnClose = document.querySelector('.btn-add-bdr-qt');
-  _btnOpenAddProduct;
+  _btnsOpenAddProduct;
   _btnCloseAddProduct;
   _windowAddProduct;
   _restricted = [[this._btnOpen, 'bon commande'], 'none'];
@@ -73,13 +73,8 @@ export class AddCmdsView extends AddUserView {
       ? btn.classList.remove('disabled-save-button')
       : btn.classList.add('disabled-save-button');
   }
-
+  //TODO: FORM INSTEAD OF SAVE
   addHandlerSavingBDC(handler, state) {
-    // const typeInput = this._type;
-    // const fourInput = this._four;
-    // const articleInput = this._article;
-    // const productInput = this._product;
-    // const productEditInput = this._productEdit;
     this._save.addEventListener('click', e => {
       e.preventDefault();
       // articleInput.setCustomValidity('');
@@ -163,21 +158,31 @@ export class AddCmdsView extends AddUserView {
     this.toggleDivVisibility('#filter-fournisseur', '.four-search-results');
     this.toggleDivVisibility('#filter-article', '.article-search-results');
   }
-  addHandlerHideAddProductWindow(CloserClassName, windowClassName) {
+  addHandlerHideAddProductWindow(
+    CloserClassName,
+    windowClassName,
+    needsvalidity = true
+  ) {
     this._windowAddProduct = document.querySelector(windowClassName);
-    this._btnCloseAddProduct = document.querySelector(CloserClassName);
+    this._btnCloseAddProduct =
+      this._windowAddProduct.querySelector(CloserClassName);
     this._product.parentElement.classList.remove('input-product--valid');
-    this._btnCloseAddProduct.addEventListener(
-      'click',
-      this._boundToggleAddProductWindow
+    // console.log(this._btnCloseAddProduct, this);
+    this._btnCloseAddProduct.addEventListener('click', e =>
+      this._boundToggleAddProductWindow(e, needsvalidity)
     );
   }
-  addHandlerShowAddProductWindow(OpClassName, windowClassName) {
+  addHandlerShowAddProductWindow(
+    OpClassName,
+    windowClassName,
+    needsvalidity = true
+  ) {
     this._windowAddProduct = document.querySelector(windowClassName);
-    this._btnOpenAddProduct = document.querySelector(OpClassName);
-    this._btnOpenAddProduct.addEventListener(
-      'click',
-      this._boundToggleAddProductWindow
+    this._btnsOpenAddProduct = this._window.querySelectorAll(OpClassName);
+    this._btnsOpenAddProduct.forEach(btn =>
+      btn.addEventListener('click', e =>
+        this._boundToggleAddProductWindow(e, needsvalidity)
+      )
     );
   }
   toggleAddProductWindow() {
@@ -189,10 +194,10 @@ export class AddCmdsView extends AddUserView {
       input.value = '';
     });
   }
-  _boundToggleAddProductWindow = e => {
+  _boundToggleAddProductWindow = (e, validity) => {
     e.preventDefault();
     this.clearAddProductForm();
-    this._product.changeInputValidity('');
+    if (validity) this._product.changeInputValidity('');
     this.toggleAddProductWindow.bind(this)();
   };
   addHandlerFournisseurSearch(fournisseurSearchHandler) {
@@ -497,24 +502,35 @@ export class AddCmdsView extends AddUserView {
   }
   // addHandlerEditProductsBtns() {}
 
-  addHandlerHideEditProductWindow(CloserClassName, windowClassName) {
+  addHandlerHideEditProductWindow(
+    CloserClassName,
+    windowClassName,
+    needsvalidity = true
+  ) {
     this._windowEditProduct = document.querySelector(windowClassName);
-    this._btnCloseEditProduct = document.querySelector(CloserClassName);
+    this._btnCloseEditProduct =
+      this._windowEditProduct.querySelector(CloserClassName);
     this._productEdit.parentElement.classList.remove('input-product--valid');
-    this._btnCloseEditProduct.addEventListener(
-      'click',
-      this._boundToggleEditProductWindow
+    this._btnCloseEditProduct.addEventListener('click', e =>
+      this._boundToggleEditProductWindow(e)
     );
   }
-  addHandlerShowEditProductWindow(OpClassName, windowClassName) {
+  addHandlerShowEditProductWindow(
+    OpClassName,
+    windowClassName,
+    validity = true
+  ) {
     this._windowEditProduct = document.querySelector(windowClassName);
-    this._btnsOpenEditProduct = document.querySelectorAll(OpClassName);
-    // console.log(this);
+    this._btnsOpenEditProduct = this._window.querySelectorAll(OpClassName);
+
     this._btnsOpenEditProduct.forEach(btn => {
-      // console.log(btn);
       btn.addEventListener('click', e => {
         this._boundToggleEditProductWindow(e);
-        this._productEdit.changeInputValidity('Nom de produit Valide !', true);
+        if (validity)
+          this._productEdit.changeInputValidity(
+            'Nom de produit Valide !',
+            true
+          );
       });
     });
   }

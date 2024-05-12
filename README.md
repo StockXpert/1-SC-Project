@@ -1,4 +1,4 @@
-﻿# Les Compte de StockXpert:
+# Les Comptes de StockXpert:
 
 ## Admin
 

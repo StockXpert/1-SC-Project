@@ -547,7 +547,7 @@ export const getStatusClass = function (status) {
       return 'v-directeur-status';
     case 'visee par resp':
       return 'v-responsable-status';
-    case 'demande':
+    case 'demandee':
       return 'enattente-status';
     default:
       return '';
@@ -614,8 +614,8 @@ export const validateInputPrice = function (input) {
 
 // inputValidation.js
 
-export const validateIntegerInput = function (input, maxValue) {
-  input.addEventListener('input', event => {
+export const validateIntegerInput = function (input, maxValue = 0) {
+  input?.addEventListener('input', event => {
     let value = event.target.value;
 
     // Remove leading zeros
@@ -631,7 +631,7 @@ export const validateIntegerInput = function (input, maxValue) {
     if (isNaN(intValue) || intValue < 0) {
       intValue = 0;
     } else if (intValue >= maxValue) {
-      intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
+      if (maxValue) intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
     }
 
     // Update input value
@@ -672,3 +672,81 @@ export const getVisibleHeight = function (element) {
 
   return visibleBottom - visibleTop;
 };
+export function findParentWithCustomMaxHeight(element) {
+  let parent = element.parentElement;
+
+  while (parent) {
+    const maxHeight = window.getComputedStyle(parent).maxHeight;
+    if (maxHeight && maxHeight !== 'none' && maxHeight !== 'auto') {
+      // Check if the max-height is custom
+      return parent;
+    }
+    parent = parent.parentElement;
+  }
+
+  // If no parent with custom max-height is found, return null
+  return null;
+}
+export function getPosition(element) {
+  var xPosition = 0;
+  var yPosition = 0;
+
+  while (element) {
+    xPosition += element.offsetLeft - element.scrollLeft + element.clientLeft;
+    yPosition += element.offsetTop - element.scrollTop + element.clientTop;
+    element = element.offsetParent;
+  }
+
+  return { x: xPosition, y: yPosition };
+}
+
+export function getVisibleHeight2(element) {
+  const rect = element.getBoundingClientRect();
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight;
+  let parentEl = findParentWithCustomMaxHeight(element);
+  const rect2 = parentEl?.getBoundingClientRect();
+  // Calculate the visible top and bottom of the element relative to the viewport
+  const visibleTop = Math.max(rect.top, 0);
+  const visibleBottom = Math.max(rect.bottom, rect2?.bottom);
+
+  // Calculate the visible height
+  const visibleHeight = visibleBottom - visibleTop;
+  return Math.min(visibleHeight, parentEl?.offsetHeight);
+}
+export function findClosestTrParent(checkboxElement) {
+  // Traverse up the DOM tree until a <tr> parent element is found
+  let currentElement = checkboxElement.parentElement;
+  while (currentElement && currentElement.tagName !== 'TR') {
+    currentElement = currentElement.parentElement;
+  }
+  return currentElement; // Returns the closest <tr> parent element or null if not found
+}
+export function customSortForCmdsInt(a, b) {
+  // Define the order based on the 'etat' property
+  const order = {
+    demande: 1,
+    'visee par resp': 2,
+    'visee par dg': 3,
+    pret: 4,
+    servie: 5,
+  };
+
+  // Compare the 'etat' properties
+  const etatComparison = order[a.etat] - order[b.etat];
+  if (etatComparison !== 0) {
+    return etatComparison;
+  }
+
+  // If 'etat' is the same, compare the 'date_demande'
+  const dateComparison = new Date(b.date_demande) - new Date(a.date_demande);
+  if (dateComparison !== 0) {
+    return dateComparison;
+  }
+
+  // If 'date_demande' is the same, compare the 'num_demande'
+  return b.num_demande - a.num_demande;
+}
+export function xor(a, b) {
+  return a !== b;
+}

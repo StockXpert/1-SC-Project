@@ -1,5 +1,6 @@
 import * as helpers from '../../helpers.js';
 import View from '../view.js';
+import * as model from '../../model.js';
 
 class BonReceptionView extends View {
   _btnOpen = document.querySelectorAll('.view-btr-btn');
@@ -37,10 +38,12 @@ class BonReceptionView extends View {
     btnClose.addEventListener('click', e => {
       e.preventDefault();
       this.toggleWindow();
+      model.state.bdc.selected = '';
     });
     overlay.addEventListener('click', e => {
       e.preventDefault();
       this.toggleWindow();
+      model.state.bdc.selected = '';
     });
   }
 
@@ -89,9 +92,15 @@ class BonReceptionView extends View {
           </a>
         </td>
         <td class="td-view-fac">
-          <a class="view-fac-btn" href="../../backend/${result.link_facture}">
-            <p>Voir Facture</p>
-          </a>
+        ${
+          result.num_facture
+            ? `
+            <a class="view-fac-btn" href="../../backend/${result.link_facture}">
+              <p>Voir Facture</p>
+            </a>`
+            : '<p>Pas de facture</p>'
+        }
+          
         </td>
         <td>
           <a

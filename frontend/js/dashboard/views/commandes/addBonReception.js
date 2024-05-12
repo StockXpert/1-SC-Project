@@ -1,4 +1,5 @@
 import { AddUserView } from '../addUserView.js';
+import * as helpers from '../../helpers.js';
 
 class AddBonReception extends AddUserView {
   _btnOpen = document.querySelector('.btn-add-bdr');
@@ -47,17 +48,20 @@ class AddBonReception extends AddUserView {
           .querySelector('thead')
           .querySelectorAll('th').length
       }><b>Aucun Produit est trouvé pour ce bon de Commande </b></td></tr>`;
-    // if (
-    //   this._data.every(result => result.quantite - result.quantite_recu <= 0)
-    // ) {
-    //TODO:
-    // }
+    if (
+      this._data.every(result => result.quantite - result.quantite_recu === 0)
+    ) {
+      helpers.renderError('Tout Est livré', 'Il rest plus a livré');
+      this._sauvgarde.classList.toggle('hidden');
+    }
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');
   }
 
   _generateMarkupPreview(result) {
+    const qtRest = result.quantite - result.quantite_recu;
+    console.log(qtRest);
     return `
       <tr>
         <td>
@@ -68,16 +72,18 @@ class AddBonReception extends AddUserView {
         <td>${result.designation}</td>
 
         <td>${result.quantite}</td>
-        <td>${
-          result.quantite - result.quantite_recu < 0
-            ? 0
-            : result.quantite - result.quantite_recu
-        }</td>
+        <td class="red-qt">${qtRest < 0 ? 0 : qtRest}</td>
         <td class="quantity">
-          <input class="green-qt" type="number" value="0" min="0" max="30" />
-          <span class="material-icons-sharp">
-            drive_file_rename_outline
-          </span>
+          ${
+            qtRest > 0
+              ? `
+              <input class="green-qt" type="number" value="0"/>
+                <span class="material-icons-sharp">
+                  drive_file_rename_outline
+                </span>
+              `
+              : '<p>Ce produit est livré</p>'
+          }
         </td>
       </tr>
     `;
@@ -102,26 +108,31 @@ class AddBonReception extends AddUserView {
     let mustIncludeFacture;
     tableRows.forEach((row, i) => {
       const elementQuantite = +row.querySelector('td:nth-child(4)').textContent;
-      row.querySelector('input[type="number"]').addEventListener('input', e => {
-        const enteredValue = parseInt(e.target.value);
-        if (isNaN(enteredValue)) {
-          // If entered value is not a number, reset to empty string
-          e.target.value = '';
-        } else if (enteredValue < 0 || enteredValue > elementQuantite) {
-          // If entered value is outside the range, reset to the nearest limit
-          e.target.value = Math.min(Math.max(enteredValue, 0), elementQuantite);
-        }
+      row
+        .querySelector('input[type="number"]')
+        ?.addEventListener('input', e => {
+          const enteredValue = parseInt(e.target.value);
+          if (isNaN(enteredValue)) {
+            // If entered value is not a number, reset to empty string
+            e.target.value = '';
+          } else if (enteredValue < 0 || enteredValue > elementQuantite) {
+            // If entered value is outside the range, reset to the nearest limit
+            e.target.value = Math.min(
+              Math.max(enteredValue, 0),
+              elementQuantite
+            );
+          }
 
-        results[i] = e.target.value - elementQuantite;
-        mustIncludeFacture = results.every(el => el === 0);
-        if (mustIncludeFacture) {
-          factureInput.parentElement.classList.remove('hidden');
-          numFacture.parentElement.classList.remove('hidden');
-        } else if (!factureInput.parentElement.classList.contains('hidden')) {
-          factureInput.parentElement.classList.add('hidden');
-          numFacture.parentElement.classList.add('hidden');
-        }
-      });
+          results[i] = e.target.value - elementQuantite;
+          mustIncludeFacture = results.every(el => el === 0);
+          if (mustIncludeFacture) {
+            factureInput.parentElement.classList.remove('hidden');
+            numFacture.parentElement.classList.remove('hidden');
+          } else if (!factureInput.parentElement.classList.contains('hidden')) {
+            factureInput.parentElement.classList.add('hidden');
+            numFacture.parentElement.classList.add('hidden');
+          }
+        });
     });
 
     this._sauvgarde.addEventListener('click', async e => {
@@ -129,10 +140,14 @@ class AddBonReception extends AddUserView {
 
       const dataArray = [];
       tableRows.forEach(row => {
-        console.log(inputQuatite);
         const elementQuantite =
           +row.querySelector('td:nth-child(3)').textContent;
-        const inputQuatite = +row.querySelector('input[type="number"]').value;
+        let inputQuatite;
+        try {
+          inputQuatite = +row.querySelector('input[type="number"]').value;
+        } catch (error) {
+          helpers.renderError('Tout Est livré', 'Il rest plus a livré');
+        }
         console.log(elementQuantite);
         if (!inputQuatite) return;
         if (inputQuatite <= elementQuantite) {
@@ -144,22 +159,41 @@ class AddBonReception extends AddUserView {
           dataArray.push(dataObject);
         } else throw new Error('Quantité Errorr');
       });
-      if (dataArray.length === 0) return console.log('No modification');
+      if (dataArray.length === 0)
+        return helpers.renderError(
+          'Aucune modification',
+          'Click sur anuler si vous ne voulez pas ajouter un bon de réception'
+        );
       console.log('SAUVGARDE', numBonLivraison.value, numFacture.value);
-      if (bonLivraisonInput.files.length > 0)
-        console.log(bonLivraisonInput.files[0]);
-      else console.log('no bon Livraison');
-      if (factureInput.files.length > 0) console.log(factureInput.files[0]);
-      else console.log('no facture');
+      if (bonLivraisonInput.files.length === 0 && !numBonLivraison.value)
+        return helpers.renderError(
+          'Tu doit ajouté un bon de livraison ',
+          'Le bon de livraison est obligatoire'
+        );
+      if (!mustIncludeFacture) {
+        console.log(dataArray);
+        await control(
+          +numBonLivraison.value,
+          dataArray,
+          bonLivraisonInput.files[0]
+        );
+      } else {
+        if (factureInput.files.length === 0 && !numFacture.value)
+          return helpers.renderError(
+            'Tu doit ajouté une facture',
+            'La facture est obligatoire lorsque tous les produit sont livré'
+          );
+        console.log(dataArray);
+        await control(
+          +numBonLivraison.value,
+          dataArray,
+          bonLivraisonInput.files[0],
+          numFacture.value,
+          factureInput.files[0]
+        );
+      }
 
-      console.log(dataArray);
-      await control(
-        +numBonLivraison.value,
-        +numFacture.value,
-        dataArray,
-        bonLivraisonInput.files[0],
-        factureInput.files[0]
-      );
+      this.toggleWindow();
     });
   }
 }

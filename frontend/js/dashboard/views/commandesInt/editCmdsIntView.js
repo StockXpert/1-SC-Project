@@ -24,7 +24,7 @@ export class EditCmdsIntView extends AddCmdsIntView {
     }
   }
   _btnOpen = document.querySelector('.btn-edit-bdci');
-  _btnModifyBdc = document.querySelector('.btn-edit-bdci');
+  _btnModifyBdci = document.querySelector('.btn-edit-bdci');
   _overlay = document.querySelector('.overlayEditBDCI');
   _window = document.querySelector('.big-container-edit-bdci');
   _btnClose = document.querySelector('#edit-bdci-close');
@@ -48,12 +48,12 @@ export class EditCmdsIntView extends AddCmdsIntView {
     '.edit-bdci-product-search-results-container-edit'
   );
   // _form = document.querySelector('.inputs-edit');
-  async addHandlerEdit(controller) {
+  addHandlerEdit(controller) {
     // const btnOpenArray = Array.from(this._btnOpen);
     // btnOpenArray.forEach(btn => {
     //   btn.addEventListener('click', controller);
     // });
-    this._btnOpen.addEventListener('click', await controller);
+    this._btnOpen.addEventListener('click', async e => await controller());
   }
 
   // changeInputs(numDemande, selectedCmdIntProducts) {

@@ -8,7 +8,6 @@ export class AddCmdsIntView extends AddCmdsView {
   _parentElement = document.querySelector('.results-bdci-produits');
   _product = document.querySelector('#bdci-product-add');
   _productEdit = document.querySelector('#bdci-product-edit');
-  _editProductForm = document.querySelector('.inputs-edit-product-bdci');
   _commandeExterne = document
     .querySelector('.check-bdd')
     .querySelector('input[type="checkbox"]');
@@ -17,7 +16,7 @@ export class AddCmdsIntView extends AddCmdsView {
   _checkboxesAddProduct;
   _save = document.querySelector('.btn-save-bdci-qt');
   // _btnModifyProducts = document.querySelector('.btn-edit-produits-bdc');
-  // _btnOpenAddProduct;
+  // _btnsOpenAddProduct;
   // _btnCloseAddProduct;
   // _windowAddProduct;
   // _restricted = [[this._btnOpen, 'bon commande'], 'none'];

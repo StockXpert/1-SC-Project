@@ -1,20 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulaire de téléchargement de fichiers</title>
+    <title>Envoi de fichiers et de données via FormData avec fetch</title>
   </head>
   <body>
-    <h1>Formulaire de téléchargement de fichiers</h1>
-    <form
-      action="http://localhost:3000/Entrees/updateQuantite"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <input type="file" name="bonLivraison" />
-      <input type="file" name="facture" />
-      <button type="submit">Envoyerr</button>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input
+        type="file"
+        id="bonLivraison"
+        name="bonLivraison"
+        accept=".pdf"
+      /><br />
+      <input type="file" id="facture" name="facture" accept=".pdf" /><br />
+      <table id="tableauProduits">
+        <!-- Remplir le tableau avec les produits -->
+      </table>
+      <button type="button" onclick="envoyerDonnees()">Envoyer</button>
     </form>
+
+    <script>
+      async function envoyerDonnees() {
+        var formData = new FormData();
+        var bonLivraisonFile = document.getElementById('bonLivraison').files[0];
+        var factureFile = document.getElementById('facture').files[0];
+        var produits = [
+          { nom: 'Produit 1', quantite: 2 },
+          { nom: 'Produit 2', quantite: 1 },
+          // Ajouter d'autres produits au besoin
+        ];
+
+        formData.append('bonLivraison', bonLivraisonFile);
+        formData.append('facture', factureFile);
+        formData.append('produits', JSON.stringify(produits));
+        formData.append('numFacture', 5);
+        formData.append('numLivraison', 5);
+        formData.append('numCommande', 11);
+        formData.append('dateReception', '2024/05/10');
+        try {
+          const response = await fetch(
+            'http://localhost:3000/Entrees/updateQuantite',
+            {
+              method: 'POST',
+              body: formData,
+            }
+          );
+          if (!response.ok) {
+            throw new Error('Erreur lors de la requête');
+          }
+          // Traiter la réponse du serveur ici si nécessaire
+          console.log('Données envoyées avec succès');
+        } catch (error) {
+          console.error('Erreur:', error.message);
+        }
+      }
+    </script>
   </body>
 </html>
