@@ -985,7 +985,7 @@
         <!--------------------------------- I- END ADMIN FONCTIONS --------------------------------------->
         <!------------------------------ II- BEGIN ServiceAchat FONCTIONS ---------------------------------->
         <!------ debut de content for ServiceAchat : 1 - Chapitres tables----- -->
-        <div class="main-table hidden " id="main-table-chapitres">
+        <div class="main-table hidden" id="main-table-chapitres">
           <div class="heading">
             <h1>Chapitres</h1>
             <hr class="line-style" />
@@ -1037,7 +1037,7 @@
 
             <!------------debut du tableau ------------------------>
             <!-- <div class="users-table"> -->
-            <div class="table-container-chapitres">
+            <div class="table-container-chapitres hidden">
               <table>
                 <thead>
                   <tr>
@@ -1261,9 +1261,13 @@
                   </p> -->
                 </div>
                 <div class="heading-table-btns-fournisseur">
+                  <button class="heading-table-btn btn-edit-bdci">
+                    modifier
+                  </button>
                   <button class="heading-table-btn btn-delete-fournisseur">
                     Supprimer
                   </button>
+                 
                 </div>
               </div>
               <div class="heading-table-line">
@@ -2968,17 +2972,17 @@
       </div>
       <!-- fin de section  voir details d'un  fournisseur -->
       <!-- debut de section pour ajouter un chapitre -->
-            <div class="add-structure-container add-chapitre-container hidden">
-              <div class="add-structure-cart add-chapitre-cart">
+            <div class="add-chapitre-container hidden">
+              <div class="add-chapitre-cart">
                 <button class="close-btn">
                   <span class="material-icons-sharp">close</span>
                 </button>
       
-                <div class="heading-add-user">
-                  <h1 class="heading-primary-add-structure heading-primary-add-chapitre">Ajouter un chapitre</h1>
+                <div class="heading-add-chapitre">
+                  <h1 class="heading-primary-add-chapitre">Ajouter un chapitre</h1>
                 </div>
                 <!-- for inputs -->
-                <form class="add-structure-inputs add-chapitre-inputs">
+                <form class="add-chapitre-inputs">
                   <div class="input-groupe">
                     <input
                       name="name"
@@ -3005,17 +3009,17 @@
             </div>
       <!-- fin de section  ajouter un chapitre -->
       <!-- debut de section pour modifier un chapitre -->
-            <div class="add-structure-container add-chapitre-container hidden">
-              <div class="add-structure-cart add-chapitre-cart">
+            <div class="edit-chapitre-container hidden ">
+              <div class="edit-chapitre-cart">
                 <button class="close-btn">
                   <span class="material-icons-sharp">close</span>
                 </button>
       
-                <div class="heading-add-user">
-                  <h1 class="heading-primary-add-structure heading-primary-add-chapitre">Ajouter un chapitre</h1>
+                <div class="heading-edit-chapitre">
+                  <h1 class="heading-primary-edit-chapitre">Modifier un chapitre</h1>
                 </div>
                 <!-- for inputs -->
-                <form class="add-structure-inputs add-chapitre-inputs">
+                <form class="edit-chapitre-inputs">
                   <div class="input-groupe">
                     <input
                       name="name"
@@ -3025,17 +3029,8 @@
                       placeholder="Nom du chapitre"
                     />
                   </div>
-                  <div class="input-groupe">
-                    <input
-                      name="name"
-                      type="text"
-                      class="input"
-                      id="name-chapitre"
-                      placeholder="Numero du chapitre"
-                    />
-                  </div>
                   <div class="create-btn">
-                    <button>Crée le chapitre</button>
+                    <button>Modifier</button>
                   </div>
                 </form>
               </div>
@@ -3048,7 +3043,6 @@
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
-
           <div class="heading-add-user">
             <h1 class="heading-primary-add-user">Ajouter un utilisateur</h1>
           </div>
