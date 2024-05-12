@@ -725,7 +725,7 @@ export function findClosestTrParent(checkboxElement) {
 export function customSortForCmdsInt(a, b) {
   // Define the order based on the 'etat' property
   const order = {
-    demande: 1,
+    demandee: 1,
     'visee par resp': 2,
     'visee par dg': 3,
     pret: 4,
