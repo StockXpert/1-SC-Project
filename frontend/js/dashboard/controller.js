@@ -46,6 +46,7 @@ import deleteCmdsIntView from './views/commandesInt/deleteCmdsIntView.js';
 import deleteInvView from './views/inventaires/deleteInvView.js';
 import addInvView from './views/inventaires/addInvView.js';
 import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
+import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1934,9 +1935,19 @@ const controlLoadChapters = async function () {
     await model.loadChapitres();
     chaptersView.render(model.state.chapters.all);
     // deleteStructureView.addDeleteController(controlDeleteStructure);
+    numberChaptersView.render(model.state.chapters);
+    numberChaptersView.updateMasterCheckbox();
+    numberChaptersView.addHandlerNumber(controleSelectChapters);
+    numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
   } catch (error) {
     console.error(error);
   }
+};
+
+const controleSelectChapters = function () {
+  numberChaptersView._clear();
+  model.state.chapters.selected = numberChaptersView.calculateCheckboxes();
+  numberChaptersView.render(model.state.chapters);
 };
 
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)

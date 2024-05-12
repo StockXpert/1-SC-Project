@@ -166,6 +166,7 @@ export const state = {
   },
   chapters: {
     all: [],
+    selected: 0,
   },
 };
 export const getMyPerms = async function () {

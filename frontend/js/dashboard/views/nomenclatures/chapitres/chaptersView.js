@@ -16,7 +16,7 @@ class ChaptersView extends View {
       <td>
         <div class="checkbox-colomn-chapitres">
           <input type="checkbox" id="checkbox-table-chapitres" />
-          <p class="colomn-tags-name">21-11</p>
+          <p class="colomn-tags-name">${result.num_chap}</p>
         </div>
       </td>
       <td>${result.designation}</td>
