@@ -1,9 +1,16 @@
 import { DeleteCmdsIntView } from '../commandesInt/deleteCmdsIntView.js';
 export class DeleteInvView extends DeleteCmdsIntView {
+  _window = document.querySelector('.container-supp-inv');
+  _overlay = document.querySelector('.overlayDelInv');
+  _btnOpen = document.querySelector('.btn-delete-inv');
+  _btnClose = document.querySelector('.supp-inv-annuler');
+  _confirm = document.querySelector('.supp-inv-confirmer');
   constructor(nerfed = false) {
     super(true);
     if (!nerfed) {
-      this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+      this._btnOpen.addEventListener('click', e => {
+        this.toggleWindow.bind(this)();
+      });
       this._btnClose.addEventListener('click', e => {
         e.preventDefault();
         this.toggleWindow.bind(this)();
@@ -42,11 +49,6 @@ export class DeleteInvView extends DeleteCmdsIntView {
     //   { designation: 'upload sortie' },
     // ];
   }
-  _window = document.querySelector('.container-supp-inv');
-  _overlay = document.querySelector('.overlayDelInv');
-  _btnOpen = document.querySelector('.btn-delete-inv');
-  _btnClose = document.querySelector('.supp-inv-annuler');
-  _confirm = document.querySelector('.supp-inv-confirmer');
 
   _restricted = [['.btn-delete-inv', 'delete inventaire'], 'none'];
 }
