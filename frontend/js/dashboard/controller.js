@@ -29,7 +29,7 @@ import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
 import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
 import validateCmdsIntView from './views/commandesInt/validateCmdsIntView.js';
-import productsView from './views/commandes/productsView.js';
+import productsView from './views/nomenclatures/produits/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 import bonReceptionView from './views/commandes/bonReceptionView.js';
@@ -1985,6 +1985,55 @@ const controlSearchChapter = async function (query) {
   numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
 };
 
+const controlLoadProducts = async function () {
+  try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show products'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
+    productsView.restrict(model.state.me.permissions.all);
+    // addChapterView.restrict(model.state.me.permissions.all);
+    // deleteStructureView.restrict(model.state.me.permissions.all);
+    productsView.renderSpinner('Loading Products');
+    await model.loadAllProducts();
+    productsView.render(model.state.products.all);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
+
+    // numberChaptersView.render(model.state.chapters);
+    // numberChaptersView.updateMasterCheckbox();
+    // numberChaptersView.addHandlerNumber(controleSelectChapters);
+    // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    productsView.addSearchController(controlSearchProduct);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlSearchProduct = async function (query) {
+  const results = model.state.products.all.filter(product =>
+    product.designation.toLowerCase().includes(query)
+  );
+  // if (results.length === 0)
+  //   return helpers.renderError(
+  //     'Not Found',
+  //     `il y'a aucun produit qui contient ${query}`
+  //   );
+  model.state.products.searched.all = results;
+
+  chaptersView.render(model.state.chapters.searched.all);
+  // numberChaptersView.render(model.state.chapters.searched);
+  // numberChaptersView.updateMasterCheckbox();
+  // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
+  // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
+};
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
@@ -2003,7 +2052,7 @@ const controllers = [
   ,
   ,
   controlLoadChapters,
-  ,
+  controlLoadProducts,
   controlLoadCmds,
   controlLoadCmdsInt,
   controlLoadInv,

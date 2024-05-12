@@ -117,6 +117,7 @@ class SideView extends View {
               helpers.findNodeIndex(this.btns, targeto)
             ].classList.remove('hidden');
             targeto.classList.add('active');
+            // console.log(helpers.findNodeIndex(this.btns, targeto));
             await controllers[helpers.findNodeIndex(this.btns, targeto)]();
           });
       });
