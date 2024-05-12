@@ -139,7 +139,42 @@ function commandesStat(req,res)
         res.status(200).json({response:data})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
+function bciConsommateurStat(req,res)
+{
+    const {dateD,dateF,consommateur}=req.body
+    
+    StatistiqueModel.bciStat(dateD,dateF,consommateur).then((data)=>{
+        res.status(200).json({response:data})
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
+function bciStructureStat(req,res)
+{
+    const {dateD,dateF,structure}=req.body
+    
+    StatistiqueModel.bciStat(dateD,dateF,structure).then((data)=>{
+        res.status(200).json({response:data})
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
+function respBciStat(req,res)
+{
+    const {dateD,dateF}=req.body;
+    const resp=req.email;
+    UserModel.isResponsable(resp).then((structure)=>{
+        StatistiqueModel.bciStat(dateD,dateF,structure).then((data)=>{
+            res.status(200).json({response:data})
+        }).catch(()=>res.status(500).json({response:'internal error'}))
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
+function bciStat(req,res)
+{
+    const {dateD,dateF}=req.body
+    
+    StatistiqueModel.bciStat(dateD,dateF).then((data)=>{
+        res.status(200).json({response:data})
+    }).catch(()=>res.status(500).json({response:'internal error'}))
+}
 module.exports={articleDemandePerYear,commandesStat,consumerMostdemmandedProduct,mostCommandedProducts,mostUsedFournisseur,
     productDemandePerYear,rapidFournisseur,respStructureTopDemandeurs,responsableStructureMostdemmandedProduct,
-    structureMostdemmandedProduct,structureTopDemandeurs,topDemandeurs,mostdemmandedProduct
+    structureMostdemmandedProduct,structureTopDemandeurs,topDemandeurs,mostdemmandedProduct,bciStat,bciConsommateurStat,
+    respBciStat,bciStructureStat
 }

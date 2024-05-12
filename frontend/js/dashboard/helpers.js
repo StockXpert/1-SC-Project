@@ -728,8 +728,9 @@ export function customSortForCmdsInt(a, b) {
     demandee: 1,
     'visee par resp': 2,
     'visee par dg': 3,
-    pret: 4,
+    prete: 4,
     servie: 5,
+    refusee: 6,
   };
 
   // Compare the 'etat' properties
