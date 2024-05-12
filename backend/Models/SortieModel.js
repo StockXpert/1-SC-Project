@@ -377,7 +377,7 @@ function canDeleteFourniture(numDemande)
               reject("request error");
               return;
             }
-            if(results[0].etat==="demande")
+            if(results[0].etat==="demandee")
                resolve('can')
             reject('prohibited')
           });
@@ -419,12 +419,12 @@ function getNewDemandes(role,etat,email,notif)
         const connection = mysql.createConnection(connectionConfig);
         const query = `select num_demande,etat,id_demandeur,date_demande from demande_fourniture where ${notif}=true and etat=? 
         ${role==="Consommateur"?"and id_demande=?":''}
-        ${(etat==='demande'||role==="Directeur")?` and id_demandeur in
+        ${(etat==='demandee'||role==="Directeur")?` and id_demandeur in
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?) or id_role=
         (select id_role from role where designation='Magasinier'))`:''}`
         const values = [etat];
-        if(etat==='demande') values.push(email)
+        if(etat==='demandee') values.push(email)
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
