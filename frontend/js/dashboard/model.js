@@ -172,6 +172,14 @@ export const state = {
       selected: 0,
     },
   },
+  products: {
+    all: [],
+    selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
+  },
 };
 export const getMyPerms = async function () {
   const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
@@ -723,6 +731,7 @@ export const loadProducts = async function (article) {
 
 export const loadAllProducts = async function () {
   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+  state.products.all = products.response;
   return products.response;
 };
 
