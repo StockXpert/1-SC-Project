@@ -184,6 +184,14 @@ export const state = {
       selected: 0,
     },
   },
+  fournisseur: {
+    all: [],
+    selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
+  },
 };
 export const getMyPerms = async function () {
   const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
@@ -719,7 +727,7 @@ export const loadFournisseurs = async function () {
   let fournisseurs = await helpers.getJSON(
     `${API_URL}/Nomenclatures/showFournisseurs`
   );
-  // console.log(fournisseurs);
+  state.fournisseur.all = fournisseurs.response;
   return fournisseurs.response;
 };
 
