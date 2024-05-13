@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stockxpertapp1/models/demandeModel.dart';
+import 'package:stockxpertapp1/screens/detatils.dart';
 
 int _currentValue = 24;
 Widget defaultButton(
@@ -114,12 +115,26 @@ Widget buildBonComand(article, context) => Padding(
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: CircleAvatar(
-                child: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.white,
+              child: GestureDetector(
+                onTap: () {
+                  // Navigate to detailsScreen when CircleAvatar is tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => detailsScreen(
+                        numDemande: article.numDemande,
+                        dateDemande: article.dateDemande.substring(0, 10),
+                      ),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  child: Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Color(0xff4B4B4B),
                 ),
-                backgroundColor: Color(0xff4B4B4B),
               ),
             ),
           ],

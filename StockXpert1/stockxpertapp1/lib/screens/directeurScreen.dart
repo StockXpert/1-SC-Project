@@ -47,30 +47,41 @@ class DirecteurScreen extends StatelessWidget {
                             ),
                             SizedBox(
                               height: 46,
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'search must not be empty';
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.text,
-                                controller: TextEditingController(),
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(Icons.search),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .black, // Change border color here
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      70), // Match container border radius here
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey, // Shadow color
+                                      blurRadius: 5, // Spread radius
+                                      offset: Offset(0,
+                                          2), // Offset in x and y axes from the container
                                     ),
-                                    borderRadius: BorderRadius.circular(
-                                        70), // Match container border radius here
-                                  ),
-                                  labelText: '    Entrez le num de commande ',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.black,
+                                  ],
+                                ),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'search must not be empty';
+                                    }
+                                    return null;
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  controller: TextEditingController(),
+                                  decoration: InputDecoration(
+                                    prefixIcon: const Icon(Icons.search),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide.none, // No border side
+                                      borderRadius: BorderRadius.circular(70),
+                                    ),
+                                    labelText: '    Entrez le num de commande ',
+                                    hintStyle: const TextStyle(
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),

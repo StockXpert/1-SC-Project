@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockxpertapp1/network/DioHelper.dart';
+import 'package:stockxpertapp1/screens/detatils.dart';
 import 'package:stockxpertapp1/screens/directeurScreen.dart';
 
 void main() {
