@@ -362,7 +362,7 @@ function addArticle(numArt,chapitreId,designation,tva)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into article (num_article,designation,num_chap,date_ajout) values (?,?,?,NOW(),?)';
+        const query = 'insert into article (num_article,designation,num_chap,date_ajout,tva) values (?,?,?,NOW(),?)';
         const values = [numArt,designation,chapitreId,tva];
         
         connection.connect((err) => {
