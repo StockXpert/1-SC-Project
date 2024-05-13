@@ -11,10 +11,10 @@ function MostDemandedProduct(dateD,dateF,consommateur,structure)
         const connection = mysql.createConnection(connectionConfig);
         let query
         if(consommateur)
-            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
+            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre ,p.id_produit as id from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur=?
         ${dateD?"(and d.date_demande between ? and ?)":""}
-        group by p.designation order by nombre desc limit 10`
+        group by p.designation,p.id_produit order by nombre desc limit 10`
         else if (structure)
             query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur in
@@ -159,10 +159,10 @@ function mostCommandedProducts(dateD,dateF)
 {
 return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query=`select p.designation as produit , sum (c.quantite) as  quantite from bon_de_commande b ,commande c,produit p where
+    const query=`select p.designation as produit , sum (c.quantite) as  quantite,p.id_produit as id from bon_de_commande b ,commande c,produit p where
     c.id_commande=b.num_commande and p.id_produit=c.id_produit 
     ${dateD?"(and d.date_commande between ? and ?)":""}
-    group by p.designation order by quantite desc limit 10`
+    group by p.designation,p.id_produit order by quantite desc limit 10`
     let values=[]
     if(dateD) values.push(dateD,dateF)    
     connection.connect((err) => {
@@ -189,9 +189,9 @@ function productDemandePerYear(year,product)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query=`select month(d.date_demande) as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f,produit p where
+        const query=`select date_format(d.date_demande,'%M') as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f,produit p where
         d.num_demande=f.id_demande and p.id_produit=f.id_produit and year(d.date_demande)=? and p.designation=?
-        group by month(d.date_demande)`
+        group by date_format(d.date_demande,'%M')`
         let values=[year,product]   
         connection.connect((err) => {
           if (err) {
@@ -217,12 +217,12 @@ function articleDemandePerYear(year,article)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query=`select month(d.date_demande) as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f where
+        const query=`select date_format(d.date_demande,'%M') as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f where
         d.num_demande=f.id_demande and year(d.date_demande)=? and f.id_produit in
         (select id_produit from contient where id_article=
             (select num_article from article where designation=?)
         )
-        group by month(d.date_demande)`
+        group by date_format(d.date_demande,'%M')`
         let values=[year,article]   
         console.log(values)
         connection.connect((err) => {
@@ -286,44 +286,43 @@ function bciStat(dateD,dateF,consommateur,structure)
       {
         query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
-    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
-    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
-    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp,   
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg,
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
-    from bon_de_commande (where id_demandeur=?
-    ${dateD?" and d.date_commande between ? and ?":""}
-    )` 
+    from demande_fourniture where id_demandeur=?
+    ${dateD?" and d.date_demande between ? and ?":""}` 
       }
     else if(structure)
       {
         query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
-    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
-    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
-    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp ,  
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg,
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
-    from bon_de_commande (where id_demandeur in 
+    from demande_fourniture where id_demandeur in 
       (select email from utilisateur where id_structure=
         (select id_structure from structure where designation=?)
       )
-    ${dateD?" and d.date_commande between ? and ?":""}
-    )` 
+    ${dateD?" and d.date_demande between ? and ?":""}` 
       }  
     else
     {  
     query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
-    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
-    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
-    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   ,
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg,
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
-    from bon_de_commande
-    ${dateD?"(where d.date_commande between ? and ?)":""}` 
+    from demande_fourniture
+    ${dateD?"(where d.date_demande between ? and ?)":""}` 
     }
     let values=[]
     if(consommateur) values.push(consommateur);
-    if(structure) values.push(values);
+    if(structure) values.push(structure);
     if(dateD) values.push(dateD,dateF)    
+    console.log({structure})
     connection.connect((err) => {
       if (err) {
         console.error('Erreur de connexion :', err);
