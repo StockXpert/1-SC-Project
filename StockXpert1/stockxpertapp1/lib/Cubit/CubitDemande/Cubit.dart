@@ -17,7 +17,7 @@ class demandeCubit extends Cubit<demandeState> {
     DioHelper.getData(
             url: '/Sorties/showAllDemandes',
             token:
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IlJlc3BEaXJjdEBlc2ktc2JhLmR6Iiwicm9sZSI6IlJlc3BvbnNhYmxlIGRpcmVjdGUiLCJpYXQiOjE3MTU1NzM1NjksImV4cCI6MTcxNTY1OTk2OX0.gsd1bkK7JyMHYy16c-ehBBakn8N_-0PxuHVTpfboUwQ')
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRpcmVjdGV1ckBlc2ktc2JhLmR6Iiwicm9sZSI6IkRpcmVjdGV1ciIsImlhdCI6MTcxNTY0MjIwOCwiZXhwIjoxNzE1NzI4NjA4fQ.R0WfLJhIlwsA77dpmbHTPIag-pg9R4Dycjnp5a20kgA')
         .then((value) {
       emit(demandeSuccessState());
 

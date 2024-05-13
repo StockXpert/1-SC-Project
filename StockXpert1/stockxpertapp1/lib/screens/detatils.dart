@@ -5,10 +5,12 @@ import 'package:timeline_tile/timeline_tile.dart';
 class detailsScreen extends StatefulWidget {
   final int numDemande;
   final String dateDemande;
+  final String etat;
 
   const detailsScreen({
     required this.numDemande,
     required this.dateDemande,
+    required this.etat,
     Key? key,
   }) : super(key: key);
 
@@ -18,9 +20,46 @@ class detailsScreen extends StatefulWidget {
 
 class _detailsScreenState extends State<detailsScreen> {
   @override
-  bool step1Finished = true; // Example: Change it according to your logic
-  bool step2Finished = true;
-  bool step3Finished = false; // Example: Change it according to your logic
+  bool step1Finished = false;
+  bool step2Finished = false;
+  bool step3Finished = false;
+  bool step4Finished = false;
+  bool step5Finished = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateSteps();
+  }
+
+  void _updateSteps() {
+    final etat = widget.etat;
+
+    if (etat == 'demandee') {
+      step1Finished = true;
+    } else if (etat == 'prete') {
+      step1Finished = true;
+      step2Finished = true;
+    } else if (etat == 'visee par resp') {
+      step1Finished = true;
+      step2Finished = true;
+      step3Finished = true;
+    } else if (etat == 'visee par dg') {
+      step1Finished = true;
+      step2Finished = true;
+      step3Finished = true;
+      step4Finished = true;
+    } else if (etat == 'servie') {
+      step1Finished = true;
+      step2Finished = true;
+      step3Finished = true;
+      step4Finished = true;
+      step5Finished = true;
+      // Add more logic if there are more steps for 'servie'
+    }
+
+    setState(() {}); // Trigger a rebuild
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +93,7 @@ class _detailsScreenState extends State<detailsScreen> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               Container(
                 height: 72,
@@ -113,10 +152,10 @@ class _detailsScreenState extends State<detailsScreen> {
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 35,
               ),
               Container(
-                height: 480,
+                height: 500,
                 width: 312,
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -147,7 +186,7 @@ class _detailsScreenState extends State<detailsScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 30, top: 25),
+                      padding: const EdgeInsets.only(left: 30, top: 0),
                       child: TimelineTile(
                         alignment: TimelineAlign.start,
                         isFirst: true,
@@ -166,14 +205,14 @@ class _detailsScreenState extends State<detailsScreen> {
                               : null, // If step is not finished, omit the IconStyle
                         ),
                         afterLineStyle: LineStyle(
-                          color: step1Finished
+                          color: step2Finished
                               ? Color(0xff477CE2)
                               : Colors.grey, // Check if step is finished
                           thickness: 4,
                         ),
                         endChild: Container(
                           constraints: const BoxConstraints(
-                            minHeight: 100,
+                            minHeight: 90,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 20, left: 15),
@@ -191,7 +230,7 @@ class _detailsScreenState extends State<detailsScreen> {
                       child: TimelineTile(
                         alignment: TimelineAlign.start,
                         beforeLineStyle: LineStyle(
-                          color: step1Finished
+                          color: step2Finished
                               ? Color(0xff477CE2)
                               : Colors.grey, // Check if step1 is finished
                           thickness: 4,
@@ -208,17 +247,22 @@ class _detailsScreenState extends State<detailsScreen> {
                               ? Color(0xff477CE2)
                               : Colors.grey, // Check if step2 is finished
                           padding: const EdgeInsets.all(8),
-                          iconStyle: IconStyle(
-                              color: Colors.white, iconData: Icons.check),
+                          iconStyle: step2Finished
+                              ? IconStyle(
+                                  color: Colors.white,
+                                  iconData: Icons
+                                      .check, // Only show icon when step is finished
+                                )
+                              : null,
                         ),
                         endChild: Container(
                           constraints: const BoxConstraints(
-                            minHeight: 100,
+                            minHeight: 90,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 20, left: 15),
                             child: Text(
-                              'Demandee',
+                              'Prete',
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500),
                             ),
@@ -237,7 +281,7 @@ class _detailsScreenState extends State<detailsScreen> {
                           thickness: 4,
                         ),
                         afterLineStyle: LineStyle(
-                          color: step3Finished
+                          color: step4Finished
                               ? Color(0xff477CE2)
                               : Colors.grey, // Check if step1 is finished
                           thickness: 4,
@@ -258,12 +302,12 @@ class _detailsScreenState extends State<detailsScreen> {
                         ),
                         endChild: Container(
                           constraints: const BoxConstraints(
-                            minHeight: 100,
+                            minHeight: 90,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 20, left: 15),
                             child: Text(
-                              'Demandee',
+                              'Visee par Resp',
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500),
                             ),
@@ -276,13 +320,54 @@ class _detailsScreenState extends State<detailsScreen> {
                       child: TimelineTile(
                         alignment: TimelineAlign.start,
                         beforeLineStyle: LineStyle(
-                          color: step3Finished
+                          color: step4Finished
                               ? Color(0xff477CE2)
                               : Colors.grey, // Check if step1 is finished
                           thickness: 4,
                         ),
                         afterLineStyle: LineStyle(
-                          color: step3Finished
+                          color: step5Finished
+                              ? Color(0xff477CE2)
+                              : Colors.grey, // Check if step1 is finished
+                          thickness: 4,
+                        ),
+                        indicatorStyle: IndicatorStyle(
+                          width: 40,
+                          color: step4Finished
+                              ? Color(0xff477CE2)
+                              : Colors.grey, // Check if step2 is finished
+                          padding: const EdgeInsets.all(8),
+                          iconStyle: step4Finished
+                              ? IconStyle(
+                                  color: Colors.white,
+                                  iconData: Icons
+                                      .check, // Only show icon when step is finished
+                                )
+                              : null, // If step is not finished, omit the IconStyle
+                        ),
+                        endChild: Container(
+                          constraints: const BoxConstraints(
+                            minHeight: 90,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20, left: 15),
+                            child: Text(
+                              'Visee Par DG',
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.w500),
+                            ),
+                          ), // Replace with your content
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 30,
+                      ),
+                      child: TimelineTile(
+                        alignment: TimelineAlign.start,
+                        beforeLineStyle: LineStyle(
+                          color: step5Finished
                               ? Color(0xff477CE2)
                               : Colors.grey, // Check if step1 is finished
                           thickness: 4,
@@ -290,11 +375,11 @@ class _detailsScreenState extends State<detailsScreen> {
                         isLast: true,
                         indicatorStyle: IndicatorStyle(
                           width: 40,
-                          color: step3Finished
+                          color: step5Finished
                               ? Color(0xff477CE2)
                               : Colors.grey, // Check if step2 is finished
                           padding: const EdgeInsets.all(8),
-                          iconStyle: step3Finished
+                          iconStyle: step5Finished
                               ? IconStyle(
                                   color: Colors.white,
                                   iconData: Icons
@@ -303,13 +388,13 @@ class _detailsScreenState extends State<detailsScreen> {
                               : null, // If step is not finished, omit the IconStyle
                         ),
                         endChild: Container(
-                          constraints: const BoxConstraints(
-                            minHeight: 100,
+                          constraints: BoxConstraints(
+                            minHeight: 90,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 20, left: 15),
                             child: Text(
-                              'Demandee',
+                              'Servie',
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500),
                             ),

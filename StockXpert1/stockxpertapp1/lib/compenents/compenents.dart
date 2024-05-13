@@ -123,6 +123,7 @@ Widget buildBonComand(article, context) => Padding(
                     context,
                     MaterialPageRoute(
                       builder: (context) => detailsScreen(
+                        etat: article.etat,
                         numDemande: article.numDemande,
                         dateDemande: article.dateDemande.substring(0, 10),
                       ),
