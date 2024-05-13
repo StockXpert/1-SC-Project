@@ -1,4 +1,3 @@
-import addStructureView from './addStructureView.js';
 import View from './view.js';
 
 class EditStructureView extends View {

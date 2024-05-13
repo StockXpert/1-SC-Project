@@ -9,7 +9,7 @@ function canUpdate(numDemande,role)
         SortieModel.getDemandeStatus(numDemande).then((status)=>{
             switch (role) {
                 case 'Magasinier':
-                    if(status==="pret") resolve('')
+                    if(status==="prete") resolve('')
                     reject('')   
                     break;
                 case 'Directeur':
@@ -105,4 +105,13 @@ function addDecharge(Id,products,dateDecharge,numDemande)
         }).catch(()=>{reject('')})
     })
 }
-module.exports={canUpdate,genererBonSortie,subtituteQuantite,addDecharge}
+function allZero(products)
+{
+    for(let product of products)
+        {
+            if(product.quanite!=0)
+                return false
+        }
+    return true    
+}
+module.exports={canUpdate,genererBonSortie,subtituteQuantite,addDecharge,allZero}

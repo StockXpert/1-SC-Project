@@ -1,11 +1,11 @@
-import View from './view.js';
-import { truncateEmail } from '../helpers.js';
+import View from '../view.js';
+import { truncateEmail } from '../../helpers.js';
 
 class addStructureView extends View {
   _window = document.querySelector('.add-structure-container');
   _overlay = document.querySelector('.overlayAddStr');
   _btnOpen = document.getElementById('add-btn-structure');
-  _btnClose = document.getElementsByClassName('close-btn')[1];
+  _btnClose = this._window.querySelector('.close-btn');
   _parentElement = document.querySelector('.add-structure-inputs');
 
   _selectionUsers = document.getElementById('search-responsable');

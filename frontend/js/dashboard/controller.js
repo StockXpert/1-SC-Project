@@ -10,7 +10,6 @@ import numberView from './views/numberView.js';
 import editUserView from './views/editUserView.js';
 import deleteUserView from './views/deleteUserView.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
-import AddStructureView from './views/addStructureView.js';
 import * as helpers from './helpers.js';
 import numberStructuresView from './views/numberStructuresView.js';
 import editStructureView from './views/editStructureView.js';
@@ -25,12 +24,12 @@ import cmdsView from './views/commandes/cmdsView.js';
 import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import cmdsIntHeaderView from './views/commandesInt/cmdsIntHeaderView.js';
 import invHeaderView from './views/inventaires/InvHeaderView.js';
-import addStructureView from './views/addStructureView.js';
+import addStructureView from './views/roles/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
 import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
 import validateCmdsIntView from './views/commandesInt/validateCmdsIntView.js';
-import productsView from './views/commandes/productsView.js';
+import productsView from './views/nomenclatures/produits/productsView.js';
 import deleteRoleView from './views/roles/deleteRoleView.js';
 import deleteCmdsView from './views/commandes/deleteCmdsView.js';
 import bonReceptionView from './views/commandes/bonReceptionView.js';
@@ -38,11 +37,22 @@ import cancelCmdsView from './views/commandes/cancelCmdsView.js';
 import seeCmdsView from './views/commandes/seeCmdsView.js';
 import seeCmdsIntView from './views/commandesInt/seeCmdsIntView.js';
 import addBonReception from './views/commandes/addBonReception.js';
-import View from './views/view.js';
+// import View from './views/view.js';
 import deleteBonReception from './views/commandes/deleteBonReception.js';
 import invView from './views/inventaires/InvView.js';
 import deliverCmdsExtView from './views/commandesInt/deliverCmdsExtView.js';
 import deleteCmdsIntView from './views/commandesInt/deleteCmdsIntView.js';
+import deleteInvView from './views/inventaires/deleteInvView.js';
+import addInvView from './views/inventaires/addInvView.js';
+import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
+import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersView.js';
+import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
+import editChapterView from './views/nomenclatures/chapitres/editChapterView.js';
+import deleteChapterView from './views/nomenclatures/chapitres/deleteChapterView.js';
+import statsView from './views/statistiques/statsView.js';
+import articlesView from './views/nomenclatures/articles/articlesView.js';
+import addArticleView from './views/nomenclatures/articles/addArticleView.js';
+import editArticleView from './views/nomenclatures/articles/editArticleView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -248,12 +258,12 @@ const controlLoadStructures = async function () {
       return;
     }
     structuresView.restrict(model.state.me.permissions.all);
-    AddStructureView.restrict(model.state.me.permissions.all);
+    addStructureView.restrict(model.state.me.permissions.all);
     deleteStructureView.restrict(model.state.me.permissions.all);
     structuresView.renderSpinner('Loading Structures');
     await model.loadStructures();
     const emails = await model.getResponsiblesEmail();
-    AddStructureView.addToSelection(emails, 'search-responsable');
+    addStructureView.addToSelection(emails, 'search-responsable');
     editStructureView.addToSelection(emails, 'search-structure-edit');
     structuresView.render(
       model.state.structures.results,
@@ -267,7 +277,7 @@ const controlLoadStructures = async function () {
     editStructureView.addHandlerShowWindow();
     editStructureView.addHandlerHideWindow();
     editStructureView.addHandlerEdit(controlEditStructure);
-    // deleteStructureView.addDeleteController(controlDeleteStructure);
+    deleteStructureView.addDeleteController(controlDeleteStructure);
   } catch (error) {
     console.error(error);
   }
@@ -278,10 +288,10 @@ const controlAddStructure = async function (newStructure) {
     await model.uploadStructure(newStructure);
     console.log(model.state.structures.results);
     await controlLoadStructures();
-    AddStructureView.clearForm();
+    addStructureView.clearForm();
     //Close Window
     setTimeout(function () {
-      AddStructureView.toggleWindow();
+      addStructureView.toggleWindow();
     }, MODAL_CLOSE_SEC * 1000);
   } catch (error) {
     console.error(error);
@@ -291,7 +301,7 @@ const controlAddStructure = async function (newStructure) {
 const controlShowUsersEmail = async function () {
   try {
     const emails = await model.getResponsiblesEmail();
-    AddStructureView.addToSelection(emails, 'search-responsable');
+    addStructureView.addToSelection(emails, 'search-responsable');
     editStructureView.addToSelection(emails, 'search-structure-edit');
   } catch (error) {
     console.error('🤔 ' + error);
@@ -788,13 +798,7 @@ const controlSelectFournisseur = fournisseurName => {
 
 //ARTICLES
 
-const controlUpdateArticles = async () => {
-  //fetch all fournisseurs to model.state.fournisseurs
-  const articles = await model.loadArticles();
-  model.state.articles.all = articles;
-};
-
-const controlSearchArticles = input => {
+const controlSearchArticlesCmds = input => {
   //ON INPUT:
   //get search input
   // input
@@ -861,7 +865,7 @@ const controlTypeSelection = typeName => {
   console.log(model.state);
 };
 
-const controlAddProduct = newProduct => {
+const controlAddProductBdc = newProduct => {
   //TODO:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
 
@@ -1230,6 +1234,7 @@ const controlCmdsIntSearch = searchInput => {
   addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   model.state.commandesInt.afterSearch = afterSearch;
 };
+
 const controlLoadCmdsInt = async function () {
   if (
     !model.state.me.permissions.all.find(
@@ -1301,7 +1306,7 @@ const controlLoadCmdsInt = async function () {
   // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
 };
 
-const controlAddProductInt = newProduct => {
+const controlAddProductBdcInt = newProduct => {
   // ON SUBMIT:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
   let oldProducts;
@@ -1385,20 +1390,29 @@ const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
 const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   //ONCLICK OF A EDIT BUTTON
   let productsArray;
+  let target = e.currentTarget;
+  let targetIndex;
   switch (view.constructor.name) {
     case 'EditCmdsIntView':
       productsArray = model.state.commandesInt.selected.products;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       break;
     case 'AddCmdsIntView':
       productsArray = model.state.bdci_products.added;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      break;
+    case 'AddInvView':
+      productsArray = model.state.inventaires.new.produits;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      console.log(productsArray[targetIndex]);
       break;
   }
-  const target = e.currentTarget;
-  const targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+
   //Use it to extract the input data from the state object
   view.changeInputs(productsArray[targetIndex]);
   model.state.bdci_products.changed = targetIndex;
   model.state.commandesInt.selected.changed = targetIndex;
+  model.state.inventaires.new.selectedProduct = targetIndex;
 };
 
 const controlChangeProductInt = function (
@@ -1541,7 +1555,7 @@ const controlSavingBDCI = async function () {
       <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
     );
   } else {
-    cmdsIntView.renderSpinner('Sauvegaaaarde en cours... ');
+    cmdsIntView.renderSpinner('Sauvegarde en cours... ');
     await model.createBDCI();
     cmdsIntView.unrenderSpinner();
     await controlLoadCmdsInt();
@@ -1623,7 +1637,7 @@ const controlModifyCmdsInt = async function () {
   editCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 
-const controlAddProductIntEdit = newProduct => {
+const controlAddProductBdcIntEdit = newProduct => {
   // ON SUBMIT:
   let selectedBDCIProdsCurrState = model.state.commandesInt.selected.products;
   if (helpers.isObjectInArray(selectedBDCIProdsCurrState, newProduct)) {
@@ -1770,7 +1784,6 @@ const controlDeliverCmdsInt = async view => {
     cmdsIntView.unrenderSpinner('');
     await controlLoadCmdsInt();
   }
-  // console.log(postObj);
 };
 
 const controlDechargerCmdsInt = async dataObj => {
@@ -1787,7 +1800,6 @@ const controlDechargerCmdsInt = async dataObj => {
       reference: refrence,
     });
   });
-  console.log(postObj);
   cmdsIntView.renderSpinner(
     `Validation finale de la commande N°${
       model.state.commandesInt.rendered[
@@ -1824,19 +1836,414 @@ const controlLoadInv = async () => {
   );
   invView.resetPointers();
 };
+const controlInput = (value, index) => {
+  model.state.inventaires.new.produits[index].quantitePhys = parseInt(value);
+};
+// const controlModifyCmdsInt = async function () {
+const controlSetRemark = remark => {
+  model.state.inventaires.new.produits[
+    model.state.inventaires.new.selectedProduct
+  ].raison = remark;
+  // model.state.inventaires.new.produits[
+  //   model.state.inventaires.new.selectedProduct
+  // ].quantitePhys =
+  //   addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
+  addInvView.render(model.state.inventaires.new);
+  addInvView.resetPointers(controlInput);
+  console.log(model.state.inventaires.new);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+const controlAddInv = async function () {
+  //ONCLICK OF the Créer un état inventaire BUTTON
+  addInvView.renderSpinner('');
+  const allProducts = await model.loadAllProductsPerms();
+  model.prepareNewInventaire(allProducts[1].response);
+  addInvView.render(model.state.inventaires.new);
+  addInvView.resetPointers(controlInput);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+
+const controlSaveInv = async function (validityState, numInv) {
+  if (!validityState) {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Remplir les raisons pour les valeurs physiques de produits.</b></p>
+      `
+    );
+    return;
+  } else {
+    addInvView._btnClose.click();
+    invView.renderSpinner('Sauvegarde en cours... ');
+    await model.createInv(numInv);
+    invView.unrenderSpinner();
+    await controlLoadInv();
+  }
+};
+
+const controlDeleteInv = async function () {
+  //ONCLICK OF the DELETE BUTTON
+  //CONFIRM MSG
+  const targetIndex = Array.from(invView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numInventaire = model.state.inventaires.all[targetIndex].num_inventaire;
+  invView.renderSpinner('Suppression en cours...');
+  // console.log();
+  await model.deleteInv(numInventaire);
+  invView.unrenderSpinner();
+  await controlLoadInv();
+};
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
-/////// B A C K  O '  B E Y O N D #fff
+/////// Nomenclaturess #f00
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
-addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
-addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
-editCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
+const controlLoadChapters = async function () {
+  try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show chapters'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
+    chaptersView.restrict(model.state.me.permissions.all);
+    // addChapterView.restrict(model.state.me.permissions.all);
+    deleteChapterView.restrict(model.state.me.permissions.all);
+    chaptersView.renderSpinner('Loading Chapters');
+    await model.loadChapitres();
+    chaptersView.render(model.state.chapters.all);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
 
-deleteCmdsView.addDeleteController(controlDeleteCmds);
-cancelCmdsView.addCancelController(controlCancelCmds);
+    numberChaptersView.render(model.state.chapters);
+    numberChaptersView.updateMasterCheckbox();
+    numberChaptersView.addHandlerNumber(controleSelectChapters);
+    numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    chaptersView.addSearchController(controlSearchChapter);
+    editChapterView.addHandlerShowWindow();
+    editChapterView.addHandlerHideWindow();
+    editChapterView.addHandlerEdit(controlEditChapter);
+    // deleteChapterView.addDeleteController(controlDeleteStructure);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
+const controleSelectChapters = function (searched) {
+  numberChaptersView._clear();
+  if (searched) {
+    model.state.chapters.searched.selected =
+      numberChaptersView.calculateCheckboxes();
+    numberChaptersView.render(model.state.chapters.searched);
+    return;
+  }
+  model.state.chapters.selected = numberChaptersView.calculateCheckboxes();
+  numberChaptersView.render(model.state.chapters);
+};
+
+const controlAddChapter = async function (newChapter) {
+  try {
+    await model.addChapter(newChapter);
+    await controlLoadChapters();
+    console.log(model.state.chapters.all);
+    addChapterView.clearForm();
+    //Close Window
+
+    addChapterView.toggleWindow();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlEditChapter = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.details-btn-chapitres'),
+    target
+  );
+  // console.log(targetIndex);
+  console.log(model.state.chapters.all[targetIndex]);
+  editChapterView.changeInputs(model.state.chapters.all[targetIndex]);
+  editChapterView.addHandlerUpdate(controlUpdateChapter);
+};
+
+const controlUpdateChapter = async function (oldChapter, newChapter) {
+  try {
+    // if (
+    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
+    //     .length === 0
+    // ) return;
+    // console.log(oldStructure.designation, newStructure.designation);
+    if (oldChapter.designation === newChapter.designation) return;
+    structuresView.renderSpinner('Modification de la structure...');
+    await model.updateChapter(oldChapter, newChapter);
+    await controlLoadChapters();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlDeleteChapter = async function () {
+  filterArrayByBooleans(
+    model.state.chapters.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-chapitres')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    chaptersView.renderSpinner(
+      'Suppression du Chapitre ' + el.designation + '...'
+    );
+    await model.deleteChapter(el);
+    // back to main menu
+    await controlLoadChapters();
+  });
+};
+
+const controlSearchChapter = async function (query) {
+  model.state.chapters.searched.all = model.state.chapters.all.filter(chapter =>
+    chapter.designation.toLowerCase().includes(query.toLowerCase())
+  );
+  // console.log(results);
+
+  chaptersView.render(model.state.chapters.searched.all);
+  numberChaptersView.render(model.state.chapters.searched);
+  numberChaptersView.updateMasterCheckbox();
+  numberChaptersView.addHandlerNumber(controleSelectChapters, true);
+  numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
+};
+
+const controlLoadProducts = async function () {
+  try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show products'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
+    productsView.restrict(model.state.me.permissions.all);
+    // addChapterView.restrict(model.state.me.permissions.all);
+    // deleteStructureView.restrict(model.state.me.permissions.all);
+    productsView.renderSpinner('Loading Products');
+    await model.loadAllProducts();
+    productsView.render(model.state.products.all);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
+
+    // numberChaptersView.render(model.state.chapters);
+    // numberChaptersView.updateMasterCheckbox();
+    // numberChaptersView.addHandlerNumber(controleSelectChapters);
+    // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    productsView.addSearchController(controlSearchProduct);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlSearchProduct = async function (query) {
+  const results = model.state.products.all.filter(product =>
+    product.designation.toLowerCase().includes(query.toLowerCase())
+  );
+  model.state.products.searched.all = results;
+
+  chaptersView.render(model.state.products.searched.all);
+  // numberChaptersView.render(model.state.chapters.searched);
+  // numberChaptersView.updateMasterCheckbox();
+  // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
+  // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
+};
+
+const controlAddProduct = async function (newProduct) {
+  try {
+    await model.addChapter(newProduct);
+    await controlLoadProducts();
+    console.log(model.state.products.all);
+    addChapterView.clearForm();
+    //Close Window
+
+    addChapterView.toggleWindow();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlLoadArticles = async function () {
+  try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show articles'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
+    articlesView.restrict(model.state.me.permissions.all);
+    addArticleView.restrict(model.state.me.permissions.all);
+    // deleteChapterView.restrict(model.state.me.permissions.all);
+    articlesView.renderSpinner('Loading Articles ...');
+    await model.loadArticles();
+    articlesView.render(model.state.articles.all);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
+
+    // numberChaptersView.render(model.state.chapters);
+    // numberChaptersView.updateMasterCheckbox();
+    // numberChaptersView.addHandlerNumber(controleSelectChapters);
+    // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    chaptersView.addSearchController(controlSearchArticles);
+    editArticleView.addHandlerShowWindow();
+    editArticleView.addHandlerHideWindow();
+    editChapterView.addHandlerEdit(controlEditArticle);
+    // deleteChapterView.addDeleteController(controlDeleteStructure);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlSearchArticles = function (query) {
+  const results = model.state.articles.all.filter(product =>
+    product.designation.toLowerCase().includes(query.toLowerCase())
+  );
+  model.state.articles.searched.all = results;
+
+  chaptersView.render(model.state.articles.searched.all);
+};
+
+const controlAddArticle = async function (newArticle) {
+  try {
+    await model.addArticle(newArticle);
+    await controlLoadProducts();
+    console.log(model.state.products.all);
+    addChapterView.clearForm();
+    //Close Window
+
+    addChapterView.toggleWindow();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlEditArticle = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(editArticleView._btnOpen, target);
+  // console.log(targetIndex);
+  console.log(model.state.chapters.all[targetIndex]);
+  editArticleView.changeInputs(model.state.chapters.all[targetIndex]);
+  editArticleView.addHandlerUpdate(controlUpdateArticle);
+};
+
+const controlUpdateArticle = async function (oldArticle, newArticle) {
+  Article;
+  try {
+    // if (
+    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
+    //     .length === 0
+    // ) return;
+    // console.log(oldStructure.designation, newStructure.designation);
+    if (oldArticle.designation === newArticle.designation) return;
+    structuresView.renderSpinner("Modification de l'article...");
+    await model.updateArticle(oldArticle, newArticle);
+    await controlLoadArticles();
+  } catch (error) {
+    console.error(error);
+  }
+};
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////////////// S T A T I S T I Q U E S #fff//////////////////////
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+const controlLoadStatistiques = async () => {
+  console.log(`
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  ///////////////////// S T A T I S T I Q U E S/////////////////////
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////`);
+
+  const labels = helpers.generateMonthLabels();
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'My First Dataset',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        backgroundColor: ['#477ce2'],
+        borderColor: ['#477ce2'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const ctx = document.getElementById('myChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+  console.log(model.getGraphPromise('topDemandeurs'));
+
+  //CLEAR GRAPHS
+  statsView.renderGraphSpin(
+    'Top Demandeurs',
+    'g2',
+    model.getGraphPromise('topDemandeurs'),
+    'les demandes'
+  );
+  statsView.renderGraphSpin(
+    'Les produits les plus commandes',
+    'g2',
+    model.getGraphPromise('mostCommandedProducts'),
+    'les commandes'
+  );
+  statsView.renderGraphSpin(
+    'Les produits les plus demandes',
+    'g2',
+    model.getGraphPromise('mostDemmandedProduct'),
+    'les demandes'
+  );
+};
+
+const renderGraph = async (
+  title,
+  dataRoute,
+  type,
+  size = 'g1',
+  filters = '',
+  totalRoute = ''
+) => {
+  //render the graph element but render a spinner where the graph goes in accordance to the $title and $size
+  //fetch data using $dataRoute
+  //render the graph replacing the spinner in accordance to the $type
+};
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// F I N #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
@@ -1851,15 +2258,27 @@ const controllers = [
   controlLoadRoles,
   controlLoadPerms,
   ,
+  controlLoadStatistiques,
   ,
-  ,
-  ,
-  ,
-  ,
+  controlLoadArticles,
+  controlLoadChapters,
+  controlLoadProducts,
   controlLoadCmds,
   controlLoadCmdsInt,
   controlLoadInv,
 ];
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// B A C K  O '  B E Y O N D #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
+addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
+editCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
+
+deleteCmdsView.addDeleteController(controlDeleteCmds);
+cancelCmdsView.addCancelController(controlCancelCmds);
 
 addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);
 addCmdsIntView.addHandlerSavingBDC(controlSavingBDCI, model.state);
@@ -1880,20 +2299,23 @@ deleteUserView.addDeleteController(controlDeleteUsers);
 editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
 // controlShowUsersEmail();
 numberRoleView.addHandlerNumber(controlNumberRoles);
-AddStructureView.addHandlerUpload(controlAddStructure);
+addStructureView.addHandlerUpload(controlAddStructure);
 numberStructuresView.addHandlerNumber(controlNumber);
 numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
 editStructureView.addHandlerShowWindow();
 editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
+deleteChapterView.addDeleteController(controlDeleteChapter);
 sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
+addChapterView.addHandlerUpload(controlAddChapter);
+addArticleView.addHandlerUpload(controlAddArticle);
 
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 // #F00
 // controlUpdateArticles();
 // controlUpdateFournisseurs();
-addCmdsView.addHandlerArticleSearch(controlSearchArticles);
+addCmdsView.addHandlerArticleSearch(controlSearchArticlesCmds);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
 addCmdsView.addHandlerProductSearch(
@@ -1910,14 +2332,17 @@ editCmdsIntView.addHandlerProductSearch(
   model.state.bdci_products
 );
 
-addCmdsView.addHandlerAddProduct(controlAddProduct, model.state.bdc_products);
+addCmdsView.addHandlerAddProduct(
+  controlAddProductBdc,
+  model.state.bdc_products
+);
 addCmdsIntView.addHandlerAddProduct(
-  controlAddProductInt,
+  controlAddProductBdcInt,
   model.state.bdci_products
 );
 addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
 editCmdsIntView.addHandlerAddProduct(
-  controlAddProductIntEdit,
+  controlAddProductBdcIntEdit,
   model.state.bdci_products
 );
 
@@ -1951,3 +2376,8 @@ deliverCmdsExtView.addHandlerHideWindow(
 );
 deliverCmdsExtView.addHandlerDeliver(controlDechargerCmdsInt);
 deleteCmdsIntView.addDeleteController(controlDeleteCmdsInt);
+deleteInvView.addDeleteController(controlDeleteInv);
+
+addInvView.addHandlerEdit(controlAddInv);
+addInvView.addHandlerSetRemark(controlSetRemark);
+addInvView.addHandlerSavingInv(controlSaveInv);

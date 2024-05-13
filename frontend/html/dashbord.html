@@ -2,6 +2,10 @@
 <html lang="en">
   <head>
     <script defer type="module" src="../js/dashboard/controller.js"></script>
+    <!-- <link
+      rel="stylesheet"
+      href="../../node_modules/flowbite/dist/flowbite.css"
+    /> -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
@@ -18,6 +22,7 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
     <link rel="stylesheet" href="../css/dashbord.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div class="container">
@@ -961,7 +966,7 @@
                   </div>
                   <div class="container-checkboxes-permissions">
                     <div class="no-role-selected">
-                      <p>Les Permissions s’afficherons ici !</p>
+                      <p>Les Permissions s'afficherons ici !</p>
                       <p>Selectionnez un rôle pour afficher ses permissions</p>
                     </div>
                   </div>
@@ -984,7 +989,7 @@
         <!------ debut de content for Admin : 4 - Permissions tables----- -->
         <!--------------------------------- I- END ADMIN FONCTIONS --------------------------------------->
         <!------------------------------ II- BEGIN ServiceAchat FONCTIONS ---------------------------------->
-        <!------ debut de content for ServiceAchat : 1 - Chapitres tables----- -->
+        <!------ debut de content for ServiceAchat : 1 - Chapitres tables #fff----- -->
         <div class="main-table hidden" id="main-table-chapitres">
           <div class="heading">
             <h1>Chapitres</h1>
@@ -1016,12 +1021,12 @@
             <div class="heading-table">
               <div class="container-heading-table">
                 <div class="heading-table-text-chapitres">
-                  <!-- <p class="table-text">
+                  <p class="table-text">
                     Tout les Utilisateurs (<b class="number-users">245</b>)
                   </p>
                   <p class="table-text">
                     Selectionnés (<b class="number-users">245</b>)
-                  </p> -->
+                  </p>
                 </div>
                 <div class="heading-table-btns-chapitres">
                   <button class="heading-table-btn btn-delete-chapitres">
@@ -1048,7 +1053,6 @@
                       </div>
                     </th>
                     <th>Nom</th>
-                    <th>date d'ajout</th>
                     <th>Modifier</th>
                   </tr>
                 </thead>
@@ -1062,7 +1066,6 @@
                       </div>
                     </td>
                     <td>Fournitures</td>
-                    <td>21/12/2024</td>
                     <td>
                       <button class="details-btn">
                         <span class="material-icons-sharp info-icon">
@@ -1082,7 +1085,6 @@
                       </div>
                     </td>
                     <td>Matériel et mobilier</td>
-                    <td>21/12/2024</td>
                     <td>
                       <button class="details-btn-chapitres">
                         <span class="material-icons-sharp info-icon">
@@ -1164,7 +1166,6 @@
                     </th>
                     <th>Nom</th>
                     <th>Nom du chapitre</th>
-                    <th>date d'ajout</th>
                     <th>TVA</th>
                     <th>Modifier</th>
                   </tr>
@@ -1180,7 +1181,6 @@
                     </td>
                     <td>Ouvrages des bibliothèques</td>
                     <td>Fournitures</td>
-                    <td>19/24/2024</td>
                     <td>19%</td>
                     <td>
                       <button class="details-btn-articles">
@@ -1202,7 +1202,6 @@
                     </td>
                     <td>Habillement des personnels de service</td>
                     <td>Fournitures</td>
-                    <td>19/24/2024</td>
                     <td>19%</td>
                     <td>
                       <button class="details-btn">
@@ -1284,12 +1283,12 @@
                         <p class="colomn-tags">Numéro</p>
                       </div>
                     </th>
-                    <th>Nom fournisseur</th>
+                    <th>Raison Sociale</th>
                     <th>Adresse</th>
 
                     <th>Telephone</th>
                     <th>date d'ajout</th>
-                    <th>Det</th>
+                    <th>Details</th>
                   </tr>
                 </thead>
                 <tbody class="results-fournisseur">
@@ -1301,7 +1300,7 @@
                           type="checkbox"
                           id="checkbox-table-fournisseur"
                         />
-                        <p class="colomn-tags-name">05151</p>
+                        <p class="colomn-tags-name">1</p>
                       </div>
                     </td>
                     <td>fournisseur 1</td>
@@ -1327,13 +1326,13 @@
                           type="checkbox"
                           id="checkbox-table-fournisseur"
                         />
-                        <p class="colomn-tags-name">21-12 .8</p>
+                        <p class="colomn-tags-name">2</p>
                       </div>
                     </td>
-                    <td>Duplicopieur - Monochrome - A3</td>
+                    <td>fournisseur 1</td>
 
-                    <td>trés beau produit</td>
-                    <td>12</td>
+                    <td>lamacta</td>
+                    <td>192612626</td>
                     <td>19/04/2004</td>
                     <td>
                       <button class="details-btn-fournisseur">
@@ -1426,14 +1425,12 @@
                     <th>
                       <div class="checkbox-colomn">
                         <input type="checkbox" id="checkbox-table-all" />
-                        <p class="colomn-tags">Numéro</p>
                       </div>
                     </th>
                     <th>Nom</th>
                     <th>Description</th>
 
                     <th>quantité</th>
-                    <th>date d'ajout</th>
                     <th>Modifier</th>
                   </tr>
                 </thead>
@@ -1443,14 +1440,12 @@
                     <td>
                       <div class="checkbox-colomn-produits">
                         <input type="checkbox" id="checkbox-table-produits" />
-                        <p class="colomn-tags-name">21-11 .11</p>
                       </div>
                     </td>
                     <td>Photocopieur KYOCERA FS-1025 MFP</td>
 
                     <td>trés beau produit</td>
                     <td>19</td>
-                    <td>19/04/2004</td>
                     <td>
                       <button class="details-btn-produits">
                         <span class="material-icons-sharp info-icon">
@@ -1473,7 +1468,6 @@
 
                     <td>trés beau produit</td>
                     <td>12</td>
-                    <td>19/04/2004</td>
                     <td>
                       <button class="details-btn-produits">
                         <span class="material-icons-sharp info-icon">
@@ -2644,7 +2638,10 @@
         </div>
         <!------------------------- III- END Inventaire table ---------------------------------->
         <!-------------------------- IV- BEGIN Statistiques table ---------------------------------->
-        <div class="main-table-statistiques hidden">
+        <div
+          class="main-table-statistiques hidden"
+          id="main-table-statistiques"
+        >
           <div class="heading">
             <h1>Les Statistiques</h1>
             <hr class="line-style" />
@@ -2868,13 +2865,16 @@
                   </div>
                 </div>
                 <div class="graph-statistiques">
-                  <canvas></canvas>
+                  <canvas id="myChart"></canvas>
                 </div>
               </div>
               <div class="grid-2">
                 <p class="cart-description-statistiques">Produits</p>
-                <div class="graph-statistiques">
-                  <canvas></canvas>
+                <div
+                  class="graph-statistiques spinner-parent"
+                  style="height: 100%; width: 100%; position: static"
+                >
+                  <div class="spinner"></div>
                 </div>
               </div>
               <div class="grid-1">
@@ -2925,58 +2925,43 @@
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
       <!--------------------------------- I- BEGIN ADMIN FONCTIONS --------------------------------------->
-      <!-- debut de section pour ajouter un  fournisseur -->
+      <!-- debut de section pour ajouter un fournisseur -->
 
-      <div class="add-user-container hidden">
-        <div class="add-user-cart add-fournisseur-cart">
+      <div class="add-fournisseur-container hidden">
+        <div class="add-fournisseur-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user heading-add-fournisseur">
-            <h1
-              class="heading-primary-add-user heading-primary-add-fournisseur"
-            >
+          <div class="heading-add-fournisseur">
+            <h1 class="heading-primary-add-fournisseur">
               Ajouter un fournisseur
             </h1>
           </div>
           <!-- for inputs -->
-          <form class="add-user-inputs">
+          <form class="add-fournisseur-inputs">
             <div class="groupe-1-add">
               <div class="input-groupe-add">
                 <input
-                  name="raison-social"
+                  name="raisonSociale"
                   type="text"
                   class="input raison-social"
-                  placeholder="raison-social"
+                  placeholder=" Entrez La Raison Sociale"
                 />
                 <ion-icon class="input-icon" name="person-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="name"
+                  name="adresse"
                   type="text"
                   class="input input-add-name"
-                  placeholder="Nom"
+                  placeholder="Entrez l'Adresse"
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                <ion-icon class="input-icon" name="home-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="date-naissance"
-                  type="date"
-                  class="input date_naissance"
-                  id="add--date"
-                  placeholder="Entrez la date de naissance"
-                />
-                <ion-icon
-                  class="input-icon"
-                  name="calendar-number-outline"
-                ></ion-icon>
-              </div>
-              <div class="input-groupe-add">
-                <input
-                  name="number-telephone"
+                  name="telephone"
                   type="number"
                   class="input Telephone"
                   autocomplete="Numéro Telephone"
@@ -2986,14 +2971,24 @@
 
                 <ion-icon class="input-icon" name="call-outline"></ion-icon>
               </div>
+              <div class="input-groupe-add">
+                <input
+                  name="fax"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez le Fax"
+                  autocomplete="Fax"
+                />
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
             </div>
             <div class="groupe-2-add">
               <div class="input-groupe-add">
                 <input
-                  name="num-nif"
+                  name="nif"
                   type="number"
                   class="input"
-                  placeholder="Entrez le nif"
+                  placeholder="Entrez le Nif"
                   autocomplete="new-nifs"
                   required
                 />
@@ -3001,20 +2996,22 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="fax"
+                  name="nis"
                   type="number"
                   class="input"
-                  placeholder="Fax"
-                  autocomplete="Fax"
+                  placeholder="Entrez le Nis"
+                  autocomplete="new-nifs"
+                  required
                 />
-                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
               </div>
+
               <div class="input-groupe-add">
                 <input
-                  name="num-registre"
+                  name="numRegistre"
                   type="number"
                   class="input"
-                  placeholder="Entrez le num de num-registre"
+                  placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
                 />
@@ -3022,11 +3019,11 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="rib-rip"
+                  name="rib"
                   type="text"
                   class="input"
-                  placeholder="Entrez le Rip ou Rib"
-                  autocomplete="new-rip/rib"
+                  placeholder="Entrez le Rib"
+                  autocomplete="new-rib"
                   required
                 />
                 <ion-icon class="input-icon" name="card-outline"></ion-icon>
@@ -3041,57 +3038,41 @@
       </div>
       <!-- fin de section  ajouter un  fournisseur -->
       <!-- debut de section pour modifier un  fournisseur -->
-
-      <div class="add-user-container hidden">
-        <div class="add-user-cart add-fournisseur-cart">
+      <div class="edit-fournisseur-container hidden">
+        <div class="edit-fournisseur-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user heading-add-fournisseur">
-            <h1
-              class="heading-primary-add-user heading-primary-add-fournisseur"
-            >
-              modifier un fournisseur
+          <div class="heading-edit-fournisseur">
+            <h1 class="heading-primary-edit-fournisseur">
+              Modifier un fournisseur
             </h1>
           </div>
           <!-- for inputs -->
-          <form class="add-user-inputs">
+          <form class="edit-fournisseur-inputs">
             <div class="groupe-1-add">
               <div class="input-groupe-add">
                 <input
-                  name="raison-social"
+                  name="raisonSociale"
                   type="text"
                   class="input raison-social"
-                  placeholder="raison-social"
+                  placeholder=" Entrez La Raison Sociale"
                 />
                 <ion-icon class="input-icon" name="person-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="name"
+                  name="adresse"
                   type="text"
                   class="input input-add-name"
-                  placeholder="Nom"
+                  placeholder="Entrez l'Adresse"
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                <ion-icon class="input-icon" name="home-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="date-naissance"
-                  type="date"
-                  class="input date_naissance"
-                  id="add--date"
-                  placeholder="Entrez la date de naissance"
-                />
-                <ion-icon
-                  class="input-icon"
-                  name="calendar-number-outline"
-                ></ion-icon>
-              </div>
-              <div class="input-groupe-add">
-                <input
-                  name="number-telephone"
+                  name="telephone"
                   type="number"
                   class="input Telephone"
                   autocomplete="Numéro Telephone"
@@ -3101,14 +3082,24 @@
 
                 <ion-icon class="input-icon" name="call-outline"></ion-icon>
               </div>
+              <div class="input-groupe-add">
+                <input
+                  name="fax"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez le Fax"
+                  autocomplete="Fax"
+                />
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
             </div>
             <div class="groupe-2-add">
               <div class="input-groupe-add">
                 <input
-                  name="num-nif"
+                  name="nif"
                   type="number"
                   class="input"
-                  placeholder="Entrez le nif"
+                  placeholder="Entrez le Nif"
                   autocomplete="new-nifs"
                   required
                 />
@@ -3116,20 +3107,22 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="fax"
+                  name="nis"
                   type="number"
                   class="input"
-                  placeholder="Fax"
-                  autocomplete="Fax"
+                  placeholder="Entrez le Nis"
+                  autocomplete="new-nifs"
+                  required
                 />
-                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
               </div>
+
               <div class="input-groupe-add">
                 <input
-                  name="num-registre"
+                  name="numRegistre"
                   type="number"
                   class="input"
-                  placeholder="Entrez le num de num-registre"
+                  placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
                 />
@@ -3137,11 +3130,11 @@
               </div>
               <div class="input-groupe-add">
                 <input
-                  name="rib-rip"
+                  name="rib"
                   type="text"
                   class="input"
-                  placeholder="Entrez le Rip ou Rib"
-                  autocomplete="new-rip/rib"
+                  placeholder="Entrez le Rib"
+                  autocomplete="new-rib"
                   required
                 />
                 <ion-icon class="input-icon" name="card-outline"></ion-icon>
@@ -3156,124 +3149,244 @@
       </div>
       <!-- fin de section  modifier un  fournisseur -->
       <!-- debut de section pour voir details d'un  fournisseur -->
-
-      <div class="add-fournisseur-container hidden">
-        <div class="add-user-cart add-fournisseur-cart">
+      <div class="view-fournisseur-container hidden">
+        <div class="view-fournisseur-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user">
-            <h1 class="heading-primary-add-user">Details d'un fournisseur</h1>
+          <div class="heading-view-fournisseur">
+            <h1 class="heading-primary-view-fournisseur">Details</h1>
           </div>
           <!-- for inputs -->
-          <form class="add-user-inputs">
+          <form class="view-fournisseur-inputs">
             <div class="groupe-1-add">
               <div class="input-groupe-add">
                 <input
                   disabled
-                  name="name"
+                  name="raisonSociale"
                   type="text"
-                  class="input input-add-name"
-                  placeholder="raison-social"
+                  class="input raison-social"
+                  placeholder=" Entrez La Raison Sociale"
                 />
                 <ion-icon class="input-icon" name="person-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
                   disabled
-                  name="name"
+                  name="adresse"
                   type="text"
                   class="input input-add-name"
-                  placeholder="Nom"
+                  placeholder="Entrez l'Adresse"
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                <ion-icon class="input-icon" name="home-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
                   disabled
-                  name="date"
-                  type="date"
-                  class="input"
-                  id="add--date"
-                  placeholder="Entrez la date de naissance"
-                />
-                <ion-icon
-                  class="input-icon"
-                  name="calendar-number-outline"
-                ></ion-icon>
-              </div>
-              <div class="input-groupe-add">
-                <input
-                  disabled
-                  name="number"
+                  name="telephone"
                   type="number"
-                  class="input"
+                  class="input Telephone"
                   autocomplete="Numéro Telephone"
                   placeholder="Entrez Numéro Telephone"
                   required
                 />
-                <ion-icon class="input-icon" name="mail-outline"></ion-icon>
+
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
               </div>
-            </div>
-            <div class="groupe-2-add">
               <div class="input-groupe-add">
                 <input
                   disabled
                   name="fax"
                   type="number"
                   class="input"
-                  placeholder="Fax"
+                  placeholder="Entrez le Fax"
                   autocomplete="Fax"
                 />
-                <ion-icon class="input-icon" name="person-outline"></ion-icon>
+                <ion-icon class="input-icon" name="call-outline"></ion-icon>
+              </div>
+            </div>
+            <div class="groupe-2-add">
+              <div class="input-groupe-add">
+                <input
+                  disabled
+                  name="nif"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez le Nif"
+                  autocomplete="new-nifs"
+                  required
+                />
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
                   disabled
-                  name="num-registre"
+                  name="nis"
                   type="number"
                   class="input"
-                  placeholder="Entrez le num de num-registre"
+                  placeholder="Entrez le Nis"
+                  autocomplete="new-nifs"
+                  required
+                />
+                <ion-icon class="input-icon" name="wallet-outline"></ion-icon>
+              </div>
+
+              <div class="input-groupe-add">
+                <input
+                  disabled
+                  name="numRegistre"
+                  type="number"
+                  class="input"
+                  placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
                 />
+                <ion-icon class="input-icon" name="book-outline"></ion-icon>
               </div>
               <div class="input-groupe-add">
                 <input
                   disabled
-                  name="rib-rip"
+                  name="rib"
                   type="text"
                   class="input"
-                  placeholder="Entrez le Rip ou Rib"
-                  autocomplete="new-rip/rib"
+                  placeholder="Entrez le Rib"
+                  autocomplete="new-rib"
                   required
                 />
+                <ion-icon class="input-icon" name="card-outline"></ion-icon>
               </div>
             </div>
+            <div></div>
           </form>
         </div>
       </div>
       <!-- fin de section  voir details d'un  fournisseur -->
-      <!-- debut de section pour ajouter un chapitre -->
-      <div class="add-structure-container add-chapitre-container hidden">
-        <div class="add-structure-cart add-chapitre-cart">
+      <!-- debut de section pour ajouter un article -->
+      <div class="add-article-container hidden">
+        <div class="add-article-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user">
-            <h1
-              class="heading-primary-add-structure heading-primary-add-chapitre"
-            >
-              Ajouter un chapitre
-            </h1>
+          <div class="heading-add-article">
+            <h1 class="heading-primary-add-article">Ajouter un Article</h1>
           </div>
           <!-- for inputs -->
-          <form class="add-structure-inputs add-chapitre-inputs">
+          <form class="add-article-inputs">
             <div class="input-groupe">
               <input
-                name="name"
+                name="numArt"
+                type="text"
+                class="input"
+                id="numArticle"
+                placeholder="Num de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="designation"
+                type="text"
+                class="input"
+                id="name-article"
+                placeholder="Nom de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="chapitre"
+                type="text"
+                class="input"
+                id="num-chapitre"
+                placeholder="Numero du Chapitre"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="TVA"
+                type="number"
+                class="input"
+                id="Tva"
+                placeholder="Le Tva"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Crée l'article</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin de section  ajouter un article -->
+      <!-- debut de section pour modifier un article -->
+      <div class="edit-article-container hidden">
+        <div class="edit-article-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-edit-article">
+            <h1 class="heading-primary-edit-article">Modifier un Article</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="edit-article-inputs">
+            <div class="input-groupe">
+              <input
+                name="numArt"
+                type="text"
+                class="input"
+                id="numArticle"
+                placeholder="Num de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="designation"
+                type="text"
+                class="input"
+                id="name-article"
+                placeholder="Nom de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="numChap"
+                type="text"
+                class="input"
+                id="num-chapitre"
+                placeholder="Numero du Chapitre"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="TVA"
+                type="number"
+                class="input"
+                id="Tva"
+                placeholder="Le Tva"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Modifier</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin de section  modifier un article -->
+      <!-- debut de section pour ajouter un chapitre -->
+      <div class="add-chapitre-container hidden">
+        <div class="add-chapitre-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-chapitre">
+            <h1 class="heading-primary-add-chapitre">Ajouter un chapitre</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-chapitre-inputs">
+            <div class="input-groupe">
+              <input
+                name="designation"
                 type="text"
                 class="input"
                 id="name-chapitre"
@@ -3282,10 +3395,10 @@
             </div>
             <div class="input-groupe">
               <input
-                name="name"
+                name="numChap"
                 type="text"
                 class="input"
-                id="name-chapitre"
+                id="num-chapitre"
                 placeholder="Numero du chapitre"
               />
             </div>
@@ -3297,21 +3410,17 @@
       </div>
       <!-- fin de section  ajouter un chapitre -->
       <!-- debut de section pour modifier un chapitre -->
-      <div class="add-structure-container add-chapitre-container hidden">
-        <div class="add-structure-cart add-chapitre-cart">
+      <div class="edit-chapitre-container hidden">
+        <div class="edit-chapitre-cart">
           <button class="close-btn">
             <span class="material-icons-sharp">close</span>
           </button>
 
-          <div class="heading-add-user">
-            <h1
-              class="heading-primary-add-structure heading-primary-add-chapitre"
-            >
-              Ajouter un chapitre
-            </h1>
+          <div class="heading-edit-chapitre">
+            <h1 class="heading-primary-edit-chapitre">Modifier le chapitre</h1>
           </div>
           <!-- for inputs -->
-          <form class="add-structure-inputs add-chapitre-inputs">
+          <form class="edit-chapitre-inputs">
             <div class="input-groupe">
               <input
                 name="name"
@@ -3321,17 +3430,8 @@
                 placeholder="Nom du chapitre"
               />
             </div>
-            <div class="input-groupe">
-              <input
-                name="name"
-                type="text"
-                class="input"
-                id="name-chapitre"
-                placeholder="Numero du chapitre"
-              />
-            </div>
             <div class="create-btn">
-              <button>Crée le chapitre</button>
+              <button>Modifier</button>
             </div>
           </form>
         </div>
@@ -3800,29 +3900,45 @@
         </div>
       </div>
       <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
-      <div class="container-supp-user hidden">
-        <div class="supp-user-cart">
-          <p class="supp-user-text">
+      <div class="container-supp-fournisseur hidden">
+        <div class="supp-fournisseur-cart">
+          <p class="supp-fournisseur-text">
             Êtes-vous sûr de vouloir supprimer cet fournisseur ? Cette action
             est irréversible et toutes les données associées seront perdues.
           </p>
           <div class="supp-user-btns">
-            <button class="btn-supp supp-user-annuler">Annuler</button>
-            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+            <button class="btn-supp supp-fournisseur-annuler">Annuler</button>
+            <button class="btn-supp supp-fournisseur-confirmer">
+              Confirmer
+            </button>
           </div>
         </div>
       </div>
-      <!-- fin section for supprimer fournisseur -->
+      <!-- fin section for supprimer article -->
+      <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
+      <div class="container-supp-article hidden">
+        <div class="supp-article-cart">
+          <p class="supp-article-text">
+            Êtes-vous sûr de vouloir supprimer cet article ? Cette action est
+            irréversible et toutes les données associées seront perdues.
+          </p>
+          <div class="supp-user-btns">
+            <button class="btn-supp supp-article-annuler">Annuler</button>
+            <button class="btn-supp supp-article-confirmer">Confirmer</button>
+          </div>
+        </div>
+      </div>
+      <!-- fin section for supprimer article -->
       <!-- debut section pour supprimer un chapitre etes vous sure de vouloir supprimer -->
-      <div class="container-supp-user hidden">
+      <div class="container-supp-chapter hidden">
         <div class="supp-user-cart">
           <p class="supp-user-text">
             Êtes-vous sûr de vouloir supprimer cet chapitre ? Cette action est
             irréversible et toutes les données associées seront perdues.
           </p>
           <div class="supp-user-btns">
-            <button class="btn-supp supp-user-annuler">Annuler</button>
-            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+            <button class="btn-supp supp-chapter-annuler">Annuler</button>
+            <button class="btn-supp supp-chapter-confirmer">Confirmer</button>
           </div>
         </div>
       </div>
@@ -3898,6 +4014,21 @@
         </form>
       </div>
       <!-- fin section pour supprimer bdci  -->
+      <!-- debut section pour supprimer inv  -->
+      <div class="container-supp-inv hidden">
+        <form class="supp-bdc-cart">
+          <p class="supp-bdc-text">
+            Êtes-vous sûr de vouloir supprimer cet état d'Inventaire ?
+            <br />Cette action est irréversible et toutes les données associées
+            seront perdues.
+          </p>
+          <div class="supp-bdc-btns">
+            <button class="btn-supp supp-inv-annuler">Annuler</button>
+            <button class="btn-supp supp-inv-confirmer">Confirmer</button>
+          </div>
+        </form>
+      </div>
+      <!-- fin section pour supprimer inv  -->
       <!-- fin section pour supprimer bdc  -->
       <!-- debut section pour annuler bdc  -->
       <div class="container-supp-bdc container-cancel-bdc hidden">
@@ -5203,15 +5334,15 @@
       <!-- fin section pour voir les bdci -->
       <!-- debut section pour cree un état d'inventaire -->
       <div class="big-container-inv hidden">
-        <div class="add-info-container">
-          <div class="add-info-cart">
-            <div class="heading-add-info">
+        <div class="edit-info-container hidden">
+          <div class="edit-info-cart">
+            <div class="heading-edit-info">
               <p>Raison</p>
             </div>
             <form class="inputs-info">
               <div class="input-info">
                 <input
-                  name="justify"
+                  name="raison"
                   type="text"
                   placeholder="Donnez la raison de la difference"
                   id="justify"
@@ -5221,23 +5352,21 @@
               </div>
 
               <div class="btn-info">
-                <button class="cancel-btn-add-bdc cancel-btn-info">
-                  Annuler
-                </button>
-                <button class="add-btn-add-bdc add-btn-info">Confirmer</button>
+                <button class="cancel-btn-edit-info">Annuler</button>
+                <button class="edit-btn-info">Confirmer</button>
               </div>
             </form>
           </div>
         </div>
         <div class="add-inv-container">
-          <div class="inv-cart">
+          <form class="inv-cart">
             <p class="inv-title">Etat de l'inventaire</p>
             <div class="heading-table-text-add-inv">
               <div class="num-inv-inputs">
                 <p>Entez le numero de l'état d'inventaire :</p>
                 <input
                   class="input-num-inv"
-                  name="num-inv"
+                  name="numInventaire"
                   type="number"
                   autocomplete="off"
                   required
@@ -5282,7 +5411,7 @@
                   </tr>
                   <!-- fin  d'une ligne nrml  -->
                   <!--une ligne selected  -->
-                  <tr class="selected-row">
+                  <tr>
                     <!--ajoute selected-row for selected lines-->
                     <td>
                       <div class="colomn-product-des">
@@ -5340,7 +5469,7 @@
                 Sauvegarder
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- fin section pour cree un état d'inventaire -->
@@ -5601,6 +5730,7 @@
       <div class="overlay overlayDel hidden"></div>
       <div class="overlay overlayDelBdc hidden"></div>
       <div class="overlay overlayDelBdci hidden"></div>
+      <div class="overlay overlayDelInv hidden"></div>
       <div class="overlay overlayCancelBdc hidden"></div>
       <div class="overlay overlaySeeBdc hidden"></div>
       <div class="overlay overlaySeeBdci hidden"></div>
@@ -5616,6 +5746,12 @@
       <div class="overlay overlayEditBDCI hidden"></div>
       <div class="overlay overlayValidateBDCI hidden"></div>
       <div class="overlay overlayBDD hidden"></div>
+      <div class="overlay overlayInv hidden"></div>
+      <div class="overlay overlayEditChapter hidden"></div>
+      <div class="overlay overlayAddChapter hidden"></div>
+      <div class="overlay overlayDelChapter hidden"></div>
+      <div class="overlay overlayAddArticle hidden"></div>
+      <div class="overlay overlayEditArticle hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

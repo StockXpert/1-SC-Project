@@ -1,6 +1,6 @@
 function changeDataFormat(data)
 {
-    keys=Object.keys(data[0])
+    let keys=Object.keys(data[0])
     let result=
     {
         labels:[],
@@ -8,8 +8,8 @@ function changeDataFormat(data)
     }
     for(line of data)
         {
-            result.labels.push(line[key[0]]);
-            result.dataSet.push(line[key[1]])
+            result.labels.push(line[keys[0]]);
+            result.dataSet.push(line[keys[1]])
         }
     return result   
 }

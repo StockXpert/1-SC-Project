@@ -117,6 +117,29 @@ export const GROUP_DEFINITIONS = {
     'delete inventaire',
     'update inventaire',
   ],
+  Statistiques: [
+    'articleDemandePerYear',
+    'rapidFournisseur',
+    'respStructureTopDemandeurs',
+    'responsableStructureMostdemmandedProduct',
+    'topDemandeurs',
+    'productDemandePerYear',
+    'structureMostdemmandedProduct',
+    'structureTopDemandeurs',
+    'mostCommandedProducts',
+    'mostUsedFournisseur',
+    'mostdemmandedProduct',
+    'commandesStat',
+    'consumerMostdemmandedProduct',
+    'productDemandePerYear',
+    'structureMostdemmandedProduct',
+    'structureTopDemandeurs',
+    'mostCommandedProducts',
+    'mostUsedFournisseur',
+    'mostdemmandedProduct',
+    'commandesStat',
+    'consumerMostdemmandedProduct',
+  ],
 };
 export const PERM_NAMES = {
   register: 'Inscrire un nouvel utilisateur',
@@ -185,14 +208,14 @@ export const PERM_NAMES = {
   'show all demandes': 'Voir toutes mes demandes Internes/Externes',
   livrer:
     'Livrer la demande Interne/Externe et générer le Bon de Sortie/Décharge',
-  'create inventaire': "Créer une nouvelle étude d'état de l'inventaire",
-  'valid inventaire': "Valider le nouveau état de l'inventaire",
+  'create inventaire': "Créer un nouvel état d'état de l'inventaire",
+  'valid inventaire': "Valider un nouvel état de l'inventaire",
   'show inventaires':
     "Voir l'historique de l'inventaire (tout les états précédents)",
   'show inventaire':
     "Voir un état de l'inventaire en détails (tout les états précédents)",
   'show inventaire': "Voir un état de l'inventaire en détails",
-  'delete inventaire': "Supprimer un état de l'inventaire en détails",
+  'delete inventaire': "Supprimer un état de l'inventaire",
   'update inventaire': "Modifier un état de l'inventaire en détails",
 };
 
@@ -222,7 +245,7 @@ export const GROUP_BTNS = {
   <span class="material-icons-sharp"> menu_book </span>
   <h3>Chapitres</h3>
 </a>`,
-  Fournisseurs: `<a class="sidebar-btns fournisseurs-btn hidden" href="">
+  Fournisseurs: `<a class="sidebar-btns fournisseurs-btn" href="">
   <span class="material-icons-sharp"> local_shipping </span>
   <h3>Fournisseurs</h3>
 </a>`,
@@ -258,6 +281,11 @@ export const GROUP_BTNS = {
   <h3>Inventaire</h3>
 </a>
   `,
+  Statistiques: `<a class="sidebar-btns statistiques-btn" href="">
+  <span class="material-icons-sharp"> query_stats </span>
+  <h3>Statistiques</h3>
+</a>
+  `,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',
@@ -270,6 +298,8 @@ export const ORDER_OF_GROUPS = [
   'Chapitres',
   'Produits',
   'Articles',
+  'Fournisseurs',
   'Inventaire',
+  'Statistiques',
   'Autre',
 ];

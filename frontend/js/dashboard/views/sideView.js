@@ -19,6 +19,7 @@ class SideView extends View {
     document.querySelector('.bon-de-commandes-btn'),
     document.querySelector('.bon-de-commandes-interne-btn'),
     document.querySelector('.inventaire-btn'),
+    document.querySelector('.fournisseurs-btn'),
   ];
   divs = [
     document.getElementById('main-profile-table'),
@@ -27,7 +28,7 @@ class SideView extends View {
     document.getElementById('main-table-roles'),
     document.getElementById('main-table-permissions'),
     ,
-    ,
+    document.getElementById('main-table-statistiques'),
     ,
     document.getElementById('main-table-articles'),
     document.getElementById('main-table-chapitres'),
@@ -35,6 +36,7 @@ class SideView extends View {
     document.getElementById('main-table-bdc'),
     document.getElementById('main-table-bdci'),
     document.getElementById('main-table-inv'),
+    document.getElementById('main-table-fournisseur'),
   ];
 
   hideAllDivs() {
@@ -60,6 +62,7 @@ class SideView extends View {
       document.querySelector('.bon-de-commandes-btn'),
       document.querySelector('.bon-de-commandes-interne-btn'),
       document.querySelector('.inventaire-btn'),
+      document.querySelector('.fournisseurs-btn'),
     ];
     this.divs = [
       document.getElementById('main-profile-table'),
@@ -68,7 +71,7 @@ class SideView extends View {
       document.getElementById('main-table-roles'),
       document.getElementById('main-table-permissions'),
       ,
-      ,
+      document.getElementById('main-table-statistiques'),
       ,
       document.getElementById('main-table-articles'),
       document.getElementById('main-table-chapitres'),
@@ -76,6 +79,7 @@ class SideView extends View {
       document.getElementById('main-table-bdc'),
       document.getElementById('main-table-bdci'),
       document.getElementById('main-table-inv'),
+      document.getElementById('main-table-fournisseur'),
     ];
   }
 
@@ -117,6 +121,7 @@ class SideView extends View {
               helpers.findNodeIndex(this.btns, targeto)
             ].classList.remove('hidden');
             targeto.classList.add('active');
+            // console.log(helpers.findNodeIndex(this.btns, targeto));
             await controllers[helpers.findNodeIndex(this.btns, targeto)]();
           });
       });

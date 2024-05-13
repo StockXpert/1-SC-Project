@@ -112,7 +112,7 @@ export class CmdsIntView extends CmdsView {
         ? `
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
-          result.etat.includes('demande') ? '' : 'hidden'
+          result.etat.includes('demandee') ? '' : 'hidden'
         }">
           <span class="material-icons-sharp verif-icon">
             check_circle
@@ -128,7 +128,7 @@ export class CmdsIntView extends CmdsView {
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
           result.etat.includes('visee par resp') ||
-          (result.etat.includes('demande') && result.exterieur)
+          (result.etat.includes('demandee') && result.exterieur)
             ? ''
             : 'hidden'
         }">
@@ -152,7 +152,7 @@ export class CmdsIntView extends CmdsView {
           </span>
         </button>
       </td>
-      <td class="td-print-bdciii">${
+      <td class="td-print-bdci">${
         result.etat.includes('servie')
           ? `
     <a class="print-bdci-btnnn" href="../../backend/sortie/sortie${result.num_demande}.pdf" target="_blank">
@@ -216,7 +216,7 @@ export class CmdsIntView extends CmdsView {
           ]);
         } else if (this._checkedCheckboxes.length === 1) {
           switch (etat) {
-            case 'demande':
+            case 'demandee':
               enableBtns([
                 this._btnCancelBdc,
                 this._btnDeleteBdci,

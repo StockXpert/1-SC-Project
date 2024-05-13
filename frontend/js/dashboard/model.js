@@ -77,10 +77,6 @@ export const state = {
     all: [],
     selected: '',
   },
-  articles: {
-    all: [],
-    selected: '',
-  },
   bdc_products: {
     all: [],
     selected: '',
@@ -145,7 +141,48 @@ export const state = {
   },
   inventaires: {
     all: {},
-    selected: {},
+    new: {
+      numInventaire: '',
+      dateInventaire: '',
+      produits: [
+        {
+          designation: '',
+          quantitePhys: '',
+          raison: '',
+        },
+        {},
+      ],
+      selectedProduct: '',
+    },
+    selected: {
+      numInventaire: '',
+      oldProduits: {},
+      currentProduits: {},
+    },
+  },
+  chapters: {
+    all: [],
+    selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
+  },
+  products: {
+    all: [],
+    selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
+  },
+  articles: {
+    all: [],
+    selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
   },
 };
 export const getMyPerms = async function () {
@@ -687,7 +724,10 @@ export const loadFournisseurs = async function () {
 };
 
 export const loadArticles = async function () {
-  let articles = await helpers.getJSON(`${API_URL}/Nomenclatures/showArticles`);
+  const articles = await helpers.getJSON(
+    `${API_URL}/Nomenclatures/showArticles`
+  );
+  state.articles.all = articles.response;
   return articles.response;
 };
 
@@ -698,6 +738,7 @@ export const loadProducts = async function (article) {
 
 export const loadAllProducts = async function () {
   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+  state.products.all = products.response;
   return products.response;
 };
 
@@ -927,4 +968,185 @@ export const deleteCmdInt = async function (numDemande) {
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
+};
+// export const loadAllProducts = async function () {
+//   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
+//   return products.response;
+// };
+export const loadAllProductsPerms = async function () {
+  try {
+    let responseArray = await helpers.getJSONReturnResResp(
+      `${API_URL}/Nomenclatures/showProducts`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        show products :
+        'Afficher les produits',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const createInv = async function (numInv) {
+  try {
+    console.log(state.inventaires.new.produits);
+    let newProduitsArr = state.inventaires.new.produits.map(produit => {
+      const { designation, quantitePhys, quantiteLog, raison } = produit;
+      return {
+        designation,
+        quantitePhys,
+        raison: quantiteLog === quantitePhys ? '' : raison,
+      };
+    });
+    console.log(newProduitsArr);
+    let postObj = {
+      numInventaire: numInv,
+      dateInventaire: helpers.getFormattedDate(),
+      produits: newProduitsArr,
+    };
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Inventaire/createInventaire`,
+      postObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        create inventaire :
+        'Créer un nouvel état d'état de l'inventaire',
+        `
+      );
+      return false;
+    }
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+  // return postObj;
+  // return;
+};
+export const prepareNewInventaire = async function (productsArr = []) {
+  const newInv = productsArr.map(product => {
+    return {
+      raison: '',
+      designation: product.designation,
+      quantiteLog: product.quantite,
+      quantitePhys: '',
+    };
+  });
+  state.inventaires.new.produits = newInv;
+  return newInv;
+};
+
+export const loadChapitres = async function () {
+  try {
+    const data = await helpers.getJSON(`${API_URL}/Nomenclatures/showChapters`);
+    console.log(data.response);
+    state.chapters.all = data.response;
+  } catch (error) {
+    console.error('Error loadChapitres :' + error);
+  }
+};
+
+export const addChapter = async function (newChapter) {
+  try {
+    const res = await helpers.sendJSON(
+      `${API_URL}/Nomenclatures/addChapter`,
+      newChapter
+    );
+    console.log(res);
+  } catch (error) {
+    console.error('Error addChapter :' + error);
+  }
+};
+
+export const updateChapter = async function (oldChapter, newChapter) {
+  try {
+    const uploadData = {
+      oldDesignation: oldChapter.designation,
+      newDesignation: newChapter.designation,
+    };
+    const data = await helpers.putJSON(
+      `${API_URL}/Nomenclatures/updateChapter`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteChapter = async function (chapter) {
+  try {
+    const uploadData = { designation: chapter.designation };
+    const data = await helpers.delJSON(
+      `${API_URL}/Nomenclatures/deleteChapter`,
+      uploadData
+    );
+    if (data.response === 'prohibited to delete chapter')
+      helpers.renderError(
+        'Erreur de permission',
+        'prohibited to delete chapter'
+      );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const addArticle = async function (newArticle) {
+  try {
+    const res = await helpers.sendJSON(
+      `${API_URL}/Nomenclatures/addArticle`,
+      newArticle
+    );
+    console.log(res);
+  } catch (error) {
+    console.error('Error addArticle :' + error);
+  }
+};
+
+export const deleteInv = async function (numInventaire) {
+  try {
+    let delObj = { numInventaire };
+    console.log(delObj);
+    let responseArray = await helpers.delJSONReturnResResp(
+      `${API_URL}/Inventaire/deleteInventaire`,
+      delObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        delete inventaire:
+        "Supprimer un état de l'inventaire",
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+
+export const getGraphPromise = async function (graphLink) {
+  const resultsPro = await Promise.race([
+    fetch(`${API_URL}/Statistique/${graphLink}`, {
+      method: 'POST',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+    }),
+    helpers.timeout(TIMEOUT_SEC),
+  ]);
+  return resultsPro.json();
 };
