@@ -50,6 +50,9 @@ import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
 import editChapterView from './views/nomenclatures/chapitres/editChapterView.js';
 import deleteChapterView from './views/nomenclatures/chapitres/deleteChapterView.js';
 import statsView from './views/statistiques/statsView.js';
+import articlesView from './views/nomenclatures/articles/articlesView.js';
+import addArticleView from './views/nomenclatures/articles/addArticleView.js';
+import editArticleView from './views/nomenclatures/articles/editArticleView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -795,13 +798,7 @@ const controlSelectFournisseur = fournisseurName => {
 
 //ARTICLES
 
-const controlUpdateArticles = async () => {
-  //fetch all fournisseurs to model.state.fournisseurs
-  const articles = await model.loadArticles();
-  model.state.articles.all = articles;
-};
-
-const controlSearchArticles = input => {
+const controlSearchArticlesCmds = input => {
   //ON INPUT:
   //get search input
   // input
@@ -2061,14 +2058,9 @@ const controlSearchProduct = async function (query) {
   const results = model.state.products.all.filter(product =>
     product.designation.toLowerCase().includes(query.toLowerCase())
   );
-  // if (results.length === 0)
-  //   return helpers.renderError(
-  //     'Not Found',
-  //     `il y'a aucun produit qui contient ${query}`
-  //   );
   model.state.products.searched.all = results;
 
-  chaptersView.render(model.state.chapters.searched.all);
+  chaptersView.render(model.state.products.searched.all);
   // numberChaptersView.render(model.state.chapters.searched);
   // numberChaptersView.updateMasterCheckbox();
   // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
@@ -2089,6 +2081,90 @@ const controlAddProduct = async function (newProduct) {
   }
 };
 
+const controlLoadArticles = async function () {
+  try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show articles'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
+    articlesView.restrict(model.state.me.permissions.all);
+    addArticleView.restrict(model.state.me.permissions.all);
+    // deleteChapterView.restrict(model.state.me.permissions.all);
+    articlesView.renderSpinner('Loading Articles ...');
+    await model.loadArticles();
+    articlesView.render(model.state.articles.all);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
+
+    // numberChaptersView.render(model.state.chapters);
+    // numberChaptersView.updateMasterCheckbox();
+    // numberChaptersView.addHandlerNumber(controleSelectChapters);
+    // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    chaptersView.addSearchController(controlSearchArticles);
+    editArticleView.addHandlerShowWindow();
+    editArticleView.addHandlerHideWindow();
+    editChapterView.addHandlerEdit(controlEditArticle);
+    // deleteChapterView.addDeleteController(controlDeleteStructure);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlSearchArticles = function (query) {
+  const results = model.state.articles.all.filter(product =>
+    product.designation.toLowerCase().includes(query.toLowerCase())
+  );
+  model.state.articles.searched.all = results;
+
+  chaptersView.render(model.state.articles.searched.all);
+};
+
+const controlAddArticle = async function (newArticle) {
+  try {
+    await model.addArticle(newArticle);
+    await controlLoadProducts();
+    console.log(model.state.products.all);
+    addChapterView.clearForm();
+    //Close Window
+
+    addChapterView.toggleWindow();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlEditArticle = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(editArticleView._btnOpen, target);
+  // console.log(targetIndex);
+  console.log(model.state.chapters.all[targetIndex]);
+  editArticleView.changeInputs(model.state.chapters.all[targetIndex]);
+  editArticleView.addHandlerUpdate(controlUpdateArticle);
+};
+
+const controlUpdateArticle = async function (oldArticle, newArticle) {
+  Article;
+  try {
+    // if (
+    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
+    //     .length === 0
+    // ) return;
+    // console.log(oldStructure.designation, newStructure.designation);
+    if (oldArticle.designation === newArticle.designation) return;
+    structuresView.renderSpinner("Modification de l'article...");
+    await model.updateArticle(oldArticle, newArticle);
+    await controlLoadArticles();
+  } catch (error) {
+    console.error(error);
+  }
+};
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////////////// S T A T I S T I Q U E S #fff//////////////////////
@@ -2184,7 +2260,7 @@ const controllers = [
   ,
   controlLoadStatistiques,
   ,
-  ,
+  controlLoadArticles,
   controlLoadChapters,
   controlLoadProducts,
   controlLoadCmds,
@@ -2233,12 +2309,13 @@ deleteChapterView.addDeleteController(controlDeleteChapter);
 sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
 addChapterView.addHandlerUpload(controlAddChapter);
+addArticleView.addHandlerUpload(controlAddArticle);
 
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
 // #F00
 // controlUpdateArticles();
 // controlUpdateFournisseurs();
-addCmdsView.addHandlerArticleSearch(controlSearchArticles);
+addCmdsView.addHandlerArticleSearch(controlSearchArticlesCmds);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
 addCmdsView.addHandlerProductSearch(

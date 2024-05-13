@@ -77,10 +77,6 @@ export const state = {
     all: [],
     selected: '',
   },
-  articles: {
-    all: [],
-    selected: '',
-  },
   bdc_products: {
     all: [],
     selected: '',
@@ -173,6 +169,14 @@ export const state = {
     },
   },
   products: {
+    all: [],
+    selected: 0,
+    searched: {
+      all: [],
+      selected: 0,
+    },
+  },
+  articles: {
     all: [],
     selected: 0,
     searched: {
@@ -720,7 +724,10 @@ export const loadFournisseurs = async function () {
 };
 
 export const loadArticles = async function () {
-  let articles = await helpers.getJSON(`${API_URL}/Nomenclatures/showArticles`);
+  const articles = await helpers.getJSON(
+    `${API_URL}/Nomenclatures/showArticles`
+  );
+  state.articles.all = articles.response;
   return articles.response;
 };
 
@@ -1090,6 +1097,18 @@ export const deleteChapter = async function (chapter) {
       );
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const addArticle = async function (newArticle) {
+  try {
+    const res = await helpers.sendJSON(
+      `${API_URL}/Nomenclatures/addArticle`,
+      newArticle
+    );
+    console.log(res);
+  } catch (error) {
+    console.error('Error addArticle :' + error);
   }
 };
 

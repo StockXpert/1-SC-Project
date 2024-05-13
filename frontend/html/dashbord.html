@@ -1166,7 +1166,6 @@
                     </th>
                     <th>Nom</th>
                     <th>Nom du chapitre</th>
-                    <th>date d'ajout</th>
                     <th>TVA</th>
                     <th>Modifier</th>
                   </tr>
@@ -1182,7 +1181,6 @@
                     </td>
                     <td>Ouvrages des bibliothèques</td>
                     <td>Fournitures</td>
-                    <td>19/24/2024</td>
                     <td>19%</td>
                     <td>
                       <button class="details-btn-articles">
@@ -1204,7 +1202,6 @@
                     </td>
                     <td>Habillement des personnels de service</td>
                     <td>Fournitures</td>
-                    <td>19/24/2024</td>
                     <td>19%</td>
                     <td>
                       <button class="details-btn">
@@ -3279,7 +3276,7 @@
           <form class="add-article-inputs">
             <div class="input-groupe">
               <input
-                name="num-article"
+                name="numArt"
                 type="text"
                 class="input"
                 id="numArticle"
@@ -3297,7 +3294,7 @@
             </div>
             <div class="input-groupe">
               <input
-                name="numChap"
+                name="chapitre"
                 type="text"
                 class="input"
                 id="num-chapitre"
@@ -3334,7 +3331,7 @@
           <form class="edit-article-inputs">
             <div class="input-groupe">
               <input
-                name="num-article"
+                name="numArt"
                 type="text"
                 class="input"
                 id="numArticle"
@@ -5626,6 +5623,8 @@
       <div class="overlay overlayEditChapter hidden"></div>
       <div class="overlay overlayAddChapter hidden"></div>
       <div class="overlay overlayDelChapter hidden"></div>
+      <div class="overlay overlayAddArticle hidden"></div>
+      <div class="overlay overlayEditArticle hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->
