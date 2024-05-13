@@ -603,7 +603,8 @@ aside .sidebar a:hover span {
 }
 .heading-table-btns-add-bdr,
 .heading-table-btns-verif-bdci,
-.heading-table-btns-inv {
+.heading-table-btns-inv,
+.heading-table-btns-inv-verif {
   width: 100%;
   display: flex;
   justify-content: end;
@@ -615,7 +616,8 @@ aside .sidebar a:hover span {
   gap: 1rem;
   align-items: center;
 }
-.num-inv-inputs {
+.num-inv-inputs,
+.num-inv-inputs-verif {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -634,7 +636,8 @@ aside .sidebar a:hover span {
 }
 .num-bdd-inputs p,
 .heading-table-date-end-bdd p,
-.num-inv-inputs p {
+.num-inv-inputs p,
+.num-inv-inputs-verif p {
   font-size: 1.2rem;
   font-weight: 500;
   color: #4b4b4b;
@@ -812,14 +815,16 @@ aside .sidebar a:hover span {
   gap: 1rem;
   padding: 0.6rem;
 }
-.heading-table-text-add-inv {
+.heading-table-text-add-inv,
+.heading-table-text-add-inv-verif {
   /* width: 100%; */
   padding: 0.6rem;
 }
 .input-num-bdr,
 .input-num-bdd,
 .input-date-bdd,
-.input-num-inv {
+.input-num-inv,
+.input-num-inv-verif {
   font-size: 1.1rem;
   padding: 0.4rem;
   border-radius: 15px;
@@ -912,7 +917,8 @@ aside .sidebar a:hover span {
 .table-container-fournisseur,
 .table-container-bdc,
 .table-container-bdci,
-.table-container-inv {
+.table-container-inv,
+.table-container-inv-verif {
   /* max-height: 51.2vh; */
   max-height: 59.6vh;
   overflow-y: auto;
@@ -935,6 +941,7 @@ aside .sidebar a:hover span {
 .table-container-add-bdr,
 .table-container-verif-bdci,
 .table-container-inv,
+.table-container-inv-verif,
 .table-container-see-bdci,
 .table-container-bdd {
   width: auto;
@@ -952,6 +959,7 @@ aside .sidebar a:hover span {
 .table-container-show-bdr table th,
 .table-container-verif-bdci table th,
 .table-container-inv table th,
+.table-container-inv-verif table th,
 .table-container-see-bdci table th,
 .table-container-bdd table th {
   width: 22rem;
@@ -1151,11 +1159,12 @@ table tbody tr:last-child td {
   transform: translate(-50%, -50%);
 }
 .add-info-container,
-.edit-info-container {
+.edit-info-container,
+.add-info-container-verif {
   display: block;
   position: fixed;
   z-index: 1000;
-  left: calc(50% + 50rem);
+  left: calc(50% + 37rem);
   /* left: 89.5%; */
   top: 50%;
   transform: translate(-50%, -50%);
@@ -1170,13 +1179,25 @@ table tbody tr:last-child td {
   border-radius: 15px;
   padding: 0.4rem;
 }
-.input-info {
+.input-info,
+.input-info-verif {
   transition: all 0.4s;
   width: 15rem;
   height: auto;
   border: 1px solid #477ce2;
   border-radius: 15px;
   padding: 0.4rem;
+}
+.input-info-verif span {
+  color: #000;
+}
+.baslescouilles {
+  width: 100%;
+}
+.close-info-verif {
+  width: 100%;
+  display: flex;
+  justify-content: end;
 }
 .input-product--valid {
   border: 1px solid #07b60e;
@@ -1217,6 +1238,21 @@ table tbody tr:last-child td {
   display: flex;
   flex-direction: column !important;
   gap: 2rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+  position: relative;
+  /* overflow: hidden; */
+}
+.add-info-cart-verif {
+  width: 18rem;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column !important;
+  gap: 0.6rem;
   align-items: center;
   padding: 1rem;
   background-color: white;
@@ -1636,6 +1672,15 @@ table tbody tr:last-child td {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+.add-inv-container-verif {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  max-width: 100rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 .groupe-role-container {
   display: flex;
   flex-direction: column;
@@ -1664,6 +1709,7 @@ table tbody tr:last-child td {
 .big-container-bdci,
 .big-container-verif-bdci,
 .big-container-inv,
+.big-container-inv-verif,
 .big-container-see-bdci,
 .big-container-bdd {
   margin: 0 auto;
@@ -1680,6 +1726,7 @@ table tbody tr:last-child td {
 }
 .inputs-add-product-bdc,
 .inputs-info,
+.inputs-info-verif,
 .inputs-add-product-bdci,
 .inputs-edit-product-bdc,
 .inputs-edit-product-bdci {
@@ -1690,6 +1737,7 @@ table tbody tr:last-child td {
 }
 .btn-product-bdc,
 .btn-info,
+.btn-info-verif,
 .btn-product-bdci,
 .btn-product-bdc-edit,
 .btn-product-bdci-edit {
@@ -1707,9 +1755,14 @@ table tbody tr:last-child td {
   font-size: 0.9rem;
   border-radius: 20px;
 }
+.heading-add-info-verif {
+  display: flex;
+  justify-content: center;
+}
 .heading-add-product-bdc p,
 .heading-add-info p,
 .heading-edit-info p,
+.heading-add-info-verif p,
 .heading-add-product-bdci p,
 .heading-edit-product-bdc p,
 .heading-edit-product-bdci p {
@@ -1786,9 +1839,23 @@ table tbody tr:last-child td {
   overflow: hidden;
 }
 .add-bdr-cart,
-.verif-bdci-cart,
-.inv-cart {
+.verif-bdci-cart {
   width: 75rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column !important;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 1.6rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+  position: relative;
+  overflow: hidden;
+}
+.inv-cart,
+.inv-cart-verif {
+  width: 55rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -2619,6 +2686,7 @@ a.password-icon:active {
 .results-bdr-produits,
 .results-bdci-produits-verif,
 .results-produits-inv,
+.results-produits-inv-verif,
 .results-bdci-produits-see,
 .results-bdd-produits {
   position: relative;
@@ -2893,6 +2961,7 @@ a.password-icon:active {
 .bdc-title,
 .verif-bdci-title,
 .inv-title,
+.inv-title-verif,
 .see-bdci-title,
 .bdci-title,
 .edit-bdci-title {

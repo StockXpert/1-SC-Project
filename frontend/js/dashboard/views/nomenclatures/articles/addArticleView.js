@@ -1,10 +1,10 @@
 import View from '../../view.js';
-class AddChapterView extends View {
-  _window = document.querySelector('.add-chapitre-container');
-  _overlay = document.querySelector('.overlayAddChapter');
-  _btnOpen = document.querySelector('.add-chapitres-btn');
+class AddArticleView extends View {
+  _window = document.querySelector('.add-article-container');
+  _overlay = document.querySelector('.overlayAddArticle');
+  _btnOpen = document.querySelector('.add-articles-btn');
   _btnClose = this._window.querySelector('.close-btn');
-  _parentElement = document.querySelector('.add-chapitre-inputs');
+  _parentElement = document.querySelector('.add-article-inputs');
 
   constructor() {
     super();
@@ -36,7 +36,7 @@ class AddChapterView extends View {
         if (!data[key]) return console.log('data is empty');
       }
       console.log(data);
-      handler(data);
+      // handler(data);
       console.log(this);
     });
   }
@@ -44,11 +44,10 @@ class AddChapterView extends View {
   clearForm() {
     this._parentElement.reset();
   }
-  
 
   _generateMarkup() {}
 
-  _restricted = [['.add-chapitres-btn', 'add chapter'], 'none'];
+  _restricted = [['.add-articles-btn', 'add article'], 'none'];
 }
 
-export default new AddChapterView();
+export default new AddArticleView();
