@@ -286,44 +286,43 @@ function bciStat(dateD,dateF,consommateur,structure)
       {
         query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
-    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
-    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
-    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp,   
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg,
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
-    from bon_de_commande (where id_demandeur=?
-    ${dateD?" and d.date_commande between ? and ?":""}
-    )` 
+    from demande_fourniture where id_demandeur=?
+    ${dateD?" and d.date_demande between ? and ?":""}` 
       }
     else if(structure)
       {
         query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
-    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
-    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
-    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp ,  
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg,
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
-    from bon_de_commande (where id_demandeur in 
+    from demande_fourniture where id_demandeur in 
       (select email from utilisateur where id_structure=
         (select id_structure from structure where designation=?)
       )
-    ${dateD?" and d.date_commande between ? and ?":""}
-    )` 
+    ${dateD?" and d.date_demande between ? and ?":""}` 
       }  
     else
     {  
     query=`select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
-    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   
-    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg
-    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   
+    COUNT(CASE WHEN etat = 'visee par resp' THEN 1 END) AS viseeParResp   ,
+    COUNT(CASE WHEN etat = 'visee par dg' THEN 1 END) AS viseeParDg,
+    COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
-    from bon_de_commande
-    ${dateD?"(where d.date_commande between ? and ?)":""}` 
+    from demande_fourniture
+    ${dateD?"(where d.date_demande between ? and ?)":""}` 
     }
     let values=[]
     if(consommateur) values.push(consommateur);
-    if(structure) values.push(values);
+    if(structure) values.push(structure);
     if(dateD) values.push(dateD,dateF)    
+    console.log({structure})
     connection.connect((err) => {
       if (err) {
         console.error('Erreur de connexion :', err);

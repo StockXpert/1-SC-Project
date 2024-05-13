@@ -141,8 +141,8 @@ function commandesStat(req,res)
 }
 function bciConsommateurStat(req,res)
 {
-    const {dateD,dateF,consommateur}=req.body
-    
+    const {dateD,dateF}=req.body
+    const consommateur=req.email
     StatistiqueModel.bciStat(dateD,dateF,consommateur).then((data)=>{
         res.status(200).json({response:data})
     }).catch(()=>res.status(500).json({response:'internal error'}))
@@ -150,8 +150,8 @@ function bciConsommateurStat(req,res)
 function bciStructureStat(req,res)
 {
     const {dateD,dateF,structure}=req.body
-    
-    StatistiqueModel.bciStat(dateD,dateF,structure).then((data)=>{
+    console.log({structure})
+    StatistiqueModel.bciStat(dateD,dateF,null,structure).then((data)=>{
         res.status(200).json({response:data})
     }).catch(()=>res.status(500).json({response:'internal error'}))
 }
