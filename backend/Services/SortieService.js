@@ -9,7 +9,7 @@ function canUpdate(numDemande,role)
         SortieModel.getDemandeStatus(numDemande).then((status)=>{
             switch (role) {
                 case 'Magasinier':
-                    if(status==="pret") resolve('')
+                    if(status==="prete") resolve('')
                     reject('')   
                     break;
                 case 'Directeur':
@@ -35,9 +35,10 @@ function genererBonSortie(numDemande,dateSortie,produits,id)
             i++;
         }
         await googleMiddleware.generatePDF(id,`sortie`,`sortie${numDemande}`);
+        await googleMiddleware.generateCSV(id,`sortie`,`sortie${numDemande}`);
         await googleMiddleware.deleteRows(5,i-1,id);
-        const link=`sortie/sortie${numDemande}.pdf`
-        SortieModel.insertLink(numDemande,link).then(()=>{
+        const link=`sortie/sortie${numDemande}.`
+        SortieModel.insertLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
             resolve(link)
         }).catch(()=>{reject("err")})
     })
@@ -58,4 +59,59 @@ function subtituteQuantite(produits)
         resolve('success')
     })
 }
-module.exports={canUpdate,genererBonSortie,subtituteQuantite}
+function genererBonDecharge(Id,products,dateDecharge,numDemande)
+{
+    return new Promise(async(resolve,reject)=>{
+    console.log(products)
+    changeProductsStructure(products)
+    await googleMiddleware.updateCel('B3',"DECHARGE "+numDemande,Id);
+    await googleMiddleware.updateCel('B10',`Sidi Bel Abbés le ${dateDecharge}`,Id)
+    let i=6; 
+    for(let product of products )
+    {
+        await googleMiddleware.addRow(i,product,Id,'decharge')
+        i++;
+    }
+    let link=`bonDecharge/bonDecharge${numDemande}.`;
+    await googleMiddleware.generatePDF(Id,'bonDecharge',`bonDecharge${numDemande}`)
+    await googleMiddleware.generateCSV(Id,'bonDecharge',`bonDecharge${numDemande}`)
+    await googleMiddleware.deleteRows(6,i-1,Id);
+    SortieModel.insertDechargeLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
+        resolve('success')
+    }).catch(()=>{reject('error')})
+    })
+}
+function changeProductsStructure(products)
+{
+   let designation='';
+   console.log(products)
+   for(let product of products)
+   {
+      if(product.designation===designation)
+         product.designation='';
+      else designation=product.designation;  
+   }
+}
+function addDecharge(Id,products,dateDecharge,numDemande)
+{
+    return new Promise((resolve,reject)=>{
+        
+        SortieModel.insertDateDecharge(numDemande,dateDecharge).then(()=>{
+            SortieModel.insertDecharge(numDemande,products).then(()=>{
+                genererBonDecharge(Id,products,dateDecharge,numDemande).then(()=>{
+                    resolve('');
+                }).catch(()=>{reject('')})
+            }).catch(()=>{reject('')})
+        }).catch(()=>{reject('')})
+    })
+}
+function allZero(products)
+{
+    for(let product of products)
+        {
+            if(product.quanite!=0)
+                return false
+        }
+    return true    
+}
+module.exports={canUpdate,genererBonSortie,subtituteQuantite,addDecharge,allZero}

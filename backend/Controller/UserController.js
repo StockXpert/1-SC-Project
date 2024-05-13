@@ -33,18 +33,26 @@ async function login(req, res) {
           .then(result => {
             // console.log('hi');
             if (result) {
-              console.log(response.designation)
+              console.log(response.designation);
               const token = jwt.sign(
                 { email: email, role: response.designation },
                 SecretKey,
                 { expiresIn: '24h' }
               );
-              
-              userModel.getRolePermissons(response.designation).then((permissions)=>{
-                res
-                .status(200)
-                .json({ response: 'succuss of login', jwt: token,role:response.designation,permissions});
-              }).catch(()=>{res.status(500).json({ response: 'internal error' })})
+
+              userModel
+                .getRolePermissons(response.designation)
+                .then(permissions => {
+                  res.status(200).json({
+                    response: 'succuss of login',
+                    jwt: token,
+                    role: response.designation,
+                    permissions,
+                  });
+                })
+                .catch(() => {
+                  res.status(500).json({ response: 'internal error' });
+                });
             } else res.status(404).json({ response: 'Password error' });
           })
           .catch(error => {
@@ -60,12 +68,34 @@ async function login(req, res) {
 }
 async function register(req, res) {
   const SecretKey = process.env.KEY;
-  const { email, role, password,prenom,nom,date_naissance,type,structure } = req.body;
+  const {
+    email,
+    role,
+    password,
+    prenom,
+    nom,
+    date_naissance,
+    type,
+    structure,
+  } = req.body;
   const encry_pswrd = await bcrypt.hash(password, 10);
-  userService.createUser(email, role, encry_pswrd,prenom,nom,date_naissance,type,structure).then(()=>{
-    res.status(200).json({response:'user created'})
-  }
-).catch(()=>{res.status(500).json({response:'internal error'})})
+  userService
+    .createUser(
+      email,
+      role,
+      encry_pswrd,
+      prenom,
+      nom,
+      date_naissance,
+      type,
+      structure
+    )
+    .then(() => {
+      res.status(200).json({ response: 'user created' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
 }
 function showUsers(req, res) {
   userModel
@@ -78,11 +108,14 @@ function showUsers(req, res) {
     });
 }
 function showUser(req, res) {
-  
-    userModel.getUser(req.email).then((Users)=>{
-      res.status(200).json({response:Users});
-    }).catch((error)=>{res.status(500).json({response:error})})
-  
+  userModel
+    .getUser(req.email)
+    .then(Users => {
+      res.status(200).json({ response: Users });
+    })
+    .catch(error => {
+      res.status(500).json({ response: error });
+    });
 }
 function forgotPassword(req, res) {
   let { email } = req.body;
@@ -139,9 +172,10 @@ async function changePasswordAuth(req, res) {
     });
 }
 function updateUser(req, res) {
-  const { email, nom, prenom, date_naissance, structure, type,role } = req.body;
+  const { email, nom, prenom, date_naissance, structure, type, role } =
+    req.body;
   userService
-    .updateUser(email, nom, prenom, date_naissance, type, structure,role)
+    .updateUser(email, nom, prenom, date_naissance, type, structure, role)
     .then(() => {
       res.status(200).json({ response: 'informations changed' });
     })
@@ -153,16 +187,21 @@ function deleteUser(req, res) {
   if (req.email === req.body.email)
     res.status(400).json({ response: 'prohibited to delete admin' });
   let { email } = req.body;
-  userModel.isResponsable(email).then(()=>{
-    userService
-    .deleteUser(email)
+  userModel
+    .isResponsable(email)
     .then(() => {
-      res.status(200).json({ response: 'user deleted' });
+      userService
+        .deleteUser(email)
+        .then(() => {
+          res.status(200).json({ response: 'user deleted' });
+        })
+        .catch(error => {
+          res.status(500).json({ response: error });
+        });
     })
-    .catch((error) => {
-      res.status(500).json({ response: error });
+    .catch(() => {
+      res.status(403).json({ response: 'prohibited' });
     });
-  }).catch(()=>{res.status(403).json({response:'prohibited'})})
 }
 function addStructure(req, res) {
   const { designation, email } = req.body;
@@ -189,7 +228,7 @@ function afficherConsommateurs(req, res) {
 function rattacher(req, res) {
   const { structure, email } = req.body;
   userService
-    .rattacher(structure,email)
+    .rattacher(structure, email)
     .then(response => {
       res.status(200).json({ response });
     })
@@ -228,12 +267,16 @@ function showResp(req, res) {
       res.status(200).json({ response: 'internal error' });
     });
 }
-function changeStatus(req,res)
-{
-  const {email}=req.body;
-  userModel.updateStatus(email).then(()=>{
-    res.status(200).json({response:'status changed'});
-  }).catch(()=>{res.status(500).json({response:'internal error'})})
+function changeStatus(req, res) {
+  const { email } = req.body;
+  userModel
+    .updateStatus(email)
+    .then(() => {
+      res.status(200).json({ response: 'status changed' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
 }
 async function addRole(req, res) {
   const { role, permissions } = req.body;
@@ -243,79 +286,146 @@ async function addRole(req, res) {
     const roleId = await userModel.getRole(role);
     const response = await userModel.insertRoleDroit(roleId, permissions);
 
-    if (response === "success") {
-      res.status(200).json({ response: "role added" });
+    if (response === 'success') {
+      res.status(200).json({ response: 'role added' });
     } else {
-      res.status(500).json({ response: "internal error" });
+      res.status(500).json({ response: 'internal error' });
     }
   } catch (error) {
-    console.error("Erreur lors de l'ajout du rôle avec les autorisations :", error);
-    res.status(500).json({ response: "internal error" });
+    console.error(
+      "Erreur lors de l'ajout du rôle avec les autorisations :",
+      error
+    );
+    res.status(500).json({ response: 'internal error' });
   }
 }
-function deleteRole(req,res)
-{
-  const {role}=req.body;
-  userModel.isUsedRole(role).then(()=>{
-    userModel.canDeleteRole(role).then(()=>{
-      userModel.deleteRoleDroit(role).then(()=>{
-        userModel.deleteRole(role).then(()=>{
-          res.status(200).json({response:'role deleted'})
-        }).then(()=>{res.status(500).json({response:"internal error"})})
-      }).catch(()=>{res.status(500).json({response:"internal error"})})
-    }).catch(()=>{res.status(500).json({response:"can't delete"})})
-  }).catch(()=>{res.status(500).json({response:"forbidden"})})
+function deleteRole(req, res) {
+  const { role } = req.body;
+  userModel
+    .isUsedRole(role)
+    .then(() => {
+      userModel
+        .canDeleteRole(role)
+        .then(() => {
+          userModel
+            .deleteRoleDroit(role)
+            .then(() => {
+              userModel
+                .deleteRole(role)
+                .then(() => {
+                  res.status(200).json({ response: 'role deleted' });
+                })
+                .then(() => {
+                  res.status(500).json({ response: 'internal error' });
+                });
+            })
+            .catch(() => {
+              res.status(500).json({ response: 'internal error' });
+            });
+        })
+        .catch(() => {
+          res.status(500).json({ response: "can't delete" });
+        });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'forbidden' });
+    });
 }
-async function addPermissions(req,res)
-{
-  const {role,permissions}=req.body;
-  userModel.getRole(role).then((roleId)=>{
-    userModel.insertRoleDroit(roleId,permissions).then(()=>{
-      res.status(200).json({response:"permissions added"})
-    }).catch(()=>{res.status(500).json({response:"internal error"})})
-  }).catch(()=>{res.status(500).json({response:"internal error"})})
+async function addPermissions(req, res) {
+  const { role, permissions } = req.body;
+  userModel
+    .getRole(role)
+    .then(roleId => {
+      userModel
+        .insertRoleDroit(roleId, permissions)
+        .then(() => {
+          res.status(200).json({ response: 'permissions added' });
+        })
+        .catch(() => {
+          res.status(500).json({ response: 'internal error' });
+        });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
 }
-async function deletePermissions(req,res)
-{
-  const {role,permissions}=req.body;
+async function deletePermissions(req, res) {
+  const { role, permissions } = req.body;
   let response;
-  for(let permission of permissions)
-  {
-    response=await userModel.deleteRoleDroit(role,permission);
-    if(response!="success")
-       res.status(500).json({response:"internal error"})
+  for (let permission of permissions) {
+    response = await userModel.deleteRoleDroit(role, permission);
+    if (response != 'success')
+      res.status(500).json({ response: 'internal error' });
   }
-  res.status(200).json({response:'permissions deleted'})
+  res.status(200).json({ response: 'permissions deleted' });
 }
-function showRoles(req,res)
-{
-    userModel.getRoles().then((roles)=>{
-      res.status(200).json({response:roles})
-    }).catch(()=>{res.status(500).json({response:"internal error"})})
+function showRoles(req, res) {
+  userModel
+    .getRoles()
+    .then(roles => {
+      res.status(200).json({ response: roles });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
 }
-function showPermissions(req,res)
-{
-  userModel.getPermissions().then((permissions)=>{
-    res.status(200).json({response:permissions})
-  }).catch(()=>{res.status(500).json({response:"internal error"})})
+function showPermissions(req, res) {
+  userModel
+    .getPermissions()
+    .then(permissions => {
+      res.status(200).json({ response: permissions });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
 }
-function deleteStructure(req,res)
-{
-  const {structure}=req.body
-  userModel.HaveConsumers(structure).then(()=>{
-    userModel.canDeleteStructure(structure).then(()=>{
-      userModel.deleteStructure(structure).then(()=>{
-        res.status(200).json({response:'structure deleted'})
-      }).catch(()=>{res.status(500).json({response:'internal error'})})
-    }).catch(()=>{res.status(403).json({response:'prohibited to delete'})})
-  }).catch(()=>{res.status(403).json({response:'forbidden'})})
+function deleteStructure(req, res) {
+  const { structure } = req.body;
+  userModel
+    .HaveConsumers(structure)
+    .then(() => {
+      userModel
+        .canDeleteStructure(structure)
+        .then(() => {
+          userModel
+            .deleteStructure(structure)
+            .then(() => {
+              res.status(200).json({ response: 'structure deleted' });
+            })
+            .catch(() => {
+              res.status(500).json({ response: 'internal error' });
+            });
+        })
+        .catch(() => {
+          res.status(403).json({ response: 'prohibited to delete' });
+        });
+    })
+    .catch(() => {
+      res.status(403).json({ response: 'forbidden' });
+    });
 }
-function updateStructure(req,res)
-{
-  const {oldDesignation,newDesignation}=req.body
-  userModel.updateStructure(oldDesignation,newDesignation).then(()=>{
-    res.status(200).json({response:'structure updated'})
-  }).catch(()=>{res.status(500).json({response:'internal error'})})
+function updateStructure(req, res) {
+  const { oldDesignation, newDesignation } = req.body;
+  userModel
+    .updateStructure(oldDesignation, newDesignation)
+    .then(() => {
+      res.status(200).json({ response: 'structure updated' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
+function saveToken(req, res) {
+  const email = req.email;
+  const token = req.body.email;
+  userModel
+    .updateToken(token, email)
+    .then(() => {
+      res.status(200).json({ response: 'token added' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
 }
 module.exports = {
   login,
@@ -341,5 +451,6 @@ module.exports = {
   addPermissions,
   deletePermissions,
   showRoles,
-  showPermissions
+  showPermissions,
+  saveToken,
 };
