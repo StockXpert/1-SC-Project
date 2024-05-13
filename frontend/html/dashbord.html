@@ -1350,7 +1350,7 @@
         </div>
         <!------ fin de content for ServiceAchat : 3 - fournisseur tables----- -->
         <!------ debut de content for ServiceAchat : 3 - produits tables----- -->
-        <div class="main-table produit hidden" id="main-table-produits">
+        <div class="main-table hidden" id="main-table-produits">
           <div class="heading">
             <h1>produits</h1>
             <hr class="line-style" />
@@ -2638,7 +2638,10 @@
         </div>
         <!------------------------- III- END Inventaire table ---------------------------------->
         <!-------------------------- IV- BEGIN Statistiques table ---------------------------------->
-        <div class="main-table-statistiques hidden" id="main-table-statistiques">
+        <div
+          class="main-table-statistiques hidden"
+          id="main-table-statistiques"
+        >
           <div class="heading">
             <h1>Les Statistiques</h1>
             <hr class="line-style" />
@@ -3260,50 +3263,50 @@
       </div>
       <!-- fin de section  voir details d'un  fournisseur -->
       <!-- debut de section pour ajouter un produit -->
-            <div class="add-produits-container hidden ">
-              <div class="add-produits-cart">
-                <button class="close-btn">
-                  <span class="material-icons-sharp">close</span>
-                </button>
-      
-                <div class="heading-add-produits">
-                  <h1 class="heading-primary-add-produits">Ajouter un Produit</h1>
-                </div>
-                <!-- for inputs -->
-                <form class="add-produits-inputs">
-                  <div class="input-groupe">
-                    <input
-                      name="Designation"
-                      type="text"
-                      class="input"
-                      id="Designation"
-                      placeholder="Designation du Produit"
-                    />
-                  </div>
-                  <div class="input-groupe">
-                    <input
-                      name="Description"
-                      type="text"
-                      class="input"
-                      id="Description"
-                      placeholder="Description du Produit"
-                    />
-                  </div>
-                  <div class="input-groupe">
-                    <input
-                      name="Quantité"
-                      type="number"
-                      class="input"
-                      id="Quantité"
-                      placeholder="Quantité du Produit"
-                    />
-                  </div>
-                  <div class="create-btn">
-                    <button>Crée le Produit</button>
-                  </div>
-                </form>
-              </div>
+      <div class="add-produits-container hidden">
+        <div class="add-produits-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-produits">
+            <h1 class="heading-primary-add-produits">Ajouter un Produit</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-produits-inputs">
+            <div class="input-groupe">
+              <input
+                name="Designation"
+                type="text"
+                class="input"
+                id="Designation"
+                placeholder="Designation du Produit"
+              />
             </div>
+            <div class="input-groupe">
+              <input
+                name="Description"
+                type="text"
+                class="input"
+                id="Description"
+                placeholder="Description du Produit"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="Quantité"
+                type="number"
+                class="input"
+                id="Quantité"
+                placeholder="Quantité du Produit"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Crée le Produit</button>
+            </div>
+          </form>
+        </div>
+      </div>
       <!-- fin de section  ajouter un produit -->
       <!-- debut de section pour modifier un produit -->
             <div class="edit-produits-container hidden ">
@@ -3350,6 +3353,50 @@
                 </form>
               </div>
             </div>
+      <div class="edit-produits-container">
+        <div class="edit-produits-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-edit-produits">
+            <h1 class="heading-primary-edit-produits">Modifier un Produit</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="edit-produits-inputs">
+            <div class="input-groupe">
+              <input
+                name="Designation"
+                type="text"
+                class="input"
+                id="Designation"
+                placeholder="Designation du Produit"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="Description"
+                type="text"
+                class="input"
+                id="Description"
+                placeholder="Description du Produit"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="Quantité"
+                type="number"
+                class="input"
+                id="Quantité"
+                placeholder="Quantité du Produit"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Modifier</button>
+            </div>
+          </form>
+        </div>
+      </div>
       <!-- fin de section  modifier un produit -->
       <!-- debut de section pour ajouter un article -->
       <div class="add-article-container hidden">
@@ -4020,6 +4067,20 @@
               </div>
             </div>
             <!-- fin section for supprimer article -->
+      <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
+      <div class="container-supp-produits">
+        <div class="supp-produits-cart">
+          <p class="supp-produits-text">
+            Êtes-vous sûr de vouloir supprimer cet produit ? Cette action est
+            irréversible et toutes les données associées seront perdues.
+          </p>
+          <div class="supp-user-btns">
+            <button class="btn-supp supp-produits-annuler">Annuler</button>
+            <button class="btn-supp supp-produits-confirmer">Confirmer</button>
+          </div>
+        </div>
+      </div>
+      <!-- fin section for supprimer article -->
       <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
       <div class="container-supp-article hidden">
         <div class="supp-article-cart">
@@ -5604,7 +5665,7 @@
           </div>
         </div>
         <div class="add-inv-container-verif">
-          <div class="inv-cart-verif">
+          <form class="inv-cart-verif">
             <p class="inv-title-verif">Validation de l'état d'inventaire N°</p>
             <div class="heading-table-text-add-inv-verif">
               <!-- <div class="num-inv-inputs-verif">
@@ -5621,7 +5682,7 @@
             <div class="table-container-inv-verif">
               <table>
                 <thead>
-                  <tr>
+                  <tr class="header-inv-verif">
                     <th>
                       <div class="first-col">
                         <p class="colomn-tags">Designation</p>
@@ -5701,7 +5762,7 @@
                 Valider
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- debut section pour validé un état d'inventaire -->
@@ -5850,6 +5911,7 @@
       <div class="overlay overlayBDCI hidden"></div>
       <div class="overlay overlayEditBDCI hidden"></div>
       <div class="overlay overlayValidateBDCI hidden"></div>
+      <div class="overlay overlayValidateInv hidden"></div>
       <div class="overlay overlayBDD hidden"></div>
       <div class="overlay overlayInv hidden"></div>
       <div class="overlay overlayEditChapter hidden"></div>

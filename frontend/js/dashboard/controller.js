@@ -54,6 +54,7 @@ import articlesView from './views/nomenclatures/articles/articlesView.js';
 import addArticleView from './views/nomenclatures/articles/addArticleView.js';
 import editArticleView from './views/nomenclatures/articles/editArticleView.js';
 import fournisseurView from './views/nomenclatures/fournisseur/fournisseurView.js';
+import validateInvView from './views/inventaires/validateInvView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1684,6 +1685,7 @@ const controlValidatingCmdsInt = async e => {
   );
   validateCmdsIntView.renderSpinner('');
   let selectedCmdIntProducts = await model.loadCommandeIntProducts(
+    ////#0f0 said thing here and after both filtering or searching
     model.state.commandesInt.rendered[targetIndex].num_demande
   );
   validateCmdsIntView.unrenderSpinner('');
@@ -1697,6 +1699,7 @@ const controlValidatingCmdsInt = async e => {
   );
 };
 
+//#0f0 validate = valider
 const controlValidateCmdsInt = async () => {
   let appObject = validateCmdsIntView.extractObject();
   let returnValue;
@@ -1717,15 +1720,9 @@ const controlValidateCmdsInt = async () => {
   await controlLoadCmdsInt();
 };
 
+//#0f0 use livrer == mettre a jour (something similar)
 const controlDeliverCmdsInt = async view => {
   let postObj;
-  // {
-  //   "exterieur": null,
-  //   "num_demande": 9,
-  //   "etat": "pret",
-  //   "id_demandeur": "C1@esi-sba.dz",
-  //   "date_demande": "2024-04-25T23:00:00.000Z"
-  // }
   if (
     model.state.commandesInt.rendered[
       Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
@@ -1760,6 +1757,7 @@ const controlDeliverCmdsInt = async view => {
     deliverCmdsExtView.render(newArrProducts);
     deliverCmdsExtView.resetPointers();
   } else {
+    //#0f0 HERE (PT 2): this is livrer
     cmdsIntView.renderSpinner(
       `Validation finale de la commande N°${
         model.state.commandesInt.rendered[
@@ -1774,6 +1772,7 @@ const controlDeliverCmdsInt = async view => {
         ].num_demande,
       dateSortie: helpers.getFormattedDate(),
     };
+    //#0f0
     await model.magLivrerCmdInt(postObj);
     cmdsIntView.unrenderSpinner('');
     await controlLoadCmdsInt();
@@ -1830,7 +1829,11 @@ const controlLoadInv = async () => {
     '',
     false
   );
+  // model.state.inventaires.rendered = model.state.inventaires.all;
+  //TODO: do something to make calls like these automatic upon any render (maybe give render something called renderRoutineInv that includes all these)
+  model.updateRenderedInv(model.state.inventaires.all);
   invView.resetPointers();
+  validateInvView.resetPointers(controlValidatingInv);
 };
 const controlInput = (value, index) => {
   model.state.inventaires.new.produits[index].quantitePhys = parseInt(value);
@@ -1889,28 +1892,31 @@ const controlDeleteInv = async function () {
   invView.unrenderSpinner();
   await controlLoadInv();
 };
-
+//#0f0
 const controlValidatingInv = async e => {
   //ONCLICK OF A VALIDATE BUTTON
   const targetIndex = helpers.findNodeIndex(
-    validateCmdsIntView._btnOpen,
+    validateInvView._btnOpen,
     e.currentTarget
   );
-  validateCmdsIntView.renderSpinner('');
-  let selectedCmdIntProducts = await model.loadCommandeIntProducts(
-    model.state.commandesInt.rendered[targetIndex].num_demande
+  validateInvView.renderSpinner('');
+  console.log(model.state.inventaires.rendered);
+  let selectedInvProducts = await model.loadInventaire(
+    model.state.inventaires.rendered[targetIndex].num_inventaire
   );
-  validateCmdsIntView.unrenderSpinner('');
-  selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
-  selectedCmdIntProducts = helpers.fillMissingProperties(
-    selectedCmdIntProducts
-  );
-  validateCmdsIntView.changeDetails(
-    selectedCmdIntProducts,
-    model.state.commandesInt.rendered[targetIndex].num_demande
-  );
+  validateInvView.unrenderSpinner('');
+  console.log(selectedInvProducts);
+  // selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
+  // selectedCmdIntProducts = helpers.fillMissingProperties(
+  //   selectedCmdIntProducts
+  // );
+  // validateInvView.changeDetails(
+  //   selectedCmdIntProducts,
+  //   model.state.inventaires.rendered[targetIndex].num_inventaire
+  // );
 };
 
+//#0f0
 const controlValidateInv = async () => {
   let appObject = validateCmdsIntView.extractObject();
   let returnValue;
@@ -2260,8 +2266,8 @@ const controlLoadStatistiques = async () => {
   //     {
   //       label: 'My First Dataset',
   //       data: [65, 59, 80, 81, 56, 55, 40],
-  //       backgroundColor: ['#477ce2'],
-  //       borderColor: ['#477ce2'],
+  //       backgroundColor: ['477ce2'],
+  //       borderColor: ['477ce2'],
   //       borderWidth: 1,
   //     },
   //   ],
@@ -2462,3 +2468,4 @@ deleteInvView.addDeleteController(controlDeleteInv);
 addInvView.addHandlerEdit(controlAddInv);
 addInvView.addHandlerSetRemark(controlSetRemark);
 addInvView.addHandlerSavingInv(controlSaveInv);
+validateInvView.addHandlerValidate(controlValidateInv);

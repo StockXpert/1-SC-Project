@@ -14,19 +14,12 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
   _checkboxes;
   addHandlerShowWindow(OpClassName, windowClassName) {
     this._window = document.querySelector(windowClassName);
-    // console.log(this, this._window);
     this._btnOpen = document.querySelectorAll(OpClassName);
-    // console.log(this._btnOpen);
-    // Array.from(this._btnOpen)
     this._btnOpen.forEach(btn =>
       btn.addEventListener('click', this._boundToggleWindow)
     );
   }
   addHandlerEdit(controller) {
-    // const btnOpenArray = Array.from(this._btnOpen);
-    // btnOpenArray.forEach(btn => {
-    //   btn.addEventListener('click', controller);
-    // });
     this._btnOpen.forEach(async btn =>
       btn.addEventListener('click', await controller)
     );
@@ -164,7 +157,6 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
     };
   }
   addHandlerValidate(ctrl) {
-    // console.log(this._save);
     this._form.addEventListener('submit', async e => {
       e.preventDefault();
       await ctrl();
