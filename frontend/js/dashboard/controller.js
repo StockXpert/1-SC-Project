@@ -24,7 +24,7 @@ import cmdsView from './views/commandes/cmdsView.js';
 import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import cmdsIntHeaderView from './views/commandesInt/cmdsIntHeaderView.js';
 import invHeaderView from './views/inventaires/InvHeaderView.js';
-import addStructureView from './views/addStructureView.js';
+import addStructureView from './views/roles/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
 import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
@@ -47,7 +47,6 @@ import addInvView from './views/inventaires/addInvView.js';
 import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
 import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersView.js';
 import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
-// import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -2026,13 +2025,51 @@ const controlSearchProduct = async function (query) {
 /////////////// S T A T I S T I Q U E S #fff//////////////////////
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
-const controlLoadStatistiques = () => {
+const controlLoadStatistiques = async () => {
   console.log(`
   //////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////
   ///////////////////// S T A T I S T I Q U E S/////////////////////
   //////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////`);
+  const ctx = document.getElementById('myChart');
+  // Chart.
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [
+        {
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      width: '100%',
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+  //CLEAR GRAPHS
+  await renderGraph();
+};
+
+const renderGraph = async (
+  title,
+  dataRoute,
+  type,
+  size = 'g1',
+  filters = '',
+  totalRoute = ''
+) => {
+  //render the graph element but render a spinner where the graph goes in accordance to the $title and $size
+  //fetch data using $dataRoute
+  //render the graph replacing the spinner in accordance to the $type
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
