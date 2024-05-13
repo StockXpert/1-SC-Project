@@ -245,7 +245,7 @@ export const GROUP_BTNS = {
   <span class="material-icons-sharp"> menu_book </span>
   <h3>Chapitres</h3>
 </a>`,
-  Fournisseurs: `<a class="sidebar-btns fournisseurs-btn hidden" href="">
+  Fournisseurs: `<a class="sidebar-btns fournisseurs-btn" href="">
   <span class="material-icons-sharp"> local_shipping </span>
   <h3>Fournisseurs</h3>
 </a>`,
@@ -298,6 +298,7 @@ export const ORDER_OF_GROUPS = [
   'Chapitres',
   'Produits',
   'Articles',
+  'Fournisseurs',
   'Inventaire',
   'Statistiques',
   'Autre',
