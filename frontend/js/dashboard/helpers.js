@@ -755,3 +755,14 @@ export function customSortForCmdsInt(a, b) {
 export function xor(a, b) {
   return a !== b;
 }
+export function generateMonthLabels() {
+  const months = [];
+  const currentDate = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(currentDate);
+    date.setMonth(date.getMonth() - i);
+    const monthName = date.toLocaleString('default', { month: 'long' });
+    months.push(monthName);
+  }
+  return months;
+}

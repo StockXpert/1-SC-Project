@@ -1,7 +1,7 @@
 import View from '../view.js';
 
 class StatsView extends View {
-  renderGraphSpin(title, size) {
+  async renderGraphSpin(title, size, promise) {
     let html;
     let parentElement;
     switch (size) {
@@ -11,19 +11,25 @@ class StatsView extends View {
             <div class="top-statistiques-cart">
               <p class="cart-description-statistiques">${title}</p>
             </div>
-            <div class="graph-statistiques">
-              <canvas></canvas>
-            </div>
+            <div
+            class="graph-statistiques spinner-parent"
+            style="height: 100%; width: 100%; position: static"
+          >
+            <div class="spinner"></div>
+          </div>
           </div>`;
         parentElement = '.container-mini-carts';
         break;
       case 'g2':
         html = `
           <div class="grid-2">
-            <p class="cart-description-statistiques">${title}</p>
-            <div class="graph-statistiques">
-              <canvas></canvas>
-            </div>
+          <p class="cart-description-statistiques">${title}</p>
+          <div
+          class="graph-statistiques spinner-parent"
+          style="height: 100%; width: 100%; position: static"
+        >
+          <div class="spinner"></div>
+          </div>
           </div>`;
         parentElement = '.grid-statistiques';
         break;
@@ -37,7 +43,7 @@ class StatsView extends View {
               </div>
               <div class="cart-info">
                 <p class="cart-number">140</p>
-                <canvas></canvas>
+  
               </div>
             </div>
           </div>`;
@@ -47,6 +53,8 @@ class StatsView extends View {
     document
       .querySelector(parentElement)
       .insertAdjacentHTML('afterbegin', html);
+    const results = await promise;
+    console.log(results);
   }
 }
 export default new StatsView();

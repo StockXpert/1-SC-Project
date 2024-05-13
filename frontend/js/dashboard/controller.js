@@ -2032,22 +2032,26 @@ const controlLoadStatistiques = async () => {
   ///////////////////// S T A T I S T I Q U E S/////////////////////
   //////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////`);
-  const ctx = document.getElementById('myChart');
-  // Chart.
+
+  const labels = helpers.generateMonthLabels();
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'My First Dataset',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        backgroundColor: ['#477ce2'],
+        borderColor: ['#477ce2'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const ctx = document.getElementById('myChart').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [
-        {
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1,
-        },
-      ],
-    },
+    data: data,
     options: {
-      width: '100%',
       scales: {
         y: {
           beginAtZero: true,
@@ -2055,6 +2059,7 @@ const controlLoadStatistiques = async () => {
       },
     },
   });
+
   //CLEAR GRAPHS
   await renderGraph();
 };
