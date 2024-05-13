@@ -2128,6 +2128,12 @@ const controlLoadStatistiques = async () => {
     model.getGraphPromise('mostCommandedProducts'),
     'les commandes'
   );
+  statsView.renderGraphSpin(
+    'Les produits les plus demandes',
+    'g2',
+    model.getGraphPromise('mostDemmandedProduct'),
+    'les demandes'
+  );
 };
 
 const renderGraph = async (

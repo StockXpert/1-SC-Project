@@ -3016,7 +3016,7 @@ a.password-icon:active {
 .graph-statistiques canvas {
   height: 18rem;
   width: 100%;
-  border: 1px solid #313131;
+  /* border: 1px solid #313131; */
 }
 .graph-statistiques {
   /* width: 24rem; */
