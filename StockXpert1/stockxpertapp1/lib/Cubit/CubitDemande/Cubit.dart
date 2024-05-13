@@ -9,6 +9,7 @@ class demandeCubit extends Cubit<demandeState> {
 
   static demandeCubit get(context) => BlocProvider.of(context);
   CommandeModel? demandemodel;
+  ReponseModel? responsemodel;
 
   void getDemande() {
     emit(demandeLoadingState());
@@ -21,9 +22,13 @@ class demandeCubit extends Cubit<demandeState> {
       emit(demandeSuccessState());
 
       demandemodel = CommandeModel.fromJson(value.data);
+
       print('oussama');
 
       print(demandemodel!.response[0].etat);
+      print(demandemodel!.response[0].idDemandeur);
+      print(demandemodel!.response[0].dateDemande);
+      print(demandemodel!.response[0].numDemande);
     }).catchError((error) {
       print(error.toString());
       emit(demandeErrorState(error));

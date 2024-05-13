@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:stockxpertapp1/models/demandeModel.dart';
 
 int _currentValue = 24;
 Widget defaultButton(
@@ -44,6 +45,7 @@ Widget buildBonComand(article, context) => Padding(
     padding: EdgeInsets.all(10.0),
     child: Container(
       height: 107,
+      width: 300,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -61,7 +63,7 @@ Widget buildBonComand(article, context) => Padding(
         child: Row(
           children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Row(children: [
+              Row(children: [
                 Text(
                   'N Commande :',
                   style: TextStyle(
@@ -70,14 +72,14 @@ Widget buildBonComand(article, context) => Padding(
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '23651',
+                  '${article.numDemande}',
                   style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
                 ),
               ]),
               const SizedBox(
                 height: 3,
               ),
-              const Row(children: [
+              Row(children: [
                 Text(
                   'Date :',
                   style: TextStyle(
@@ -86,7 +88,7 @@ Widget buildBonComand(article, context) => Padding(
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '26/03/2024',
+                  '${article.dateDemande.substring(0, 10)}',
                   style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
                 ),
               ]),
@@ -100,15 +102,15 @@ Widget buildBonComand(article, context) => Padding(
                   color: const Color(0xffFFE500),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Center(
+                child: Center(
                     child: Text(
-                  'En attente',
+                  '${article.etat}',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 )),
               ),
             ]),
             SizedBox(
-              width: 70,
+              width: 90,
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 12),

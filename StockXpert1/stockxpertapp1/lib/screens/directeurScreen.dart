@@ -14,6 +14,7 @@ class DirecteurScreen extends StatelessWidget {
         child: BlocConsumer<demandeCubit, demandeState>(
             listener: (BuildContext context, state) {},
             builder: (context, state) {
+              var demandemodel = demandeCubit.get(context).demandemodel;
               return Scaffold(
                 body: Container(
                     decoration: const BoxDecoration(
@@ -74,49 +75,33 @@ class DirecteurScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-
                             SizedBox(
                               height: 550,
                               width: 350,
                               child: ListView.separated(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) =>
-                                      buildBonComand(1, context),
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        height: 2,
-                                      ),
-                                  itemCount: 10),
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  // Assuming 'demandemodel' contains your CommandeModel object
+                                  // Ensure demandemodel is not null and index is within bounds
+                                  if (demandemodel != null &&
+                                      index >= 0 &&
+                                      index < demandemodel!.response.length) {
+                                    // Pass each response item to buildBonComand
+                                    return buildBonComand(
+                                        demandemodel!.response[index], context);
+                                  } else {
+                                    // Return an empty container if demandemodel is null or index is out of bounds
+                                    return Container();
+                                  }
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  height: 2,
+                                ),
+                                itemCount: demandemodel?.response.length ??
+                                    0, // Use safe navigation operator to avoid null errors
+                              ),
                             ),
-                            // Container(
-                            //     decoration: BoxDecoration(
-                            //       boxShadow: [
-                            //         BoxShadow(
-                            //           color:
-                            //               Colors.black.withOpacity(0.2), // Shadow color
-                            //           spreadRadius:
-                            //               3, // How spread out the shadow should be
-                            //           blurRadius: 7, // How blurry the shadow should be
-                            //           offset: Offset(0, 3), // Offset of the shadow
-                            //         ),
-                            //       ],
-                            //       borderRadius: BorderRadiusDirectional.circular(15),
-                            //       color: Colors.white,
-                            //     ),
-                            //     height: 500,
-                            //     width: double.infinity,
-                            //     child: Column(children: [
-                            //       Container(
-                            //         decoration: BoxDecoration(
-                            //           borderRadius: BorderRadius.only(
-                            //             topLeft: Radius.circular(15),
-                            //             topRight: Radius.circular(15),
-                            //           ),
-                            //           color: Color(0xFFD8D8D8),
-                            //         ),
-                            //         height: 50,
-                            //       ),
-                            //     ]))
                           ],
                         ),
                       ),
