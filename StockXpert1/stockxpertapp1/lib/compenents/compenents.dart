@@ -98,20 +98,21 @@ Widget buildBonComand(article, context) => Padding(
               ),
               Container(
                 height: 28,
-                width: 115,
+                width: _getWidthForEtat(article.etat),
                 decoration: BoxDecoration(
-                  color: const Color(0xffFFE500),
+                  color: _getColorForEtat(article.etat),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
-                    child: Text(
-                  '${article.etat}',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                )),
-              ),
+                  child: Text(
+                    '${article.etat}',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              )
             ]),
             SizedBox(
-              width: 90,
+              width: _getWidthForEtatbox(article.etat),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -141,3 +142,35 @@ Widget buildBonComand(article, context) => Padding(
         ),
       ),
     ));
+
+Color _getColorForEtat(String etat) {
+  switch (etat) {
+    case 'demandee':
+      return Color(0xffFFE500); // Yellow
+    case 'prete':
+      return Color(0xff49BF20); // Green
+    case 'visee par resp':
+    case 'visee par dg':
+      return Color(0xffFF6B18); // Orange
+    case 'servie':
+      return Color(0xff477CE2); // Blue
+    default:
+      return Colors.grey; // Default color
+  }
+}
+
+double _getWidthForEtat(String etat) {
+  if (etat == 'visee par resp' || etat == 'visee par dg') {
+    return 150.0;
+  } else {
+    return 115.0;
+  }
+}
+
+double _getWidthForEtatbox(String etat) {
+  if (etat == 'visee par resp' || etat == 'visee par dg') {
+    return 55.0;
+  } else {
+    return 90.0;
+  }
+}
