@@ -95,7 +95,13 @@ export default class View {
   //   });
   // }
 
-  render(data, render = true, perms = '', containerClass = '') {
+  render(
+    data,
+    render = true,
+    perms = '',
+    containerClass = '',
+    isSuccessive = false
+  ) {
     this._perms = perms;
     //TODO: RenderError()
     // console.log('rendering', this._data);
@@ -109,7 +115,7 @@ export default class View {
     const markup = this._generateMarkup(); // to each child class its _generateMarkup
     if (!render) return markup;
     // console.log('rendering', markup);
-    this._clear();
+    if (!isSuccessive) this._clear();
     if (containerClass == '') {
       this._parentElement.insertAdjacentHTML('afterbegin', markup);
     } else {

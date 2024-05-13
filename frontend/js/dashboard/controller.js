@@ -24,7 +24,7 @@ import cmdsView from './views/commandes/cmdsView.js';
 import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import cmdsIntHeaderView from './views/commandesInt/cmdsIntHeaderView.js';
 import invHeaderView from './views/inventaires/InvHeaderView.js';
-import addStructureView from './views/addStructureView.js';
+import addStructureView from './views/roles/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
 import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
@@ -47,9 +47,12 @@ import addInvView from './views/inventaires/addInvView.js';
 import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
 import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersView.js';
 import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
+<<<<<<< HEAD
 import editChapterView from './views/nomenclatures/chapitres/editChapterView.js';
 import deleteChapterView from './views/nomenclatures/chapitres/deleteChapterView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
+=======
+>>>>>>> e8cc6b229b1e6ed748518041054b21d7c30cb216
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -1870,7 +1873,7 @@ const controlSaveInv = async function (validityState, numInv) {
     helpers.renderError(
       `Erreur lors de l'introduction des données `,
       `<p class="error-message"><b>Remplir les raisons pour les valeurs physiques de produits.</b></p>
-      <p class="error-message">Certains produits ont leur valeur physique réglée sur une valeur différente de leur valeur logique, mais aucune raison n'a été fournie. Revenez en arrière et recherchez tous les boutons rouges (i), cliquez dessus pour ouvrir l'interface de remplissage des raisons et fournissez une raison valide pour la différence de quantités.</p`
+      `
     );
     return;
   } else {
@@ -1895,19 +1898,6 @@ const controlDeleteInv = async function () {
   invView.unrenderSpinner();
   await controlLoadInv();
 };
-
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-/////// B A C K  O '  B E Y O N D #fff
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-
-addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
-addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
-editCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
-
-deleteCmdsView.addDeleteController(controlDeleteCmds);
-cancelCmdsView.addCancelController(controlCancelCmds);
 
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -2086,6 +2076,62 @@ const controlSearchProduct = async function (query) {
   // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
   // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
 };
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////////////// S T A T I S T I Q U E S #fff//////////////////////
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+const controlLoadStatistiques = async () => {
+  console.log(`
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  ///////////////////// S T A T I S T I Q U E S/////////////////////
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////`);
+  const ctx = document.getElementById('myChart');
+  // Chart.
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [
+        {
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      width: '100%',
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+  //CLEAR GRAPHS
+  await renderGraph();
+};
+
+const renderGraph = async (
+  title,
+  dataRoute,
+  type,
+  size = 'g1',
+  filters = '',
+  totalRoute = ''
+) => {
+  //render the graph element but render a spinner where the graph goes in accordance to the $title and $size
+  //fetch data using $dataRoute
+  //render the graph replacing the spinner in accordance to the $type
+};
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// F I N #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 // REMINDER TO ALWAYS WATCH FOR THE ADDEVENTLISTENNERS WITH THE UNNAMED CALLBACKS (see index2.html for demonstration)
 //TODO: TEMPORARY
 // await controlAddUserUpdateSelects();
@@ -2100,7 +2146,7 @@ const controllers = [
   controlLoadRoles,
   controlLoadPerms,
   ,
-  ,
+  controlLoadStatistiques,
   ,
   ,
   controlLoadChapters,
@@ -2109,6 +2155,18 @@ const controllers = [
   controlLoadCmdsInt,
   controlLoadInv,
 ];
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/////// B A C K  O '  B E Y O N D #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
+addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
+editCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);
+
+deleteCmdsView.addDeleteController(controlDeleteCmds);
+cancelCmdsView.addCancelController(controlCancelCmds);
 
 addCmdsView.addHandlerSavingBDC(controlSavingBDC, model.state);
 addCmdsIntView.addHandlerSavingBDC(controlSavingBDCI, model.state);

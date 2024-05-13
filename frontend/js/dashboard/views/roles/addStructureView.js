@@ -1,5 +1,5 @@
-import View from './view.js';
-import { truncateEmail } from '../helpers.js';
+import View from '../view.js';
+import { truncateEmail } from '../../helpers.js';
 
 class addStructureView extends View {
   _window = document.querySelector('.add-structure-container');
