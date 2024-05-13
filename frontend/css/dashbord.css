@@ -3007,7 +3007,7 @@ a.password-icon:active {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  height: 24rem;
+  height: 20rem;
   background-color: white;
   padding: 0.8rem;
   border-radius: 1rem;
@@ -3016,7 +3016,11 @@ a.password-icon:active {
 .graph-statistiques canvas {
   height: 18rem;
   width: 100%;
-  border: 1px solid #313131;
+  /* border: 1px solid #313131; */
+}
+.graph-statistiques {
+  /* width: 24rem; */
+  height: 24rem;
 }
 .top-statistiques-cart {
   display: flex;
@@ -3031,7 +3035,7 @@ a.password-icon:active {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  height: 24rem;
+  /* height: 24rem; */
   padding: 0.8rem;
   grid-column: 1 / -1;
   background-color: white;
@@ -3039,6 +3043,75 @@ a.password-icon:active {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
 }
 
+.inline {
+  display: inline;
+}
+.sm\:text-center {
+  text-align: center;
+}
+.fill-blue-600 {
+  fill: #1c64f2;
+}
+
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.text-gray-200 {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+:is(.dark .dark\:text-gray-200) {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+.after\:text-gray-200::after {
+  content: var(--tw-content);
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+.hover\:text-gray-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+.peer:checked ~ .peer-checked\:text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+:is(.dark .dark\:text-gray-600) {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+.h-8 {
+  height: 2rem;
+}
+
+.w-8 {
+  width: 2rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 @media (max-width: 1887px) {
   .container-mini-carts {
     max-width: 80vw;

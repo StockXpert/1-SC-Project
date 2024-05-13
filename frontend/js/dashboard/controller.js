@@ -49,6 +49,7 @@ import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersVi
 import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
 import editChapterView from './views/nomenclatures/chapitres/editChapterView.js';
 import deleteChapterView from './views/nomenclatures/chapitres/deleteChapterView.js';
+import statsView from './views/statistiques/statsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2100,22 +2101,26 @@ const controlLoadStatistiques = async () => {
   ///////////////////// S T A T I S T I Q U E S/////////////////////
   //////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////`);
-  const ctx = document.getElementById('myChart');
-  // Chart.
+
+  const labels = helpers.generateMonthLabels();
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'My First Dataset',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        backgroundColor: ['#477ce2'],
+        borderColor: ['#477ce2'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const ctx = document.getElementById('myChart').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [
-        {
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1,
-        },
-      ],
-    },
+    data: data,
     options: {
-      width: '100%',
       scales: {
         y: {
           beginAtZero: true,
@@ -2123,8 +2128,27 @@ const controlLoadStatistiques = async () => {
       },
     },
   });
+  console.log(model.getGraphPromise('topDemandeurs'));
+
   //CLEAR GRAPHS
-  await renderGraph();
+  statsView.renderGraphSpin(
+    'Top Demandeurs',
+    'g2',
+    model.getGraphPromise('topDemandeurs'),
+    'les demandes'
+  );
+  statsView.renderGraphSpin(
+    'Les produits les plus commandes',
+    'g2',
+    model.getGraphPromise('mostCommandedProducts'),
+    'les commandes'
+  );
+  statsView.renderGraphSpin(
+    'Les produits les plus demandes',
+    'g2',
+    model.getGraphPromise('mostDemmandedProduct'),
+    'les demandes'
+  );
 };
 
 const renderGraph = async (

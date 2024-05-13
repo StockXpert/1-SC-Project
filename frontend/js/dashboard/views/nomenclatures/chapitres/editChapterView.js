@@ -1,4 +1,4 @@
-import View from '../../View.js';
+import View from '../../view.js';
 
 class EditChapterView extends View {
   _window = document.querySelector('.edit-chapitre-container');
