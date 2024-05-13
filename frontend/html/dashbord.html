@@ -3265,6 +3265,116 @@
         </div>
       </div>
       <!-- fin de section  voir details d'un  fournisseur -->
+      <!-- debut de section pour ajouter un article -->
+      <div class="add-article-container hidden">
+        <div class="add-article-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-add-article">
+            <h1 class="heading-primary-add-article">Ajouter un Article</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="add-article-inputs">
+            <div class="input-groupe">
+              <input
+                name="num-article"
+                type="text"
+                class="input"
+                id="numArticle"
+                placeholder="Num de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="designation"
+                type="text"
+                class="input"
+                id="name-article"
+                placeholder="Nom de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="numChap"
+                type="text"
+                class="input"
+                id="num-chapitre"
+                placeholder="Numero du Chapitre"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="TVA"
+                type="number"
+                class="input"
+                id="Tva"
+                placeholder="Le Tva"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Crée l'article</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin de section  ajouter un article -->
+      <!-- debut de section pour modifier un article -->
+      <div class="edit-article-container hidden">
+        <div class="edit-article-cart">
+          <button class="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </button>
+
+          <div class="heading-edit-article">
+            <h1 class="heading-primary-edit-article">Modifier un Article</h1>
+          </div>
+          <!-- for inputs -->
+          <form class="edit-article-inputs">
+            <div class="input-groupe">
+              <input
+                name="num-article"
+                type="text"
+                class="input"
+                id="numArticle"
+                placeholder="Num de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="designation"
+                type="text"
+                class="input"
+                id="name-article"
+                placeholder="Nom de l'Article"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="numChap"
+                type="text"
+                class="input"
+                id="num-chapitre"
+                placeholder="Numero du Chapitre"
+              />
+            </div>
+            <div class="input-groupe">
+              <input
+                name="TVA"
+                type="number"
+                class="input"
+                id="Tva"
+                placeholder="Le Tva"
+              />
+            </div>
+            <div class="create-btn">
+              <button>Modifier</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- fin de section  modifier un article -->
       <!-- debut de section pour ajouter un chapitre -->
       <div class="add-chapitre-container hidden">
         <div class="add-chapitre-cart">
@@ -3793,29 +3903,43 @@
         </div>
       </div>
       <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
-      <div class="container-supp-user hidden">
-        <div class="supp-user-cart">
-          <p class="supp-user-text">
+      <div class="container-supp-fournisseur hidden">
+        <div class="supp-fournisseur-cart">
+          <p class="supp-fournisseur-text">
             Êtes-vous sûr de vouloir supprimer cet fournisseur ? Cette action
             est irréversible et toutes les données associées seront perdues.
           </p>
           <div class="supp-user-btns">
-            <button class="btn-supp supp-user-annuler">Annuler</button>
-            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+            <button class="btn-supp supp-fournisseur-annuler">Annuler</button>
+            <button class="btn-supp supp-fournisseur-confirmer">Confirmer</button>
           </div>
         </div>
       </div>
-      <!-- fin section for supprimer fournisseur -->
+      <!-- fin section for supprimer article -->
+      <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
+            <div class="container-supp-article hidden">
+              <div class="supp-article-cart">
+                <p class="supp-article-text">
+                  Êtes-vous sûr de vouloir supprimer cet article ? Cette action
+                  est irréversible et toutes les données associées seront perdues.
+                </p>
+                <div class="supp-user-btns">
+                  <button class="btn-supp supp-article-annuler">Annuler</button>
+                  <button class="btn-supp supp-article-confirmer">Confirmer</button>
+                </div>
+              </div>
+            </div>
+      <!-- fin section for supprimer article -->
       <!-- debut section pour supprimer un chapitre etes vous sure de vouloir supprimer -->
-      <div class="container-supp-user hidden">
+      <div class="container-supp-chapter hidden">
         <div class="supp-user-cart">
           <p class="supp-user-text">
             Êtes-vous sûr de vouloir supprimer cet chapitre ? Cette action est
             irréversible et toutes les données associées seront perdues.
           </p>
           <div class="supp-user-btns">
-            <button class="btn-supp supp-user-annuler">Annuler</button>
-            <button class="btn-supp supp-user-confirmer">Confirmer</button>
+            <button class="btn-supp supp-chapter-annuler">Annuler</button>
+            <button class="btn-supp supp-chapter-confirmer">Confirmer</button>
           </div>
         </div>
       </div>
@@ -5499,6 +5623,7 @@
       <div class="overlay overlayInv hidden"></div>
       <div class="overlay overlayEditChapter hidden"></div>
       <div class="overlay overlayAddChapter hidden"></div>
+      <div class="overlay overlayDelChapter hidden"></div>
     </div>
     <!-- <script src="../js/dashbord.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script> -->

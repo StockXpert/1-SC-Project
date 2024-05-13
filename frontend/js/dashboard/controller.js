@@ -47,6 +47,9 @@ import addInvView from './views/inventaires/addInvView.js';
 import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
 import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersView.js';
 import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
+import editChapterView from './views/nomenclatures/chapitres/editChapterView.js';
+import deleteChapterView from './views/nomenclatures/chapitres/deleteChapterView.js';
+// import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
@@ -270,7 +273,7 @@ const controlLoadStructures = async function () {
     editStructureView.addHandlerShowWindow();
     editStructureView.addHandlerHideWindow();
     editStructureView.addHandlerEdit(controlEditStructure);
-    // deleteStructureView.addDeleteController(controlDeleteStructure);
+    deleteStructureView.addDeleteController(controlDeleteStructure);
   } catch (error) {
     console.error(error);
   }
@@ -1915,7 +1918,7 @@ const controlLoadChapters = async function () {
     }
     chaptersView.restrict(model.state.me.permissions.all);
     // addChapterView.restrict(model.state.me.permissions.all);
-    // deleteStructureView.restrict(model.state.me.permissions.all);
+    deleteChapterView.restrict(model.state.me.permissions.all);
     chaptersView.renderSpinner('Loading Chapters');
     await model.loadChapitres();
     chaptersView.render(model.state.chapters.all);
@@ -1926,6 +1929,10 @@ const controlLoadChapters = async function () {
     numberChaptersView.addHandlerNumber(controleSelectChapters);
     numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
     chaptersView.addSearchController(controlSearchChapter);
+    editChapterView.addHandlerShowWindow();
+    editChapterView.addHandlerHideWindow();
+    editChapterView.addHandlerEdit(controlEditChapter);
+    // deleteChapterView.addDeleteController(controlDeleteStructure);
   } catch (error) {
     console.error(error);
   }
@@ -1950,12 +1957,58 @@ const controlAddChapter = async function (newChapter) {
     console.log(model.state.chapters.all);
     addChapterView.clearForm();
     //Close Window
-    setTimeout(function () {
-      addChapterView.toggleWindow();
-    }, MODAL_CLOSE_SEC * 1000);
+
+    addChapterView.toggleWindow();
   } catch (error) {
     console.error(error);
   }
+};
+
+const controlEditChapter = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.details-btn-chapitres'),
+    target
+  );
+  // console.log(targetIndex);
+  console.log(model.state.chapters.all[targetIndex]);
+  editChapterView.changeInputs(model.state.chapters.all[targetIndex]);
+  editChapterView.addHandlerUpdate(controlUpdateChapter);
+};
+
+const controlUpdateChapter = async function (oldChapter, newChapter) {
+  try {
+    // if (
+    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
+    //     .length === 0
+    // ) return;
+    // console.log(oldStructure.designation, newStructure.designation);
+    if (oldChapter.designation === newChapter.designation) return;
+    structuresView.renderSpinner('Modification de la structure...');
+    await model.updateChapter(oldChapter, newChapter);
+    await controlLoadChapters();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlDeleteChapter = async function () {
+  filterArrayByBooleans(
+    model.state.chapters.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-chapitres')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    chaptersView.renderSpinner(
+      'Suppression du Chapitre ' + el.designation + '...'
+    );
+    await model.deleteChapter(el);
+    // back to main menu
+    await controlLoadChapters();
+  });
 };
 
 const controlSearchChapter = async function (query) {
@@ -2142,6 +2195,7 @@ numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
 editStructureView.addHandlerShowWindow();
 editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
+deleteChapterView.addDeleteController(controlDeleteChapter);
 sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
 addChapterView.addHandlerUpload(controlAddChapter);
