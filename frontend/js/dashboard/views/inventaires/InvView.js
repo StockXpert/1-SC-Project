@@ -29,7 +29,9 @@ export class InvView extends CmdsIntView {
 
     <!-- btns pour info pour Magasinier -->
     ${
-      perms.includes('show inventaire')
+      this._perms
+        .map(({ designation }) => designation)
+        .includes('show inventaire')
         ? `<td class="td-view-inv">
     <button class="details-inv-btn">
       <span class="material-icons-sharp info-icon">
@@ -42,7 +44,9 @@ export class InvView extends CmdsIntView {
     
     <!-- btns verif+print pour Directeur -->
     ${
-      perms.includes('valid inventaire')
+      this._perms
+        .map(({ designation }) => designation)
+        .includes('valid inventaire')
         ? `<td class="td-verif-inv">
         <button class="verif-inv">
           <span class="material-icons-sharp verif-icon">
