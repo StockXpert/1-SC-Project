@@ -2638,7 +2638,10 @@
         </div>
         <!------------------------- III- END Inventaire table ---------------------------------->
         <!-------------------------- IV- BEGIN Statistiques table ---------------------------------->
-        <div class="main-table-statistiques" id="main-table-statistiques">
+        <div
+          class="main-table-statistiques hidden"
+          id="main-table-statistiques"
+        >
           <div class="heading">
             <h1>Les Statistiques</h1>
             <hr class="line-style" />
@@ -5496,7 +5499,7 @@
           </div>
         </div>
         <div class="add-inv-container-verif">
-          <div class="inv-cart-verif">
+          <form class="inv-cart-verif">
             <p class="inv-title-verif">Validation de l'état d'inventaire N°</p>
             <div class="heading-table-text-add-inv-verif">
               <!-- <div class="num-inv-inputs-verif">
@@ -5513,7 +5516,7 @@
             <div class="table-container-inv-verif">
               <table>
                 <thead>
-                  <tr>
+                  <tr class="header-inv-verif">
                     <th>
                       <div class="first-col">
                         <p class="colomn-tags">Designation</p>
@@ -5593,7 +5596,7 @@
                 Valider
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- debut section pour validé un état d'inventaire -->
@@ -5742,6 +5745,7 @@
       <div class="overlay overlayBDCI hidden"></div>
       <div class="overlay overlayEditBDCI hidden"></div>
       <div class="overlay overlayValidateBDCI hidden"></div>
+      <div class="overlay overlayValidateInv hidden"></div>
       <div class="overlay overlayBDD hidden"></div>
       <div class="overlay overlayInv hidden"></div>
       <div class="overlay overlayEditChapter hidden"></div>

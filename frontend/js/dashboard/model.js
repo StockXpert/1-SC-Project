@@ -159,6 +159,7 @@ export const state = {
       oldProduits: {},
       currentProduits: {},
     },
+    rendered: {},
   },
   chapters: {
     all: [],
@@ -1150,3 +1151,31 @@ export const getGraphPromise = async function (graphLink) {
   ]);
   return resultsPro.json();
 };
+
+export function updateRenderedInv(newlyRenderedArray) {
+  state.inventaires.rendered = newlyRenderedArray;
+}
+export async function loadInventaire(numInventaire) {
+  try {
+    let post = { numInventaire };
+    console.log(post);
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Inventaire/showInventaire`,
+      post
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        show inventaire:
+        "Voir un état de l'inventaire",
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray[1].response;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+}
