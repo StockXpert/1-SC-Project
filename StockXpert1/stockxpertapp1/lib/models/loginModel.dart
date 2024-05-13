@@ -28,3 +28,41 @@ class UserData {
     email = json['email'];
   }
 }
+// class CommandeModel {
+//   List<reponseModel> reponse = [];
+
+//   CommandeModel.fromJson(Map<String, dynamic> json) {
+//     json['response'].forEach((element) {
+//       reponse.add(element);
+//     });
+//   }
+// }
+
+// class reponseModel {
+//   int? numDemande;
+//   String? dateDemande;
+//   String? etat;
+//   String? idDemandeur;
+
+//   reponseModel.fromJson(Map<String, dynamic> json) {
+//     numDemande = json['num_demande'];
+//     etat = json['etat'];
+//     idDemandeur = json['id_demandeur'];
+//     dateDemande = json['date_demande'];
+//   }
+// }
+
+// // class CommandeModel {
+// //   int? numDemande;
+// //   String? dateDemande;
+// //   String? etat;
+// //   String? idDemandeur;
+
+// //   CommandeModel.fromJson(Map<String, dynamic> json) {
+// //     numDemande = json['num_demande'];
+// //     etat = json['etat'];
+// //     idDemandeur = json['id_demandeur'];
+// //     dateDemande = json['date_demande'];
+// //   }
+// // }
+

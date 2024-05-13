@@ -1,9 +1,6 @@
-import 'dart:math';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stockxpertapp1/Cubit/Cubit.dart';
 import 'package:stockxpertapp1/Cubit/states.dart';
@@ -14,6 +11,8 @@ class loginScreen extends StatelessWidget {
   var emailcontroller = TextEditingController();
   var paswordcontroller = TextEditingController();
   var formkey = GlobalKey<FormState>();
+
+  loginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +35,20 @@ class loginScreen extends StatelessWidget {
                           key: formkey,
                           child: Column(
                             children: [
-                              Image(
+                              const Image(
                                   image: AssetImage("images/logo.png"),
                                   fit: BoxFit.cover),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
-                              Text(
+                              const Text(
                                 "Beinvenue !",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 50,
                               ),
                               Container(
@@ -66,8 +65,8 @@ class loginScreen extends StatelessWidget {
                                     const SizedBox(
                                       height: 30.0,
                                     ),
-                                    Center(
-                                      child: const Text(
+                                    const Center(
+                                      child: Text(
                                         'Login',
                                         style: TextStyle(
                                             fontSize: 32.0,
@@ -81,7 +80,7 @@ class loginScreen extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 15),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 49,
                                         child: TextFormField(
                                           validator: ((value) {
@@ -119,7 +118,7 @@ class loginScreen extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 15),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 49,
                                         child: TextFormField(
                                           validator: ((value) {
@@ -177,11 +176,11 @@ class loginScreen extends StatelessWidget {
                                             hight: 40,
                                             rad: 21,
                                             isapper: false),
-                                        fallback: (context) => Center(
+                                        fallback: (context) => const Center(
                                             child: CircularProgressIndicator()),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20.0,
                                     ),
                                   ],

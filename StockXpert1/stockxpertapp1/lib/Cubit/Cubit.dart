@@ -1,6 +1,5 @@
 import 'dart:ffi';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stockxpertapp1/Cubit/states.dart';
 import 'package:stockxpertapp1/network/DioHelper.dart';
@@ -29,5 +28,6 @@ class LoginCubit extends Cubit<LoginState> {
       print("oussama");
       emit(LoginError(error.toString()));
     });
+    return null;
   }
 }
