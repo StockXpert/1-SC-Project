@@ -1,12 +1,12 @@
-// abstract class demandeState {}
+abstract class demandeState {}
 
-// class demandeInitial extends demandeState {}
+class demandeInitial extends demandeState {}
 
-// class demandeLoadingState extends demandeState {}
+class demandeLoadingState extends demandeState {}
 
-// class demandeSuccessState extends demandeState {}
+class demandeSuccessState extends demandeState {}
 
-// class demandeErrorState extends demandeState {
-//   final String error;
-//   demandeErrorState(this.error);
-// }
+class demandeErrorState extends demandeState {
+  final String error;
+  demandeErrorState(this.error);
+}

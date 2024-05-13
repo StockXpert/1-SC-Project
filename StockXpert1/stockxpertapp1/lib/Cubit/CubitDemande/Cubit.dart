@@ -1,27 +1,32 @@
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:stockxpertapp1/Cubit/cubitCommande/states.dart';
-// import 'package:stockxpertapp1/models/CommandeModel.dart';
-// import 'package:stockxpertapp1/network/DioHelper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stockxpertapp1/Cubit/CubitDemande/states.dart';
+import 'package:stockxpertapp1/models/demandeModel.dart';
 
-// class demandeCubit extends Cubit<demandeState> {
-//   demandeCubit() : super(demandeInitial());
+import 'package:stockxpertapp1/network/DioHelper.dart';
 
-//   static demandeCubit get(context) => BlocProvider.of(context);
-//   CommandeModel? demandemodel;
+class demandeCubit extends Cubit<demandeState> {
+  demandeCubit() : super(demandeInitial());
 
-//   void getDemande() {
-//     emit(demandeLoadingState());
+  static demandeCubit get(context) => BlocProvider.of(context);
+  CommandeModel? demandemodel;
 
-//     DioHelper.getData(
-//       url: '/Sorties/showAllDemandes',
-//     ).then((value) {
-//       emit(demandeSuccessState());
+  void getDemande() {
+    emit(demandeLoadingState());
 
-//       demandemodel = CommandeModel.fromJson(value.data);
-//       print(demandemodel!.etat);
-//     }).catchError((error) {
-//       print(error.toString());
-//       emit(demandeErrorState(error));
-//     });
-//   }
-// }
+    DioHelper.getData(
+            url: '/Sorties/showAllDemandes',
+            token:
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IlJlc3BEaXJjdEBlc2ktc2JhLmR6Iiwicm9sZSI6IlJlc3BvbnNhYmxlIGRpcmVjdGUiLCJpYXQiOjE3MTU1NzM1NjksImV4cCI6MTcxNTY1OTk2OX0.gsd1bkK7JyMHYy16c-ehBBakn8N_-0PxuHVTpfboUwQ')
+        .then((value) {
+      emit(demandeSuccessState());
+
+      demandemodel = CommandeModel.fromJson(value.data);
+      print('oussama');
+
+      print(demandemodel!.response[0].etat);
+    }).catchError((error) {
+      print(error.toString());
+      emit(demandeErrorState(error));
+    });
+  }
+}

@@ -41,41 +41,86 @@ Widget defaultButton(
     );
 
 Widget buildBonComand(article, context) => Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: Column(children: [
-      const Row(children: [
-        Text(
-          'N Commande :',
-          style: TextStyle(color: Colors.black, fontSize: 15),
-        ),
-        Text(
-          '23651',
-          style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
-        ),
-      ]),
-      const SizedBox(
-        height: 10,
+    padding: EdgeInsets.all(10.0),
+    child: Container(
+      height: 107,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.7), // Color of the shadow
+            spreadRadius: 2, // Spread radius
+            blurRadius: 7, // Blur radius
+            offset: Offset(0, 3), // Offset in x and y axes from the container
+          ),
+        ],
       ),
-      const Row(children: [
-        Text(
-          'Date :',
-          style: TextStyle(color: Colors.black, fontSize: 15),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20, top: 10),
+        child: Row(
+          children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const Row(children: [
+                Text(
+                  'N Commande :',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '23651',
+                  style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
+                ),
+              ]),
+              const SizedBox(
+                height: 3,
+              ),
+              const Row(children: [
+                Text(
+                  'Date :',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '26/03/2024',
+                  style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
+                ),
+              ]),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 28,
+                width: 115,
+                decoration: BoxDecoration(
+                  color: const Color(0xffFFE500),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Center(
+                    child: Text(
+                  'En attente',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                )),
+              ),
+            ]),
+            SizedBox(
+              width: 70,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: CircleAvatar(
+                child: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: Colors.white,
+                ),
+                backgroundColor: Color(0xff4B4B4B),
+              ),
+            ),
+          ],
         ),
-        Text(
-          '26/03/2024',
-          style: TextStyle(fontSize: 15, color: Color(0xff4772E2)),
-        ),
-      ]),
-      const SizedBox(
-        height: 15,
       ),
-      Container(
-        height: 20,
-        width: 107,
-        decoration: BoxDecoration(
-          color: const Color(0xffFFE500),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: const Center(child: Text('En attente')),
-      ),
-    ]));
+    ));
