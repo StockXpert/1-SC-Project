@@ -189,9 +189,9 @@ function productDemandePerYear(year,product)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query=`select month(d.date_demande) as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f,produit p where
+        const query=`select date_format(d.date_demande,'%M') as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f,produit p where
         d.num_demande=f.id_demande and p.id_produit=f.id_produit and year(d.date_demande)=? and p.designation=?
-        group by month(d.date_demande)`
+        group by date_format(d.date_demande,'%M')`
         let values=[year,product]   
         connection.connect((err) => {
           if (err) {
@@ -217,12 +217,12 @@ function articleDemandePerYear(year,article)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query=`select month(d.date_demande) as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f where
+        const query=`select date_format(d.date_demande,'%M') as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f where
         d.num_demande=f.id_demande and year(d.date_demande)=? and f.id_produit in
         (select id_produit from contient where id_article=
             (select num_article from article where designation=?)
         )
-        group by month(d.date_demande)`
+        group by date_format(d.date_demande,'%M')`
         let values=[year,article]   
         console.log(values)
         connection.connect((err) => {
