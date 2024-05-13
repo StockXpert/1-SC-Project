@@ -53,6 +53,7 @@ import statsView from './views/statistiques/statsView.js';
 import articlesView from './views/nomenclatures/articles/articlesView.js';
 import addArticleView from './views/nomenclatures/articles/addArticleView.js';
 import editArticleView from './views/nomenclatures/articles/editArticleView.js';
+import fournisseurView from './views/nomenclatures/fournisseur/fournisseurView.js';
 import validateInvView from './views/inventaires/validateInvView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
@@ -775,7 +776,7 @@ const controlUpdateFournisseurs = async () => {
 };
 
 //ON INPUT FOURNISSEURS:
-const controlSearchFournisseurs = input => {
+const controlSearchFournisseursCmds = input => {
   const fuze = model.fuseMakerFournisseurs(model.state.fournisseurs.all);
   const results = fuze.search(input);
   function extractItems(data) {
@@ -2149,7 +2150,7 @@ const controlLoadArticles = async function () {
     // numberChaptersView.updateMasterCheckbox();
     // numberChaptersView.addHandlerNumber(controleSelectChapters);
     // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
-    chaptersView.addSearchController(controlSearchArticles);
+    articlesView.addSearchController(controlSearchArticles);
     editArticleView.addHandlerShowWindow();
     editArticleView.addHandlerHideWindow();
     editChapterView.addHandlerEdit(controlEditArticle);
@@ -2206,6 +2207,51 @@ const controlUpdateArticle = async function (oldArticle, newArticle) {
   } catch (error) {
     console.error(error);
   }
+};
+
+const controlLoadFournisseurs = async function () {
+  try {
+    if (
+      !model.state.me.permissions.all.find(
+        perm => perm.designation == 'show fournisseurs'
+      )
+    ) {
+      sideView.btns[0].click();
+      helpers.renderError(
+        'Erreur',
+        'Vous semblez manquer des permissions nécessaires pour afficher cette section'
+      );
+      return;
+    }
+    fournisseurView.restrict(model.state.me.permissions.all);
+    // addArticleView.restrict(model.state.me.permissions.all);
+    // deleteChapterView.restrict(model.state.me.permissions.all);
+    fournisseurView.renderSpinner('Loading Fournisseur ...');
+    await model.loadFournisseurs();
+    fournisseurView.render(model.state.fournisseur.all);
+    // deleteStructureView.addDeleteController(controlDeleteStructure);
+
+    // numberChaptersView.render(model.state.chapters);
+    // numberChaptersView.updateMasterCheckbox();
+    // numberChaptersView.addHandlerNumber(controleSelectChapters);
+    // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    fournisseurView.addSearchController(controlSearchFournisseurs);
+    // editArticleView.addHandlerShowWindow();
+    // editArticleView.addHandlerHideWindow();
+    // editChapterView.addHandlerEdit(controlEditArticle);
+    // deleteChapterView.addDeleteController(controlDeleteStructure);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlSearchFournisseurs = function () {
+  const results = model.state.fournisseur.all.filter(product =>
+    product.designation.toLowerCase().includes(query.toLowerCase())
+  );
+  model.state.fournisseur.searched.all = results;
+
+  chaptersView.render(model.state.fournisseur.searched.all);
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -2306,6 +2352,7 @@ const controllers = [
   controlLoadCmds,
   controlLoadCmdsInt,
   controlLoadInv,
+  controlLoadFournisseurs,
 ];
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -2351,7 +2398,7 @@ deleteRoleView.addDeleteController(controlDeleteRoles);
 addChapterView.addHandlerUpload(controlAddChapter);
 addArticleView.addHandlerUpload(controlAddArticle);
 
-addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseurs);
+addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseursCmds);
 // #F00
 // controlUpdateArticles();
 // controlUpdateFournisseurs();

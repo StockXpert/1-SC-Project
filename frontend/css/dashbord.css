@@ -1536,6 +1536,7 @@ table tbody tr:last-child td {
 .add-article-container,
 .edit-article-container,
 .add-produits-container,
+.edit-produits-container,
 .add-chapitre-container,
 .edit-chapitre-container,
 .add-role-container {
@@ -1566,6 +1567,8 @@ table tbody tr:last-child td {
 .add-structure-cart,
 .add-article-cart,
 .edit-article-cart,
+.add-produits-cart,
+.edit-produits-cart,
 .add-structure-cart,
 .add-edit-cart,
 .add-chapitre-cart,
@@ -1632,6 +1635,8 @@ table tbody tr:last-child td {
 .heading-primary-add-chapitre,
 .heading-primary-add-article,
 .heading-primary-edit-article,
+.heading-primary-add-produits,
+.heading-primary-edit-produits,
 .heading-primary-edit-chapitre {
   font-size: 1.8rem;
   font-weight: 700;
@@ -2092,6 +2097,8 @@ table tbody tr:last-child td {
 .add-chapitre-inputs,
 .add-article-inputs,
 .edit-article-inputs,
+.add-produits-inputs,
+.edit-produits-inputs,
 .add-fournisseur-inputs,
 .edit-fournisseur-inputs,
 .view-fournisseur-inputs,
@@ -2313,7 +2320,7 @@ a.password-icon:active {
 .container-supp-article,
 .container-supp-fournisseur,
 .container-supp-chapitre,
-.container-supp-produit,
+.container-supp-produits,
 .container-supp-chapter,
 .container-supp-role,
 .container-supp-bdc,
@@ -2331,7 +2338,7 @@ a.password-icon:active {
 .supp-fournisseur-cart,
 .supp-chapitre-cart,
 .supp-article-cart,
-.supp-produit-cart,
+.supp-produits-cart,
 .supp-role-cart,
 .supp-bdc-cart,
 .supp-bdr-cart {
@@ -2349,7 +2356,7 @@ a.password-icon:active {
   box-shadow: 0px 10px 10px 10px #00000040;
 }
 .supp-user-text,
-.supp-produit-text,
+.supp-produits-text,
 .supp-fournisseur-text,
 .supp-article-text,
 .supp-chapitre-text,
@@ -2384,7 +2391,7 @@ a.password-icon:active {
 }
 .supp-user-confirmer,
 .supp-article-confirmer,
-.supp-produit-confirmer,
+.supp-produits-confirmer,
 .supp-fournisseur-confirmer,
 .supp-chapitre-confirmer,
 .supp-chapter-confirmer,
@@ -2400,7 +2407,7 @@ a.password-icon:active {
 .supp-user-confirmer:hover,
 .supp-fournisseur-confirmer:hover,
 .supp-chapitre-confirmer:hover,
-.supp-produit-confirmer:hover,
+.supp-produits-confirmer:hover,
 .supp-article-confirmer:hover,
 .supp-chapter-confirmer:hover,
 .supp-str-confirmer:hover,
@@ -2414,7 +2421,7 @@ a.password-icon:active {
 }
 .supp-user-annuler,
 .supp-user-article,
-.supp-user-produit,
+.supp-user-produits,
 .supp-user-chapitre,
 .supp-user-fournisseur,
 .supp-str-annuler,
@@ -2429,7 +2436,7 @@ a.password-icon:active {
 .supp-user-annuler:hover,
 .supp-fournisseur-annuler:hover,
 .supp-article-annuler:hover,
-.supp-produit-annuler:hover,
+.supp-produits-annuler:hover,
 .supp-chapitre-annuler:hover,
 .supp-str-annuler:hover,
 .supp-role-annuler:hover,
