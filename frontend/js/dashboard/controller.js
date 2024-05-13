@@ -24,7 +24,7 @@ import cmdsView from './views/commandes/cmdsView.js';
 import cmdsIntView from './views/commandesInt/cmdsIntView.js';
 import cmdsIntHeaderView from './views/commandesInt/cmdsIntHeaderView.js';
 import invHeaderView from './views/inventaires/InvHeaderView.js';
-import addStructureView from './views/roles/addStructureView.js';
+import addStructureView from './views/addStructureView.js';
 import addCmdsView from './views/commandes/addCmdsView.js';
 import addCmdsIntView from './views/commandesInt/addCmdsIntView.js';
 import editCmdsIntView from './views/commandesInt/editCmdsIntView.js';
@@ -1178,7 +1178,7 @@ const controlCmdsIntFilters = filterValuesArr => {
     case 'all':
       afterFilters = beforeFilters;
       break;
-    case 'demande':
+    case 'demandee':
       afterFilters = beforeFilters.filter(entry => entry.etat == 'demande');
       break;
     case 'visee par resp':
@@ -1700,28 +1700,21 @@ const controlValidatingCmdsInt = async e => {
 const controlValidateCmdsInt = async () => {
   let appObject = validateCmdsIntView.extractObject();
   let returnValue;
+  validateCmdsIntView._btnClose.click();
+  cmdsIntView.renderSpinner('Approbation ...');
   switch (validateCmdsIntView._role) {
     case 'Responsable directe':
-      validateCmdsIntView._btnClose.click();
-      cmdsIntView.renderSpinner('Approbation ...');
       returnValue = await model.resAppCmdInt(appObject);
-      cmdsIntView.unrenderSpinner('');
-      await controlLoadCmdsInt();
       break;
     case 'Directeur':
-      validateCmdsIntView._btnClose.click();
-      cmdsIntView.renderSpinner('Approbation ...');
       returnValue = await model.dirAppCmdInt(appObject);
-      await controlLoadCmdsInt();
       break;
     case 'Magasinier':
-      validateCmdsIntView._btnClose.click();
-      cmdsIntView.renderSpinner('Approbation ...');
       returnValue = await model.magAppCmdInt(appObject);
-      cmdsIntView.unrenderSpinner('');
-      await controlLoadCmdsInt();
       break;
   }
+  cmdsIntView.unrenderSpinner('');
+  await controlLoadCmdsInt();
 };
 
 const controlDeliverCmdsInt = async view => {
@@ -1833,7 +1826,9 @@ const controlLoadInv = async () => {
   invView.render(
     model.state.inventaires.all,
     true,
-    model.state.me.permissions.all
+    model.state.me.permissions.all,
+    '',
+    false
   );
   invView.resetPointers();
 };
@@ -1895,9 +1890,50 @@ const controlDeleteInv = async function () {
   await controlLoadInv();
 };
 
+const controlValidatingInv = async e => {
+  //ONCLICK OF A VALIDATE BUTTON
+  const targetIndex = helpers.findNodeIndex(
+    validateCmdsIntView._btnOpen,
+    e.currentTarget
+  );
+  validateCmdsIntView.renderSpinner('');
+  let selectedCmdIntProducts = await model.loadCommandeIntProducts(
+    model.state.commandesInt.rendered[targetIndex].num_demande
+  );
+  validateCmdsIntView.unrenderSpinner('');
+  selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
+  selectedCmdIntProducts = helpers.fillMissingProperties(
+    selectedCmdIntProducts
+  );
+  validateCmdsIntView.changeDetails(
+    selectedCmdIntProducts,
+    model.state.commandesInt.rendered[targetIndex].num_demande
+  );
+};
+
+const controlValidateInv = async () => {
+  let appObject = validateCmdsIntView.extractObject();
+  let returnValue;
+  validateCmdsIntView._btnClose.click();
+  cmdsIntView.renderSpinner('Approbation ...');
+  switch (validateCmdsIntView._role) {
+    case 'Responsable directe':
+      returnValue = await model.resAppCmdInt(appObject);
+      break;
+    case 'Directeur':
+      returnValue = await model.dirAppCmdInt(appObject);
+      break;
+    case 'Magasinier':
+      returnValue = await model.magAppCmdInt(appObject);
+      break;
+  }
+  cmdsIntView.unrenderSpinner('');
+  await controlLoadCmdsInt();
+};
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
-/////// Nomenclaturess #f00
+/////// Nomenclaturess #f00 #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
@@ -2217,42 +2253,35 @@ const controlSearchFournisseurs = function () {
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 const controlLoadStatistiques = async () => {
-  console.log(`
-  //////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////
-  ///////////////////// S T A T I S T I Q U E S/////////////////////
-  //////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////`);
+  // const labels = helpers.generateMonthLabels();
+  // const data = {
+  //   labels: labels,
+  //   datasets: [
+  //     {
+  //       label: 'My First Dataset',
+  //       data: [65, 59, 80, 81, 56, 55, 40],
+  //       backgroundColor: ['#477ce2'],
+  //       borderColor: ['#477ce2'],
+  //       borderWidth: 1,
+  //     },
+  //   ],
+  // };
 
-  const labels = helpers.generateMonthLabels();
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        backgroundColor: ['#477ce2'],
-        borderColor: ['#477ce2'],
-        borderWidth: 1,
-      },
-    ],
-  };
+  // const ctx = document.getElementById('myChart').getContext('2d');
+  // new Chart(ctx, {
+  //   type: 'bar',
+  //   data: data,
+  //   options: {
+  //     scales: {
+  //       y: {
+  //         beginAtZero: true,
+  //       },
+  //     },
+  //   },
+  // });
+  // console.log(model.getGraphPromise('topDemandeurs'));
 
-  const ctx = document.getElementById('myChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-  console.log(model.getGraphPromise('topDemandeurs'));
-
-  //CLEAR GRAPHS
+  //TODO: CLEAR GRAPHS
   statsView.renderGraphSpin(
     'Top Demandeurs',
     'g2',
@@ -2271,8 +2300,13 @@ const controlLoadStatistiques = async () => {
     model.getGraphPromise('mostDemmandedProduct'),
     'les demandes'
   );
+  //TODO: make a config for both typename=>chart.js_options and StatsPermissions=>renderGraphSpin args and default to bar graphs
+  //TODO: add recherche to chapitre/products
+  //TODO: add detail functionality
+  //TODO: calculate header's ammount of cells to render "no results" line correctly (i think you already did smth similar fi ch3al)
 };
 
+// TODO:
 const renderGraph = async (
   title,
   dataRoute,

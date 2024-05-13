@@ -74,6 +74,7 @@ export class CmdsIntView extends CmdsView {
   }
   _generateMarkupPreview(result, perms = []) {
     // console.log(this._role);
+    console.log(result);
     const html = `<tr>
     <td>
       <div class="checkbox-colomn">
@@ -112,7 +113,7 @@ export class CmdsIntView extends CmdsView {
         ? `
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
-          result.etat.includes('demandee') ? '' : 'hidden'
+          result.etat?.includes('demandee') ? '' : 'hidden'
         }">
           <span class="material-icons-sharp verif-icon">
             check_circle

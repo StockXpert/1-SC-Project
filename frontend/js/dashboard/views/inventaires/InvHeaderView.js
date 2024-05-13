@@ -1,10 +1,12 @@
 import { CmdsIntHeaderView } from '../commandesInt/cmdsIntHeaderView.js';
 export class InvHeaderView extends CmdsIntHeaderView {
+  _perms;
   constructor() {
     super();
   }
   _parentElement = document.querySelector('.load-inv-container');
-  _generateMarkup(perms = []) {
+  _generateMarkup() {
+    //this._perms
     return `
   <tr>
     <th>
@@ -17,14 +19,19 @@ export class InvHeaderView extends CmdsIntHeaderView {
     <!-- btns pour Magasinier -->
 
     ${
-      perms.includes('show inventaire')
+      // ''
+      this._perms
+        .map(({ designation }) => designation)
+        .includes('show inventaire')
         ? `<th class="view-bdc">Détails</th>`
         : ``
     }
     <!-- btns pour directeur -->
 
     ${
-      perms.includes('valid inventaire')
+      this._perms
+        .map(({ designation }) => designation)
+        .includes('valid inventaire')
         ? `<th class="verif-Magasinier">Valider</th>`
         : ``
     }
