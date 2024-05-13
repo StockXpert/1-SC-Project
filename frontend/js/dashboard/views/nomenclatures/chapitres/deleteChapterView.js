@@ -1,4 +1,4 @@
-import View from '../../View.js';
+import View from '../../view.js';
 
 class DeleteChapterView extends View {
   _window = document.querySelector('.container-supp-chapter');
