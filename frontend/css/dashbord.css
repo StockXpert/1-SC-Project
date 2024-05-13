@@ -1513,7 +1513,7 @@ table tbody tr:last-child td {
 .add-user-cart,
 .add-fournisseur-cart,
 .view-fournisseur-cart,
-.edit-fournisseur-cart{
+.edit-fournisseur-cart {
   width: 46rem;
   height: auto;
   margin: 0 auto;
@@ -2234,6 +2234,7 @@ a.password-icon:active {
 /* css pour btn supprimer esq vous etes sure */
 .container-supp-user,
 .container-supp-structure,
+.container-supp-chapter,
 .container-supp-role,
 .container-supp-bdc,
 .container-supp-bdci,
@@ -2294,6 +2295,7 @@ a.password-icon:active {
   border: 2px solid #4b4b4b;
 }
 .supp-user-confirmer,
+.supp-chapter-confirmer,
 .supp-str-confirmer,
 .supp-role-confirmer,
 .supp-bdc-confirmer,
@@ -2304,6 +2306,7 @@ a.password-icon:active {
   color: white;
 }
 .supp-user-confirmer:hover,
+.supp-chapter-confirmer:hover,
 .supp-str-confirmer:hover,
 .supp-role-confirmer:hover,
 .supp-bdc-confirmer:hover,
@@ -2316,6 +2319,7 @@ a.password-icon:active {
 .supp-user-annuler,
 .supp-str-annuler,
 .supp-role-annuler,
+.supp-chapter-annuler,
 .supp-bdc-annuler,
 .supp-bdci-annuler,
 .supp-inv-annuler,
@@ -2325,6 +2329,7 @@ a.password-icon:active {
 .supp-user-annuler:hover,
 .supp-str-annuler:hover,
 .supp-role-annuler:hover,
+.supp-chapter-annuler:hover,
 .supp-bdc-annuler:hover,
 .supp-bdci-annuler:hover,
 .supp-inv-annuler:hover,

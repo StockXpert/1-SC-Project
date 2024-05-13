@@ -1056,6 +1056,39 @@ export const addChapter = async function (newChapter) {
   }
 };
 
+export const updateChapter = async function (oldChapter, newChapter) {
+  try {
+    const uploadData = {
+      oldDesignation: oldChapter.designation,
+      newDesignation: newChapter.designation,
+    };
+    const data = await helpers.putJSON(
+      `${API_URL}/Nomenclatures/updateChapter`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteChapter = async function (chapter) {
+  try {
+    const uploadData = { designation: chapter.designation };
+    const data = await helpers.delJSON(
+      `${API_URL}/Nomenclatures/deleteChapter`,
+      uploadData
+    );
+    if (data.response === 'prohibited to delete chapter')
+      helpers.renderError(
+        'Erreur de permission',
+        'prohibited to delete chapter'
+      );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const deleteInv = async function (numInventaire) {
   try {
     let delObj = { numInventaire };

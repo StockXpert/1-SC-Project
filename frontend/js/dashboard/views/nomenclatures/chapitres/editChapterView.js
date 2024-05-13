@@ -1,14 +1,14 @@
-import View from './view.js';
+import View from '../../View.js';
 
 class EditChapterView extends View {
-  _window = document.querySelector('.add-chapitre-container');
+  _window = document.querySelector('.edit-chapitre-container');
   _overlay = document.querySelector('.overlayEdit');
   _btnOpen = document.querySelectorAll('.details-btn-chapitres');
-  _parentElement = document.querySelector('.edit-structure-cart');
-  _form = document.querySelector('.edit-chapter-inputs');
+  _parentElement = document.querySelector('.edit-chapitre-cart');
+  _form = document.querySelector('.edit-chapitre-inputs');
   _btnClose = this._parentElement.querySelector('.close-btn');
   currTarget;
-  currStructure;
+  currChapter;
 
   constructor() {
     super();
@@ -21,7 +21,7 @@ class EditChapterView extends View {
 
   addHandlerShowWindow() {
     const btnOpenArray = Array.from(
-      document.querySelectorAll('.details-btn-structures')
+      document.querySelectorAll('.details-btn-chapitres')
     );
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', e => {
@@ -34,7 +34,8 @@ class EditChapterView extends View {
   }
 
   addHandlerHideWindow() {
-    this._btnClose.addEventListener('click', e => {
+    const btnClose = this._parentElement.querySelector('.close-btn');
+    btnClose.addEventListener('click', e => {
       e.preventDefault();
       this.toggleWindow();
     });
@@ -42,44 +43,33 @@ class EditChapterView extends View {
 
   addHandlerEdit(controller) {
     const btnOpenArray = Array.from(
-      document.querySelectorAll('.details-btn-structures')
+      document.querySelectorAll('.details-btn-chapitres')
     );
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', controller);
     });
-
-    this._form.addEventListener('submit', e => {});
   }
 
   changeInputs(inputValuesObj) {
-    this.currStructure = inputValuesObj;
+    this.currChapter = inputValuesObj;
     // Get the form element
-    const formElement = document.querySelector('.edit-structure-inputs');
+    const formElement = document.querySelector('.edit-chapitre-inputs');
     // Create a new FormData object from the form
-    const formData = new FormData(formElement);
     // console.log('🚀 ~ EditStructureView ~ changeInputs ~ formData:', formData);
-    formElement.querySelector('#name-structure-edit').value =
+    formElement.querySelector('#name-chapitre').value =
       inputValuesObj.designation;
-    const options = formElement.querySelector('#search-structure-edit').options;
-    for (let i = 0; i < options.length; i++) {
-      console.log(options[i].innerText, inputValuesObj.responsible);
-      if (options[i].innerText === inputValuesObj.responsible) {
-        options[i].selected = true;
-        return;
-      }
-    }
   }
 
   addHandlerUpdate(controller) {
-    const formElement = document.querySelector('.edit-structure-inputs');
+    const formElement = document.querySelector('.edit-chapitre-inputs');
 
     this._form.addEventListener('submit', e => {
       e.preventDefault();
-      const newStructure = {
-        designation: formElement.querySelector('#name-structure-edit').value,
+      const newChapter = {
+        designation: formElement.querySelector('#name-chapitre').value,
       };
-      console.log(this.currStructure, newStructure);
-      controller(this.currStructure, newStructure);
+      console.log(this.currChapter, newChapter);
+      controller(this.currChapter, newChapter);
       this.toggleWindow();
     });
   }
