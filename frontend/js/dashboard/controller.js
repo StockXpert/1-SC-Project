@@ -47,12 +47,9 @@ import addInvView from './views/inventaires/addInvView.js';
 import chaptersView from './views/nomenclatures/chapitres/chaptersView.js';
 import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersView.js';
 import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
-<<<<<<< HEAD
 import editChapterView from './views/nomenclatures/chapitres/editChapterView.js';
 import deleteChapterView from './views/nomenclatures/chapitres/deleteChapterView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
-=======
->>>>>>> e8cc6b229b1e6ed748518041054b21d7c30cb216
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
