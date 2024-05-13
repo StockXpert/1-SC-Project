@@ -49,6 +49,7 @@ import numberChaptersView from './views/nomenclatures/chapitres/numberChaptersVi
 import addChapterView from './views/nomenclatures/chapitres/addChapterView.js';
 import editChapterView from './views/nomenclatures/chapitres/editChapterView.js';
 import deleteChapterView from './views/nomenclatures/chapitres/deleteChapterView.js';
+import statsView from './views/statistiques/statsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2112,9 +2113,21 @@ const controlLoadStatistiques = async () => {
       },
     },
   });
+  console.log(model.getGraphPromise('topDemandeurs'));
 
   //CLEAR GRAPHS
-  await renderGraph();
+  statsView.renderGraphSpin(
+    'Top Demandeurs',
+    'g2',
+    model.getGraphPromise('topDemandeurs'),
+    'les demandes'
+  );
+  statsView.renderGraphSpin(
+    'Les produits les plus commandes',
+    'g2',
+    model.getGraphPromise('mostCommandedProducts'),
+    'les commandes'
+  );
 };
 
 const renderGraph = async (

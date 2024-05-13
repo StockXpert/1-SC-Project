@@ -3007,7 +3007,7 @@ a.password-icon:active {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  /* height: 24rem; */
+  height: 20rem;
   background-color: white;
   padding: 0.8rem;
   border-radius: 1rem;

@@ -1117,3 +1117,17 @@ export const deleteInv = async function (numInventaire) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 };
+
+export const getGraphPromise = async function (graphLink) {
+  const resultsPro = await Promise.race([
+    fetch(`${API_URL}/Statistique/${graphLink}`, {
+      method: 'POST',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+    }),
+    helpers.timeout(TIMEOUT_SEC),
+  ]);
+  return resultsPro.json();
+};

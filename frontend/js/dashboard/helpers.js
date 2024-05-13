@@ -1,7 +1,7 @@
 import { TIMEOUT_SEC, FUSE_OPTIONS } from './config.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 
-const timeout = function (s) {
+export const timeout = function (s) {
   return new Promise(function (_, reject) {
     setTimeout(function () {
       reject(new Error(`Request took too long! Timeout after ${s} second`));
@@ -766,3 +766,43 @@ export function generateMonthLabels() {
   }
   return months;
 }
+export const createChart = (ctx, dataFromBack, dataName) => {
+  //   {
+  //     "labels": [
+  //         "C1@esi-sba.dz",
+  //         "Magasinier@esi-sba.dz",
+  //         "o.aliabbou@esi-sba.dz",
+  //         "saidsenhadji06@gmail.com"
+  //     ],
+  //     "dataSet": [
+  //         15,
+  //         4,
+  //         2,
+  //         2
+  //     ]
+  // }
+  const labels = dataFromBack.labels;
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: dataName,
+        data: dataFromBack.dataSet,
+        backgroundColor: ['#477ce2'],
+        borderColor: ['#477ce2'],
+        borderWidth: 1,
+      },
+    ],
+  };
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+};
