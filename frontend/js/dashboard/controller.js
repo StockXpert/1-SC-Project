@@ -867,7 +867,7 @@ const controlTypeSelection = typeName => {
   console.log(model.state);
 };
 
-const controlAddProduct = newProduct => {
+const controlAddProductBdc = newProduct => {
   //TODO:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
 
@@ -1308,7 +1308,7 @@ const controlLoadCmdsInt = async function () {
   // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
 };
 
-const controlAddProductInt = newProduct => {
+const controlAddProductBdcInt = newProduct => {
   // ON SUBMIT:
   // newProduct.numero = model.state.bdc_products.added.length + 1;
   let oldProducts;
@@ -1639,7 +1639,7 @@ const controlModifyCmdsInt = async function () {
   editCmdsIntView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 
-const controlAddProductIntEdit = newProduct => {
+const controlAddProductBdcIntEdit = newProduct => {
   // ON SUBMIT:
   let selectedBDCIProdsCurrState = model.state.commandesInt.selected.products;
   if (helpers.isObjectInArray(selectedBDCIProdsCurrState, newProduct)) {
@@ -2013,7 +2013,7 @@ const controlDeleteChapter = async function () {
 
 const controlSearchChapter = async function (query) {
   model.state.chapters.searched.all = model.state.chapters.all.filter(chapter =>
-    chapter.designation.toLowerCase().includes(query)
+    chapter.designation.toLowerCase().includes(query.toLowerCase())
   );
   // console.log(results);
 
@@ -2058,7 +2058,7 @@ const controlLoadProducts = async function () {
 
 const controlSearchProduct = async function (query) {
   const results = model.state.products.all.filter(product =>
-    product.designation.toLowerCase().includes(query)
+    product.designation.toLowerCase().includes(query.toLowerCase())
   );
   // if (results.length === 0)
   //   return helpers.renderError(
@@ -2073,6 +2073,21 @@ const controlSearchProduct = async function (query) {
   // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
   // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
 };
+
+const controlAddProduct = async function (newProduct) {
+  try {
+    await model.addChapter(newProduct);
+    await controlLoadProducts();
+    console.log(model.state.products.all);
+    addChapterView.clearForm();
+    //Close Window
+
+    addChapterView.toggleWindow();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////////////// S T A T I S T I Q U E S #fff//////////////////////
@@ -2216,14 +2231,17 @@ editCmdsIntView.addHandlerProductSearch(
   model.state.bdci_products
 );
 
-addCmdsView.addHandlerAddProduct(controlAddProduct, model.state.bdc_products);
+addCmdsView.addHandlerAddProduct(
+  controlAddProductBdc,
+  model.state.bdc_products
+);
 addCmdsIntView.addHandlerAddProduct(
-  controlAddProductInt,
+  controlAddProductBdcInt,
   model.state.bdci_products
 );
 addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
 editCmdsIntView.addHandlerAddProduct(
-  controlAddProductIntEdit,
+  controlAddProductBdcIntEdit,
   model.state.bdci_products
 );
 
