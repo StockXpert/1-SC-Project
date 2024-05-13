@@ -784,7 +784,8 @@ function getArticles()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = 'select designation from article ';
+    const query = `select a.designation,a.tva,a.num_article,c.designation as chapitre from article a ,chapitre c
+    where c.num_chap=a.num_article`;
     
   
     connection.connect((err) => {

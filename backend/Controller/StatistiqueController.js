@@ -161,6 +161,7 @@ function respBciStat(req,res)
     const resp=req.email;
     UserModel.isResponsable(resp).then((structure)=>{
         StatistiqueModel.bciStat(dateD,dateF,structure).then((data)=>{
+            console.log(200)
             res.status(200).json({response:data})
         }).catch(()=>res.status(500).json({response:'internal error'}))
     }).catch(()=>res.status(500).json({response:'internal error'}))
