@@ -19,6 +19,7 @@ class SideView extends View {
     document.querySelector('.bon-de-commandes-btn'),
     document.querySelector('.bon-de-commandes-interne-btn'),
     document.querySelector('.inventaire-btn'),
+    document.querySelector('.fournisseurs-btn'),
   ];
   divs = [
     document.getElementById('main-profile-table'),
@@ -35,6 +36,7 @@ class SideView extends View {
     document.getElementById('main-table-bdc'),
     document.getElementById('main-table-bdci'),
     document.getElementById('main-table-inv'),
+    document.getElementById('main-table-fournisseur'),
   ];
 
   hideAllDivs() {
@@ -60,6 +62,7 @@ class SideView extends View {
       document.querySelector('.bon-de-commandes-btn'),
       document.querySelector('.bon-de-commandes-interne-btn'),
       document.querySelector('.inventaire-btn'),
+      document.querySelector('.fournisseurs-btn'),
     ];
     this.divs = [
       document.getElementById('main-profile-table'),
@@ -76,6 +79,7 @@ class SideView extends View {
       document.getElementById('main-table-bdc'),
       document.getElementById('main-table-bdci'),
       document.getElementById('main-table-inv'),
+      document.getElementById('main-table-fournisseur'),
     ];
   }
 
