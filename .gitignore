@@ -1,3 +1,4 @@
 .hintrc
 backend/Middlewares/credentials.json
 backend/besoins.html
+node_modules
