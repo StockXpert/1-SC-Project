@@ -11,10 +11,10 @@ function MostDemandedProduct(dateD,dateF,consommateur,structure)
         const connection = mysql.createConnection(connectionConfig);
         let query
         if(consommateur)
-            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
+            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre ,p.id_produit as id from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur=?
         ${dateD?"(and d.date_demande between ? and ?)":""}
-        group by p.designation order by nombre desc limit 10`
+        group by p.designation,p.id_produit order by nombre desc limit 10`
         else if (structure)
             query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur in
@@ -159,10 +159,10 @@ function mostCommandedProducts(dateD,dateF)
 {
 return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query=`select p.designation as produit , sum (c.quantite) as  quantite from bon_de_commande b ,commande c,produit p where
+    const query=`select p.designation as produit , sum (c.quantite) as  quantite,p.id_produit as id from bon_de_commande b ,commande c,produit p where
     c.id_commande=b.num_commande and p.id_produit=c.id_produit 
     ${dateD?"(and d.date_commande between ? and ?)":""}
-    group by p.designation order by quantite desc limit 10`
+    group by p.designation,p.id_produit order by quantite desc limit 10`
     let values=[]
     if(dateD) values.push(dateD,dateF)    
     connection.connect((err) => {
