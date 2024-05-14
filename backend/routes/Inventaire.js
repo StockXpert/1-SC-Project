@@ -8,4 +8,5 @@ router.get('/showInventaires',authMiddleware('show inventaires'),inventaireContr
 router.get('/showInventaire',authMiddleware('show inventaire'),inventaireController.showInventaire);
 router.put('/updateInventaire',authMiddleware('update inventaire'),inventaireController.updateInventaire);
 router.delete('/deleteInventaire',authMiddleware('delete inventaire'),inventaireController.deleteInventaire);
+router.put('/update',authMiddleware('update'),inventaireController.update);
 module.exports=router;

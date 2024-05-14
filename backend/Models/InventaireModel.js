@@ -341,6 +341,9 @@ function inscriptionDate(produit,year)
           return;
         }
         console.log({dateIns:results})
+        if(results.length==0)
+          resolve("")
+        else
         resolve(results[0].date);
       });
       
@@ -368,6 +371,9 @@ function avgProductValue(produit,year)
           reject("request error");
           return;
         }
+        if(results.length==0)
+          resolve("")
+        else
         resolve(results[0].avg);
       });
       
@@ -398,7 +404,10 @@ function getProductFournisseur(produit,year)
           reject("request error");
           return;
         }
-        console.log({results:results})
+        console.log({results:results});
+        if(results.length==0)
+          resolve("")
+        else
         resolve(results[0].raison_sociale);
       });
       
@@ -485,6 +494,74 @@ function insertLink(numInventaire,link,link2)
     });
   });
 }
+function updateQuantite(produits)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    connection.connect((err) => {
+        if (err) {
+            console.error('Erreur de connexion à la base de données : ', err);
+            reject(err);
+            return;
+        }
+        console.log('Connecté à la base de données MySQL');
+        
+        // Commencer la transaction
+        connection.beginTransaction((err) => {
+            if (err) {
+                console.error('Erreur lors du démarrage de la transaction : ', err);
+                reject(err);
+                return;
+            }
+            console.log("Début de la transaction");
+
+            // Utiliser une boucle asynchrone pour traiter chaque produit
+            async.eachSeries(produits, (produit, callback) => {
+                // Exécuter la requête pour récupérer l'ID produit à partir de la désignation
+                console.log({produit})
+                connection.query('SELECT id_produit FROM produit WHERE designation = ?', [produit.designation], (err, rows) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    if (rows.length === 0) {
+                        return callback("Produit non trouvé  " + produit.designation);
+                    }
+                    const id_produit = rows[0].id_produit;
+
+                    // Insérer les données dans ma_table avec l'ID produit récupéré
+                    connection.query('update produit set quantite=? where id_produit=?', [produit.quantite_phys,id_produit], (err, result) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
+                        callback();
+                    });
+                });
+            }, (err) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.error('Erreur lors du traitement des produits : ', err);
+                        reject(err);
+                    });
+                }
+
+                // Valider la transaction
+                connection.commit((err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error('Erreur lors de la validation de la transaction : ', err);
+                            reject(err);
+                        });
+                    }
+                    console.log("Transaction validée avec succès");
+                    resolve("success");
+                    connection.end();
+                });
+            });
+        });
+    });
+});
+}
 module.exports={addInventaire,insertCompter,validInvetaireStatus,getInventaires,getInventaire,getInventaireStatus
 ,deleteInventaire,updateInventaire,deleteCompter,getProductFournisseur,avgProductValue,inscriptionDate,
-getInventaireYear,getInventaireProducts,insertLink}
+getInventaireYear,getInventaireProducts,insertLink,updateQuantite}

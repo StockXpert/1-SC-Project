@@ -12,7 +12,7 @@ function changeDataFormat(data)
             result.labels.push(line[keys[0]]);
             result.dataSet.push(line[keys[1]])
             if(keys.length>2)
-                result.id.push(line(keys[2]))
+                result.id.push(line[keys[2]])
         }
     return result   
 }
