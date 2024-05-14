@@ -564,17 +564,17 @@ export const renderError = function (heading, content) {
 
 export const getStatusClass = function (status) {
   switch (status) {
-    case 'servie':
+    case 'servie': //#0084ff
       return 'served-status-bdci';
-    case 'prete':
+    case 'prete': //#45e011
       return 'finish-status-bdci';
-    case 'visee par dg':
+    case 'visee par dg': //#ff6417
       return 'v-directeur-status';
-    case 'visee par resp':
+    case 'visee par resp': //#ff9625
       return 'v-responsable-status';
-    case 'demandee':
+    case 'demandee': //#fbff00
       return 'enattente-status';
-    case 'refusee':
+    case 'refusee': // #e01313
       return 'canceled-status';
     default:
       return 'canceled-status';
@@ -958,12 +958,12 @@ export function createPieChart(ctx, response, dataName) {
           label: dataName,
           data: data,
           backgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF',
-            '#FF9F40',
+            '#f9c012', //demandee
+            '#e01313', //refusee
+            '#ff9625', //viseeResp
+            '#ff6417', //viseeDg
+            '#49bf20', //prete
+            '#0084ff', //servie
           ],
           borderColor: '#fff',
           borderWidth: 1,

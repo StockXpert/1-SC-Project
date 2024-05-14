@@ -1449,28 +1449,28 @@ table tbody tr:last-child td {
   border-radius: 15px;
 }
 .canceled-status {
-  background-color: red;
+  background-color: #e01313;
 }
 .served-status-bdci {
-  background-color: rgb(0, 132, 255);
+  background-color: #0084ff;
 }
 .finish-status,
 .finish-status-bdci {
-  background-color: #49bf20;
+  background-color: #45e011;
 }
 .v-directeur-status {
-  background-color: rgb(206, 134, 1);
+  background-color: #ff6417;
 }
 .v-responsable-status {
-  background-color: rgb(206, 134, 1);
+  background-color: #ff9625;
 }
 .encour-status,
 .enattente-status,
 .novalide-status {
-  background-color: #f9c012;
+  background-color: #fbff00;
 }
 .valide-status {
-  background-color: #49bf20;
+  background-color: #45e011;
 }
 
 /* filtres */
