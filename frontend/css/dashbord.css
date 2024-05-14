@@ -2371,7 +2371,11 @@ a.password-icon:active {
   font-weight: 700;
   padding: 0.2rem;
 }
-.supp-user-btns {
+.supp-user-btns,
+.supp-fournisseur-btns 
+.supp-produits-btns 
+.supp-chapter-btns 
+.supp-article-btns {
   display: flex;
   gap: 1rem;
 }
