@@ -57,6 +57,7 @@ import fournisseurView from './views/nomenclatures/fournisseur/fournisseurView.j
 import validateInvView from './views/inventaires/validateInvView.js';
 import deleteArticleView from './views/nomenclatures/articles/deleteArticleView.js';
 import numberArticlesView from './views/nomenclatures/articles/numberArticlesView.js';
+import addProductsView from './views/nomenclatures/produits/addProductsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2094,7 +2095,7 @@ const controlLoadProducts = async function () {
       return;
     }
     productsView.restrict(model.state.me.permissions.all);
-    // addChapterView.restrict(model.state.me.permissions.all);
+    addProductsView.restrict(model.state.me.permissions.all);
     // deleteStructureView.restrict(model.state.me.permissions.all);
     productsView.renderSpinner('Loading Products');
     await model.loadAllProducts();
@@ -2117,7 +2118,7 @@ const controlSearchProduct = async function (query) {
   );
   model.state.products.searched.all = results;
 
-  chaptersView.render(model.state.products.searched.all);
+  productsView.render(model.state.products.searched.all);
   // numberChaptersView.render(model.state.chapters.searched);
   // numberChaptersView.updateMasterCheckbox();
   // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
@@ -2126,13 +2127,22 @@ const controlSearchProduct = async function (query) {
 
 const controlAddProduct = async function (newProduct) {
   try {
-    await model.addChapter(newProduct);
+    await model.loadArticles();
+    if (
+      !model.state.articles.all.some(
+        article => article.designation === newProduct.article
+      )
+    )
+      return helpers.renderError(
+        'Article not found',
+        `${newProduct.article} n'existe pas dans les article du systéme `
+      );
+    await model.addProduct(newProduct);
+    addProductsView.toggleWindow();
     await controlLoadProducts();
     console.log(model.state.products.all);
-    addChapterView.clearForm();
+    addProductsView.clearForm();
     //Close Window
-
-    addChapterView.toggleWindow();
   } catch (error) {
     console.error(error);
   }
@@ -2476,6 +2486,7 @@ sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
 addChapterView.addHandlerUpload(controlAddChapter);
 addArticleView.addHandlerUpload(controlAddArticle);
+addProductsView.addHandlerUpload(controlAddProduct);
 
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseursCmds);
 // #F00
