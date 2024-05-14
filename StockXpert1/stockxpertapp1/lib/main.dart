@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stockxpertapp1/network/DioHelper.dart';
 import 'package:stockxpertapp1/screens/detatils.dart';
 import 'package:stockxpertapp1/screens/directeurScreen.dart';
+import 'package:stockxpertapp1/screens/loginScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,9 +15,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DirecteurScreen(),
+      home: loginScreen(),
     );
   }
 }

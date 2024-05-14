@@ -15,10 +15,10 @@ class LoginCubit extends Cubit<LoginState> {
   }) {
     emit(LoginLoading());
     DioHelper.pstData(
-      url: LOGIN,
+      url: '/Users/login',
       data: {
-        'email': 'o.aliabbou@esi-sba.dz',
-        'password': 'hadi2004',
+        'email': email,
+        'password': password,
       },
     ).then((value) {
       print(value.data);
