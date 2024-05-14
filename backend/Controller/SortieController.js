@@ -41,9 +41,17 @@ function fournitureDirApp(req,res){
 function fournitureMagApp(req,res){
     const {produits,numDemande}=req.body;
     SortieModel.updateLivredQuantite(numDemande,produits).then(()=>{
+        if(SortieService.allZero(produits))
+            {
+                SortieModel.changeDemandeStatNotif(numDemande,'refusee','other_notif').then(()=>{
+                    res.status(200).json({response:'Dir refused'})
+                    }).catch(()=>{res.status(500).json({response:'internal error'})})
+            }
+        else{
         SortieModel.changeDemandeStatNotif(numDemande,'prete','other_notif').then(()=>{
             res.status(200).json({response:'Mag approuved'})
         }).catch(()=>{res.status(500).json({response:'internal error'})})
+    }   
     }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 function livrer(req,res)
