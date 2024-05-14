@@ -25,7 +25,7 @@ function mostdemmandedProduct(req,res)
 function  structureMostdemmandedProduct(req,res)
 {
     const {dateD,dateF,structure}=req.body
-    StatistiqueModel.MostDemandedProduct(dateD,dateF,structure).then((data)=>{
+    StatistiqueModel.MostDemandedProduct(dateD,dateF,null,structure).then((data)=>{
         if(data.length)
             {data=StatistiqueService.changeDataFormat(data);
             res.status(200).json({response:data})}
@@ -109,7 +109,7 @@ function mostCommandedProducts(req,res)
             {data=StatistiqueService.changeDataFormat(data);
             res.status(200).json({response:data})}
             else res.status(200).json({response:'no data'})
-    }).catch(()=>res.status(500).json({response:'internal error'}))
+    }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function productDemandePerYear(req,res)
 {
@@ -161,6 +161,7 @@ function respBciStat(req,res)
     const resp=req.email;
     UserModel.isResponsable(resp).then((structure)=>{
         StatistiqueModel.bciStat(dateD,dateF,structure).then((data)=>{
+            console.log(200)
             res.status(200).json({response:data})
         }).catch(()=>res.status(500).json({response:'internal error'}))
     }).catch(()=>res.status(500).json({response:'internal error'}))

@@ -32,6 +32,17 @@ function updateInventaire(req,res)
     }
 }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
+function update(req,res)
+{
+    const {numInventaire}=req.body;
+    console.log("hi")
+    InventaireModel.getInventaire(numInventaire).then((produits)=>{
+        console.log({produits});
+        InventaireModel.updateQuantite(produits).then(()=>{
+            res.status(200).json({response:'updated'})
+        }).catch(()=>{res.status(500).json({response:'internal error'})})
+    }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
 function showInventaires(req,res)
 {
     InventaireModel.getInventaires().then((inventaires)=>{
@@ -60,4 +71,6 @@ function deleteInventaire(req,res)
         }
     }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
-module.exports={createInventaire,showInventaire,showInventaires,updateInventaire,deleteInventaire,validInventaire}
+module.exports={createInventaire,showInventaire,showInventaires,updateInventaire,deleteInventaire,validInventaire,
+    update
+}
