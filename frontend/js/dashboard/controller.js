@@ -2165,7 +2165,7 @@ const controlLoadArticles = async function () {
     articlesView.addSearchController(controlSearchArticles);
     editArticleView.addHandlerShowWindow();
     editArticleView.addHandlerHideWindow();
-    editChapterView.addHandlerEdit(controlEditArticle);
+    editArticleView.addHandlerEdit(controlEditArticle);
     // deleteChapterView.addDeleteController(controlDeleteStructure);
   } catch (error) {
     console.error(error);
@@ -2183,13 +2183,23 @@ const controlSearchArticles = function (query) {
 
 const controlAddArticle = async function (newArticle) {
   try {
+    await model.loadChapitres();
+    if (
+      !model.state.chapters.all.some(
+        chapter => chapter.designation === newArticle.chapitre
+      )
+    )
+      return helpers.renderError(
+        'Chapter not found',
+        `${newArticle.chapitre} n'existe pas dans les chapitre du systéme `
+      );
     await model.addArticle(newArticle);
-    await controlLoadProducts();
-    console.log(model.state.products.all);
-    addChapterView.clearForm();
+    await controlLoadArticles();
+    console.log(model.state.articles.all);
+    addArticleView.clearForm();
     //Close Window
 
-    addChapterView.toggleWindow();
+    addArticleView.toggleWindow();
   } catch (error) {
     console.error(error);
   }
@@ -2197,10 +2207,13 @@ const controlAddArticle = async function (newArticle) {
 
 const controlEditArticle = function () {
   const target = this;
-  const targetIndex = helpers.findNodeIndex(editArticleView._btnOpen, target);
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.details-btn-articles'),
+    target
+  );
   // console.log(targetIndex);
-  console.log(model.state.chapters.all[targetIndex]);
-  editArticleView.changeInputs(model.state.chapters.all[targetIndex]);
+  console.log(model.state.articles.all[targetIndex]);
+  editArticleView.changeInputs(model.state.articles.all[targetIndex]);
   editArticleView.addHandlerUpdate(controlUpdateArticle);
 };
 

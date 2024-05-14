@@ -370,7 +370,7 @@ function addArticle(numArt, chapitreId, designation, tva) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query =
-      'insert into article (num_article,designation,num_chap,date_ajout) values (?,?,?,NOW(),?)';
+      'insert into article (num_article,designation,num_chap,date_ajout,tva) values (?,?,?,NOW(),?)';
     const values = [numArt, designation, chapitreId, tva];
 
     connection.connect(err => {
@@ -795,7 +795,7 @@ function getArticles() {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query = `select a.designation,a.tva,a.num_article,c.designation as chapitre from article a ,chapitre c
-    where c.num_chap=a.num_article`;
+    where c.num_chap=a.num_chap`;
 
     connection.connect(err => {
       if (err) {

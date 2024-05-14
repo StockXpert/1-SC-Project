@@ -24,12 +24,12 @@ class ArticlesView extends View {
       <td>
         <div class="checkbox-colomn-articles">
           <input type="checkbox" id="checkbox-table-articles" />
-          <p class="colomn-tags-name">21-11 .11</p>
+          <p class="colomn-tags-name">${result.num_article}</p>
         </div>
       </td>
       <td>${result.designation}</td>
-      <td>Fournitures</td>
-      <td>19%</td>
+      <td>${result.chapitre}</td>
+      <td>${result.tva}%</td>
       <td>
         <button class="details-btn-articles">
           <span class="material-icons-sharp info-icon">

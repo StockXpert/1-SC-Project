@@ -36,7 +36,7 @@ class AddArticleView extends View {
         if (!data[key]) return console.log('data is empty');
       }
       console.log(data);
-      // handler(data);
+      handler(data);
       console.log(this);
     });
   }

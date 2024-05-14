@@ -34,11 +34,16 @@ class EditArticleView extends View {
   }
 
   addHandlerHideWindow() {
-    const btnClose = this._parentElement.querySelector('.close-btn');
-    btnClose.addEventListener('click', e => {
-      e.preventDefault();
-      this.toggleWindow();
-    });
+    const btnClose = [
+      this._parentElement.querySelector('.close-btn'),
+      this._overlay,
+    ];
+    btnClose.forEach(btn =>
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        this.toggleWindow();
+      })
+    );
   }
 
   addHandlerEdit(controller) {
@@ -56,8 +61,11 @@ class EditArticleView extends View {
     const formElement = document.querySelector('.edit-article-inputs');
     // Create a new FormData object from the form
     // console.log('🚀 ~ EditStructureView ~ changeInputs ~ formData:', formData);
-    formElement.querySelector('#name-chapitre').value =
+    formElement.querySelector('#numArticle').value = inputValuesObj.num_article;
+    formElement.querySelector('#name-article').value =
       inputValuesObj.designation;
+    formElement.querySelector('#nom-chapitre').value = inputValuesObj.chapitre;
+    formElement.querySelector('#Tva').value = inputValuesObj.tva;
   }
 
   addHandlerUpdate(controller) {
