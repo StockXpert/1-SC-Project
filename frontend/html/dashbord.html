@@ -1232,7 +1232,6 @@
                 <form class="searchbar-fournisseur">
                   <span class="material-icons-sharp"> search </span>
                   <input
-                    type="text"
                     class="searchbar-text-fournisseur"
                     placeholder="Entrez le nom du fournisseur"
                   />
@@ -1285,7 +1284,6 @@
                     </th>
                     <th>Raison Sociale</th>
                     <th>Adresse</th>
-
                     <th>Telephone</th>
                     <th>Details</th>
                   </tr>
@@ -1306,11 +1304,10 @@
 
                     <td>lamacta</td>
                     <td>192612626</td>
-                    <td>19/04/2004</td>
-                    <td>
-                      <button class="details-btn-fournisseur">
+                    <td class="td-view-bdc">
+                      <button class="details-btn print-bdci-btn">
                         <span class="material-icons-sharp info-icon">
-                          edit
+                          info
                         </span>
                       </button>
                     </td>
@@ -1332,11 +1329,10 @@
 
                     <td>lamacta</td>
                     <td>192612626</td>
-                    <td>19/04/2004</td>
-                    <td>
-                      <button class="details-btn-fournisseur">
+                    <td class="td-view-bdc">
+                      <button class="details-btn print-bdci-btn">
                         <span class="material-icons-sharp info-icon">
-                          edit
+                          info
                         </span>
                       </button>
                     </td>
@@ -3309,50 +3305,51 @@
       </div>
       <!-- fin de section  ajouter un produit -->
       <!-- debut de section pour modifier un produit -->
-      <div class="edit-produits-container hidden">
-        <div class="edit-produits-cart">
-          <button class="close-btn">
-            <span class="material-icons-sharp">close</span>
-          </button>
+            <div class="edit-produits-container hidden ">
+              <div class="edit-produits-cart">
+                <button class="close-btn">
+                  <span class="material-icons-sharp">close</span>
+                </button>
+      
+                <div class="heading-edit-produits">
+                  <h1 class="heading-primary-edit-produits">Modifier un Produit</h1>
+                </div>
+                <!-- for inputs -->
+                <form class="edit-produits-inputs">
+                  <div class="input-groupe">
+                    <input
+                      name="Designation"
+                      type="text"
+                      class="input"
+                      id="Designation"
+                      placeholder="Designation du Produit"
+                    />
+                  </div>
+                  <div class="input-groupe">
+                    <input
+                      name="Description"
+                      type="text"
+                      class="input"
+                      id="Description"
+                      placeholder="Description du Produit"
+                    />
+                  </div>
+                  <div class="input-groupe">
+                    <input
+                      name="Quantité"
+                      type="number"
+                      class="input"
+                      id="Quantité"
+                      placeholder="Quantité du Produit"
+                    />
+                  </div>
+                  <div class="create-btn">
+                    <button>Modifier</button>
+                  </div>
+                </form>
+              </div>
+            </div>
 
-          <div class="heading-edit-produits">
-            <h1 class="heading-primary-edit-produits">Modifier un Produit</h1>
-          </div>
-          <!-- for inputs -->
-          <form class="edit-produits-inputs">
-            <div class="input-groupe">
-              <input
-                name="Designation"
-                type="text"
-                class="input"
-                id="Designation"
-                placeholder="Designation du Produit"
-              />
-            </div>
-            <div class="input-groupe">
-              <input
-                name="Description"
-                type="text"
-                class="input"
-                id="Description"
-                placeholder="Description du Produit"
-              />
-            </div>
-            <div class="input-groupe">
-              <input
-                name="Quantité"
-                type="number"
-                class="input"
-                id="Quantité"
-                placeholder="Quantité du Produit"
-              />
-            </div>
-            <div class="create-btn">
-              <button>Modifier</button>
-            </div>
-          </form>
-        </div>
-      </div>
       <!-- fin de section  modifier un produit -->
       <!-- debut de section pour ajouter un article -->
       <div class="add-article-container hidden">
@@ -4007,20 +4004,23 @@
         </div>
       </div>
       <!-- fin section for supprimer article -->
-      <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
-      <div class="container-supp-produits hidden">
-        <div class="supp-produits-cart">
-          <p class="supp-produits-text">
-            Êtes-vous sûr de vouloir supprimer cet produit ? Cette action est
-            irréversible et toutes les données associées seront perdues.
-          </p>
-          <div class="supp-user-btns">
-            <button class="btn-supp supp-produits-annuler">Annuler</button>
-            <button class="btn-supp supp-produits-confirmer">Confirmer</button>
-          </div>
-        </div>
-      </div>
-      <!-- fin section for supprimer article -->
+      <!-- debut section pour supprimer produit etes vous sure de vouloir supprimer -->
+            <div class="container-supp-produits hidden ">
+              <div class="supp-produits-cart">
+                <p class="supp-produits-text">
+                  Êtes-vous sûr de vouloir supprimer cet produit ? Cette action
+                  est irréversible et toutes les données associées seront perdues.
+                </p>
+                <div class="supp-user-btns">
+                  <button class="btn-supp supp-produits-annuler">Annuler</button>
+                  <button class="btn-supp supp-produits-confirmer">
+                    Confirmer
+                  </button>
+                </div>
+              </div>
+            </div>
+      <!-- fin section for supprimer produit -->
+
       <!-- debut section pour supprimer fournisseur etes vous sure de vouloir supprimer -->
       <div class="container-supp-article hidden">
         <div class="supp-article-cart">
