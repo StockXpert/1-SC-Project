@@ -552,7 +552,7 @@ export const getStatusClass = function (status) {
     case 'refusee':
       return 'canceled-status';
     default:
-      return '';
+      return 'canceled-status';
   }
 };
 
@@ -766,43 +766,87 @@ export function generateMonthLabels() {
   }
   return months;
 }
-export const createChart = (ctx, dataFromBack, dataName) => {
-  //   {
-  //     "labels": [
-  //         "C1@esi-sba.dz",
-  //         "Magasinier@esi-sba.dz",
-  //         "o.aliabbou@esi-sba.dz",
-  //         "saidsenhadji06@gmail.com"
-  //     ],
-  //     "dataSet": [
-  //         15,
-  //         4,
-  //         2,
-  //         2
-  //     ]
-  // }
-  const labels = dataFromBack.labels;
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: dataName,
-        data: dataFromBack.dataSet,
-        backgroundColor: ['#477ce2'],
-        borderColor: ['#477ce2'],
-        borderWidth: 1,
-      },
-    ],
-  };
+// export const createChart = (ctx, dataFromBack, dataName) => {
+//   //   {
+//   //     "labels": [
+//   //         "C1@esi-sba.dz",
+//   //         "Magasinier@esi-sba.dz",
+//   //         "o.aliabbou@esi-sba.dz",
+//   //         "saidsenhadji06@gmail.com"
+//   //     ],
+//   //     "dataSet": [
+//   //         15,
+//   //         4,
+//   //         2,
+//   //         2
+//   //     ]
+//   // }
+//   const labels = dataFromBack.labels;
+//   const data = {
+//     labels: labels,
+//     datasets: [
+//       {
+//         label: dataName,
+//         data: dataFromBack.dataSet,
+//         backgroundColor: ['#477ce2'],
+//         borderColor: ['#477ce2'],
+//         borderWidth: 1,
+//       },
+//     ],
+//   };
+//   new Chart(ctx, {
+//     type: 'bar',
+//     data: data,
+//     options: {
+//       scales: {
+//         y: {
+//           beginAtZero: true,
+//         },
+//       },
+//     },
+//   });
+// };
+// helpers.js
+
+export function createChart(ctx, response, dataName) {
+  const data = response.dataSet;
+  const shortLabels = response.ids; // Assuming these are the shorter labels
+  const fullLabels = response.labels; // Assuming these are the full labels
+
   new Chart(ctx, {
-    type: 'bar',
-    data: data,
+    type: 'bar', // or 'line', 'pie', etc.
+    data: {
+      labels: shortLabels, // Use shorter labels for x-axis
+      datasets: [
+        {
+          label: dataName,
+          data: data,
+          backgroundColor: ['#477ce2'],
+          borderColor: ['#477ce2'],
+          borderWidth: 1,
+        },
+      ],
+    },
     options: {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            title: function (tooltipItems) {
+              const index = tooltipItems[0].dataIndex;
+              return fullLabels[index]; // Use full labels for tooltips
+            },
+          },
+        },
+      },
       scales: {
-        y: {
-          beginAtZero: true,
+        x: {
+          ticks: {
+            callback: function (value, index) {
+              return 'id:' + shortLabels[index]; // Ensure shorter labels are used on x-axis
+            },
+          },
         },
       },
     },
   });
-};
+}

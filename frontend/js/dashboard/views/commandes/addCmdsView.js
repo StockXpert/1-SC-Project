@@ -2,6 +2,7 @@ import { AddUserView } from '../addUserView.js';
 import * as helpers from '../../helpers.js';
 
 export class AddCmdsView extends AddUserView {
+  _raison;
   _save = document.querySelector('.btn-save-bdc-qt');
   _parentElement = document.querySelector('.results-bdc-produits');
   _window = document.querySelector('.big-container');

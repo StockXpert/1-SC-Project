@@ -62,7 +62,6 @@ class AddInvView extends AddCmdsIntView {
     this._inputs.forEach(input => {
       helpers.validateIntegerInput(input);
       input.addEventListener('input', e => {
-        //TODO: make the raison go away if the phy==log
         let currentIndex = helpers.findNodeIndex(this._inputs, e.currentTarget);
         controlInput(input.value, currentIndex);
         if (

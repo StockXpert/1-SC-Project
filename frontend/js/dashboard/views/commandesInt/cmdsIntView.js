@@ -129,7 +129,7 @@ export class CmdsIntView extends CmdsView {
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
           result.etat.includes('visee par resp') ||
-          (result.etat.includes('demandee') && result.exterieur)
+          (result.etat.includes('demandee') && result?.exterieur)
             ? ''
             : 'hidden'
         }">
@@ -146,7 +146,7 @@ export class CmdsIntView extends CmdsView {
         ? `
       <td class="td-verif-bdci-RD">
         <button class="verif-bdci-RD ${
-          result.etat.includes('visee par dg') ? '' : 'hidden'
+          result.etat?.includes('visee par dg') ? '' : 'hidden'
         }">
           <span class="material-icons-sharp verif-icon">
             check_circle
@@ -154,7 +154,7 @@ export class CmdsIntView extends CmdsView {
         </button>
       </td>
       <td class="td-print-bdci">${
-        result.etat.includes('servie')
+        result.etat?.includes('servie')
           ? `
     <a class="print-bdci-btnnn" href="../../backend/sortie/sortie${result.num_demande}.pdf" target="_blank">
       <span class="material-icons-sharp info-icon">
@@ -234,6 +234,13 @@ export class CmdsIntView extends CmdsView {
             case 'valid':
               enableBtns([this._btnUpdateInv]);
               break;
+            case 'refusee':
+              enableBtns([this._btnDeleteBdci]);
+              break;
+            case null:
+              console.log('null');
+              enableBtns([this._btnDeleteBdci]);
+              break;
             default:
               disableBtns([
                 this._btnCancelBdc,
@@ -280,6 +287,8 @@ export class CmdsIntView extends CmdsView {
     switch (role) {
       case 'Magasinier':
         this._btnLivrerBdci.classList.remove('hidden');
+        this._btnDeleteBdci.classList.remove('hidden');
+        this._btnModifyBdci.classList.remove('hidden');
         break;
       case 'Consommateur':
         this._btnDeleteBdci.classList.remove('hidden');

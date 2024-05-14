@@ -1894,6 +1894,7 @@ const controlDeleteInv = async function () {
 };
 //#0f0
 const controlValidatingInv = async e => {
+  console.log('controlValidatingInv');
   //ONCLICK OF A VALIDATE BUTTON
   const targetIndex = helpers.findNodeIndex(
     validateInvView._btnOpen,
@@ -1906,14 +1907,11 @@ const controlValidatingInv = async e => {
   );
   validateInvView.unrenderSpinner('');
   console.log(selectedInvProducts);
-  // selectedCmdIntProducts = selectedCmdIntProducts[1].demande;
-  // selectedCmdIntProducts = helpers.fillMissingProperties(
-  //   selectedCmdIntProducts
-  // );
-  // validateInvView.changeDetails(
-  //   selectedCmdIntProducts,
-  //   model.state.inventaires.rendered[targetIndex].num_inventaire
-  // );
+  validateInvView.changeDetails(
+    selectedInvProducts,
+    model.state.inventaires.rendered[targetIndex].num_inventaire
+  );
+  // validateInvView.resetPointers();
 };
 
 //#0f0
@@ -2465,7 +2463,7 @@ deliverCmdsExtView.addHandlerDeliver(controlDechargerCmdsInt);
 deleteCmdsIntView.addDeleteController(controlDeleteCmdsInt);
 deleteInvView.addDeleteController(controlDeleteInv);
 
-addInvView.addHandlerEdit(controlAddInv);
 addInvView.addHandlerSetRemark(controlSetRemark);
+addInvView.addHandlerEdit(controlAddInv);
 addInvView.addHandlerSavingInv(controlSaveInv);
 validateInvView.addHandlerValidate(controlValidateInv);
