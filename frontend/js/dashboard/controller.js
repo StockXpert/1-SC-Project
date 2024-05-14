@@ -57,6 +57,7 @@ import fournisseurView from './views/nomenclatures/fournisseur/fournisseurView.j
 import validateInvView from './views/inventaires/validateInvView.js';
 import deleteArticleView from './views/nomenclatures/articles/deleteArticleView.js';
 import numberArticlesView from './views/nomenclatures/articles/numberArticlesView.js';
+import addProductsView from './views/nomenclatures/produits/addProductsView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -1396,19 +1397,24 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   let productsArray;
   let target = e.currentTarget;
   let targetIndex;
+  console.log();
   switch (view.constructor.name) {
     case 'EditCmdsIntView':
       productsArray = model.state.commandesInt.selected.products;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      model.state.commandesInt.selected.products = targetIndex;
       break;
     case 'AddCmdsIntView':
       productsArray = model.state.bdci_products.added;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      model.state.commandesInt.selected.products = targetIndex;
       break;
     case 'AddInvView':
       productsArray = model.state.inventaires.new.produits;
+      console.log(targetIndex);
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       console.log(productsArray[targetIndex]);
+      model.state.inventaires.new.selectedProduct = targetIndex;
       break;
   }
 
@@ -1416,7 +1422,7 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   view.changeInputs(productsArray[targetIndex]);
   model.state.bdci_products.changed = targetIndex;
   model.state.commandesInt.selected.changed = targetIndex;
-  model.state.inventaires.new.selectedProduct = targetIndex;
+  // model.state.inventaires.new.selectedProduct = targetIndex;
 };
 
 const controlChangeProductInt = function (
@@ -1573,6 +1579,8 @@ const controlViewCmdInt = async function (target) {
   const targetIndex = helpers.findNodeIndex(seeCmdsIntView._btnOpen, target);
   seeCmdsIntView.renderSpinner('', true);
   // TODO:
+  console.log(model.state.commandesInt.rendered);
+  console.log(model.state.commandesInt.rendered[targetIndex]);
   const products = await model.loadCommandeIntProducts(
     model.state.commandesInt.rendered[targetIndex].num_demande
   );
@@ -2094,7 +2102,7 @@ const controlLoadProducts = async function () {
       return;
     }
     productsView.restrict(model.state.me.permissions.all);
-    // addChapterView.restrict(model.state.me.permissions.all);
+    addProductsView.restrict(model.state.me.permissions.all);
     // deleteStructureView.restrict(model.state.me.permissions.all);
     productsView.renderSpinner('Loading Products');
     await model.loadAllProducts();
@@ -2117,7 +2125,7 @@ const controlSearchProduct = async function (query) {
   );
   model.state.products.searched.all = results;
 
-  chaptersView.render(model.state.products.searched.all);
+  productsView.render(model.state.products.searched.all);
   // numberChaptersView.render(model.state.chapters.searched);
   // numberChaptersView.updateMasterCheckbox();
   // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
@@ -2126,13 +2134,22 @@ const controlSearchProduct = async function (query) {
 
 const controlAddProduct = async function (newProduct) {
   try {
-    await model.addChapter(newProduct);
+    await model.loadArticles();
+    if (
+      !model.state.articles.all.some(
+        article => article.designation === newProduct.article
+      )
+    )
+      return helpers.renderError(
+        'Article not found',
+        `${newProduct.article} n'existe pas dans les article du systéme `
+      );
+    await model.addProduct(newProduct);
+    addProductsView.toggleWindow();
     await controlLoadProducts();
     console.log(model.state.products.all);
-    addChapterView.clearForm();
+    addProductsView.clearForm();
     //Close Window
-
-    addChapterView.toggleWindow();
   } catch (error) {
     console.error(error);
   }
@@ -2476,6 +2493,7 @@ sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
 addChapterView.addHandlerUpload(controlAddChapter);
 addArticleView.addHandlerUpload(controlAddArticle);
+addProductsView.addHandlerUpload(controlAddProduct);
 
 addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseursCmds);
 // #F00

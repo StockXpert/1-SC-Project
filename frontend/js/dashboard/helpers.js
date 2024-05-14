@@ -566,7 +566,7 @@ export const getStatusClass = function (status) {
   switch (status) {
     case 'servie':
       return 'served-status-bdci';
-    case 'pret':
+    case 'prete':
       return 'finish-status-bdci';
     case 'visee par dg':
       return 'v-directeur-status';

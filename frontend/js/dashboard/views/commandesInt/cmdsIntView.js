@@ -224,7 +224,7 @@ export class CmdsIntView extends CmdsView {
                 this._btnModifyBdci,
               ]);
               break;
-            case 'pret':
+            case 'prete':
               enableBtns([this._btnLivrerBdci]);
               break;
             case 'no valid':

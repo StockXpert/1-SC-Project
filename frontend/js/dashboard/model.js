@@ -1150,6 +1150,18 @@ export const updateArticle = async function (oldArticle, newArticle) {
   }
 };
 
+export const addProduct = async function (newProduct) {
+  try {
+    const res = await helpers.sendJSON(
+      `${API_URL}/Nomenclatures/addProduct`,
+      newProduct
+    );
+    console.log(res);
+  } catch (error) {
+    console.error('Error addProduct :' + error);
+  }
+};
+
 export const deleteInv = async function (numInventaire) {
   try {
     let delObj = { numInventaire };

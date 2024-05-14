@@ -28,8 +28,7 @@ class ProductsView extends View {
         </div>
       </td>
       <td>${result.designation}</td>
-      <td>${result.description}</td>
-      <td>${result.quantite}</td>
+      <td>${result.quantite || 0}</td>
       <td>
         <button class="details-btn-produits">
           <span class="material-icons-sharp info-icon">
