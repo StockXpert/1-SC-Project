@@ -1397,7 +1397,6 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   let productsArray;
   let target = e.currentTarget;
   let targetIndex;
-  console.log();
   switch (view.constructor.name) {
     case 'EditCmdsIntView':
       productsArray = model.state.commandesInt.selected.products;
@@ -1572,11 +1571,13 @@ const controlSavingBDCI = async function () {
   }
 };
 
-const controlViewCmdInt = async function (target) {
+const controlViewCmdInt = async function (target, view = seeCmdsIntView) {
   //ONCLICK OF A VIEW BUTTON
   //Get the index of the clicked view button here
   // const target = this;
+  console.log(seeCmdsIntView._btnOpen);
   const targetIndex = helpers.findNodeIndex(seeCmdsIntView._btnOpen, target);
+  console.log(targetIndex);
   seeCmdsIntView.renderSpinner('', true);
   // TODO:
   console.log(model.state.commandesInt.rendered);
