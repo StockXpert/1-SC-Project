@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockxpertapp1/const/const.dart';
 import 'package:stockxpertapp1/network/DioHelper.dart';
 import 'package:stockxpertapp1/network/chhelper.dart';
 import 'package:stockxpertapp1/screens/detatils.dart';
@@ -9,6 +10,14 @@ void main() {
   runApp(const MyApp());
   DioHelper.init();
   CacheHelper.init();
+  Widget widget;
+  token = CacheHelper.getData(key: 'token');
+  print('token = $token');
+  if (token != null) {
+    widget = DirecteurScreen();
+  } else {
+    widget = loginScreen();
+  }
 }
 
 class MyApp extends StatelessWidget {

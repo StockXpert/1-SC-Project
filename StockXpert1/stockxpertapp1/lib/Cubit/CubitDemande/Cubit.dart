@@ -3,6 +3,7 @@ import 'package:stockxpertapp1/Cubit/CubitDemande/states.dart';
 import 'package:stockxpertapp1/models/demandeModel.dart';
 
 import 'package:stockxpertapp1/network/DioHelper.dart';
+import 'package:stockxpertapp1/network/chhelper.dart';
 
 class demandeCubit extends Cubit<demandeState> {
   demandeCubit() : super(demandeInitial());
@@ -15,10 +16,9 @@ class demandeCubit extends Cubit<demandeState> {
     emit(demandeLoadingState());
 
     DioHelper.getData(
-            url: '/Sorties/showAllDemandes',
-            token:
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRpcmVjdGV1ckBlc2ktc2JhLmR6Iiwicm9sZSI6IkRpcmVjdGV1ciIsImlhdCI6MTcxNTY0MjIwOCwiZXhwIjoxNzE1NzI4NjA4fQ.R0WfLJhIlwsA77dpmbHTPIag-pg9R4Dycjnp5a20kgA')
-        .then((value) {
+      url: '/Sorties/showAllDemandes',
+      token: CacheHelper.getData(key: "token"),
+    ).then((value) {
       emit(demandeSuccessState());
 
       demandemodel = CommandeModel.fromJson(value.data);

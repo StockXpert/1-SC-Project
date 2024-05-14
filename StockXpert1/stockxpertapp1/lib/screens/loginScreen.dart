@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stockxpertapp1/Cubit/Cubit.dart';
 import 'package:stockxpertapp1/Cubit/states.dart';
 import 'package:stockxpertapp1/compenents/compenents.dart';
+import 'package:stockxpertapp1/network/chhelper.dart';
 import 'package:stockxpertapp1/screens/directeurScreen.dart';
 
 // ignore: camel_case_types
@@ -22,8 +23,12 @@ class loginScreen extends StatelessWidget {
         child: BlocConsumer<LoginCubit, LoginState>(
             listener: (BuildContext context, state) {
           if (state is LoginSuccess) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => DirecteurScreen()));
+            CacheHelper.saveData(key: "token", value: state.loginmodel.jwt)
+                .then((value) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DirecteurScreen()));
+              print(CacheHelper.getData(key: "token"));
+            });
           } else if (state is LoginError) {
             Fluttertoast.showToast(
                 msg: "login failed!!",
