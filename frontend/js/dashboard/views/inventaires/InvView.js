@@ -48,20 +48,32 @@ export class InvView extends CmdsIntView {
         .map(({ designation }) => designation)
         .includes('valid inventaire')
         ? `<td class="td-verif-inv">
-        <button class="verif-inv">
-          <span class="material-icons-sharp verif-icon">
-            check_circle
-          </span>
-        </button>
+
+              <button class="verif-inv ${
+                result.etat == 'no valid' ? `` : `hidden`
+              }">
+                <span class="material-icons-sharp verif-icon">
+                  check_circle
+                </span>
+              </button>
+
       </td>`
         : ``
     }
     <td class="td-print-inv">
+
+    ${
+      result.etat == 'valid'
+        ? `
       <button class="details-btn print-inv-btn">
         <span class="material-icons-sharp info-icon">
           print
         </span>
-      </button>
+      </button>`
+        : ``
+    }
+
+
     </td>
   </tr>`;
   }

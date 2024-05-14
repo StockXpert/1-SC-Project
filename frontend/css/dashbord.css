@@ -3063,7 +3063,7 @@ a.password-icon:active {
 }
 .container-statistiques {
   /* max-height: 62vh; */
-  max-height: 58vh;
+  max-height: 77vh;
   overflow-y: auto;
 }
 .container-statistiques::-webkit-scrollbar {
@@ -3085,8 +3085,8 @@ a.password-icon:active {
 .grid-2 {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  height: 20rem;
+  /* gap: 2rem; */
+  height: 30rem;
   background-color: white;
   padding: 0.8rem;
   border-radius: 1rem;

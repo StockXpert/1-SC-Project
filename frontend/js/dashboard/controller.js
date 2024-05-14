@@ -1892,23 +1892,34 @@ const controlDeleteInv = async function () {
   invView.unrenderSpinner();
   await controlLoadInv();
 };
-const controlValidatingInv = async e => {
+const controlValidatingInv = async (e, view = false) => {
   console.log('controlValidatingInv');
+  console.log(validateCmdsIntView._parentElement);
+  validateCmdsIntView._parentElement.scrollTop = 0;
   //ONCLICK OF A VALIDATE BUTTON
-  const targetIndex = helpers.findNodeIndex(
-    validateInvView._btnOpen,
-    e.currentTarget
-  );
-  validateInvView.renderSpinner('');
+  let targetIndex;
+  if (view) {
+    targetIndex = helpers.findNodeIndex(
+      validateInvView._btnView,
+      e.currentTarget
+    );
+  } else {
+    targetIndex = helpers.findNodeIndex(
+      validateInvView._btnOpen,
+      e.currentTarget
+    );
+  }
+  validateInvView.renderSpinner('', true);
   console.log(model.state.inventaires.rendered);
   let selectedInvProducts = await model.loadInventaire(
     model.state.inventaires.rendered[targetIndex].num_inventaire
   );
-  validateInvView.unrenderSpinner('');
+  validateInvView.unrenderSpinner(true);
   console.log(selectedInvProducts);
   validateInvView.changeDetails(
     selectedInvProducts,
-    model.state.inventaires.rendered[targetIndex].num_inventaire
+    model.state.inventaires.rendered[targetIndex].num_inventaire,
+    view
   );
   // validateInvView.resetPointers();
 };
@@ -2289,23 +2300,38 @@ const controlLoadStatistiques = async () => {
   // console.log(model.getGraphPromise('topDemandeurs'));
 
   //TODO: CLEAR GRAPHS
+
+  statsView._clearParentElement('mini');
+  statsView._clearParentElement('g1');
+  statsView._clearParentElement('g2');
   statsView.renderGraphSpin(
     'Top Demandeurs',
     'g2',
     model.getGraphPromise('topDemandeurs'),
-    'les demandes'
+    'Les Demandes',
+    false
   );
   statsView.renderGraphSpin(
-    'Les produits les plus commandes',
+    'Les Produits Les Plus Commandes',
     'g2',
     model.getGraphPromise('mostCommandedProducts'),
-    'les commandes'
+    'Les Commandes',
+    false
   );
   statsView.renderGraphSpin(
-    'Les produits les plus demandes',
+    'Les Produits Les Plus Demandés',
     'g2',
     model.getGraphPromise('mostDemmandedProduct'),
-    'les demandes'
+    'Les Demandes',
+    false
+  );
+  statsView.renderGraphSpin(
+    'Statuts Des Demandes',
+    'g2',
+    model.getGraphPromise('bciStat'),
+    'Categories',
+    false,
+    'pie'
   );
   //TODO: make a config for both typename=>chart.js_options and StatsPermissions=>renderGraphSpin args and default to bar graphs
   //TODO: add recherche to chapitre/products

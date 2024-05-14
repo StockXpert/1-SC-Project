@@ -766,46 +766,46 @@ export function generateMonthLabels() {
   }
   return months;
 }
-// export const createChart = (ctx, dataFromBack, dataName) => {
-//   //   {
-//   //     "labels": [
-//   //         "C1@esi-sba.dz",
-//   //         "Magasinier@esi-sba.dz",
-//   //         "o.aliabbou@esi-sba.dz",
-//   //         "saidsenhadji06@gmail.com"
-//   //     ],
-//   //     "dataSet": [
-//   //         15,
-//   //         4,
-//   //         2,
-//   //         2
-//   //     ]
-//   // }
-//   const labels = dataFromBack.labels;
-//   const data = {
-//     labels: labels,
-//     datasets: [
-//       {
-//         label: dataName,
-//         data: dataFromBack.dataSet,
-//         backgroundColor: ['#477ce2'],
-//         borderColor: ['#477ce2'],
-//         borderWidth: 1,
-//       },
-//     ],
-//   };
-//   new Chart(ctx, {
-//     type: 'bar',
-//     data: data,
-//     options: {
-//       scales: {
-//         y: {
-//           beginAtZero: true,
-//         },
-//       },
-//     },
-//   });
-// };
+export const createChartOld = (ctx, dataFromBack, dataName) => {
+  //   {
+  //     "labels": [
+  //         "C1@esi-sba.dz",
+  //         "Magasinier@esi-sba.dz",
+  //         "o.aliabbou@esi-sba.dz",
+  //         "saidsenhadji06@gmail.com"
+  //     ],
+  //     "dataSet": [
+  //         15,
+  //         4,
+  //         2,
+  //         2
+  //     ]
+  // }
+  const labels = dataFromBack.labels;
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: dataName,
+        data: dataFromBack.dataSet,
+        backgroundColor: ['#477ce2'],
+        borderColor: ['#477ce2'],
+        borderWidth: 1,
+      },
+    ],
+  };
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+};
 // helpers.js
 
 export function createChart(ctx, response, dataName) {
@@ -842,9 +842,143 @@ export function createChart(ctx, response, dataName) {
         x: {
           ticks: {
             callback: function (value, index) {
-              return 'id:' + shortLabels[index]; // Ensure shorter labels are used on x-axis
+              return 'ID:' + shortLabels[index]; // Ensure shorter labels are used on x-axis
             },
           },
+        },
+      },
+      barThickness: 50, // Set the width of the bars
+    },
+  });
+}
+
+// export function createPieChart(ctx, response, dataName) {
+//   // Convert the response object to arrays for labels and data
+//   const labels = Object.keys(response[0]);
+//   const data = Object.values(response[0]);
+//   console.log(labels, data);
+
+//   // Check if labels and data are populated correctly
+//   console.log(labels); // Debug: Print labels to console
+//   console.log(data); // Debug: Print data to console
+
+//   new Chart(ctx, {
+//     type: 'pie',
+//     data: {
+//       labels: labels,
+//       datasets: [
+//         {
+//           label: dataName,
+//           data: data,
+//           backgroundColor: [
+//             '#FF6384',
+//             '#36A2EB',
+//             '#FFCE56',
+//             '#4BC0C0',
+//             '#9966FF',
+//             '#FF9F40',
+//           ],
+//           borderColor: '#fff',
+//           borderWidth: 1,
+//         },
+//       ],
+//     },
+//     options: {
+//       plugins: {
+//         legend: {
+//           display: true,
+//           position: 'top',
+//           align: 'start', // Aligns the legend horizontally
+//           labels: {
+//             boxWidth: 10, // Width of the color box next to each label
+//             padding: 20, // Padding between labels
+//           },
+//         },
+//         tooltip: {
+//           callbacks: {
+//             label: function (tooltipItem) {
+//               const label = tooltipItem.label || '';
+//               const value = tooltipItem.raw;
+//               return `${label}: ${value}`;
+//             },
+//           },
+//         },
+//       },
+//     },
+//   });
+// }
+export function createPieChart(ctx, response, dataName) {
+  // Convert the response object to arrays for labels and data
+  const labels = Object.keys(response[0]);
+  const data = Object.values(response[0]);
+
+  // Calculate the desired radius in pixels (assuming 1rem = 16px)
+  const remToPx = rem =>
+    rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const radiusInRem = 10; // For example, 10rem
+  const radiusInPx = remToPx(radiusInRem);
+
+  // Check if labels and data are populated correctly
+  console.log(labels); // Debug: Print labels to console
+  console.log(data); // Debug: Print data to console
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: dataName,
+          data: data,
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0',
+            '#9966FF',
+            '#FF9F40',
+          ],
+          borderColor: '#fff',
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          align: 'start', // Aligns the legend horizontally
+          labels: {
+            boxWidth: 10, // Width of the color box next to each label
+            padding: 20, // Padding between labels
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              const label = tooltipItem.label || '';
+              const value = tooltipItem.raw;
+              return `${label}: ${value}`;
+            },
+          },
+        },
+      },
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        },
+      },
+      elements: {
+        arc: {
+          // Adjust the radius of the pie chart
+          borderWidth: 1,
+          radius: radiusInPx,
         },
       },
     },

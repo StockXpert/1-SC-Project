@@ -2,9 +2,17 @@ import View from '../view.js';
 import * as helpers from '../../helpers.js';
 
 class StatsView extends View {
-  async renderGraphSpin(title, size, promise, dataName) {
+  async renderGraphSpin(
+    title,
+    size,
+    promise,
+    dataName,
+    old = true,
+    style = 'bar'
+  ) {
     let html;
     let parentElement;
+    //
     switch (size) {
       case 'g1':
         html = `
@@ -26,7 +34,7 @@ class StatsView extends View {
         break;
       case 'g2':
         html = `
-          <div class="grid-2">
+          <div class="grid-2" ">
           <p class="cart-description-statistiques">${title}</p>
           <div
           class="graph-statistiques spinner-parent ${title.replace(/\s/g, '')}"
@@ -58,20 +66,66 @@ class StatsView extends View {
       .querySelector(parentElement)
       .insertAdjacentHTML('afterbegin', html);
     const results = await promise;
-    console.log(results.response);
+    console.log(results.response, title);
+    console.log(
+      document
+        .querySelector(parentElement)
+        .querySelector(`.${title.replace(/\s/g, '')}`)
+    );
     document
       .querySelector(parentElement)
       .querySelector(
         `.${title.replace(/\s/g, '')}`
       ).innerHTML = `<canvas id="${title.replace(/\s/g, '')}"></canvas>`;
-    helpers.createChart(
-      document
-        .querySelector(parentElement)
-        .querySelector(`.${title.replace(/\s/g, '')}`)
-        .querySelector(`#${title.replace(/\s/g, '')}`),
-      results.response,
-      dataName
-    );
+    if (style == 'bar')
+      if (old) {
+        helpers.createChartOld(
+          document
+            .querySelector(parentElement)
+            .querySelector(`.${title.replace(/\s/g, '')}`)
+            .querySelector(`#${title.replace(/\s/g, '')}`),
+          results.response,
+          dataName
+        );
+      } else
+        helpers.createChart(
+          document
+            .querySelector(parentElement)
+            .querySelector(`.${title.replace(/\s/g, '')}`)
+            .querySelector(`#${title.replace(/\s/g, '')}`),
+          results.response,
+          dataName
+        );
+    else if (style == 'pie') {
+      console.log('pie', dataName);
+      helpers.createPieChart(
+        document
+          .querySelector(parentElement)
+          .querySelector(`.${title.replace(/\s/g, '')}`)
+          .querySelector(`#${title.replace(/\s/g, '')}`),
+        results.response,
+        dataName
+      );
+    }
+    document
+      .querySelector(parentElement)
+      .querySelectorAll('.grid-2')
+      .forEach(elem => (elem.style.height = 'auto'));
+  }
+  _clearParentElement(sizeType) {
+    let parentElement;
+    switch (sizeType) {
+      case 'g1':
+        parentElement = '.grid-statistiques';
+        break;
+      case 'g2':
+        parentElement = '.grid-statistiques';
+        break;
+      case 'mini':
+        parentElement = '.container-mini-carts';
+        break;
+    }
+    document.querySelector(parentElement).innerHTML = '';
   }
 }
 export default new StatsView();
