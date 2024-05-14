@@ -2391,7 +2391,7 @@ const controlLoadStatistiques = async () => {
     'g2',
     model.getGraphPromise('mostDemmandedProduct'),
     'Les Demandes',
-    false
+    true
   );
   statsView.renderGraphSpin(
     'Statuts Des Demandes',
