@@ -1892,7 +1892,6 @@ const controlDeleteInv = async function () {
   invView.unrenderSpinner();
   await controlLoadInv();
 };
-//#0f0
 const controlValidatingInv = async e => {
   console.log('controlValidatingInv');
   //ONCLICK OF A VALIDATE BUTTON
@@ -1914,27 +1913,31 @@ const controlValidatingInv = async e => {
   // validateInvView.resetPointers();
 };
 
-//#0f0
 const controlValidateInv = async () => {
-  let appObject = validateCmdsIntView.extractObject();
-  let returnValue;
-  validateCmdsIntView._btnClose.click();
-  cmdsIntView.renderSpinner('Approbation ...');
-  switch (validateCmdsIntView._role) {
-    case 'Responsable directe':
-      returnValue = await model.resAppCmdInt(appObject);
-      break;
-    case 'Directeur':
-      returnValue = await model.dirAppCmdInt(appObject);
-      break;
-    case 'Magasinier':
-      returnValue = await model.magAppCmdInt(appObject);
-      break;
-  }
-  cmdsIntView.unrenderSpinner('');
-  await controlLoadCmdsInt();
+  // let appObject = validateCmdsIntView.extractObject();
+  // let returnValue;
+  validateInvView._btnClose.click();
+  invView.renderSpinner(`Validation de l'état de l'inventaire ...`);
+  console.log('LIFE', validateInvView._InvNum);
+  //#0f0
+  await model.validateInv(validateInvView._InvNum);
+  invView.unrenderSpinner('');
+  await controlLoadInv();
 };
 
+const controlCrushInv = async function () {
+  //ONCLICK OF the CRUSH METTRE A JOUR BUTTON
+  //CONFIRM MSG
+  const targetIndex = Array.from(invView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numInventaire =
+    model.state.inventaires.rendered[targetIndex].num_inventaire;
+  invView.renderSpinner('Suppression en cours...');
+  await model.crushInv(numInventaire);
+  invView.unrenderSpinner();
+  await controlLoadInv();
+};
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// Nomenclaturess #f00 #fff

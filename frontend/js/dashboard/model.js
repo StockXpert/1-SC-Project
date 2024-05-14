@@ -1187,3 +1187,54 @@ export async function loadInventaire(numInventaire) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 }
+export async function validateInv(numInventaire) {
+  try {
+    let post = { numInventaire };
+    console.log(post);
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Inventaire/validInventaire`,
+      post
+    );
+    if (!responseArray[0].ok) {
+      console.error(responseArray);
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        valid inventaire:
+        "Valider un état de l'inventaire",
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray[1].response;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+}
+export async function crushInv(numInventaire) {
+  console.log('crushing', numInventaire);
+  // try {
+  //   let post = { numInventaire };
+  //   console.log(post);
+  //   let responseArray = await helpers.postJSONReturnResResp(
+  //     `${API_URL}/Inventaire/validInventaire`,
+  //     post
+  //   );
+  //   if (!responseArray[0].ok) {
+  //     console.error(responseArray);
+  //     helpers.renderError(
+  //       'ERREUR!',
+  //       `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+  //       valid inventaire:
+  //       "Valider un état de l'inventaire",
+  //       `
+  //     );
+  //     return false;
+  //   }
+  //   console.log(responseArray);
+  //   return responseArray[1].response;
+  // } catch (err) {
+  //   helpers.renderError('FATAL ERROR!', `${err}`);
+  // }
+}

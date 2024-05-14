@@ -2,6 +2,7 @@ import { ValidateCmdsIntView } from '../commandesInt/validateCmdsIntView.js';
 import * as helpers from '../../helpers.js';
 
 class ValidateInvView extends ValidateCmdsIntView {
+  _InvNum;
   _windowRaison;
   _btnsOpenRaison;
   _btnCloseRaison;
@@ -41,6 +42,7 @@ class ValidateInvView extends ValidateCmdsIntView {
 
   changeDetails(products, cmd = '') {
     if (cmd != '') {
+      this._InvNum = parseInt(cmd);
       const heading = this._title;
       heading.innerHTML = `Validation de l'état d'inventaire N°${cmd}`;
     }
