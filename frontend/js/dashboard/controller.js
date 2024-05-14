@@ -2372,12 +2372,17 @@ const controlLoadStatistiques = async () => {
   statsView._clearParentElement('mini');
   statsView._clearParentElement('g1');
   statsView._clearParentElement('g2');
+  const postObj = {
+    produit: 'Duplicopieur - Monochrome - A3',
+  };
   statsView.renderGraphSpin(
     'Top Demandeurs',
     'g2',
-    model.getGraphPromise('topDemandeurs'),
+    model.getGraphPromise('topDemandeurs', {
+      produit: 'Duplicopieur - Monochrome - A3',
+    }),
     'Les Demandes',
-    false
+    true
   );
   statsView.renderGraphSpin(
     'Les Produits Les Plus Commandés',

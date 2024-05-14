@@ -1187,7 +1187,8 @@ export const deleteInv = async function (numInventaire) {
   }
 };
 
-export const getGraphPromise = async function (graphLink) {
+export const getGraphPromise = async function (graphLink, optionalBody = null) {
+  console.log(graphLink, optionalBody);
   const resultsPro = await Promise.race([
     fetch(`${API_URL}/Statistique/${graphLink}`, {
       method: 'POST',
@@ -1195,9 +1196,11 @@ export const getGraphPromise = async function (graphLink) {
         Authorization: localStorage.getItem('JWT'),
         'Content-Type': 'application/json',
       },
+      body: optionalBody && JSON.stringify(optionalBody),
     }),
     helpers.timeout(TIMEOUT_SEC),
   ]);
+  console.log(resultsPro.body);
   return resultsPro.json();
 };
 
