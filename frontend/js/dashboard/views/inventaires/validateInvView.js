@@ -20,7 +20,8 @@ export class ValidateInvView extends ValidateCmdsIntView {
   _parentElement = document.querySelector('.results-produits-inv-verif');
   _raisonContainer = document.querySelector('#justify-verif');
   _raisons;
-  // TODO: _btnLivrerBdci = document.querySelector('.btn-deliver-bdci');
+  // TODO:
+  _btnLivrerBdci = document.querySelector('.btn-maj-inv');
   // _checkboxes;
 
   constructor(nerfed = false) {

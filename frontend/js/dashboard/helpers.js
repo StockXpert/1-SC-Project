@@ -182,6 +182,31 @@ export const putJSON = async function (url, uploadData) {
     throw err;
   }
 };
+export const putJSONReturnResResp = async function (url, uploadData) {
+  // try {
+  console.log('putJSON');
+  const res = await Promise.race([
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(uploadData),
+    }),
+    timeout(TIMEOUT_SEC),
+  ]);
+  const data = await res.json();
+  console.log(res);
+  console.log(data);
+  return [res, data];
+  //   if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+  //   return data;
+  // } catch (err) {
+  //   throw err;
+  // }
+};
+
 export const delJSON = async function (url, uploadData) {
   try {
     console.log('delJSON');
