@@ -68,9 +68,9 @@ function rapidFournisseur(req,res)
 }
 function topDemandeurs(req,res)
 {
-    const {dateD,dateF}=req.body
+    const {dateD,dateF,produit}=req.body
     
-    StatistiqueModel.topDemandeurs(dateD,dateF).then((data)=>{
+    StatistiqueModel.topDemandeurs(dateD,dateF,null,produit).then((data)=>{
         if(data.length)
             {data=StatistiqueService.changeDataFormat(data);
             res.status(200).json({response:data})}
@@ -79,9 +79,9 @@ function topDemandeurs(req,res)
 }
 function structureTopDemandeurs(req,res)
 {
-    const {dateD,dateF,structure}=req.body
+    const {dateD,dateF,structure,produit}=req.body
     
-    StatistiqueModel.topDemandeurs(dateD,dateF,structure).then((data)=>{
+    StatistiqueModel.topDemandeurs(dateD,dateF,structure,produit).then((data)=>{
         if(data.length)
             {data=StatistiqueService.changeDataFormat(data);
             res.status(200).json({response:data})}
