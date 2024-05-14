@@ -834,9 +834,11 @@ export const createChartOld = (ctx, dataFromBack, dataName) => {
 // helpers.js
 
 export function createChart(ctx, response, dataName) {
+  console.log(response);
   const data = response.dataSet;
-  const shortLabels = response.ids; // Assuming these are the shorter labels
+  const shortLabels = response.id; // Assuming these are the shorter labels
   const fullLabels = response.labels; // Assuming these are the full labels
+  console.log(data, fullLabels, shortLabels);
 
   new Chart(ctx, {
     type: 'bar', // or 'line', 'pie', etc.

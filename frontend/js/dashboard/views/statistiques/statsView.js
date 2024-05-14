@@ -67,11 +67,6 @@ class StatsView extends View {
       .insertAdjacentHTML('afterbegin', html);
     const results = await promise;
     console.log(results.response, title);
-    console.log(
-      document
-        .querySelector(parentElement)
-        .querySelector(`.${title.replace(/\s/g, '')}`)
-    );
     document
       .querySelector(parentElement)
       .querySelector(
@@ -97,7 +92,6 @@ class StatsView extends View {
           dataName
         );
     else if (style == 'pie') {
-      console.log('pie', dataName);
       helpers.createPieChart(
         document
           .querySelector(parentElement)
