@@ -343,6 +343,7 @@ function inscriptionDate(produit,year)
         console.log({dateIns:results})
         if(results.length==0)
           resolve("")
+        else
         resolve(results[0].date);
       });
       
@@ -372,6 +373,7 @@ function avgProductValue(produit,year)
         }
         if(results.length==0)
           resolve("")
+        else
         resolve(results[0].avg);
       });
       
@@ -405,6 +407,7 @@ function getProductFournisseur(produit,year)
         console.log({results:results});
         if(results.length==0)
           resolve("")
+        else
         resolve(results[0].raison_sociale);
       });
       
