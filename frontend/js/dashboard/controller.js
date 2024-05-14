@@ -1946,7 +1946,7 @@ const controlCrushInv = async function () {
   );
   const numInventaire =
     model.state.inventaires.rendered[targetIndex].num_inventaire;
-  invView.renderSpinner('Suppression en cours...');
+  invView.renderSpinner('Mise a jour en cours...');
   await model.crushInv(numInventaire);
   invView.unrenderSpinner();
   await controlLoadInv();
@@ -2548,3 +2548,5 @@ addInvView.addHandlerSetRemark(controlSetRemark);
 addInvView.addHandlerEdit(controlAddInv);
 addInvView.addHandlerSavingInv(controlSaveInv);
 validateInvView.addHandlerValidate(controlValidateInv);
+validateInvView.addHandlerDeliver(controlCrushInv);
+// validateInvView.(controlValidateInv);
