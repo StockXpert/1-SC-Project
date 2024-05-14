@@ -847,7 +847,7 @@ export function createChart(ctx, response, dataName) {
           },
         },
       },
-      barThickness: 50, // Set the width of the bars
+      barThickness: 40, // Set the width of the bars
     },
   });
 }

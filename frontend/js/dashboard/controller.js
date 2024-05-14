@@ -2312,7 +2312,7 @@ const controlLoadStatistiques = async () => {
     false
   );
   statsView.renderGraphSpin(
-    'Les Produits Les Plus Commandes',
+    'Les Produits Les Plus Commandés',
     'g2',
     model.getGraphPromise('mostCommandedProducts'),
     'Les Commandes',
