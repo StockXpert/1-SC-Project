@@ -132,7 +132,8 @@ function addDecharge(Id, products, dateDecharge, numDemande) {
 }
 function allZero(products) {
   for (let product of products) {
-    if (product.quanite != 0) return false;
+    parseInt;
+    if (parseInt(product.quanite) != 0) return false;
   }
   return true;
 }

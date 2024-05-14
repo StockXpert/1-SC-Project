@@ -3,12 +3,12 @@ function changeDataFormat(data) {
   let result = {
     labels: [],
     dataSet: [],
-    ids: [],
+    id: [],
   };
   for (line of data) {
     result.labels.push(line[keys[0]]);
     result.dataSet.push(line[keys[1]]);
-    result.ids.push(line[keys[2]]);
+    if (keys.length > 2) result.id.push(line[keys[2]]);
   }
   return result;
 }
