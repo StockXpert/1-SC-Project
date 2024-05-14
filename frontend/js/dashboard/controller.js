@@ -55,6 +55,8 @@ import addArticleView from './views/nomenclatures/articles/addArticleView.js';
 import editArticleView from './views/nomenclatures/articles/editArticleView.js';
 import fournisseurView from './views/nomenclatures/fournisseur/fournisseurView.js';
 import validateInvView from './views/inventaires/validateInvView.js';
+import deleteArticleView from './views/nomenclatures/articles/deleteArticleView.js';
+import numberArticlesView from './views/nomenclatures/articles/numberArticlesView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -813,7 +815,7 @@ const controlSearchArticlesCmds = input => {
   //add results to html
   addCmdsView.addToSuggestionsArticlesAndEL(
     extractItems(results),
-    controlSelectArticles
+    controlSelectArticlesCmds
   );
   addCmdsView.resultVisibilityTogglers();
   //update search result refrencers
@@ -853,7 +855,7 @@ const controlSearchProducts = (input, type) => {
 //in addCmdsView:
 //add EL ONINPUT TO #input-box
 
-const controlSelectArticles = articleName => {
+const controlSelectArticlesCmds = articleName => {
   model.state.articles.selected = articleName;
   controlUpdateProducts();
 };
@@ -2037,7 +2039,7 @@ const controlUpdateChapter = async function (oldChapter, newChapter) {
     // ) return;
     // console.log(oldStructure.designation, newStructure.designation);
     if (oldChapter.designation === newChapter.designation) return;
-    structuresView.renderSpinner('Modification de la structure...');
+    chaptersView.renderSpinner('Modification de la structure...');
     await model.updateChapter(oldChapter, newChapter);
     await controlLoadChapters();
   } catch (error) {
@@ -2152,16 +2154,17 @@ const controlLoadArticles = async function () {
     }
     articlesView.restrict(model.state.me.permissions.all);
     addArticleView.restrict(model.state.me.permissions.all);
-    // deleteChapterView.restrict(model.state.me.permissions.all);
+    deleteArticleView.restrict(model.state.me.permissions.all);
     articlesView.renderSpinner('Loading Articles ...');
     await model.loadArticles();
     articlesView.render(model.state.articles.all);
     // deleteStructureView.addDeleteController(controlDeleteStructure);
 
     // numberChaptersView.render(model.state.chapters);
-    // numberChaptersView.updateMasterCheckbox();
-    // numberChaptersView.addHandlerNumber(controleSelectChapters);
-    // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
+    numberArticlesView.render(model.state.articles);
+    numberArticlesView.updateMasterCheckbox();
+    numberArticlesView.addHandlerNumber(controlSelectArticles);
+    numberArticlesView.addHandlerMasterCheckbox(controlSelectArticles);
     articlesView.addSearchController(controlSearchArticles);
     editArticleView.addHandlerShowWindow();
     editArticleView.addHandlerHideWindow();
@@ -2172,13 +2175,29 @@ const controlLoadArticles = async function () {
   }
 };
 
+const controlSelectArticles = function (searched) {
+  numberArticlesView._clear();
+  if (searched) {
+    model.state.articles.searched.selected =
+      numberArticlesView.calculateCheckboxes();
+    numberArticlesView.render(model.state.articles.searched);
+    return;
+  }
+  model.state.articles.selected = numberArticlesView.calculateCheckboxes();
+  numberArticlesView.render(model.state.articles);
+};
+
 const controlSearchArticles = function (query) {
-  const results = model.state.articles.all.filter(product =>
-    product.designation.toLowerCase().includes(query.toLowerCase())
+  const results = model.state.articles.all.filter(article =>
+    article.designation.toLowerCase().includes(query.toLowerCase())
   );
   model.state.articles.searched.all = results;
 
-  chaptersView.render(model.state.articles.searched.all);
+  articlesView.render(model.state.articles.searched.all);
+  // numberArticlesView.render(model.state.articles.searched);
+  numberArticlesView.updateMasterCheckbox();
+  numberArticlesView.addHandlerNumber(controlSearchArticles, true);
+  numberArticlesView.addHandlerMasterCheckbox(controlSearchArticles, true);
 };
 
 const controlAddArticle = async function (newArticle) {
@@ -2194,12 +2213,13 @@ const controlAddArticle = async function (newArticle) {
         `${newArticle.chapitre} n'existe pas dans les chapitre du systéme `
       );
     await model.addArticle(newArticle);
+    addArticleView.toggleWindow();
     await controlLoadArticles();
     console.log(model.state.articles.all);
     addArticleView.clearForm();
     //Close Window
 
-    addArticleView.toggleWindow();
+    // addArticleView.toggleWindow();
   } catch (error) {
     console.error(error);
   }
@@ -2217,16 +2237,34 @@ const controlEditArticle = function () {
   editArticleView.addHandlerUpdate(controlUpdateArticle);
 };
 
+const controlDeleteArticle = async function () {
+  filterArrayByBooleans(
+    model.state.articles.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-articles')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    articlesView.renderSpinner(
+      'Suppression du Article ' + el.designation + '...'
+    );
+    await model.deleteArticle(el);
+    // back to main menu
+    await controlLoadArticles();
+  });
+};
+
 const controlUpdateArticle = async function (oldArticle, newArticle) {
-  Article;
   try {
     // if (
     //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
     //     .length === 0
     // ) return;
     // console.log(oldStructure.designation, newStructure.designation);
-    if (oldArticle.designation === newArticle.designation) return;
-    structuresView.renderSpinner("Modification de l'article...");
+    // if (oldArticle.designation === newArticle.designation) return;
+    articlesView.renderSpinner("Modification de l'article...");
     await model.updateArticle(oldArticle, newArticle);
     await controlLoadArticles();
   } catch (error) {
@@ -2433,6 +2471,7 @@ editStructureView.addHandlerShowWindow();
 editStructureView.addHandlerEdit(controlEditStructure);
 deleteStructureView.addDeleteController(controlDeleteStructure);
 deleteChapterView.addDeleteController(controlDeleteChapter);
+deleteArticleView.addDeleteController(controlDeleteArticle);
 sideView.hideAllDivs();
 deleteRoleView.addDeleteController(controlDeleteRoles);
 addChapterView.addHandlerUpload(controlAddChapter);

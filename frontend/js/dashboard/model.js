@@ -1121,6 +1121,35 @@ export const addArticle = async function (newArticle) {
   }
 };
 
+export const deleteArticle = async function (article) {
+  try {
+    const uploadData = { designation: article.designation };
+    const data = await helpers.delJSON(
+      `${API_URL}/Nomenclatures/deleteArticle`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateArticle = async function (oldArticle, newArticle) {
+  try {
+    const uploadData = {
+      oldArticle: oldArticle,
+      newArticle: newArticle,
+    };
+    const data = await helpers.putJSON(
+      `${API_URL}/Nomenclatures/updateArticle`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const deleteInv = async function (numInventaire) {
   try {
     let delObj = { numInventaire };

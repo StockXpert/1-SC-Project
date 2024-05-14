@@ -1,10 +1,10 @@
 import View from '../../view.js';
-class NumberChaptersView extends View {
-  _parentElement = document.querySelector('.heading-table-text-chapitres');
-  _table = document.querySelector('.results-chapitres');
+class NumberArticlesView extends View {
+  _parentElement = document.querySelector('.heading-table-text-articles');
+  _table = document.querySelector('.results-articles');
   _checkboxes = this._table.querySelectorAll('input[type="checkbox"]');
   _masterCheckbox = document
-    .querySelector('.table-container-chapitres')
+    .querySelector('.table-container-articles')
     .querySelector('#checkbox-table-all');
   _elements = this._table.querySelectorAll('tr');
 
@@ -107,4 +107,4 @@ class NumberChaptersView extends View {
   }
 }
 
-export default new NumberChaptersView();
+export default new NumberArticlesView();

@@ -73,9 +73,12 @@ class EditArticleView extends View {
 
     this._form.addEventListener('submit', e => {
       e.preventDefault();
-      // const newArticle = {
-      //   designation: formElement.querySelector('#numArticle').value,
-      // };
+      const newArticle = {
+        designation: formElement.querySelector('#name-article').value,
+        num_article: formElement.querySelector('#numArticle').value,
+        chapitre: formElement.querySelector('#nom-chapitre').value,
+        tva: formElement.querySelector('#Tva').value,
+      };
       console.log(this.currArticle, newArticle);
       controller(this.currArticle, newArticle);
       this.toggleWindow();
