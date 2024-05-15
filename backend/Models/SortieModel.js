@@ -904,15 +904,6 @@ function insertDecharge(numDemande, produits) {
                               return callback(err);
                           }
                           console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
-                          
-                          // Insérer les données dans la table reference après avoir inséré dans la table decharge
-                          connection.query('INSERT INTO reference (designation,id_produit)  VALUES (?,?)', [produit.reference,id_produit], (err, result) => {
-                              if (err && err.code !== 'ER_DUP_ENTRY') { // Ignorer l'erreur Duplicate entry
-                                  return callback(err);
-                              }
-                              console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
-                              callback(); // Appel du callback après avoir exécuté les deux requêtes
-                          });
                       });
                   });
               }, (err) => {

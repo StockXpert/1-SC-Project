@@ -16,7 +16,7 @@ function MostDemandedProduct(dateD,dateF,consommateur,structure)
         ${dateD?"and d.date_demande between ? and ?":""}
         group by p.designation,p.id_produit order by nombre desc limit 10`
         else if (structure)
-            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
+            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre,p.id_produit from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur in
         (select email from utilisateur where id_structure=
             (select id_structure from structure where designation=?)
@@ -24,7 +24,7 @@ function MostDemandedProduct(dateD,dateF,consommateur,structure)
         ${dateD?"and d.date_demande between ? and ?":""}
         group by p.designation order by nombre desc limit 10`
         else
-            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
+            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre ,p.id_produit from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit ${dateD?"and d.date_demande between ? and ?":""}
         group by p.designation order by nombre desc limit 10`
         let values=[];
