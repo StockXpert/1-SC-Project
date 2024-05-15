@@ -38,7 +38,7 @@
 } */
 
 html {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 body {
@@ -1122,6 +1122,7 @@ table tbody tr:last-child td {
 .details-btn-articles,
 .details-btn-produits,
 .details-btn-fournisseur,
+.edit-fournisseur-btn,
 .details-btn-bdc-add,
 .details-btn-bdci-add,
 .details-btn-edit-bdci-add,

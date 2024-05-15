@@ -34,8 +34,15 @@ class FournisseurView extends View {
 
       <td>${result.adresse}</td>
       <td>${result.telephone}</td>
-      <td>
+      <td class="td-view-fournisseur">
         <button class="details-btn-fournisseur">
+          <span class="material-icons-sharp info-icon">
+            info
+          </span>
+        </button>
+      </td>
+      <td>
+        <button class="edit-fournisseur-btn">
           <span class="material-icons-sharp info-icon">
             edit
           </span>
