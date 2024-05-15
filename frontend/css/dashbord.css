@@ -433,6 +433,9 @@ aside .sidebar a:hover span {
   border-radius: 25px;
 }
 .add-users-btn,
+.btn-next,
+.btn-back,
+.btn-save-ref,
 .add-chapitres-btn,
 .add-articles-btn,
 .add-fo-btn,
@@ -490,7 +493,10 @@ aside .sidebar a:hover span {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 .add-users-btn:hover,
+.btn-next:hover,
+.btn-back:hover,
 .add-chapitres-btn:hover,
+.btn-save-ref:hover,
 .add-articles-btn:hover,
 .add-produits-btn:hover,
 .add-fournisseur-btn:hover,
@@ -509,6 +515,9 @@ aside .sidebar a:hover span {
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 .add-users-btn:active,
+.btn-next:active,
+.btn-back:active,
+.btn-save-ref:active,
 .add-chapitres-btn:active,
 .add-articles-btn:active,
 .add-produits-btn:active,
@@ -603,6 +612,7 @@ aside .sidebar a:hover span {
   padding: 0.6rem;
 }
 .heading-table-btns-add-bdr,
+.heading-table-btns-ref,
 .heading-table-btns-verif-bdci,
 .heading-table-btns-inv,
 .heading-table-btns-inv-verif {
@@ -612,7 +622,8 @@ aside .sidebar a:hover span {
   gap: 1.2rem;
 }
 .num-bdr-inputs,
-.num-bdd-inputs {
+.num-bdd-inputs,
+.num-ref-inputs {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -643,6 +654,11 @@ aside .sidebar a:hover span {
   font-weight: 500;
   color: #4b4b4b;
 }
+.num-ref-inputs p {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #477ce2;
+}
 
 .heading-table-file-add-1-bdr p,
 .heading-table-file-add-2-bdr p {
@@ -661,6 +677,11 @@ aside .sidebar a:hover span {
   cursor: pointer;
 }
 .heading-table-btn-bdr,
+.btn-next,
+.btn-back,
+.heading-table-btn-bdr,
+.btn-cancel-ref,
+.btn-save-ref,
 .heading-table-btn-bdci {
   width: 9rem;
   height: 2.5rem;
@@ -742,7 +763,8 @@ aside .sidebar a:hover span {
 .cancel-btn-edit-bdci:hover,
 .cancel-btn-edit-edit-bdci:hover,
 .cancel-btn-add-bdci:hover,
-.cancel-btn-add-bdr:hover {
+.cancel-btn-add-bdr:hover,
+.btn-cancel-ref:hover {
   transform: translateY(-2px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
@@ -813,6 +835,14 @@ aside .sidebar a:hover span {
 .heading-table-text-add-bdd {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  padding: 0.6rem;
+}
+.heading-table-text-add-ref {
+  display: flex;
+  /* flex-direction: column; */
+  width: 100%;
+  justify-content: center;
   gap: 1rem;
   padding: 0.6rem;
 }
@@ -944,7 +974,8 @@ aside .sidebar a:hover span {
 .table-container-inv,
 .table-container-inv-verif,
 .table-container-see-bdci,
-.table-container-bdd {
+.table-container-bdd,
+.table-container-ref {
   width: auto;
   max-height: 49.6vh;
   overflow-y: auto;
@@ -962,7 +993,8 @@ aside .sidebar a:hover span {
 .table-container-inv table th,
 .table-container-inv-verif table th,
 .table-container-see-bdci table th,
-.table-container-bdd table th {
+.table-container-bdd table th,
+.table-container-ref table th {
   width: 22rem;
 }
 
@@ -1108,6 +1140,7 @@ table tbody tr:last-child td {
 .view-fac-btn,
 .verif-bdci-Directeur,
 .verif-bdci-RD,
+.verif-ref,
 .verif-bdci-Magasinier,
 .verif-inv {
   background-color: transparent;
@@ -1317,6 +1350,7 @@ table tbody tr:last-child td {
 .quantity-verif-M,
 .quantity-verif-D,
 .reference,
+.reference-produit,
 .quantity-ph {
   position: relative;
 }
@@ -1436,6 +1470,7 @@ table tbody tr:last-child td {
   border-radius: 15px;
 }
 .status,
+.status-ref,
 .status-inv {
   display: flex;
   justify-content: center;
@@ -1449,28 +1484,43 @@ table tbody tr:last-child td {
   border-radius: 15px;
 }
 .canceled-status {
-  background-color: red;
+  font-weight: 500;
+  background-color: #e01313;
 }
 .served-status-bdci {
-  background-color: rgb(0, 132, 255);
+  /* color: #313131; */
+  font-weight: 500;
+  background-color: #0084ff;
 }
 .finish-status,
 .finish-status-bdci {
-  background-color: #49bf20;
+  /* color: #313131; */
+  font-weight: 500;
+  background-color: #45e011;
 }
 .v-directeur-status {
-  background-color: rgb(206, 134, 1);
+  font-weight: 500;
+  background-color: #ff6417;
 }
 .v-responsable-status {
-  background-color: rgb(206, 134, 1);
+  /* color: #313131; */
+  font-weight: 500;
+  background-color: #ff9625;
 }
 .encour-status,
 .enattente-status,
+.noref-status {
+  background-color: #fbff00;
+}
 .novalide-status {
-  background-color: #f9c012;
+  /* color: #313131; */
+  font-weight: 450;
+  background-color: rgb(249, 192, 18);
 }
 .valide-status {
-  background-color: #49bf20;
+  /* color: #313131; */
+  font-weight: 500;
+  background-color: #45e011;
 }
 
 /* filtres */
@@ -1670,7 +1720,8 @@ table tbody tr:last-child td {
 .verif-bdci-container,
 .add-inv-container,
 .see-bdci-container,
-.bdd-container {
+.bdd-container,
+.ref-container {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -1718,7 +1769,8 @@ table tbody tr:last-child td {
 .big-container-inv,
 .big-container-inv-verif,
 .big-container-see-bdci,
-.big-container-bdd {
+.big-container-bdd,
+.big-container-ref {
   margin: 0 auto;
 }
 .add-product-bdc-cart,
@@ -1875,7 +1927,8 @@ table tbody tr:last-child td {
   position: relative;
   overflow: hidden;
 }
-.bdd-cart {
+.bdd-cart,
+.ref-cart {
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -2371,7 +2424,11 @@ a.password-icon:active {
   font-weight: 700;
   padding: 0.2rem;
 }
-.supp-user-btns {
+.supp-user-btns,
+.supp-fournisseur-btns
+  .supp-produits-btns
+  .supp-chapter-btns
+  .supp-article-btns {
   display: flex;
   gap: 1rem;
 }
@@ -2697,7 +2754,8 @@ a.password-icon:active {
 .results-produits-inv,
 .results-produits-inv-verif,
 .results-bdci-produits-see,
-.results-bdd-produits {
+.results-bdd-produits,
+.results-ref-produits {
   position: relative;
 }
 .container-select-bdc {
@@ -2754,9 +2812,32 @@ a.password-icon:active {
   background-color: #477ce2;
   color: white;
 }
-.btn-add-product {
+/* .btn-add-product {
   display: flex;
   gap: 1rem;
+} */
+.btn-add-product,
+.btn-add-bdci-product {
+  display: flex;
+  align-items: center;
+  background-color: #477ce2;
+  border-radius: 15px;
+}
+.btn-add-product button,
+.btn-add-bdci-product button {
+  width: 8rem;
+  height: 2.3rem;
+  padding: 0.4rem;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+}
+.btn-add-product span,
+.btn-add-bdci-product span {
+  font-size: 1.2rem;
+  padding: 0.2rem;
+  color: white;
+  cursor: pointer;
 }
 .add-product input {
   font-size: 1.2rem;

@@ -10,22 +10,22 @@ function MostDemandedProduct(dateD, dateF, consommateur, structure) {
     const connection = mysql.createConnection(connectionConfig);
     let query;
     if (consommateur)
-      query = `select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
+      query = `select p.designation as produit,sum(f.quantite_demande) as  nombre ,p.id_produit as id from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur=?
-        ${dateD ? '(and d.date_demande between ? and ?)' : ''}
-        group by p.designation order by nombre desc limit 10`;
+        ${dateD ? 'and d.date_demande between ? and ?' : ''}
+        group by p.designation,p.id_produit order by nombre desc limit 10`;
     else if (structure)
       query = `select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur in
         (select email from utilisateur where id_structure=
             (select id_structure from structure where designation=?)
         )
-        ${dateD ? '(and d.date_demande between ? and ?)' : ''}
+        ${dateD ? 'and d.date_demande between ? and ?' : ''}
         group by p.designation order by nombre desc limit 10`;
     else
-      query = `select p.designation as produit,sum(f.quantite_demande)  as  nombre , p.id_produit as produitId from demande_fourniture d,fournir f ,produit p where
+      query = `select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit ${
-          dateD ? '(and d.date_demande between ? and ?)' : ''
+          dateD ? 'and d.date_demande between ? and ?' : ''
         }
         group by p.designation order by nombre desc limit 10`;
     let values = [];
@@ -57,7 +57,7 @@ function MostUsedFournisseur(dateD, dateF) {
     const connection = mysql.createConnection(connectionConfig);
     const query = `select f.raison_sociale as fournisseur,count(b.num_commande) as  nombre from bon_de_commande b,fournisseur f where
         b.id_fournisseur=f.id_fournisseur ${
-          dateD ? '(and d.date_commande between ? and ?)' : ''
+          dateD ? 'and b.date_commande between ? and ?' : ''
         }
         group by f.raison_sociale order by nombre desc limit 10`;
     let values = [];
@@ -112,12 +112,13 @@ function RapidFournisseur(dateD, dateF) {
     });
   });
 }
-function topDemandeurs(dateD, dateF, structure) {
+function topDemandeurs(dateD, dateF, structure, produit) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     let query;
     if (structure)
-      query = `select d.id_demandeur as consommateur ,count(d.num_demande) as  nombre from demande_fourniture d where
+      query = `select d.id_demandeur as consommateur ,count(f.quantite_demande) as  nombre from demande_fourniture d ,fournir f,produit p where
+           p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit
            d.id_demandeur in
            (
             SELECT email
@@ -128,13 +129,14 @@ function topDemandeurs(dateD, dateF, structure) {
                 WHERE designation = ?
             )
         )
-        ${dateD ? '(and d.date_demande between ? and ?)' : ''}
+        ${dateD ? 'and d.date_demande between ? and ?' : ''}
         group by d.id_demandeur order by count(d.num_demande) desc limit 10`;
     else
-      query = `select d.id_demandeur as consommateur ,count(d.num_demande) as  nombre, d.id_demandeur as consommateurId from demande_fourniture d 
-            ${dateD ? '(and d.date_demande between ? and ?)' : ''}
+      query = `select d.id_demandeur as consommateur ,count(d.num_demande) as  nombre from demande_fourniture d ,fournir f,produit p where
+            p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit
+            ${dateD ? 'and d.date_demande between ? and ?' : ''}
             group by d.id_demandeur order by count(d.num_demande) desc limit 10`;
-    let values = [];
+    let values = [produit];
     if (structure) values.push(structure);
     if (dateD) values.push(dateD, dateF);
     connection.connect(err => {
@@ -160,10 +162,10 @@ function topDemandeurs(dateD, dateF, structure) {
 function mostCommandedProducts(dateD, dateF) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select  p.designation as produit , sum (c.quantite) as  quantite , p.id_produit as produitId from bon_de_commande b ,commande c,produit p where
+    const query = `select p.designation as produit , sum (c.quantite) as  quantite,p.id_produit as id from bon_de_commande b ,commande c,produit p where
     c.id_commande=b.num_commande and p.id_produit=c.id_produit 
-    ${dateD ? '(and d.date_commande between ? and ?)' : ''}
-    group by p.designation order by quantite desc limit 10`;
+    ${dateD ? 'and b.date_commande between ? and ?' : ''}
+    group by p.designation,p.id_produit order by quantite desc limit 10`;
     let values = [];
     if (dateD) values.push(dateD, dateF);
     connection.connect(err => {
@@ -251,7 +253,7 @@ function commandesStat(dateD, dateF) {
         COUNT(CASE WHEN etat = 'delivrer' THEN 1 END) AS delivrer,
         COUNT(CASE WHEN etat = 'annuler' THEN 1 END) AS annuler   
         from bon_de_commande
-        ${dateD ? '(where d.date_commande between ? and ?)' : ''}`;
+        ${dateD ? 'where date_commande between ? and ?' : ''}`;
     let values = [];
     if (dateD) values.push(dateD, dateF);
     connection.connect(err => {
@@ -287,7 +289,7 @@ function bciStat(dateD, dateF, consommateur, structure) {
     COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
     from demande_fourniture where id_demandeur=?
-    ${dateD ? ' and d.date_demande between ? and ?' : ''}`;
+    ${dateD ? ' and date_demande between ? and ?' : ''}`;
     } else if (structure) {
       query = `select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
@@ -299,7 +301,7 @@ function bciStat(dateD, dateF, consommateur, structure) {
       (select email from utilisateur where id_structure=
         (select id_structure from structure where designation=?)
       )
-    ${dateD ? ' and d.date_demande between ? and ?' : ''}`;
+    ${dateD ? ' and date_demande between ? and ?' : ''}`;
     } else {
       query = `select COUNT(CASE WHEN etat = 'demandee' THEN 1 END) AS demandee,
     COUNT(CASE WHEN etat = 'refusee' THEN 1 END) AS refusee,
@@ -308,7 +310,7 @@ function bciStat(dateD, dateF, consommateur, structure) {
     COUNT(CASE WHEN etat = 'prete' THEN 1 END) AS prete   ,
     COUNT(CASE WHEN etat = 'servie' THEN 1 END) AS servie   
     from demande_fourniture
-    ${dateD ? '(where d.date_demande between ? and ?)' : ''}`;
+    ${dateD ? 'where date_demande between ? and ?' : ''}`;
     }
     let values = [];
     if (consommateur) values.push(consommateur);

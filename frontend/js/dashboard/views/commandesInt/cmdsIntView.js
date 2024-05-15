@@ -186,6 +186,15 @@ export class CmdsIntView extends CmdsView {
 
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
+        disableBtns([
+          this._btnDeleteBdci,
+          this._btnCancelBdc,
+          this._btnDeleteInv,
+          this._btnModifyInv,
+          this._btnUpdateInv,
+          this._btnModifyBdci,
+          this._btnLivrerBdci,
+        ]);
         const tthis = e.currentTarget;
         let etat =
           this._data[helpers.findNodeIndex(this._checkboxes, tthis)].etat;
@@ -224,7 +233,7 @@ export class CmdsIntView extends CmdsView {
                 this._btnModifyBdci,
               ]);
               break;
-            case 'pret':
+            case 'prete':
               enableBtns([this._btnLivrerBdci]);
               break;
             case 'no valid':

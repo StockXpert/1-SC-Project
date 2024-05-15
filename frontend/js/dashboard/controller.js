@@ -1401,15 +1401,19 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
     case 'EditCmdsIntView':
       productsArray = model.state.commandesInt.selected.products;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      model.state.commandesInt.selected.products = targetIndex;
       break;
     case 'AddCmdsIntView':
       productsArray = model.state.bdci_products.added;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      model.state.commandesInt.selected.products = targetIndex;
       break;
     case 'AddInvView':
       productsArray = model.state.inventaires.new.produits;
+      console.log(targetIndex);
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       console.log(productsArray[targetIndex]);
+      model.state.inventaires.new.selectedProduct = targetIndex;
       break;
   }
 
@@ -1417,7 +1421,7 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   view.changeInputs(productsArray[targetIndex]);
   model.state.bdci_products.changed = targetIndex;
   model.state.commandesInt.selected.changed = targetIndex;
-  model.state.inventaires.new.selectedProduct = targetIndex;
+  // model.state.inventaires.new.selectedProduct = targetIndex;
 };
 
 const controlChangeProductInt = function (
@@ -1567,13 +1571,17 @@ const controlSavingBDCI = async function () {
   }
 };
 
-const controlViewCmdInt = async function (target) {
+const controlViewCmdInt = async function (target, view = seeCmdsIntView) {
   //ONCLICK OF A VIEW BUTTON
   //Get the index of the clicked view button here
   // const target = this;
+  console.log(seeCmdsIntView._btnOpen);
   const targetIndex = helpers.findNodeIndex(seeCmdsIntView._btnOpen, target);
+  console.log(targetIndex);
   seeCmdsIntView.renderSpinner('', true);
   // TODO:
+  console.log(model.state.commandesInt.rendered);
+  console.log(model.state.commandesInt.rendered[targetIndex]);
   const products = await model.loadCommandeIntProducts(
     model.state.commandesInt.rendered[targetIndex].num_demande
   );
@@ -2365,12 +2373,17 @@ const controlLoadStatistiques = async () => {
   statsView._clearParentElement('mini');
   statsView._clearParentElement('g1');
   statsView._clearParentElement('g2');
+  const postObj = {
+    produit: 'Duplicopieur - Monochrome - A3',
+  };
   statsView.renderGraphSpin(
     'Top Demandeurs',
     'g2',
-    model.getGraphPromise('topDemandeurs'),
+    model.getGraphPromise('topDemandeurs', {
+      produit: 'Duplicopieur - Monochrome - A3',
+    }),
     'Les Demandes',
-    false
+    true
   );
   statsView.renderGraphSpin(
     'Les Produits Les Plus Commandés',
@@ -2384,7 +2397,7 @@ const controlLoadStatistiques = async () => {
     'g2',
     model.getGraphPromise('mostDemmandedProduct'),
     'Les Demandes',
-    false
+    true
   );
   statsView.renderGraphSpin(
     'Statuts Des Demandes',
