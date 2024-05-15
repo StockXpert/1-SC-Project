@@ -171,6 +171,15 @@ function updateRaisonSociale(req,res)
         res.status(500).json({response:"internal error"})
     })
 }
+function showRefs(req,res)
+{
+    const {produit}=req.body;
+    NomenclatureModel.getRefs(produit).then((refs)=>{
+        res.status(200).json({response:refs});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
 module.exports={addArticle,addProduct,addFournisseur,deleteArticle,
     deleteProduct,deleteFournisseur,showFournisseurs,showProducts,showChapters,showArticles,
-    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur};
+    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur,showRefs};

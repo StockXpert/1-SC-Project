@@ -869,9 +869,39 @@ function updateRaisonSociale(newR,oldR)
     });
   });
 }
+function getRefs(produit)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select p.designation as produit,r.designation as reference from reference r ,produit p where p.id_produit=r.id_produit 
+    ${produit?'and p.designation=?':''}`;
+    let values=[];
+    if(produit)values.push(produit)
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 module.exports={getChapterId,addArticle,addProduct,getArticleIdTva,getProductId,addArticleProduct,
                 deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
                 ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
               ,deleteChapter,updateArticle,canDeletefourn,updateFournisseur,updateRaisonSociale,
-               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter}
+               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter,getRefs}
