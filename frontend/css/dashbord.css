@@ -1188,7 +1188,7 @@ table tbody tr:last-child td {
   display: block;
   position: fixed;
   z-index: 1000;
-  left: calc(50% + 38rem);
+  left: calc(50% + 40rem);
   /* left: 89.5%; */
   top: 50%;
   transform: translate(-50%, -50%);
@@ -1871,7 +1871,7 @@ table tbody tr:last-child td {
   overflow: hidden;
 }
 .add-bdc-cart {
-  max-width: 55.5rem;
+  max-width: 61rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -1900,7 +1900,7 @@ table tbody tr:last-child td {
 }
 .add-bdr-cart,
 .verif-bdci-cart {
-  width: 75rem;
+  width: 76rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -2813,11 +2813,12 @@ a.password-icon:active {
   background-color: #477ce2;
   color: white;
 }
-/* .btn-add-product {
+.btn-add-product,
+.btn-add-bdci-products {
   display: flex;
   gap: 1rem;
-} */
-.btn-add-product,
+}
+/* .btn-add-product,
 .btn-add-bdci-product {
   display: flex;
   align-items: center;
@@ -2826,14 +2827,15 @@ a.password-icon:active {
 }
 .btn-add-product button,
 .btn-add-bdci-product button {
-  width: 8rem;
+  width: 9rem;
   height: 2.3rem;
   padding: 0.4rem;
   background-color: transparent;
   color: white;
   cursor: pointer;
-}
+} */
 .btn-add-product span,
+.btn-add-bdci-products span,
 .btn-add-bdci-product span {
   font-size: 1.2rem;
   padding: 0.2rem;
@@ -2854,7 +2856,7 @@ a.password-icon:active {
 .btn-add-bdci-product button,
 .btn-add-product-bdci button,
 .add-product button {
-  width: 8rem;
+  /* width: 8rem; */
   height: 2.3rem;
   padding: 0.4rem;
   background-color: transparent;
