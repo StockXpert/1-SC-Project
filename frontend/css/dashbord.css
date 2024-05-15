@@ -961,6 +961,7 @@ aside .sidebar a:hover span {
 .table-container-bdci-produits,
 .table-container-bdr-produits,
 .table-container-show-bdr {
+  margin: 1rem 0rem;
   width: auto;
   max-height: 23.6vh;
   overflow-y: auto;
@@ -1083,6 +1084,7 @@ table tbody tr:last-child td {
 #checkbox-table-bdc-add,
 #checkbox-table-bdr-add,
 #checkbox-table-bdr-show {
+  cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1090,6 +1092,11 @@ table tbody tr:last-child td {
   height: 1rem;
   border: 2px solid #4b4b4b;
   border-radius: 2px;
+  transition: all 0.1s;
+}
+#checkbox-table:hover {
+  width: 1.05rem;
+  height: 1.05rem;
 }
 #checkbox-table-permissions {
   width: 1rem;
@@ -1511,12 +1518,15 @@ table tbody tr:last-child td {
 .encour-status,
 .enattente-status,
 .noref-status {
-  background-color: #fbff00;
+  /* color: #313131; */
+  letter-spacing: 0.3px;
+  font-weight: 450;
+  background-color: #fada00;
 }
 .novalide-status {
   /* color: #313131; */
   font-weight: 450;
-  background-color: rgb(249, 192, 18);
+  background-color: #f9c012;
 }
 .valide-status {
   /* color: #313131; */
@@ -1875,7 +1885,7 @@ table tbody tr:last-child td {
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
-  gap: 2rem;
+  gap: 0rem;
   align-items: center;
   padding: 1rem;
   background-color: white;

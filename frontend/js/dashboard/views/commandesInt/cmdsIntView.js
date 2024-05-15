@@ -74,7 +74,7 @@ export class CmdsIntView extends CmdsView {
   }
   _generateMarkupPreview(result, perms = []) {
     // console.log(this._role);
-    console.log(result);
+    // console.log(result);
     const html = `<tr>
     <td>
       <div class="checkbox-colomn">

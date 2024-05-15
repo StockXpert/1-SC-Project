@@ -150,6 +150,7 @@ export class AddCmdsView extends AddUserView {
       );
     }
   }
+  //unused yet
   resultVisibilityTogglers() {
     this.toggleDivVisibility('#bdc-product', '.add-product-search-results');
     this.toggleDivVisibility(

@@ -87,7 +87,9 @@ class BonReceptionView extends View {
         </td>
         <td>${date}</td>
         <td class="td-view-bdl">
-          <a class="view-bdl-btn" href="../../backend/${result.link_livraison}">
+          <a class="view-bdl-btn" href="../../backend/${
+            result.link_livraison
+          }" target="_blank">
             <p>Voir Bon de livraison</p>
           </a>
         </td>
@@ -95,7 +97,7 @@ class BonReceptionView extends View {
         ${
           result.num_facture
             ? `
-            <a class="view-fac-btn" href="../../backend/${result.link_facture}">
+            <a class="view-fac-btn" href="../../backend/${result.link_facture}" target="_blank">
               <p>Voir Facture</p>
             </a>`
             : '<p>Pas de facture</p>'

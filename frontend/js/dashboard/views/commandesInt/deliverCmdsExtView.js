@@ -43,7 +43,7 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
     this._refrences = document.querySelectorAll('.reference .green-ref');
   }
   addHandlerDeliver(ctrl) {
-    console.log(this._save);
+    // console.log(this._save);
     this._form.addEventListener('submit', async e => {
       e.preventDefault();
       let refrencesArray = [];

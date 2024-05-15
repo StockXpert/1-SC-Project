@@ -71,6 +71,7 @@ export class SeeCmdsView extends DeleteUserView {
     let numero = 0;
     let productsHTML = products
       .map(product => {
+        console.log(product);
         return `<tr>
                     <td>
                       <div class="checkbox-colomn-bdc-add">
@@ -84,11 +85,11 @@ export class SeeCmdsView extends DeleteUserView {
                     <td class="input-changeble price-produit">
                       <input type="text" placeholder="${
                         product.prix_unitaire
-                      }" />
+                      } DA" />
                     </td>
                     <td class="price-produit-montant">${
                       product.quantite * product.prix_unitaire
-                    }</td>
+                    } DA</td>
                     <td class="reste-livre">1</td>
                   </tr>`;
       })
