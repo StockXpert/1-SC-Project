@@ -235,5 +235,22 @@ function restoreQuantite(numReception,numCommande,products)
     }
   })
 }
+function changeTabFormat(produits)
+{
+    let products=[];
+    for(let produit of produits)
+        {
+            for(let ref of produit.refs)
+                {
+                   products.push(
+                    {
+                        designation:produit.designation,
+                        ref
+                    }
+                   )
+                }
+        }
+        return products
+}
 module.exports={getDate,genererBondeCommande,montantHT,TVA,
-    changeQuantite,changeBonCommande,uploadvalidity,createReception,restoreQuantite}
+    changeQuantite,changeBonCommande,uploadvalidity,createReception,restoreQuantite,changeTabFormat}

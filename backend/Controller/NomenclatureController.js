@@ -79,8 +79,8 @@ function deleteArticle(req,res)
 }
 function addProduct(req,res)
 {
-    const {article,designation,quantite,description,seuil}=req.body;
-    NomenclatureService.addProduct(article,designation,description,quantite,seuil).then((response)=>{
+    const {article,designation,quantite,description,seuil,consommable}=req.body;
+    NomenclatureService.addProduct(article,designation,description,quantite,seuil,consommable).then((response)=>{
         res.status(200).json({response})
     }).catch((response)=>{
         console.log(response)

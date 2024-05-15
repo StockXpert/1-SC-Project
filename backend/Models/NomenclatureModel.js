@@ -386,12 +386,12 @@ function addArticle(numArt,chapitreId,designation,tva)
         });
       });
 }
-function addProduct(quantite,designation,description,seuil)
+function addProduct(quantite,designation,description,seuil,consommable)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into produit (designation,description,quantite,date_ajout,seuil) values (?,?,?,now(),?)';
-        const values = [designation,description,quantite,seuil];
+        const query = 'insert into produit (designation,description,quantite,date_ajout,seuil,consommable) values (?,?,?,now(),?,?)';
+        const values = [designation,description,quantite,seuil,consommable];
         if(quantite===null) quantite=0;
         connection.connect((err) => {
           if (err) {
