@@ -417,7 +417,7 @@ function updateStructure(req, res) {
 }
 function saveToken(req, res) {
   const email = req.email;
-  const token = req.body.email;
+  const token = req.body.token;
   userModel
     .updateToken(token, email)
     .then(() => {

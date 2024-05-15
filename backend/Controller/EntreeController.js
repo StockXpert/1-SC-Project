@@ -106,30 +106,34 @@ function showCommandes(req, res) {
 }
 function updateQuantite(req, res) {
   console.log(req.file);
-  const { numCommande, numFacture, numLivraison, dateReception } = req.body;
-  const produits = JSON.parse(req.body.produits);
+  const { numCommande, numFacture, numLivraison, dateReception, produits } =
+    req.body;
+  //const produits=JSON.parse(req.body.produits);
   console.log(produits);
   console.log(req.files);
-  const factureLink =
-    'Facture/' +
-    (req.files['facture'] ? req.files['facture'][0].filename : null);
-  const bonLivraisonLink =
-    'bonLivraison/' + req.files['bonLivraison'][0].filename;
+  const factureLink = null; //'Facture/'+(req.files['facture']?req.files['facture'][0].filename:null);
+  const bonLivraisonLink = null; //'bonLivraison/'+req.files['bonLivraison'][0].filename
   console.log({ bonLivraisonLink, factureLink });
   EntreeService.changeQuantite(numCommande, produits)
     .then(response => {
       EntreeService.uploadvalidity(numCommande).then(response => {
-        EntreeService.createReception(
-          numCommande,
-          produits,
-          numFacture,
-          numLivraison,
-          dateReception,
-          bonLivraisonLink,
-          factureLink
-        )
-          .then(response => {
-            res.status(200).json({ response });
+        let products = EntreeService.changeTabFormat(produits);
+        console.log(products);
+        EntreeModel.addRefs(products, dateReception)
+          .then(() => {
+            EntreeService.createReception(
+              numCommande,
+              produits,
+              numFacture,
+              numLivraison,
+              dateReception,
+              bonLivraisonLink,
+              factureLink
+            )
+              .then(response => {
+                res.status(200).json({ response });
+              })
+              .catch(response => res.status(500).json({ response }));
           })
           .catch(response => res.status(500).json({ response }));
       });

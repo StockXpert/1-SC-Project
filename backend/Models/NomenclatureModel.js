@@ -394,12 +394,12 @@ function addArticle(numArt, chapitreId, designation, tva) {
     });
   });
 }
-function addProduct(quantite, designation, description, seuil) {
+function addProduct(quantite, designation, description, seuil, consommable) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     const query =
-      'insert into produit (designation,description,quantite,date_ajout,seuil) values (?,?,?,now(),?)';
-    const values = [designation, description, quantite, seuil];
+      'insert into produit (designation,description,quantite,date_ajout,seuil,consommable) values (?,?,?,now(),?,?)';
+    const values = [designation, description, quantite, seuil, consommable];
     if (quantite === null) quantite = 0;
     connection.connect(err => {
       if (err) {
@@ -878,6 +878,35 @@ function updateRaisonSociale(newR, oldR) {
     });
   });
 }
+function getRefs(produit) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select p.designation as produit,r.designation as reference from reference r ,produit p where p.id_produit=r.id_produit 
+    ${produit ? 'and p.designation=?' : ''}`;
+    let values = [];
+    if (produit) values.push(produit);
+
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+
+        resolve(results);
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 module.exports = {
   getChapterId,
   addArticle,
@@ -908,4 +937,5 @@ module.exports = {
   isUsedFournisseur,
   isUsedProduct,
   isUsedchapter,
+  getRefs,
 };

@@ -100,13 +100,15 @@ function deleteArticle(req, res) {
     .catch(() => res.status(403).json({ response: 'forbidden' }));
 }
 function addProduct(req, res) {
-  const { article, designation, quantite, description, seuil } = req.body;
+  const { article, designation, quantite, description, seuil, consommable } =
+    req.body;
   NomenclatureService.addProduct(
     article,
     designation,
     description,
     quantite,
-    seuil
+    seuil,
+    consommable
   )
     .then(response => {
       res.status(200).json({ response });
@@ -246,6 +248,16 @@ function updateRaisonSociale(req, res) {
       res.status(500).json({ response: 'internal error' });
     });
 }
+function showRefs(req, res) {
+  const { produit } = req.body;
+  NomenclatureModel.getRefs(produit)
+    .then(refs => {
+      res.status(200).json({ response: refs });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
 module.exports = {
   addArticle,
   addProduct,
@@ -263,4 +275,5 @@ module.exports = {
   updateArticle,
   updateRaisonSociale,
   updateFournisseur,
+  showRefs,
 };
