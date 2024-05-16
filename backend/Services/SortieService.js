@@ -97,7 +97,9 @@ function addDecharge(Id,products,dateDecharge,numDemande)
     return new Promise((resolve,reject)=>{
         
         SortieModel.insertDateDecharge(numDemande,dateDecharge).then(()=>{
+            console.log("before insert decharge")
             SortieModel.insertDecharge(numDemande,products).then(()=>{
+                console.log("after insert decharge")
                 genererBonDecharge(Id,products,dateDecharge,numDemande).then(()=>{
                     resolve('');
                 }).catch(()=>{reject('')})
