@@ -3,9 +3,9 @@ import * as helpers from '../../helpers.js';
 
 export class AddCmdsView extends AddUserView {
   _raison;
-  _save = document.querySelector('.btn-save-bdc-qt');
   _parentElement = document.querySelector('.results-bdc-produits');
   _window = document.querySelector('.big-container');
+  _save = this._window.querySelector('.btn-save-bdc');
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
   _btnClose = document.querySelector('.btn-add-bdr-qt');
@@ -78,9 +78,6 @@ export class AddCmdsView extends AddUserView {
   addHandlerSavingBDC(handler, state) {
     this._save.addEventListener('click', e => {
       e.preventDefault();
-      // articleInput.setCustomValidity('');
-      // typeInput.setCustomValidity('');
-      // fourInput.setCustomValidity('');
       this._btnClose.click();
       handler();
     });
@@ -245,6 +242,47 @@ export class AddCmdsView extends AddUserView {
       articleSearchHandler(e.target.value);
     });
   }
+  addResultsToSuggestionsAndEL(
+    results = [],
+    windowClass,
+    resultsDirectContainerClass,
+    inputClass
+  ) {
+    const theContainer = document
+      .querySelector(windowClass)
+      .querySelector(resultsDirectContainerClass);
+    theContainer.innerHTML = '';
+    const input = document.querySelector(windowClass).querySelector(inputClass);
+
+    if (results.length == 0 && input.value != '') {
+      theContainer.insertAdjacentHTML(
+        'afterbegin',
+        `<li> Aucun Produit n'a été trouvé</li>`
+      );
+      theContainer.querySelector('li').addEventListener('click', e => {
+        e.target.parentElement.innerHTML = '';
+      });
+    } else {
+      const markup = results
+        .map(result => `<li>${result.designation}</li>`)
+        .slice(0, 10)
+        .join('');
+
+      theContainer.insertAdjacentHTML('afterbegin', markup);
+      theContainer.querySelectorAll('li').forEach(el => {
+        return el.addEventListener('click', e => {
+          input.setCustomValidity('');
+          input.value = e.currentTarget.innerHTML;
+          const event = new Event('input', {
+            bubbles: true,
+            cancelable: true,
+          });
+          input.dispatchEvent(event);
+          theContainer.innerHTML = '';
+        });
+      });
+    }
+  }
   addToSuggestionsArticlesAndEL(results = [], controlSelectArticle) {
     this._resultsContainerArticle.innerHTML = '';
     const markup = results
@@ -265,48 +303,86 @@ export class AddCmdsView extends AddUserView {
     });
   }
 
+  addInputValidation(form, type) {
+    form
+      .querySelector(`input[name="${type}"]`)
+      ?.addEventListener('input', e => helpers.validateInput(e.target, type));
+  }
+
+  // addHandlerProductSearch(productSearchController, productDesignations) {
+  //   this._product.addEventListener('input', e => {
+  //     console.log(productDesignations);
+  //     productDesignations = productDesignations.map(entry => entry.designation);
+  //     this._resultsContainerProduct.classList.remove('hidden');
+  //     // console.log(this._resultsContainerProduct);
+  //     console.log(productDesignations);
+  //     console.trace('hi');
+  //     if (productDesignations.includes(e.target.value)) {
+  //       this._product.changeInputValidity('Ce Produit Existe !', true);
+  //     } else {
+  //       this._product.changeInputValidity('');
+  //     }
+  //     productSearchController(e.target.value, 'add', this);
+  //   });
+
+  //   //ALSO ADD THE EL TO the modifier search
+  //   this._productEdit.addEventListener('input', e => {
+  //     console.log(productDesignations);
+  //     if (productDesignations.includes(e.target.value)) {
+  //       this._productEdit.changeInputValidity('Ce Produit Existe !', true);
+  //     } else {
+  //       this._productEdit.changeInputValidity('');
+  //     }
+  //     productSearchController(e.target.value, 'edit', this);
+  //   });
+
+  //   //also add the EL for numberic value inputs
+  //   this.addInputValidation(this._addProductForm, 'quantite');
+  //   this.addInputValidation(this._editProductForm, 'quantite');
+
+  //   //also add the EL for numberic price value inputs
+  //   this.addInputValidation(this._addProductForm, 'prixUnitaire');
+  //   this.addInputValidation(this._editProductForm, 'prixUnitaire');
+  // }
+
   addHandlerProductSearch(productSearchController, productsObj) {
-    let productDesignations;
     this._product.addEventListener('input', e => {
+      let productDesignations = productsObj.all;
+      const currentDesignations = productDesignations.map(
+        entry => entry.designation
+      );
       this._resultsContainerProduct.classList.remove('hidden');
-      productDesignations = productsObj.all.map(entry => entry.designation);
-      if (productDesignations.includes(e.target.value)) {
+
+      if (currentDesignations.includes(e.target.value)) {
         this._product.changeInputValidity('Ce Produit Existe !', true);
       } else {
         this._product.changeInputValidity('');
       }
-      productSearchController(e.target.value, 'add', this);
+      productSearchController(e.target.value, 'add-bdc-add');
     });
-    //ALSO ADD THE EL TO the modifier search
+
     this._productEdit.addEventListener('input', e => {
-      productDesignations = productsObj.all.map(entry => entry.designation);
-      if (productDesignations.includes(e.target.value)) {
+      let productDesignations = productsObj.all;
+      const currentDesignations = productDesignations.map(
+        entry => entry.designation
+      );
+      this._resultsContainerProduct.classList.remove('hidden');
+
+      if (currentDesignations.includes(e.target.value)) {
         this._productEdit.changeInputValidity('Ce Produit Existe !', true);
       } else {
         this._productEdit.changeInputValidity('');
       }
-      productSearchController(e.target.value, 'edit', this);
+      productSearchController(e.target.value, 'add-bdc-edit');
     });
-    //also add the EL for numberic value inputs
-    this._addProductForm
-      .querySelector('input[name="quantite"]')
-      .addEventListener('input', e => helpers.validateInput(e.target));
-    this._editProductForm
-      .querySelector('input[name="quantite"]')
-      .addEventListener('input', e => helpers.validateInput(e.target));
-    //also add the EL for numberic price value inputs
-    this._addProductForm
-      .querySelector('input[name="prixUnitaire"]')
-      ?.addEventListener('input', e => helpers.validateInputPrice(e.target));
-    this._editProductForm
-      .querySelector('input[name="prixUnitaire"]')
-      ?.addEventListener('input', e => helpers.validateInputPrice(e.target));
+
+    // Add input validation
+    this.addInputValidation(this._addProductForm, 'quantite');
+    this.addInputValidation(this._editProductForm, 'quantite');
+    this.addInputValidation(this._addProductForm, 'prixUnitaire');
+    this.addInputValidation(this._editProductForm, 'prixUnitaire');
   }
-  addToSuggestionsProductsAndEL(
-    results = [],
-    type,
-    resultsContainerClass = '.product-search-results-container'
-  ) {
+  addToSuggestionsProductsAndEL(results = [], type) {
     let theContainer;
     switch (type) {
       case 'add':
@@ -316,31 +392,15 @@ export class AddCmdsView extends AddUserView {
         theContainer = this._resultsContainerProductEdit;
         break;
     }
-    // this._resultsContainerProduct = document.querySelector(
-    //   resultsContainerClass
-    // );
-    // document.querySelector(resultsContainerClass).innerHTML = '';
     theContainer.innerHTML = '';
     if (
       results.length == 0 &&
       (this._product.value != '' || this._productEdit.value != '')
     ) {
-      // document
-      //   .querySelector(resultsContainerClass)
-      //   .insertAdjacentHTML(
-      //     'afterbegin',
-      //     `<li> Aucun Produit n'a été trouvé</li>`
-      //   );
       theContainer.insertAdjacentHTML(
         'afterbegin',
         `<li> Aucun Produit n'a été trouvé</li>`
       );
-      // document
-      //   .querySelector(resultsContainerClass)
-      //   .querySelector('li')
-      //   .addEventListener('click', e => {
-      //     e.target.parentElement.innerHTML = '';
-      //   });
       theContainer.querySelector('li').addEventListener('click', e => {
         e.target.parentElement.innerHTML = '';
       });
@@ -349,32 +409,18 @@ export class AddCmdsView extends AddUserView {
         .map(result => `<li>${result.designation}</li>`)
         .slice(0, 10)
         .join('');
-      // document
-      //   .querySelector(resultsContainerClass)
-      //   .insertAdjacentHTML('afterbegin', markup);
+
       theContainer.insertAdjacentHTML('afterbegin', markup);
-      // this._productResults = document
-      //   .querySelector(resultsContainerClass)
-      //   .querySelectorAll('li');
       this._productResults = theContainer.querySelectorAll('li');
       this._productResults.forEach(el => {
         return el.addEventListener('click', e => {
           this._product.setCustomValidity('');
-          // controlSelectProduct(e.currentTarget.innerHTML);
           this._product.value = e.currentTarget.innerHTML;
           this._productEdit.value = e.currentTarget.innerHTML;
           const event = new Event('input', {
             bubbles: true,
             cancelable: true,
           });
-          // this._product.dispatchEvent(event);
-          // if (resultsContainerClass.includes('-edit')) {
-          //   this._productEdit.dispatchEvent(event);
-          // } else {
-          //   if (!resultsContainerClass.includes('-edit')) {
-          //     this._product.dispatchEvent(event);
-          //   }
-          // }
           switch (type) {
             case 'add':
               this._product.dispatchEvent(event);
@@ -383,7 +429,6 @@ export class AddCmdsView extends AddUserView {
               this._productEdit.dispatchEvent(event);
               break;
           }
-          // document.querySelector(resultsContainerClass).innerHTML = '';
           theContainer.innerHTML = '';
         });
       });
@@ -449,6 +494,7 @@ export class AddCmdsView extends AddUserView {
     );
   }
   _generateMarkup() {
+    console.log(this._data);
     if (this._data.length == 0) {
       return `<td colspan="6" class="empty-table--products">
       Les produits que vous ajouterez apparaîtront ici !
@@ -524,7 +570,7 @@ export class AddCmdsView extends AddUserView {
   ) {
     this._windowEditProduct = document.querySelector(windowClassName);
     this._btnsOpenEditProduct = this._window.querySelectorAll(OpClassName);
-
+    console.log(this._btnsOpenEditProduct);
     this._btnsOpenEditProduct.forEach(btn => {
       btn.addEventListener('click', e => {
         this._boundToggleEditProductWindow(e);
@@ -563,12 +609,6 @@ export class AddCmdsView extends AddUserView {
     // Get the form element
     const formElement = this._editProductForm;
 
-    // TODO: Create a new FormData object from the form - to console.log it if you need
-    // const formData = new FormData(formElement);
-    // formData.forEach(function (value, key) {
-    //   console.log(key + ': ' + value);
-    // });
-
     // Update form fields with new values
     for (const key in NewInputValuesObj) {
       if (NewInputValuesObj.hasOwnProperty(key)) {
@@ -585,22 +625,11 @@ export class AddCmdsView extends AddUserView {
     this._editProductForm.addEventListener('submit', async e => {
       e.preventDefault();
       let productDesignations;
-      switch (this.constructor.name) {
-        case 'AddCmdsIntView':
-          productDesignations = productsArrayParentObj.all.map(
-            el => el.designation
-          );
-          break;
-        case 'EditCmdsIntView':
-          productDesignations = productsArrayParentObj.all.map(
-            el => el.designation
-          );
-          break;
-      }
+      productDesignations = productsArrayParentObj.all.map(
+        el => el.designation
+      );
       const form = this._editProductForm;
       let inputs = Array.from(form.getElementsByTagName('input'));
-      // const select = Array.from(form.getElementsByTagName('select'));
-      // inputs = inputs.concat(select);
       const allFilled = inputs.every(input => {
         const isRequired = input.required;
         if (isRequired) {
@@ -610,15 +639,10 @@ export class AddCmdsView extends AddUserView {
       });
       if (allFilled) {
         const dataArr = [...new FormData(form)];
-        // console.log(dataArr);
         dataArr.find(([key, value]) => key === 'quantite')[1] = parseInt(
-          dataArr.find(([key, value]) => key === 'quantite')[1],
-          10
+          dataArr.find(([key, value]) => key === 'quantite')[1]
         );
-        // console.log(dataArr);
         const data = Object.fromEntries(dataArr);
-        // console.log(data);
-        // console.log(productDesignations);
         if (!productDesignations.includes(data.designation)) {
           this._productEdit.changeInputValidity("Ce produit là n'existe pas !");
           return;

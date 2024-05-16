@@ -4172,9 +4172,9 @@
                 <input
                   type="text"
                   placeholder="Chercher la Designation du Produit"
-                  value="Pc Gamer"
                   name="designation"
                   id="bdc-product-edit"
+                  autocomplete="off"
                   required
                 />
                 <div class="search-results edit-product-search-results">
@@ -4185,6 +4185,7 @@
                     <li>SARL MANSOUR</li> -->
                   </ul>
                 </div>
+                <div class="validity-message hidden"></div>
               </div>
               <div class="input-product-bdc">
                 <input
@@ -4214,19 +4215,19 @@
         <div class="add-product-bdc-container hidden">
           <div class="add-product-bdc-cart">
             <div class="heading-add-product-bdc">
-              <p>Produit</p>
+              <p>Ajouter un Produit</p>
             </div>
             <form class="inputs-add-product-bdc">
               <div class="input-product-bdc">
                 <input
-                  name="designation"
                   type="text"
                   placeholder="Chercher la Designation du Produit"
+                  name="designation"
                   id="bdc-product"
                   autocomplete="off"
                   required
                 />
-                <div class="search-results add-product-search-results">
+                <div class="search-results bdc-add-product-search-results">
                   <ul class="product-search-results-container">
                     <!-- <li>SARL MANSOUR</li>
                     <li>SARL MANSOUR</li>
@@ -4234,6 +4235,7 @@
                     <li>SARL MANSOUR</li> -->
                   </ul>
                 </div>
+                <div class="validity-message hidden"></div>
               </div>
               <div class="input-product-bdc">
                 <input
@@ -4470,9 +4472,7 @@
               >
                 Annuler
               </button>
-              <button
-                class="heading-table-btn-bdr add-users-btn btn-save-bdc-qt"
-              >
+              <button class="heading-table-btn-bdr add-users-btn btn-save-bdc">
                 Sauvegarder
               </button>
             </div>
@@ -4651,11 +4651,6 @@
             >
               Fermer
             </button>
-            <!-- <button
-              class="heading-table-btn-bdr add-users-btn btn-save-bdc-qt"
-            >
-              Sauvegarder
-            </button> -->
           </div>
         </form>
       </div>

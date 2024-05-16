@@ -2823,12 +2823,12 @@ a.password-icon:active {
   background-color: #477ce2;
   color: white;
 }
-.btn-add-product,
+
 .btn-add-bdci-products {
   display: flex;
   gap: 1rem;
 }
-/* .btn-add-product,
+.btn-add-product,
 .btn-add-bdci-product {
   display: flex;
   align-items: center;
@@ -2843,7 +2843,7 @@ a.password-icon:active {
   background-color: transparent;
   color: white;
   cursor: pointer;
-} */
+}
 .btn-add-product span,
 .btn-add-bdci-products span,
 .btn-add-bdci-product span {
@@ -2974,6 +2974,10 @@ a.password-icon:active {
 }
 .add-product-search-results {
   top: 7.4rem !important;
+  left: 1.4rem;
+}
+.bdc-add-product-search-results {
+  top: 6.5rem !important;
   left: 1.4rem;
 }
 .edit-product-search-results {

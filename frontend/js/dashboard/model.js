@@ -551,7 +551,10 @@ export const fuseMaker = data => new Fuse(data, FUSE_OPTIONS);
 export const fuseMakerFournisseurs = data =>
   new Fuse(data, FUSE_OPTIONS_FOURNISSEURS);
 export const fuseMakerArticles = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
-export const fuseMakerProducts = data => new Fuse(data, FUSE_OPTIONS_ARTICLES);
+export const fuseMakerProducts = data => {
+  console.log(data);
+  return new Fuse(data, FUSE_OPTIONS_ARTICLES);
+};
 export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
 
 export const loadRoles = async function () {
@@ -696,7 +699,10 @@ export const deleteRole = async function (role) {
 export const loadCmds = async function () {
   let commandes = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
   commandes = commandes.commandes;
-  state.bdc.allCommandes = commandes;
+  // console.log(commandes);
+  state.bdc.allCommandes = commandes.sort(
+    (a, b) => b.num_commande - a.num_commande
+  );
   return commandes;
 };
 export const loadCmdsInt = async function () {
@@ -819,7 +825,7 @@ export const loadBonRec = async function (numCommande) {
     uploadData
   );
   console.log(data, numCommande);
-
+  // console.log(data.response);
   state.bdr.all = data.response;
   console.log(state.bdr.all);
 };

@@ -67,7 +67,12 @@ export class SeeCmdsView extends DeleteUserView {
         } else input.value = cmd[key];
       }
     }
-
+    //   {
+    //     "designation": "Duplicopieur - Monochrome - A4",
+    //     "quantite": 5,
+    //     "quantite_recu": 0,
+    //     "prix_unitaire": 69
+    // }
     let numero = 0;
     let productsHTML = products
       .map(product => {
@@ -90,7 +95,9 @@ export class SeeCmdsView extends DeleteUserView {
                     <td class="price-produit-montant">${
                       product.quantite * product.prix_unitaire
                     } DA</td>
-                    <td class="reste-livre">1</td>
+                    <td class="reste-livre">${
+                      product.quantite - product.quantite_recu
+                    }</td>
                   </tr>`;
       })
       .join('');

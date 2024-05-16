@@ -601,11 +601,38 @@ export const objectIndexInArray = function (array, objectToCheck) {
 //     input.value = '0'; // Set value to 1 if less than 1 or not a number
 //   }
 // };
-export const validateInput = function (input) {
-  input.value = input.value.replace(/^0+/, '');
-  // Ensure the value is at least 1
-  if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) {
-    input.value = ''; // Set value to 1 if less than 1 or not a number
+export const validateInput = function (input, type = 'quantite') {
+  switch (type) {
+    case 'quantite':
+      input.value = input.value.replace(/^0+/, '');
+      // Ensure the value is at least 1
+      if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) {
+        input.value = ''; // Set value to 1 if less than 1 or not a number
+      }
+      break;
+    case 'prixUnitaire':
+      // Remove non-numeric characters except dot
+      input.value = input.value.replace(/[^\d.]/g, '');
+
+      // Remove leading dot
+      input.value = input.value.replace(/^\./, '');
+
+      // Remove extra dots
+      input.value = input.value.replace(/(\..*)\./g, '$1');
+
+      // Remove decimals beyond two digits
+      input.value = input.value.replace(/(\.\d\d)\d+/g, '$1');
+
+      // Ensure the value is not empty
+      if (input.value === '') {
+        input.value = '0'; // Default to 0 if empty
+      }
+
+      // Ensure the value is valid
+      if (isNaN(parseFloat(input.value))) {
+        input.value = '0'; // Default to 0 if not a valid number
+      }
+      break;
   }
 };
 // export const validateInput2 = function (input) {

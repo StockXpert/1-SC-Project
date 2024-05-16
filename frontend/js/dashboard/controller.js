@@ -756,6 +756,12 @@ const controlLoadCmds = async function () {
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
   cmdsView.render(allCommandes, true, model.state.me.permissions.all);
+  seeCmdsView.renderSpinner('Loading articles...');
+  // controlUpdateArticles();
+  seeCmdsView.renderSpinner('Loading fournisseurs...', true);
+  if (model.state.me.role == 'Service Achat')
+    await controlUpdateFournisseursAndArticles();
+  seeCmdsView.unrenderSpinner(true);
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
   cmdsView.resetPointers();
@@ -771,11 +777,13 @@ const controlLoadCmds = async function () {
 //   const products = await model.loadCommandeproducts(8);
 // };
 
-//FOURNISSEURS
-const controlUpdateFournisseurs = async () => {
+//FOURNISSEURS & ARTICLES
+const controlUpdateFournisseursAndArticles = async () => {
   //fetch all fournisseurs to model.state.fournisseurs
   const fournisseurs = await model.loadFournisseurs();
   model.state.fournisseurs.all = fournisseurs;
+  const articles = await model.loadArticles();
+  model.state.articles.all = articles;
 };
 
 //ON INPUT FOURNISSEURS:
@@ -786,9 +794,6 @@ const controlSearchFournisseursCmds = input => {
     return data.map(entry => entry.item);
   }
   let displayedResults = extractItems(results);
-  // displayedResults.push({
-  //   raison_sociale: input,
-  // });
   console.log(displayedResults);
   addCmdsView.addToSuggestionsFournisseursAndEL(
     displayedResults,
@@ -808,6 +813,7 @@ const controlSearchArticlesCmds = input => {
   //get search input
   // input
   //get search results
+  console.log(model.state.articles.all);
   const fuze = model.fuseMakerArticles(model.state.articles.all);
   const results = fuze.search(input);
   function extractItems(data) {
@@ -833,24 +839,37 @@ const controlUpdateProducts = async () => {
 
 const controlSearchProducts = (input, type) => {
   //ON INPUT:
-  const fuze = model.fuseMakerProducts(model.state.bdc_products.all);
+  const fuze = model.fuseMakerProducts(
+    helpers.subtractObjects(
+      model.state.bdc_products.all,
+      model.state.bdc_products.added,
+      'designation'
+    )
+  );
   const results = fuze.search(input);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
+
   switch (type) {
-    case 'add':
-      addCmdsView.addToSuggestionsProductsAndEL(extractItems(results));
-      addCmdsView.resultVisibilityTogglers();
-      break;
-    case 'edit':
-      addCmdsView.addToSuggestionsProductsAndEL(
+    case 'add-bdc-add':
+      addCmdsView.addResultsToSuggestionsAndEL(
         extractItems(results),
-        '.product-search-results-container-edit'
+        '.add-product-bdc-container',
+        '.product-search-results-container',
+        '#bdc-product'
       );
-      addCmdsView.resultVisibilityTogglers();
       break;
+    case 'add-bdc-edit':
+      addCmdsView.addResultsToSuggestionsAndEL(
+        extractItems(results),
+        '.edit-product-bdc-container',
+        '.product-search-results-container-edit',
+        '#bdc-product-edit'
+      );
   }
+  //TODO:
+  // addCmdsView.resultVisibilityTogglers();
 };
 
 //in addCmdsView:
@@ -871,22 +890,16 @@ const controlTypeSelection = typeName => {
 };
 
 const controlAddProductBdc = newProduct => {
-  //TODO:
-  // newProduct.numero = model.state.bdc_products.added.length + 1;
-
   model.state.bdc_products.added.push(newProduct);
   addCmdsView.render(model.state.bdc_products.added);
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
   addCmdsView.AddHandlerAddedProductsCheckboxes();
-  //TODO: edit btns
   addCmdsView.addHandlerShowEditProductWindow(
     '.details-btn-bdc-add',
     '.edit-product-bdc-container'
   );
-  // editUserView.addHandlerEdit(controlEditUser);
-  //TODO: hide btn
-  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
+  addCmdsView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 
 const controlDeleteAddedProducts = () => {
@@ -899,13 +912,11 @@ const controlDeleteAddedProducts = () => {
   addCmdsView._checkboxesAddProduct =
     addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
   addCmdsView.AddHandlerAddedProductsCheckboxes();
-  //TODO: edit btns
   addCmdsView.addHandlerShowEditProductWindow(
     '.details-btn-bdc-add',
     '.edit-product-bdc-container'
   );
-  //TODO: hide btn
-  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
+  addCmdsView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 
 //TODO:
@@ -913,10 +924,14 @@ const controlEditProductBtns = function () {
   //ONCLICK OF A EDIT BUTTON
   //Get the index of the clicked edit button here
   const target = this;
+  console.log(target);
+  console.log(addCmdsView._btnsOpenEditProduct);
   const targetIndex = helpers.findNodeIndex(
     addCmdsView._btnsOpenEditProduct,
     target
   );
+  console.log(targetIndex);
+  console.log(model.state.bdc_products.added[targetIndex]);
   //Use it to extract the input data from the state object
   addCmdsView.changeInputs(model.state.bdc_products.added[targetIndex]);
   model.state.bdc_products.changed = targetIndex;
@@ -936,7 +951,7 @@ const controlChangeProduct = function (editedProduct) {
     '.edit-product-bdc-container'
   );
   //TODO: hide btn
-  addCmdsView.addHandlerEditProductBtns(controlEditProductBtns);
+  addCmdsView.addHandlerEditProductBtns(controlEditProductBtnsInt);
   // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
@@ -1260,11 +1275,7 @@ const controlLoadCmdsInt = async function () {
     controlCmdsIntSearch,
     controlCmdsIntFilters
   );
-  // console.log(model.state);
   cmdsIntHeaderView.render(model.state.me.role);
-  // cmdsIntHeaderView.render('Magasinier');
-  // cmdsIntHeaderView.render('Directeur');
-  // cmdsIntHeaderView.render('Responsable directe');
   addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
   addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   addCmdsIntView.allowSavingBDC(false, '.btn-save-bdci-qt');
@@ -1275,7 +1286,6 @@ const controlLoadCmdsInt = async function () {
   await controlUpdateAllProducts();
   cmdsIntView.unrenderSpinner();
   cmdsIntView.renderSpinner('Chagement des commandes internes ...');
-
   // TODO: cancelCmdsView.restrict(model.state.me.permissions.all);
   // TODO: addCmdsView.restrict(model.state.me.permissions.all);
   // TODO: deleteCmdsView.restrict(model.state.me.permissions.all);
@@ -1313,7 +1323,6 @@ const controlLoadCmdsInt = async function () {
 
 const controlAddProductBdcInt = newProduct => {
   // ON SUBMIT:
-  // newProduct.numero = model.state.bdc_products.added.length + 1;
   let oldProducts;
   oldProducts = model.state.bdci_products.added;
 
@@ -1346,7 +1355,7 @@ const controlUpdateAllProducts = async () => {
   model.state.bdci_products.all = products;
 };
 
-const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
+const controlSearchProductsInt = (input, type, view = editCmdsIntView) => {
   //ON INPUT:
   const fuze = model.fuseMakerProducts(
     //TODO: what about for modifyProduct? (a second type?) :
@@ -1360,20 +1369,13 @@ const controlSearchProductsInt = (input, type, view = addCmdsIntView) => {
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
+
   switch (type) {
     case 'add':
-      // view.addToSuggestionsProductsAndEL(
-      //   extractItems(results),
-      //   '.bdci-product-search-results-container'
-      // );
       view.addToSuggestionsProductsAndEL(extractItems(results), 'add');
       view.resultVisibilityTogglers();
       break;
     case 'edit':
-      // view.addToSuggestionsProductsAndEL(
-      //   extractItems(results),
-      //   '.bdci-product-search-results-container-edit'
-      // );
       view.addToSuggestionsProductsAndEL(extractItems(results), 'edit');
       view.resultVisibilityTogglers();
       break;
@@ -1398,6 +1400,17 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
   let target = e.currentTarget;
   let targetIndex;
   switch (view.constructor.name) {
+    //TODO:
+    case 'EditCmdsView':
+      productsArray = model.state.commandesInt.selected.products;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      // model.state.commandesInt.selected.products = targetIndex;
+      break;
+    case 'AddCmdsView':
+      productsArray = model.state.bdc_products.added;
+      targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
+      // model.state.commandes.selected.products = targetIndex;
+      break;
     case 'EditCmdsIntView':
       productsArray = model.state.commandesInt.selected.products;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
@@ -1417,8 +1430,8 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
       break;
   }
 
-  //Use it to extract the input data from the state object
   view.changeInputs(productsArray[targetIndex]);
+  model.state.bdc_products.changed = targetIndex;
   model.state.bdci_products.changed = targetIndex;
   model.state.commandesInt.selected.changed = targetIndex;
   // model.state.inventaires.new.selectedProduct = targetIndex;
@@ -1428,7 +1441,7 @@ const controlChangeProductInt = function (
   editedProduct,
   view = editCmdsIntView
 ) {
-  //TODO:
+  console.log('controlChangeProductInt');
   let BdciProdsCurrState;
   let changed;
   switch (view.constructor.name) {
@@ -1440,11 +1453,21 @@ const controlChangeProductInt = function (
       BdciProdsCurrState = model.state.commandesInt.selected.products;
       changed = model.state.commandesInt.selected.changed;
       break;
+    case 'AddCmdsView':
+      BdciProdsCurrState = model.state.bdc_products.added;
+      changed = model.state.bdc_products.changed;
+      break;
+    //TODO: 'EditCmdsView'
+    case 'EditCmdsView':
+      BdciProdsCurrState = model.state.commandesInt.selected.products;
+      changed = model.state.commandesInt.selected.changed;
+      break;
   }
   if (
     helpers.isObjectInArray(BdciProdsCurrState, editedProduct) &&
     changed != helpers.objectIndexInArray(BdciProdsCurrState, editedProduct)
   ) {
+    //TODO:
     helpers.renderError(
       'Erreur',
       `Le produit que vous essayez d'ajouter a déjà été ajouté à la commande.`
@@ -1452,32 +1475,43 @@ const controlChangeProductInt = function (
   } else {
     BdciProdsCurrState[changed] = editedProduct;
     switch (view.constructor.name) {
+      case 'AddCmdsView':
+        view.render(BdciProdsCurrState);
+        view.allowSavingBDC(true, '.btn-save-bdc');
+        addCmdsView.addHandlerShowEditProductWindow(
+          '.details-btn-bdc-add',
+          '.edit-product-bdc-container'
+        );
+        break;
+
+      //TODO: 'EditCmdsView'
+      case 'EditCmdsView':
+        view.changeDetails(BdciProdsCurrState);
+        view.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
+        break;
       case 'AddCmdsIntView':
         view.render(BdciProdsCurrState);
         //TODO: make it depend on if the user has really changed the products or not
         view.allowSavingBDC(true, '.btn-save-bdci-qt');
+        addCmdsIntView.addHandlerShowEditProductWindow(
+          '.details-btn-bdci-add',
+          '.edit-product-bdci-container'
+        );
         break;
       case 'EditCmdsIntView':
         view.changeDetails(BdciProdsCurrState);
         view.allowSavingBDC(true, '.btn-save-edit-bdci-qt');
+        editCmdsIntView.addHandlerShowEditProductWindow(
+          '.details-btn-edit-bdci-add',
+          '.edit-product-edit-bdci-container'
+        );
         break;
     }
     view._checkboxesAddProduct = view._parentElement.querySelectorAll(
       'input[type="checkbox"]'
     );
     view.AddHandlerAddedProductsCheckboxes();
-    //TODO: edit btns
-    addCmdsIntView.addHandlerShowEditProductWindow(
-      '.details-btn-bdci-add',
-      '.edit-product-bdci-container'
-    );
-    editCmdsIntView.addHandlerShowEditProductWindow(
-      '.details-btn-edit-bdci-add',
-      '.edit-product-edit-bdci-container'
-    );
-    //TODO: hide btn
     view.addHandlerEditProductBtns(controlEditProductBtnsInt);
-    // numberRoleView.selectionUpdater('.table-container-bdc-produits');
   }
 };
 
@@ -2537,7 +2571,7 @@ editCmdsIntView.addHandlerAddProduct(
 );
 
 addCmdsView.addHandlerChangeProduct(
-  controlChangeProduct,
+  controlChangeProductInt,
   model.state.bdc_products
 );
 addCmdsIntView.addHandlerChangeProduct(
