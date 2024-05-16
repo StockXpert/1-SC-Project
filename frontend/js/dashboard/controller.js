@@ -759,7 +759,7 @@ const controlLoadCmds = async function () {
   seeCmdsView.renderSpinner('Loading articles...');
   // controlUpdateArticles();
   seeCmdsView.renderSpinner('Loading fournisseurs...', true);
-  if (model.state.me.role == 'Service Achat')
+  if (model.state.me.role == 'Service achat')
     await controlUpdateFournisseursAndArticles();
   seeCmdsView.unrenderSpinner(true);
   seeCmdsView.resetPointers();
