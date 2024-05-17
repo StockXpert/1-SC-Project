@@ -805,6 +805,23 @@ export function customSortForCmdsInt(a, b) {
   // If 'date_demande' is the same, compare the 'num_demande'
   return b.num_demande - a.num_demande;
 }
+
+export function newCustomSortForCmdsInt(a, b) {
+  // Check if 'etat' is "demandee"
+  const aIsDemandee = a.etat === 'demandee';
+  const bIsDemandee = b.etat === 'demandee';
+
+  // Prioritize 'demandee' entries
+  if (aIsDemandee && !bIsDemandee) return -1;
+  if (!aIsDemandee && bIsDemandee) return 1;
+
+  // Compare the 'date_demande' properties (latest first)
+  const dateComparison = new Date(b.date_demande) - new Date(a.date_demande);
+  if (dateComparison !== 0) return dateComparison;
+
+  // If 'date_demande' is the same, compare the 'num_demande' (higher first)
+  return b.num_demande - a.num_demande;
+}
 export function xor(a, b) {
   return a !== b;
 }

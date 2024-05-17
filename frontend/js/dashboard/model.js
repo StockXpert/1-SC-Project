@@ -710,10 +710,11 @@ export const loadCmdsInt = async function () {
     `${API_URL}/Sorties/showAllDemandes`
   );
   console.log(state.commandesInt);
+  console.log(state.commandesInt.all);
   state.commandesInt.all = commandesInt.response.sort(
     // (a, b) => new Date(b.date_demande) - new Date(a.date_demande)
     // (a, b) => b.num_demande - a.num_demande
-    helpers.customSortForCmdsInt
+    helpers.newCustomSortForCmdsInt
   );
   console.log(state.commandesInt.all);
   state.commandesInt.afterFilters = state.commandesInt.all;

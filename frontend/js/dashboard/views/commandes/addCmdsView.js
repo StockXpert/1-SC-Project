@@ -285,9 +285,6 @@ export class AddCmdsView extends AddUserView {
     const theContainer = document
       .querySelector(windowClass)
       .querySelector(resultsDirectContainerClass);
-    console.log(windowClass);
-    console.log(theContainer);
-    console.log(inputClass);
     theContainer.innerHTML = '';
     const input = document.querySelector(windowClass).querySelector(inputClass);
 

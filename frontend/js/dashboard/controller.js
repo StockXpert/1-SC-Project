@@ -1276,6 +1276,9 @@ const controlCmdsIntFilters = filterValuesArr => {
         (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
       );
       break;
+    case 'default':
+      afterFilters = beforeFilters.sort(helpers.newCustomSortForCmdsInt);
+      break;
   }
   switch (filterValuesArr[1]) {
     case 'all':
