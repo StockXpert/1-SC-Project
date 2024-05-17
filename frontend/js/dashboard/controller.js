@@ -860,6 +860,7 @@ const controlSearchProducts = (input, type, view) => {
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
+  console.log('control');
   let fuze;
   let results;
   switch (view.constructor.name) {
@@ -915,6 +916,34 @@ const controlSearchProducts = (input, type, view) => {
             '.edit-product-bdci-container',
             '.bdci-product-search-results-container-edit',
             '#bdci-product-edit'
+          );
+      }
+    case 'EditCmdsIntView':
+      fuze = model.fuseMakerProducts(
+        helpers.subtractObjects(
+          model.state.bdci_products.all,
+          model.state.bdci_products.added,
+          'designation'
+        )
+      );
+      results = fuze.search(input);
+      console.log(extractItems(results));
+      switch (type) {
+        case 'add':
+          console.log(extractItems(results));
+          view.addResultsToSuggestionsAndEL(
+            extractItems(results),
+            '.add-product-edit-bdci-container',
+            '.edit-bdci-product-search-results-container',
+            '#edit-bdci-product-add'
+          );
+          break;
+        case 'edit':
+          view.addResultsToSuggestionsAndEL(
+            extractItems(results),
+            '.edit-product-edit-bdci-container',
+            '.edit-bdci-product-search-results-container-edit',
+            '#edit-bdci-product-edit'
           );
       }
   }
