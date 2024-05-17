@@ -489,8 +489,9 @@ aside .sidebar a:hover span {
 .add-fo-btn,
 .add-fournisseur-btn,
 .add-produits-btn {
-  width: 12rem;
-  height: 3rem;
+  min-width: 8rem;
+  /* height: 3rem; */
+  padding: 0.6rem;
   font-size: 1rem;
   font-weight: 700;
   color: white;
@@ -556,7 +557,8 @@ aside .sidebar a:hover span {
 .add-btn-edit-bdci:hover,
 .add-btn-add-bdci:hover,
 .btn-deliver-bdci:hover,
-.btn-maj-inv:hover {
+.btn-maj-inv:hover,
+.btn-continue-inv:hover {
   background-color: #3963b5;
   /* transform: translateY(-2px); */
   transform: translateY(-2px);
@@ -578,7 +580,8 @@ aside .sidebar a:hover span {
 .add-btn-edit-bdci:active,
 .add-btn-add-bdci:active,
 .btn-deliver-bdci:active,
-.btn-maj-inv:active {
+.btn-maj-inv:active,
+.btn-continue-inv:active {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -715,7 +718,8 @@ aside .sidebar a:hover span {
   color: #4b4b4b;
 }
 .heading-table-btn {
-  width: 8rem;
+  /* width: 11rem; */
+  min-width: 8rem;
   height: 2.5rem;
   font-weight: 700;
   padding: 0.4rem 0.4rem;
@@ -765,6 +769,7 @@ aside .sidebar a:hover span {
 .btn-edit-inv,
 .btn-deliver-bdci,
 .btn-maj-inv,
+.btn-continue-inv,
 .btn-edit-chapitres,
 .btn-edit-articles {
   color: black;
@@ -779,6 +784,11 @@ aside .sidebar a:hover span {
 .add-btn-info,
 .edit-btn-info,
 .btn-maj-inv {
+  color: white;
+  background: #477ce2;
+  cursor: pointer;
+}
+.btn-continue-inv {
   color: white;
   background: #477ce2;
   cursor: pointer;
