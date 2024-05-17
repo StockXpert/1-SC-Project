@@ -18,5 +18,6 @@ router.get('/showArticles',authMiddleware('show articles'),NomenclatureControlle
 router.get('/showChapters',authMiddleware('show chapters'),NomenclatureController.showChapters);
 router.put('/updateFournisseur',authMiddleware('update fournisseur'),NomenclatureController.updateFournisseur);
 router.post('/showRefs',NomenclatureController.showRefs);
+router.put('/updateInventaire',NomenclatureController.updateInventaire);
 router.put('/updateRaisonSociale',authMiddleware('update raison sociale'),NomenclatureController.updateRaisonSociale)
 module.exports=router;

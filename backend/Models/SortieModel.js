@@ -913,7 +913,7 @@ function getDemande(numDemande, role, quantiteType) {
 function insertDechargeLink(numDemande, dechargeLink, link2) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `update demande_fourniture set link_decharge=? where num_demande=?`;
+    const query = `update demande_fourniture set link=? ,excel_link=? where num_demande=?`;
     const values = [dechargeLink, link2, numDemande];
 
     connection.connect(err => {
@@ -964,6 +964,7 @@ function insertDateDecharge(numDemande, dateDecharge) {
 }
 function insertDecharge(numDemande, produits) {
   return new Promise((resolve, reject) => {
+    console.log({ myProducts: produits });
     const connection = mysql.createConnection(connectionConfig);
     connection.connect(err => {
       if (err) {
@@ -1005,14 +1006,14 @@ function insertDecharge(numDemande, produits) {
                   'INSERT INTO decharge (num_demande,reference) VALUES (?, ?)',
                   [numDemande, produit.reference],
                   (err, result) => {
-                    if (err && err.code !== 'ER_DUP_ENTRY') {
-                      // Ignorer l'erreur Duplicate entry
+                    if (err) {
                       return callback(err);
                     }
                     console.log(
                       "Produit inséré avec succès dans ma_table avec l'ID produit : ",
                       id_produit
                     );
+                    callback();
                   }
                 );
               }

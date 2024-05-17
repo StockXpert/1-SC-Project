@@ -258,6 +258,16 @@ function showRefs(req, res) {
       res.status(500).json({ response: 'internal error' });
     });
 }
+function updateInventaire(req, res) {
+  const { produits, datePrise } = req.body;
+  NomenclatureModel.updateInventaire(produits, datePrise)
+    .then(() => {
+      res.status(200).json({ response: 'updated' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
 module.exports = {
   addArticle,
   addProduct,
@@ -276,4 +286,5 @@ module.exports = {
   updateRaisonSociale,
   updateFournisseur,
   showRefs,
+  updateInventaire,
 };
