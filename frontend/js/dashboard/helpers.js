@@ -582,6 +582,7 @@ export const getStatusClass = function (status) {
 };
 
 export const isObjectInArray = function (array, objectToCheck) {
+  console.log(array);
   return array.some(item => {
     // Compare each element's properties with objectToCheck's properties
     return item.designation === objectToCheck.designation;

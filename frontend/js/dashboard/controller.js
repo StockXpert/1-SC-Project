@@ -1516,18 +1516,19 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
     case 'EditCmdsIntView':
       productsArray = model.state.commandesInt.selected.products;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
-      model.state.commandesInt.selected.products = targetIndex;
+      model.state.commandesInt.selected.products = productsArray;
       break;
     case 'AddCmdsIntView':
       productsArray = model.state.bdci_products.added;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
-      model.state.commandesInt.selected.products = targetIndex;
+      model.state.commandesInt.selected.products = productsArray;
       break;
     case 'AddInvView':
       productsArray = model.state.inventaires.new.produits;
       console.log(targetIndex);
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       console.log(productsArray[targetIndex]);
+      //TODO:
       model.state.inventaires.new.selectedProduct = targetIndex;
       break;
   }
@@ -1552,6 +1553,7 @@ const controlChangeProductInt = function (
       changed = model.state.bdci_products.changed;
       break;
     case 'EditCmdsIntView':
+      console.log(model.state.commandesInt);
       BdciProdsCurrState = model.state.commandesInt.selected.products;
       changed = model.state.commandesInt.selected.changed;
       break;
