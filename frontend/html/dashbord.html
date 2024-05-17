@@ -4265,12 +4265,9 @@
           </div>
         </div>
         <div class="add-bdc-container">
-          <form class="add-bdc-cart">
-            <div class="container-select-bdc">
+          <div class="add-bdc-cart">
+            <form class="container-select-bdc">
               <div class="dropbtn dropbtn-fournisseurs">
-                <span class="material-icons-sharp">
-                  arrow_drop_down_circle
-                </span>
                 <input
                   name="fournisseur"
                   class="filters-fournisseur"
@@ -4287,6 +4284,7 @@
                     <li>SARL MANSOUR</li> -->
                   </ul>
                 </div>
+                <div class="validity-message hidden"></div>
               </div>
               <!-- <div class="dropbtn dropbtn-Article">
                 <span class="material-icons-sharp"> search </span>
@@ -4300,9 +4298,6 @@
                 </select>
               </div> -->
               <div class="dropbtn dropbtn-articles">
-                <span class="material-icons-sharp">
-                  arrow_drop_down_circle
-                </span>
                 <input
                   name="article"
                   class="filters-article"
@@ -4315,11 +4310,9 @@
                 <div class="search-results article-search-results">
                   <ul class="article-search-results-container"></ul>
                 </div>
+                <div class="validity-message hidden"></div>
               </div>
               <div class="dropbtn dropbtn-type">
-                <span class="material-icons-sharp">
-                  arrow_drop_down_circle
-                </span>
                 <select
                   name="type"
                   class="types-article"
@@ -4337,7 +4330,7 @@
                 <button>Ajouter Produit</button>
                 <span class="material-icons-sharp"> add </span>
               </div>
-            </div>
+            </form>
             <div class="heading-table-add-bdc">
               <div class="container-heading-table-add-bdc">
                 <div class="heading-table-text-add-bdc">
@@ -4465,7 +4458,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="heading-table-btns-add-bdr">
+            <form class="heading-table-btns-add-bdr">
               <button
                 class="heading-table-btn-bdr cancel-btn-add-bdc btn-add-bdr-qt"
                 id="add-bdc-close"
@@ -4475,8 +4468,8 @@
               <button class="heading-table-btn-bdr add-users-btn btn-save-bdc">
                 Sauvegarder
               </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
       <div class="add-bdc-container see-bdc-container hidden">
@@ -5815,6 +5808,19 @@
           <div class="supp-bdr-btns">
             <button class="btn-supp supp-bdr-annuler">Annuler</button>
             <button class="btn-supp supp-bdr-confirmer">Confirmer</button>
+          </div>
+        </form>
+      </div>
+      <div class="container-confirm-added-products hidden">
+        <form class="supp-confirm-cart">
+          <p class="supp-confirm-text">
+            Vous êtes sur le point de changer le fournisseur et/ou l'article
+            et/ou le type, cela entraînera la perte des produits que vous avez
+            ajoutés. Êtes-vous sûr ?
+          </p>
+          <div class="supp-confirm-btns">
+            <button class="btn-supp supp-confirm-annuler">Annuler</button>
+            <button class="btn-supp supp-confirm-confirmer">Confirmer</button>
           </div>
         </form>
       </div>

@@ -735,6 +735,7 @@ export const loadFournisseurs = async function () {
     `${API_URL}/Nomenclatures/showFournisseurs`
   );
   state.fournisseur.all = fournisseurs.response;
+  console.log(state.fournisseur.all);
   return fournisseurs.response;
 };
 

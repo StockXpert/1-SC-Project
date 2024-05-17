@@ -31,6 +31,7 @@ export class AddCmdsView extends AddUserView {
   _articleResults;
   _productResults;
   _type = document.querySelector('#type-options');
+  _addingProductForm = this._window.querySelector('.container-select-bdc');
   _ajouterProduitbtn = document.querySelector('.btn-add-product');
   _ajouterProduitWindow = document.querySelector('.add-product-bdc-container');
   _addProductForm = document.querySelector('.inputs-add-product-bdc');
@@ -133,8 +134,11 @@ export class AddCmdsView extends AddUserView {
         '.cancel-btn-add-bdc',
         '.add-product-bdc-container'
       );
-      this.addHandlerShowAddProductWindow(
-        '.btn-add-product',
+      // this.addHandlerShowAddProductWindow(
+      //   '.btn-add-product',
+      //   '.add-product-bdc-container'
+      // );
+      this._windowAddProduct = this._window.querySelector(
         '.add-product-bdc-container'
       );
       this.addHandlerHideEditProductWindow(
@@ -199,9 +203,23 @@ export class AddCmdsView extends AddUserView {
     if (validity) this._product.changeInputValidity('');
     this.toggleAddProductWindow.bind(this)();
   };
-  addHandlerFournisseurSearch(fournisseurSearchHandler) {
+  addHandlerFournisseurSearch(fournisseurSearchHandler, fournisseursObj) {
+    // this._four.addEventListener('input', e => {
+    //   fournisseurSearchHandler(e.target.value);
+    // });
     this._four.addEventListener('input', e => {
-      fournisseurSearchHandler(e.target.value);
+      let fourDesignations = fournisseursObj.all;
+      const currentDesignations = fourDesignations.map(
+        entry => entry.raison_sociale
+      );
+      this._resultsContainer.classList.remove('hidden');
+
+      if (currentDesignations.includes(e.target.value)) {
+        this._four.changeInputValidity('Ce Fournisseur Existe !', true);
+      } else {
+        this._four.changeInputValidity('');
+      } //                                     TODO:
+      fournisseurSearchHandler(e.target.value /*, 'add-bdc-add'*/);
     });
   }
   addToSuggestionsFournisseursAndEL(results = [], controlSelectFournisseur) {
@@ -237,16 +255,31 @@ export class AddCmdsView extends AddUserView {
       })
     );
   }
-  addHandlerArticleSearch(articleSearchHandler) {
+  addHandlerArticleSearch(articleSearchHandler, articleObj) {
+    // this._article.addEventListener('input', e => {
+    //   articleSearchHandler(e.target.value);
+    // });
     this._article.addEventListener('input', e => {
-      articleSearchHandler(e.target.value);
+      let articleDesignations = articleObj.all;
+      const currentDesignations = articleDesignations.map(
+        entry => entry.designation
+      );
+      this._resultsContainer.classList.remove('hidden');
+
+      if (currentDesignations.includes(e.target.value)) {
+        this._article.changeInputValidity('Cet article Existe !', true);
+      } else {
+        this._article.changeInputValidity('');
+      } //                                     TODO:
+      articleSearchHandler(e.target.value /*, 'add-bdc-add'*/);
     });
   }
   addResultsToSuggestionsAndEL(
     results = [],
     windowClass,
     resultsDirectContainerClass,
-    inputClass
+    inputClass,
+    onClickofASuggestionSpecialCode = ''
   ) {
     const theContainer = document
       .querySelector(windowClass)
@@ -257,14 +290,19 @@ export class AddCmdsView extends AddUserView {
     if (results.length == 0 && input.value != '') {
       theContainer.insertAdjacentHTML(
         'afterbegin',
-        `<li> Aucun Produit n'a été trouvé</li>`
+        `<li> Aucun Resulat n'a été trouvé</li>`
       );
       theContainer.querySelector('li').addEventListener('click', e => {
         e.target.parentElement.innerHTML = '';
       });
     } else {
       const markup = results
-        .map(result => `<li>${result.designation}</li>`)
+        .map(
+          result =>
+            `<li>${
+              result.designation ? result.designation : result.raison_sociale
+            }</li>`
+        )
         .slice(0, 10)
         .join('');
 
@@ -279,6 +317,8 @@ export class AddCmdsView extends AddUserView {
           });
           input.dispatchEvent(event);
           theContainer.innerHTML = '';
+          if (onClickofASuggestionSpecialCode != '')
+            onClickofASuggestionSpecialCode(input.value);
         });
       });
     }
@@ -344,6 +384,37 @@ export class AddCmdsView extends AddUserView {
   //   this.addInputValidation(this._addProductForm, 'prixUnitaire');
   //   this.addInputValidation(this._editProductForm, 'prixUnitaire');
   // }
+  /*
+//TODO:
+  addHandlerSearch(
+    windowClass,
+    searchController,
+    inputClass,
+    parentObject,
+    parentObjectTreatment,
+    containerClass,
+    validMessage,
+    formsToBeValidatedAndTypesArr
+  ) {
+    const windowEl = document.querySelector(windowClass);
+    const inputEl = windowEl.querySelector(inputClass);
+    const containerEl = windowEl.querySelector(containerClass);
+    inputEl.addEventListener('input', e => {
+      const elements = parentObjectTreatment(parentObject);
+      containerEl.classList.remove('hidden');
+      if (elements.includes(e.target.value)) {
+        inputEl.changeInputValidity(validMessage, true);
+      } else {
+        inputEl.changeInputValidity('');
+      }
+      searchController(e.target.value, 'add-bdc-add');
+    });
+
+    formsToBeValidatedAndTypesArr.forEach(e =>
+      helpers.addInputValidation(e.form, e.type)
+    );
+  }
+  }*/
 
   addHandlerProductSearch(productSearchController, productsObj) {
     this._product.addEventListener('input', e => {
@@ -438,6 +509,90 @@ export class AddCmdsView extends AddUserView {
   addTypeSelectHandler(selectHandler) {
     this._type.addEventListener('change', e => selectHandler(e.target.value));
   }
+
+  addHandlerAddingProduct(handler, state, handleProducts) {
+    this._addingProductForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const articleDesignations = state.articles.all.map(el => el.designation);
+      const fourDesignations = state.fournisseurs.all.map(
+        el => el.raison_sociale
+      );
+      // const typeDesignations = types.all.map(el => el.designation);
+      const formElement = this._addingProductForm;
+      const formData = new FormData(formElement);
+      // Convert FormData object to object with key-value pairs
+      const formDataObj = {};
+      formData.forEach(function (value, key) {
+        formDataObj[key] = value;
+      });
+      console.log(formDataObj);
+      console.log(fourDesignations, articleDesignations);
+      /*
+      
+      {
+      "fournisseur": "MACIF FOURNITURE",
+      "article": "Frais de réception",
+      "type": "fourniture"
+      }*/
+
+      if (!fourDesignations.includes(formDataObj.fournisseur)) {
+        this._four.changeInputValidity("Ce fournisseur là n'existe pas");
+        return;
+      }
+      if (!articleDesignations.includes(formDataObj.article)) {
+        this._article.changeInputValidity("Cet article là n'existe pas");
+        return;
+      }
+      handler(formDataObj.article);
+      this.clearAddProductForm();
+      this._product.changeInputValidity('');
+      this.toggleAddProductWindow.bind(this)(); //remove the addShowAddWindowHandler
+    });
+
+    //also on input of any, if any products have been added, show a confirm message to resetting the added products.
+    this._addingProductForm.querySelectorAll('input').forEach(input =>
+      input.addEventListener('input', e => {
+        //on input of any: reclose the addProductWindow (hide+resetting inputs+ resetting validity)
+
+        this._windowAddProduct.classList.add('hidden');
+        this.clearAddProductForm();
+        this._product.changeInputValidity('');
+        console.log(state.bdc_products.added);
+        if (e.isTrusted) handleProducts();
+      })
+    );
+  }
+  resetAddingProductInputs(state) {
+    console.log(state);
+    console.log(state.articles);
+    console.log(state.fournisseurs);
+    this._article.value = state.articles.selected;
+    // const event = new Event('input', {
+    //   bubbles: true,
+    //   cancelable: true,
+    // });
+    // this._four.dispatchEvent(event);
+    // this._article.dispatchEvent(event);
+    this._four.changeInputValidity('Fournisseur Valide !', true);
+    this._article.changeInputValidity('Article Valide !', true);
+    this._four.value = state.fournisseurs.selected;
+  }
+  /*
+      <div class="container-supp-bdr">
+        <form class="supp-bdr-cart">
+          <p class="supp-bdr-text">
+            Vous êtes sur le point de changer le fournisseur et/ou l'article
+            et/ou le type, cela entraînera la perte des produits que vous avez
+            ajoutés. Êtes-vous sûr ?
+          </p>
+          <div class="supp-bdr-btns">
+            <button class="btn-supp supp-bdr-annuler">Annuler</button>
+            <button class="btn-supp supp-bdr-confirmer">Confirmer</button>
+          </div>
+        </form>
+      </div> 
+  */
+
   addHandlerAddProduct(handler, productsObj) {
     this._addProductForm.addEventListener('submit', e => {
       e.preventDefault();

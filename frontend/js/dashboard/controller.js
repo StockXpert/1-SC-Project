@@ -757,7 +757,6 @@ const controlLoadCmds = async function () {
   const allCommandes = model.state.bdc.allCommandes;
   cmdsView.render(allCommandes, true, model.state.me.permissions.all);
   seeCmdsView.renderSpinner('Loading articles...');
-  // controlUpdateArticles();
   seeCmdsView.renderSpinner('Loading fournisseurs...', true);
   if (model.state.me.role == 'Service achat')
     await controlUpdateFournisseursAndArticles();
@@ -767,10 +766,6 @@ const controlLoadCmds = async function () {
   cmdsView.resetPointers();
   bonReceptionView.addHandlerToggleWindow();
   bonReceptionView.addHandlerShow(controlLoadBRec);
-  // const filter1Obj = {
-
-  // }
-  // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
 };
 
 // const controlLoadCommandeproducts = async function () {
@@ -794,9 +789,16 @@ const controlSearchFournisseursCmds = input => {
     return data.map(entry => entry.item);
   }
   let displayedResults = extractItems(results);
-  console.log(displayedResults);
-  addCmdsView.addToSuggestionsFournisseursAndEL(
-    displayedResults,
+  // console.log(displayedResults);
+  // addCmdsView.addToSuggestionsFournisseursAndEL(
+  //   displayedResults,
+  //   controlSelectFournisseur
+  // );
+  addCmdsView.addResultsToSuggestionsAndEL(
+    extractItems(results),
+    '.big-container',
+    '.four-search-results-container',
+    '#filter-fournisseur',
     controlSelectFournisseur
   );
   addCmdsView.resultVisibilityTogglers();
@@ -808,32 +810,33 @@ const controlSelectFournisseur = fournisseurName => {
 
 //ARTICLES
 
+const controlSelectArticle = articleName => {
+  model.state.articles.selected = articleName;
+};
+
 const controlSearchArticlesCmds = input => {
   //ON INPUT:
-  //get search input
-  // input
-  //get search results
   console.log(model.state.articles.all);
   const fuze = model.fuseMakerArticles(model.state.articles.all);
   const results = fuze.search(input);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
-  //add results to html
-  addCmdsView.addToSuggestionsArticlesAndEL(
+
+  addCmdsView.addResultsToSuggestionsAndEL(
     extractItems(results),
-    controlSelectArticlesCmds
+    '.big-container',
+    '.article-search-results-container',
+    '#filter-article',
+    controlSelectArticle
   );
   addCmdsView.resultVisibilityTogglers();
-  //update search result refrencers
-
-  //re-add EL to the search results
 };
 
 //PRODUCTS
 //products.all are filtered by the selected article
-const controlUpdateProducts = async () => {
-  const products = await model.loadProducts(model.state.articles.selected);
+const controlUpdateProducts = async articleName => {
+  const products = await model.loadProducts(articleName);
   model.state.bdc_products.all = products;
 };
 
@@ -875,9 +878,8 @@ const controlSearchProducts = (input, type) => {
 //in addCmdsView:
 //add EL ONINPUT TO #input-box
 
-const controlSelectArticlesCmds = articleName => {
-  model.state.articles.selected = articleName;
-  controlUpdateProducts();
+const controlSelectArticlesCmds = async articleName => {
+  await controlUpdateProducts(articleName);
 };
 
 const controlSelectProducts = productName => {
@@ -886,7 +888,6 @@ const controlSelectProducts = productName => {
 
 const controlTypeSelection = typeName => {
   model.state.type.selected = typeName;
-  console.log(model.state);
 };
 
 const controlAddProductBdc = newProduct => {
@@ -900,6 +901,42 @@ const controlAddProductBdc = newProduct => {
     '.edit-product-bdc-container'
   );
   addCmdsView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+
+const handleAddedProducts = () => {
+  if (model.state.bdc_products.added.length != 0) {
+    //TODO: also on input of any, if any products have been added, show a confirm message to resetting the added products.
+    // console.log(state);
+    //show the confirm window;
+    //TODO: renderConfirmWindow(confirmFunction, cancelFunction='', errorText)
+    const confirmFunction = () => {
+      model.state.bdc_products.added = [];
+      addCmdsView.render(model.state.bdc_products.added);
+      addCmdsView._checkboxesAddProduct =
+        addCmdsView._parentElement.querySelectorAll('input[type="checkbox"]');
+      addCmdsView.AddHandlerAddedProductsCheckboxes();
+      addCmdsView.addHandlerShowEditProductWindow(
+        '.details-btn-bdc-add',
+        '.edit-product-bdc-container'
+      );
+      addCmdsView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+    };
+    const cancelFunction = () => {
+      addCmdsView.resetAddingProductInputs(model.state);
+    };
+    let errorText = ` Vous êtes sur le point de changer le fournisseur et/ou l'article
+    et/ou le type, cela entraînera la perte des produits que vous avez
+    ajoutés. Êtes-vous sûr ?`;
+    helpers.renderConfirmWindow(
+      '.container-confirm-added-products',
+      confirmFunction,
+      cancelFunction,
+      errorText
+    );
+
+    //keep the old details
+    // state.bdc_products.added = [];
+  }
 };
 
 const controlDeleteAddedProducts = () => {
@@ -1379,6 +1416,14 @@ const controlSearchProductsInt = (input, type, view = editCmdsIntView) => {
       view.addToSuggestionsProductsAndEL(extractItems(results), 'edit');
       view.resultVisibilityTogglers();
       break;
+    // case 'add':
+    //   view.addResultsToSuggestionsAndEL(extractItems(results));
+    //   view.resultVisibilityTogglers();
+    //   break;
+    // case 'edit':
+    //   view.addToSuggestionsProductsAndEL(extractItems(results), 'edit');
+    //   view.resultVisibilityTogglers();
+    //   break;
   }
 };
 
@@ -2535,11 +2580,17 @@ addChapterView.addHandlerUpload(controlAddChapter);
 addArticleView.addHandlerUpload(controlAddArticle);
 addProductsView.addHandlerUpload(controlAddProduct);
 
-addCmdsView.addHandlerFournisseurSearch(controlSearchFournisseursCmds);
+addCmdsView.addHandlerFournisseurSearch(
+  controlSearchFournisseursCmds,
+  model.state.fournisseur
+);
 // #F00
 // controlUpdateArticles();
 // controlUpdateFournisseurs();
-addCmdsView.addHandlerArticleSearch(controlSearchArticlesCmds);
+addCmdsView.addHandlerArticleSearch(
+  controlSearchArticlesCmds,
+  model.state.articles
+);
 addCmdsView.addTypeSelectHandler(controlTypeSelection);
 
 addCmdsView.addHandlerProductSearch(
@@ -2608,3 +2659,9 @@ addInvView.addHandlerSavingInv(controlSaveInv);
 validateInvView.addHandlerValidate(controlValidateInv);
 validateInvView.addHandlerDeliver(controlCrushInv);
 // validateInvView.(controlValidateInv);
+
+addCmdsView.addHandlerAddingProduct(
+  controlSelectArticlesCmds,
+  model.state,
+  handleAddedProducts
+);

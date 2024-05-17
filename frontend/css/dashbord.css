@@ -89,6 +89,13 @@ b {
   color: var(--color-dark);
 }
 
+input,
+select,
+button {
+  font-family: 'Poppins', sans-serif;
+  /* font-weight: 400; */
+}
+
 .text-muted {
   color: var(--color-info-dark);
 }
@@ -686,7 +693,7 @@ aside .sidebar a:hover span {
   width: 9rem;
   height: 2.5rem;
   font-weight: 700;
-  padding: 0.6rem;
+  /* padding: 0.6rem; */
   font-size: 1rem;
   border: 1px solid #929292;
   border-radius: 20px;
@@ -1212,6 +1219,7 @@ table tbody tr:last-child td {
   transform: translate(-50%, -50%);
 }
 .input-product-bdc,
+.dropbtn,
 .input-product-bdci,
 .input-product-bdc-edit,
 .input-product-bdci-edit {
@@ -1220,6 +1228,9 @@ table tbody tr:last-child td {
   border: 1px solid #477ce2;
   border-radius: 15px;
   padding: 0.4rem;
+}
+.dropbtn {
+  padding: 0.4rem 0.7rem;
 }
 .input-info,
 .input-info-verif {
@@ -1260,7 +1271,7 @@ table tbody tr:last-child td {
 .add-product-bdc-cart,
 .edit-product-bdc-cart {
   width: 18rem;
-  height: 19rem;
+  height: 21rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -1562,7 +1573,7 @@ table tbody tr:last-child td {
   box-shadow: 1px 1px 1px 0px #00000066;
 }
 
-.dropbtn {
+/* .dropbtn {
   height: 1.8rem;
   display: flex;
   align-items: center;
@@ -1577,17 +1588,17 @@ table tbody tr:last-child td {
   font-size: 0.9rem;
   color: #4b4b4b;
   font-weight: 400;
-}
+} */
 .filter-text {
   font-size: 0.9rem;
   color: #000000;
   font-weight: 600;
 }
 
-.dropbtn span {
+/* .dropbtn span {
   font-size: 1.6rem;
-  /* padding: 0.6rem; */
-}
+   padding: 0.6rem; 
+} */
 
 /* ------------- cart add user --------------- */
 
@@ -2392,7 +2403,9 @@ a.password-icon:active {
 .container-supp-bdc,
 .container-supp-bdci,
 .container-supp-inv,
-.container-supp-bdr {
+.container-supp-bdr,
+.container-confirm,
+.container-confirm-added-products {
   display: block;
   position: fixed;
   z-index: 1000;
@@ -2407,7 +2420,8 @@ a.password-icon:active {
 .supp-produits-cart,
 .supp-role-cart,
 .supp-bdc-cart,
-.supp-bdr-cart {
+.supp-bdr-cart,
+.supp-confirm-cart {
   width: 35rem;
   height: 18rem;
   margin: 0 auto;
@@ -2428,7 +2442,8 @@ a.password-icon:active {
 .supp-chapitre-text,
 .supp-role-text,
 .supp-bdc-text,
-.supp-bdr-text {
+.supp-bdr-text,
+.supp-confirm-text {
   text-align: center;
   color: #4b4b4b;
   font-size: 1.2rem;
@@ -2436,17 +2451,15 @@ a.password-icon:active {
   padding: 0.2rem;
 }
 .supp-user-btns,
-.supp-fournisseur-btns
-  .supp-produits-btns
-  .supp-chapter-btns
-  .supp-article-btns {
-  display: flex;
-  gap: 1rem;
-}
+.supp-fournisseur-btns,
+.supp-produits-btns,
+.supp-chapter-btns,
+.supp-article-btns,
 .supp-structure-btns,
 .supp-role-btns,
 .supp-bdc-btns,
-.supp-bdr-btns {
+.supp-bdr-btns,
+.supp-confirm-btns {
   display: flex;
   gap: 1rem;
 }
@@ -2470,9 +2483,11 @@ a.password-icon:active {
 .supp-bdc-confirmer,
 .supp-bdci-confirmer,
 .supp-inv-confirmer,
+.supp-confirm-confirmer,
 .supp-bdr-confirmer {
   background-color: #e24747;
   color: white;
+  transition: all 0.3s;
 }
 .supp-user-confirmer:hover,
 .supp-fournisseur-confirmer:hover,
@@ -2485,6 +2500,7 @@ a.password-icon:active {
 .supp-bdc-confirmer:hover,
 .supp-bdci-confirmer:hover,
 .supp-inv-confirmer:hover,
+.supp-confirm-confirmer:hover,
 .supp-bdr-confirmer:hover {
   background-color: #9e3232;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -2500,6 +2516,7 @@ a.password-icon:active {
 .supp-bdc-annuler,
 .supp-bdci-annuler,
 .supp-inv-annuler,
+.supp-confirm-annuler,
 .supp-bdr-annuler {
   color: #4b4b4b;
 }
@@ -2514,6 +2531,7 @@ a.password-icon:active {
 .supp-bdc-annuler:hover,
 .supp-bdci-annuler:hover,
 .supp-inv-annuler:hover,
+.supp-confirm-annuler:hover,
 .supp-bdr-annuler:hover {
   background-color: #cccccc;
 }
@@ -2786,13 +2804,13 @@ a.password-icon:active {
   justify-content: center;
 }
 
-.dropbtn {
+/* .dropbtn {
   display: flex;
   gap: 0.4rem;
   width: auto;
   height: 2.3rem;
   padding: 0.2rem;
-}
+} */
 .btn-add-bdci-product,
 .btn-add-product-bdci {
   display: flex;
@@ -2977,7 +2995,7 @@ a.password-icon:active {
   left: 1.4rem;
 }
 .bdc-add-product-search-results {
-  top: 6.5rem !important;
+  top: 7rem !important;
   left: 1.4rem;
 }
 .edit-product-search-results {
@@ -3078,7 +3096,7 @@ a.password-icon:active {
 }
 .validity-message {
   padding: 0 3px;
-  left: 23px;
+  /* left: 23px; */
   transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s;
   transform: scale(0.87) translateY(-37px);
   position: absolute;
@@ -3300,4 +3318,7 @@ a.password-icon:active {
   .container-statistiques {
     max-height: 60vh;
   }
+}
+.dropbtn-type {
+  width: auto;
 }

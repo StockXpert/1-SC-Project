@@ -610,6 +610,7 @@ export const validateInput = function (input, type = 'quantite') {
         input.value = ''; // Set value to 1 if less than 1 or not a number
       }
       break;
+    // TODO: allow for ending . and at commit 45.=>45
     case 'prixUnitaire':
       // Remove non-numeric characters except dot
       input.value = input.value.replace(/[^\d.]/g, '');
@@ -625,12 +626,12 @@ export const validateInput = function (input, type = 'quantite') {
 
       // Ensure the value is not empty
       if (input.value === '') {
-        input.value = '0'; // Default to 0 if empty
+        input.value = ''; // Default to 0 if empty
       }
 
       // Ensure the value is valid
       if (isNaN(parseFloat(input.value))) {
-        input.value = '0'; // Default to 0 if not a valid number
+        input.value = ''; // Default to 0 if not a valid number
       }
       break;
   }
@@ -1037,4 +1038,26 @@ export function createPieChart(ctx, response, dataName) {
       },
     },
   });
+}
+export function renderConfirmWindow(
+  windowClass,
+  confirmFunction,
+  cancelFunction = () => {},
+  errorText
+) {
+  let window = document.querySelector(windowClass);
+  window.querySelector('.supp-confirm-text').innerHTML = errorText;
+  window.querySelector('.supp-confirm-annuler').addEventListener('click', e => {
+    e.preventDefault();
+    cancelFunction();
+    window.classList.add('hidden');
+  });
+  window
+    .querySelector('.supp-confirm-confirmer')
+    .addEventListener('click', e => {
+      e.preventDefault();
+      confirmFunction();
+      window.classList.add('hidden');
+    });
+  window.classList.remove('hidden');
 }
