@@ -180,6 +180,16 @@ function showRefs(req,res)
         res.status(500).json({response:"internal error"})
     })
 }
+function updateInventaire(req,res)
+{
+    const {produits,datePrise}=req.body;
+    NomenclatureModel.updateInventaire(produits,datePrise).then(()=>{
+        res.status(200).json({response:'updated'});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
 module.exports={addArticle,addProduct,addFournisseur,deleteArticle,
     deleteProduct,deleteFournisseur,showFournisseurs,showProducts,showChapters,showArticles,
-    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur,showRefs};
+    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur,showRefs,
+updateInventaire};

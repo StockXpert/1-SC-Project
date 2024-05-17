@@ -815,7 +815,7 @@ function insertDechargeLink(numDemande,dechargeLink,link2)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set link_decharge=? where num_demande=?`;
+        const query = `update demande_fourniture set link=? ,excel_link=? where num_demande=?`;
         const values = [dechargeLink,link2,numDemande];
       
         connection.connect((err) => {
@@ -842,7 +842,7 @@ function insertDateDecharge(numDemande,dateDecharge)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = `update demande_fourniture set date_decharge=?, where num_demande=?`;
+        const query = `update demande_fourniture set date_decharge=? where num_demande=?`;
         const values = [dateDecharge,numDemande];
       
         connection.connect((err) => {
@@ -867,69 +867,71 @@ function insertDateDecharge(numDemande,dateDecharge)
 }
 function insertDecharge(numDemande, produits) {
   return new Promise((resolve, reject) => {
-      const connection = mysql.createConnection(connectionConfig);
-      connection.connect((err) => {
-          if (err) {
-              console.error('Erreur de connexion à la base de données : ', err);
-              reject(err);
-              return;
-          }
-          console.log('Connecté à la base de données MySQL');
-          
-          // Commencer la transaction
-          connection.beginTransaction((err) => {
-              if (err) {
-                  console.error('Erreur lors du démarrage de la transaction : ', err);
-                  reject(err);
-                  return;
-              }
-              console.log("Début de la transaction");
+    console.log({myProducts:produits})
+    const connection = mysql.createConnection(connectionConfig);
+    connection.connect((err) => {
+        if (err) {
+            console.error('Erreur de connexion à la base de données : ', err);
+            reject(err);
+            return;
+        }
+        console.log('Connecté à la base de données MySQL');
+        
+        // Commencer la transaction
+        connection.beginTransaction((err) => {
+            if (err) {
+                console.error('Erreur lors du démarrage de la transaction : ', err);
+                reject(err);
+                return;
+            }
+            console.log("Début de la transaction");
 
-              // Utiliser une boucle asynchrone pour traiter chaque produit
-              async.eachSeries(produits, (produit, callback) => {
-                  // Exécuter la requête pour récupérer l'ID produit à partir de la désignation
-                  console.log({produit})
-                  connection.query('SELECT id_produit FROM produit WHERE designation = ?', [produit.designation], (err, rows) => {
-                      if (err) {
-                          return callback(err);
-                      }
-                      if (rows.length === 0) {
-                          return callback("Produit non trouvé  " + produit.designation);
-                      }
-                      const id_produit = rows[0].id_produit;
+            // Utiliser une boucle asynchrone pour traiter chaque produit
+            async.eachSeries(produits, (produit, callback) => {
+                // Exécuter la requête pour récupérer l'ID produit à partir de la désignation
+                console.log({produit})
+                connection.query('SELECT id_produit FROM produit WHERE designation = ?', [produit.designation], (err, rows) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    if (rows.length === 0) {
+                        return callback("Produit non trouvé  " + produit.designation);
+                    }
+                    const id_produit = rows[0].id_produit;
 
-                      // Insérer les données dans ma_table avec l'ID produit récupéré
-                      connection.query('INSERT INTO decharge (num_demande,reference) VALUES (?, ?)', [numDemande,produit.reference], (err, result) => {
-                          if (err && err.code !== 'ER_DUP_ENTRY') { // Ignorer l'erreur Duplicate entry
-                              return callback(err);
-                          }
-                          console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
-                      });
-                  });
-              }, (err) => {
-                  if (err) {
-                      return connection.rollback(() => {
-                          console.error('Erreur lors du traitement des produits : ', err);
-                          reject(err);
-                      });
-                  }
+                    // Insérer les données dans ma_table avec l'ID produit récupéré
+                    connection.query('INSERT INTO decharge (num_demande,reference) VALUES (?, ?)', [numDemande,produit.reference], (err, result) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
+                        callback();
+                    });
+                });
+            }, (err) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.error('Erreur lors du traitement des produits : ', err);
+                        reject(err);
+                    });
+                }
 
-                  // Valider la transaction
-                  connection.commit((err) => {
-                      if (err) {
-                          return connection.rollback(() => {
-                              console.error('Erreur lors de la validation de la transaction : ', err);
-                              reject(err);
-                          });
-                      }
-                      console.log("Transaction validée avec succès");
-                      resolve("success");
-                      connection.end();
-                  });
-              });
-          });
-      });
-  });
+                // Valider la transaction
+                connection.commit((err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error('Erreur lors de la validation de la transaction : ', err);
+                            reject(err);
+                        });
+                    }
+                    console.log("Transaction validée avec succès");
+                    resolve("success");
+                    connection.end();
+                });
+            });
+        });
+    });
+});
 }
 module.exports={addFourniture,insertFournir,updateAccordedQuantite,changeDemandeStatNotif,updateLivredQuantite,
                deleteFourniture,canDeleteFourniture,getNewDemandes,getAllDemandes,updateDemandedQuantite,
