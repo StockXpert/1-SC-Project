@@ -285,6 +285,9 @@ export class AddCmdsView extends AddUserView {
     const theContainer = document
       .querySelector(windowClass)
       .querySelector(resultsDirectContainerClass);
+    console.log(windowClass);
+    console.log(theContainer);
+    console.log(inputClass);
     theContainer.innerHTML = '';
     const input = document.querySelector(windowClass).querySelector(inputClass);
 
@@ -430,7 +433,7 @@ export class AddCmdsView extends AddUserView {
       } else {
         this._product.changeInputValidity('');
       }
-      productSearchController(e.target.value, 'add-bdc-add');
+      productSearchController(e.target.value, 'add', this);
     });
 
     this._productEdit.addEventListener('input', e => {
@@ -445,7 +448,7 @@ export class AddCmdsView extends AddUserView {
       } else {
         this._productEdit.changeInputValidity('');
       }
-      productSearchController(e.target.value, 'add-bdc-edit');
+      productSearchController(e.target.value, 'edit', this);
     });
 
     // Add input validation
@@ -567,9 +570,6 @@ export class AddCmdsView extends AddUserView {
           this._resultsContainerArticle.classList.add('hidden');
           this._resultsContainer.classList.add('hidden');
         }
-
-        // else {
-        // }
       })
     );
   }

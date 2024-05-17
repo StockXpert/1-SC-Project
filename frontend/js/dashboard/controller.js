@@ -846,36 +846,77 @@ const controlUpdateProducts = async articleName => {
   model.state.bdc_products.all = products;
 };
 
-const controlSearchProducts = (input, type) => {
+const controlSearchProducts = (input, type, view) => {
   //ON INPUT:
-  const fuze = model.fuseMakerProducts(
-    helpers.subtractObjects(
-      model.state.bdc_products.all,
-      model.state.bdc_products.added,
-      'designation'
-    )
-  );
-  const results = fuze.search(input);
+  // const fuze = model.fuseMakerProducts(
+  //   helpers.subtractObjects(
+  //     model.state.bdc_products.all,
+  //     model.state.bdc_products.added,
+  //     'designation'
+  //   )
+  // );
+  // const results = fuze.search(input);
+  // console.log(results);
   function extractItems(data) {
     return data.map(entry => entry.item);
   }
-
-  switch (type) {
-    case 'add-bdc-add':
-      addCmdsView.addResultsToSuggestionsAndEL(
-        extractItems(results),
-        '.add-product-bdc-container',
-        '.product-search-results-container',
-        '#bdc-product'
+  let fuze;
+  let results;
+  switch (view.constructor.name) {
+    case 'AddCmdsView':
+      fuze = model.fuseMakerProducts(
+        helpers.subtractObjects(
+          model.state.bdc_products.all,
+          model.state.bdc_products.added,
+          'designation'
+        )
       );
+      results = fuze.search(input);
+      switch (type) {
+        case 'add':
+          view.addResultsToSuggestionsAndEL(
+            extractItems(results),
+            '.add-product-bdc-container',
+            '.product-search-results-container',
+            '#bdc-product'
+          );
+          break;
+        case 'edit':
+          view.addResultsToSuggestionsAndEL(
+            extractItems(results),
+            '.edit-product-bdc-container',
+            '.product-search-results-container-edit',
+            '#bdc-product-edit'
+          );
+          break;
+      }
       break;
-    case 'add-bdc-edit':
-      addCmdsView.addResultsToSuggestionsAndEL(
-        extractItems(results),
-        '.edit-product-bdc-container',
-        '.product-search-results-container-edit',
-        '#bdc-product-edit'
+    case 'AddCmdsIntView':
+      fuze = model.fuseMakerProducts(
+        helpers.subtractObjects(
+          model.state.bdci_products.all,
+          model.state.bdci_products.added,
+          'designation'
+        )
       );
+      results = fuze.search(input);
+      switch (type) {
+        case 'add':
+          view.addResultsToSuggestionsAndEL(
+            extractItems(results),
+            '.add-product-bdci-container',
+            '.bdci-product-search-results-container',
+            '#bdci-product-add'
+          );
+          break;
+        case 'edit':
+          view.addResultsToSuggestionsAndEL(
+            extractItems(results),
+            '.edit-product-bdci-container',
+            '.bdci-product-search-results-container-edit',
+            '#bdci-product-edit'
+          );
+      }
   }
   //TODO:
   // addCmdsView.resultVisibilityTogglers();
@@ -1398,6 +1439,7 @@ const controlUpdateAllProducts = async () => {
   model.state.bdci_products.all = products;
 };
 
+// #0f0
 const controlSearchProductsInt = (input, type, view = editCmdsIntView) => {
   //ON INPUT:
   const fuze = model.fuseMakerProducts(
@@ -1415,11 +1457,17 @@ const controlSearchProductsInt = (input, type, view = editCmdsIntView) => {
 
   switch (type) {
     case 'add':
-      view.addToSuggestionsProductsAndEL(extractItems(results), 'add');
+      // view.addToSuggestionsProductsAndEL(extractItems(results), 'add');
+      addCmdsIntView.addResultsToSuggestionsAndEL(
+        extractItems(results),
+        '.add-product-bdci-container',
+        '.product-search-results-container',
+        '#bdci-product'
+      );
       view.resultVisibilityTogglers();
       break;
     case 'edit':
-      view.addToSuggestionsProductsAndEL(extractItems(results), 'edit');
+      // view.addToSuggestionsProductsAndEL(extractItems(results), 'edit');
       view.resultVisibilityTogglers();
       break;
     // case 'add':
@@ -2604,12 +2652,12 @@ addCmdsView.addHandlerProductSearch(
   model.state.bdc_products
 );
 addCmdsIntView.addHandlerProductSearch(
-  controlSearchProductsInt,
+  controlSearchProducts,
   model.state.bdci_products
 );
 
 editCmdsIntView.addHandlerProductSearch(
-  controlSearchProductsInt,
+  controlSearchProducts,
   model.state.bdci_products
 );
 
