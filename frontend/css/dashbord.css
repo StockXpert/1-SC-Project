@@ -348,6 +348,14 @@ aside .sidebar a:hover span {
   border-radius: 20px;
   padding: 0.2rem;
 }
+.users-searchbar-inv {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  box-shadow: 0px 2px 10px 0px #00000080;
+  border-radius: 20px;
+  padding: 0.2rem;
+}
 .main-search,
 .main-search-chapitre,
 .main-search-article,
@@ -361,6 +369,11 @@ aside .sidebar a:hover span {
   gap: 1rem;
   justify-content: center;
 }
+.main-search-inv {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
 .container-searchbar,
 .container-searchbar-chapitre,
 .container-searchbar-article,
@@ -369,12 +382,21 @@ aside .sidebar a:hover span {
 .container-searchbar-permission,
 .container-searchbar-bdc,
 .container-searchbar-bdci,
-.container-searchbar-inv {
+.container-searchbar-inv,
+.container-searchbar-add-inv {
   /* width: 30%; */
   display: flex;
   flex-direction: row;
   gap: 1rem;
   justify-content: center;
+  padding: 0.6rem;
+}
+.container-searchbar-add-inv {
+  width: 51rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: start;
   padding: 0.6rem;
 }
 .searchbar,
@@ -395,6 +417,20 @@ aside .sidebar a:hover span {
   outline: 1px solid #e4e4e4;
   box-shadow: 1px 1px 1px 0px #00000066;
 }
+.searchbar-add-inv {
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 0.2rem 0.2rem;
+  border-radius: 25px;
+  outline: 1px solid #e4e4e4;
+  box-shadow: 1px 1px 1px 0px #00000066;
+}
+.searchbar-add-inv span {
+  padding: 0.4rem 0.4rem;
+  color: #9a9a9a;
+}
 /* .searchbar:active {
   outline: 1px solid #477ce2;
 } */
@@ -411,6 +447,12 @@ aside .sidebar a:hover span {
 .searchbar-text-bdci,
 .searchbar-text-inv {
   width: 30vw;
+  font-size: 1.1rem;
+  padding: 0.4rem 0.4rem;
+  border-radius: 25px;
+}
+.searchbar-add-inv-text {
+  width: 19rem;
   font-size: 1.1rem;
   padding: 0.4rem 0.4rem;
   border-radius: 25px;
@@ -1028,6 +1070,9 @@ table thead tr th:last-child {
 table tbody tr td:last-child {
   text-align: center;
 }
+.td-exist {
+  text-align: center;
+}
 
 th {
   width: 5rem;
@@ -1351,12 +1396,20 @@ table tbody tr:last-child td {
 .blue-price {
   color: #477ce2;
 }
-.info-btn-inv {
+.info-btn-inv,
+.exist-btn-inv {
   background-color: transparent;
   cursor: pointer;
 }
 .red-info span {
   color: red;
+  background-color: transparent;
+}
+.blue-exist {
+  justify-content: center;
+}
+.blue-exist span {
+  color: #477ce2;
   background-color: transparent;
 }
 .green-info span {
@@ -1370,7 +1423,8 @@ table tbody tr:last-child td {
 .quantity-verif-D,
 .reference,
 .reference-produit,
-.quantity-ph {
+.quantity-ph,
+.ref-intenre-input {
   position: relative;
 }
 .quantity span,
@@ -1379,7 +1433,8 @@ table tbody tr:last-child td {
 .quantity-verif-M span,
 .quantity-verif-D span,
 .reference span,
-.quantity-ph span {
+.quantity-ph span,
+.ref-intenre-input span {
   position: absolute;
 }
 .green-qt {
@@ -1389,6 +1444,7 @@ table tbody tr:last-child td {
   font-size: 1.5rem;
   color: #49bf20;
 }
+
 .red-qt {
   width: 4rem;
   font-weight: 600;
@@ -1398,6 +1454,15 @@ table tbody tr:last-child td {
 }
 .green-ref {
   width: 13rem;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #49bf20;
+  border: 1px solid #545454;
+  padding: 0rem 0.2rem;
+  border-radius: 0.5rem;
+}
+.green-ref-inv {
+  width: 10rem;
   font-weight: 600;
   font-size: 1.5rem;
   color: #49bf20;
@@ -1550,7 +1615,8 @@ table tbody tr:last-child td {
 .container-filter-produits,
 .container-filter-bdc,
 .container-filter-bdci,
-.container-filter-inv {
+.container-filter-inv,
+.container-filter-add-inv {
   display: flex;
   /* justify-content: space-between; */
   gap: 1rem;
@@ -1563,7 +1629,8 @@ table tbody tr:last-child td {
 .filters-bdc,
 .filters-bdci,
 .filters-inv,
-.filters-statistiques {
+.filters-statistiques,
+.filters-add-inv {
   font-size: 1rem;
   color: #477ce2;
   font-weight: 600;
@@ -1934,7 +2001,23 @@ table tbody tr:last-child td {
   position: relative;
   overflow: hidden;
 }
-.inv-cart,
+.inv-cart {
+  width: 55rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column !important;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 1.6rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+  position: relative;
+  overflow: hidden;
+}
+.ref-externe {
+  width: 10rem;
+}
 .inv-cart-verif {
   width: 55rem;
   margin: 0 auto;

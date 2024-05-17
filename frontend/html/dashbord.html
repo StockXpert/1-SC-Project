@@ -5570,6 +5570,54 @@
                 />
               </div>
             </div>
+            <div class="users-searchbar-inv">
+              <div class="container-searchbar-add-inv">
+                <div class="main-search-inv">
+                  <div class="searchbar-add-inv">
+                    <span class="material-icons-sharp"> search </span>
+                    <input
+                      type="text"
+                      class="searchbar-add-inv-text"
+                      placeholder="Chercher Un Utilisateur..."
+                    />
+                  </div>
+                </div>
+                <div class="container-filter-add-inv">
+                  <div class="dropbtn-text-add-inv">
+                    <select
+                      name="chapitre"
+                      class="filters-add-inv"
+                      id="filter-chapitre-options-add-inv"
+                      placeholder="Selectionnés le chapitre"
+                      required
+                    >
+                      <option value="" disabled="" selected="">
+                        Choisissez un Chapitre
+                      </option>
+                      <option value="">Tout</option>
+                      <option value="exp">exp1</option>
+                      <option value="exp">exp2</option>
+                    </select>
+                  </div>
+                  <div class="dropbtn-text-add-inv">
+                    <select
+                      name="article"
+                      class="filters-add-inv"
+                      id="filter-article-options-add-inv"
+                      placeholder="Selectionnés l'article"
+                      required
+                    >
+                      <option value="" disabled="" selected="">
+                        Choisissez un article
+                      </option>
+                      <option value="">Tout</option>
+                      <option value="article1">article 1</option>
+                      <option value="article2">article 2</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="table-container-inv">
               <table>
                 <thead>
@@ -5579,8 +5627,9 @@
                         <p class="colomn-tags">Designation</p>
                       </div>
                     </th>
-                    <th>Quantité logique</th>
-                    <th>Quantité physique</th>
+                    <th>Réference externe</th>
+                    <th>Réference interne</th>
+                    <th>Existance</th>
                     <th>Justification</th>
                   </tr>
                 </thead>
@@ -5591,12 +5640,29 @@
                         <p class="colomn-des-name-product">Pc dell xps</p>
                       </div>
                     </td>
-                    <td>14</td>
-                    <td class="quantity-ph">
-                      <input class="red-qt" type="text" value="12" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
+                    <td>
+                      <div class="ref-externe">Z-192-canot</div>
+                    </td>
+                    <td class="ref-interne">
+                      <div class="hidden">
+                        <input
+                          class="green-ref-inv"
+                          type="text"
+                          value="esi-canon-12"
+                        />
+                        <span class="material-icons-sharp">
+                          drive_file_rename_outline
+                        </span>
+                      </div>
+                      <div class="">ESI-CANOT-1</div>
+                    </td>
+                    <td class="td-exist blue-exist">
+                      <button class="exist-btn-inv">
+                        <span class="material-icons-sharp"> check_circle </span>
+                        <span class="material-icons-sharp hidden">
+                          radio_button_unchecked
+                        </span>
+                      </button>
                     </td>
                     <td class="td-justify red-info">
                       <button class="info-btn-inv">
@@ -5616,11 +5682,28 @@
                       </div>
                     </td>
                     <td>14</td>
-                    <td class="quantity-ph">
-                      <input class="red-qt" type="text" value="13" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
+                    <td class="ref-interne">
+                      <div class="ref-intenre-input">
+                        <input
+                          class="green-ref-inv"
+                          type="text"
+                          value="esi-canon-12"
+                        />
+                        <span class="material-icons-sharp">
+                          drive_file_rename_outline
+                        </span>
+                      </div>
+                      <div class="hidden">ESI-CANOT-1</div>
+                    </td>
+                    <td class="td-exist blue-exist">
+                      <button class="exist-btn-inv">
+                        <span class="material-icons-sharp hidden">
+                          check_circle
+                        </span>
+                        <span class="material-icons-sharp">
+                          radio_button_unchecked
+                        </span>
+                      </button>
                     </td>
                     <td class="td-justify green-info">
                       <button class="info-btn-inv">
@@ -5638,11 +5721,28 @@
                       </div>
                     </td>
                     <td>14</td>
-                    <td class="quantity-ph">
-                      <input class="green-qt" type="text" value="14" />
-                      <span class="material-icons-sharp">
-                        drive_file_rename_outline
-                      </span>
+                    <td class="ref-interne">
+                      <div class="ref-intenre-input">
+                        <input
+                          class="green-ref-inv"
+                          type="text"
+                          value="esi-canon-12"
+                        />
+                        <span class="material-icons-sharp">
+                          drive_file_rename_outline
+                        </span>
+                      </div>
+                      <div class="hidden">ESI-CANOT-1</div>
+                    </td>
+                    <td class="td-exist blue-exist">
+                      <button class="exist-btn-inv">
+                        <span class="material-icons-sharp hidden">
+                          check_circle
+                        </span>
+                        <span class="material-icons-sharp">
+                          radio_button_unchecked
+                        </span>
+                      </button>
                     </td>
                     <!-- cas ou les quantitees sont egales -->
                     <td class="td-justify hidden">
