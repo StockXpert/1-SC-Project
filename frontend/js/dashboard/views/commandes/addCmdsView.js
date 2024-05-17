@@ -5,11 +5,12 @@ export class AddCmdsView extends AddUserView {
   _raison;
   _parentElement = document.querySelector('.results-bdc-produits');
   _window = document.querySelector('.big-container');
+  _trueParentElement = this._window.querySelector('.inputs-add-product-bdc');
   _save = this._window.querySelector('.btn-save-bdc');
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
   _btnClose = document.querySelector('.btn-add-bdr-qt');
-  _btnsOpenAddProduct;
+  // _btnsOpenAddProduct = this._window.querySelector('.btn-add-product');
   _btnCloseAddProduct;
   _windowAddProduct;
   _restricted = [[this._btnOpen, 'bon commande'], 'none'];
@@ -264,7 +265,7 @@ export class AddCmdsView extends AddUserView {
       const currentDesignations = articleDesignations.map(
         entry => entry.designation
       );
-      this._resultsContainer.classList.remove('hidden');
+      this._resultsContainerArticle.classList.remove('hidden');
 
       if (currentDesignations.includes(e.target.value)) {
         this._article.changeInputValidity('Cet article Existe !', true);
@@ -555,10 +556,20 @@ export class AddCmdsView extends AddUserView {
         //on input of any: reclose the addProductWindow (hide+resetting inputs+ resetting validity)
 
         this._windowAddProduct.classList.add('hidden');
+        this._resultsContainerProduct.classList.add('hidden');
+        this._resultsContainerProductEdit.classList.add('hidden');
         this.clearAddProductForm();
         this._product.changeInputValidity('');
         console.log(state.bdc_products.added);
-        if (e.isTrusted) handleProducts();
+        if (e.isTrusted) {
+          handleProducts();
+        } else {
+          this._resultsContainerArticle.classList.add('hidden');
+          this._resultsContainer.classList.add('hidden');
+        }
+
+        // else {
+        // }
       })
     );
   }

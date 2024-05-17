@@ -833,10 +833,16 @@ const controlSearchArticlesCmds = input => {
   addCmdsView.resultVisibilityTogglers();
 };
 
+// console.log(addCmdsView);
 //PRODUCTS
 //products.all are filtered by the selected article
 const controlUpdateProducts = async articleName => {
+  // addCmdsView.r
+  // addCmdsView._btnsOpenAddProduct.classList.add('hidden');
+  addCmdsView.renderSpinner('', true);
   const products = await model.loadProducts(articleName);
+  addCmdsView.unrenderSpinner(true);
+  // addCmdsView._btnsOpenAddProduct.classList.remove('hidden');
   model.state.bdc_products.all = products;
 };
 
