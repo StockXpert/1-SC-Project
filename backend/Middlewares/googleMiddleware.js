@@ -96,7 +96,10 @@ async function addRow(ligne,Content,idCopy,type)
             case 'registre':
                 valuesToInsert = [Content.id_produit,Content.dateI,Content.date,Content.designation,Content.fournisseur,Content.value];
                 ec=6;
-                 break;           
+                 break;     
+            case 'fiche':
+                valuesToInsert = [ligne-10,Content.designation,Content.num_inventaires,Content.reste,Content.entree,Content.sortie,Content.quantite,Content.quantite_phys,parseInt(Content.quantite)-parseInt(Content.quantite_phys),Content.raison];
+                ec=10;          
             default:
                 break;
         }
@@ -112,7 +115,7 @@ async function addRow(ligne,Content,idCopy,type)
         };
         const response = await sheets.spreadsheets.values.update(updateRequest);
         console.log('New row inserted at index', rowIndex, 'with values', valuesToInsert);
-        if(type!='sortie'&&type!='decharge'&&type!='registre'){  
+        if(type!='sortie'&&type!='decharge'&&type!='registre'&&type!='fiche'){  
         const res = await sheets.spreadsheets.batchUpdate({
             spreadsheetId:idCopy,
             requestBody:{
