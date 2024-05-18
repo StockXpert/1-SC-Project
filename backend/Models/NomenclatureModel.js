@@ -1,4 +1,5 @@
 const mysql=require('mysql');
+const async=require('async')
 const connectionConfig = {
   host: 'bibznsnq8nf1q3j7r74o-mysql.services.clever-cloud.com',
   user: 'ucvk6cpbqavmyqnb',
@@ -784,7 +785,7 @@ function getArticles()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select a.designation,a.tva,a.num_article,c.designation as chapitre from article a ,chapitre c
+    const query = `select a.designation,a.tva,a.num_article,c.designation as chapitre,c.num_chap from article a ,chapitre c
     where c.num_chap=a.num_chap`;
     
   
@@ -869,9 +870,8 @@ function updateRaisonSociale(newR,oldR)
     });
   });
 }
-function updateInventaire(produits,datePrise)
-  {
-    return new Promise((resolve, reject) => {
+function updateInventaire(produits) {
+  return new Promise((resolve, reject) => {
       const connection = mysql.createConnection(connectionConfig);
       connection.connect((err) => {
           if (err) {
@@ -880,7 +880,7 @@ function updateInventaire(produits,datePrise)
               return;
           }
           console.log('Connecté à la base de données MySQL');
-          
+
           // Commencer la transaction
           connection.beginTransaction((err) => {
               if (err) {
@@ -889,37 +889,27 @@ function updateInventaire(produits,datePrise)
                   return;
               }
               console.log("Début de la transaction");
-  
+
               // Utiliser une boucle asynchrone pour traiter chaque produit
               async.eachSeries(produits, (produit, callback) => {
-                  // Exécuter la requête pour récupérer l'ID produit à partir de la désignation
-                  console.log({produit})
-                  connection.query('SELECT id_produit FROM produit WHERE designation = ?', [produit.designation], (err, rows) => {
+                
+                  // Insérer les données dans ma_table avec l'ID produit fourni
+                  if(produit.numInventaire)
+                  {connection.query('update reference set num_inventaire=?, date_inventaire=? where designation=?', [produit.numInventaire, produit.datePrise, produit.reference], (err, result) => {
                       if (err) {
                           return callback(err);
                       }
-                      if (rows.length === 0) {
-                          return callback("Produit non trouvé  " + produit.designation);
-                      }
-                      const id_produit = rows[0].id_produit;
-  
-                      // Insérer les données dans ma_table avec l'ID produit récupéré
-                      connection.query('update reference set num_inventaire=? ,date_inventaire=? where designation=?', [produit.numInventaire,datePrise,produit.designation], (err, result) => {
-                          if (err) {
-                              return callback(err);
-                          }
-                          console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
-                          callback();
-                      });
+                      console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', produit.id_produit);
+                      callback();
                   });
-              }, (err) => {
+              }}, (err) => {
                   if (err) {
                       return connection.rollback(() => {
                           console.error('Erreur lors du traitement des produits : ', err);
                           reject(err);
                       });
                   }
-  
+
                   // Valider la transaction
                   connection.commit((err) => {
                       if (err) {
