@@ -55,56 +55,54 @@ async function genererBondeCommande(
     nomencaltureModel
       .getFournisseur(fourn)
       .then(async fournisseur => {
-        await googleMiddleware.updateCel(
-          'C11',
-          'Adresse ' + fournisseur.adresse,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'C8',
-          'Nom et prénom ' + fournisseur.raison_sociale,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'C9',
-          'Ou Raison Sociale: ' + fournisseur.raison_sociale,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'C12',
-          'Telephone et fax:' + fournisseur.telephone + '/' + fournisseur.fax,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'C13',
-          'N° R.C : ' + fournisseur.num_registre,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'F13',
-          `N.I.F : ${fournisseur.nif ? fournisseur.nif : ''}`,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'F14',
-          `N.I.S : ${+fournisseur.nis ? fournisseur.nis : ''}`,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'F22',
-          montantHT(produits) + '.00',
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'C15',
-          `RIB (ou RIP) :${fournisseur.rib_ou_rip}`,
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'F18',
-          `Objet de la commande: ${objet}`,
-          Id
-        );
+        await Promise.all([
+          googleMiddleware.updateCel(
+            'C11',
+            'Adresse ' + fournisseur.adresse,
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'C8',
+            'Nom et prénom ' + fournisseur.raison_sociale,
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'C9',
+            'Ou Raison Sociale: ' + fournisseur.raison_sociale,
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'C12',
+            'Telephone et fax:' + fournisseur.telephone + '/' + fournisseur.fax,
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'C13',
+            'N° R.C : ' + fournisseur.num_registre,
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'F13',
+            `N.I.F : ${fournisseur.nif ? fournisseur.nif : ''}`,
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'F14',
+            `N.I.S : ${+fournisseur.nis ? fournisseur.nis : ''}`,
+            Id
+          ),
+          googleMiddleware.updateCel('F22', montantHT(produits) + '.00', Id),
+          googleMiddleware.updateCel(
+            'C15',
+            `RIB (ou RIP) :${fournisseur.rib_ou_rip}`,
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'F18',
+            `Objet de la commande: ${objet}`,
+            Id
+          ),
+        ]);
         let range;
         switch (type) {
           case 'materiel':
@@ -119,44 +117,48 @@ async function genererBondeCommande(
           default:
             break;
         }
-        await googleMiddleware.updateCel('D23', `TVA ${tva}%`, Id);
-        await googleMiddleware.updateCel(
-          'F23',
-          TVA(montantHT(produits), tva) + '.00',
-          Id
-        );
-        await googleMiddleware.updateCel(
-          'F24',
-          TVA(montantHT(produits), tva) + montantHT(produits) + '.00',
-          Id
-        );
+        await Promise.all([
+          googleMiddleware.updateCel('D23', `TVA ${tva}%`, Id),
+          googleMiddleware.updateCel(
+            'F23',
+            TVA(montantHT(produits), tva) + '.00',
+            Id
+          ),
+          googleMiddleware.updateCel(
+            'F24',
+            TVA(montantHT(produits), tva) + montantHT(produits) + '.00',
+            Id
+          ),
+        ]);
         const myNumber = new numberWord(
           TVA(montantHT(produits), tva) + montantHT(produits),
           'fr'
         ).result.fullText;
-        await googleMiddleware.updateCel(
-          'A27',
-          `${myNumber} dinars algérien`,
-          Id
-        );
-        await googleMiddleware.updateCel(range, true, Id);
+        await Promise.all([
+          googleMiddleware.updateCel('A27', `${myNumber} dinars algérien`, Id),
+          googleMiddleware.updateCel(range, true, Id),
+        ]);
         let i = 22;
         for (const produit of produits) {
           await googleMiddleware.addRow(i, produit, Id, 'commande');
           i++;
         }
-        await googleMiddleware.generatePDF(
-          Id,
-          `bonCommande`,
-          `commande${num_commande}`
-        );
-        await googleMiddleware.generateCSV(
-          Id,
-          `bonCommande`,
-          `commande${num_commande}`
-        );
-        await googleMiddleware.updateCel(range, false, Id);
-        await googleMiddleware.deleteRows(22, i - 1, Id);
+        await Promise.all([
+          googleMiddleware.generatePDF(
+            Id,
+            `bonCommande`,
+            `commande${num_commande}`
+          ),
+          googleMiddleware.generateCSV(
+            Id,
+            `bonCommande`,
+            `commande${num_commande}`
+          ),
+        ]);
+        await Promise.all([
+          googleMiddleware.updateCel(range, false, Id),
+          googleMiddleware.deleteRows(22, i - 1, Id),
+        ]);
         const link = `BonCommande/commande${num_commande}.`;
         EntreeModel.insertLink(link + 'pdf', link + 'xlsx', num_commande)
           .then(() => {

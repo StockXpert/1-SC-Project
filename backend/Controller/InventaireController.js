@@ -1,13 +1,18 @@
 const { response } = require('express');
 const InventaireModel = require('../Models/InventaireModel');
 const InventaireService = require('../Services/InventaireService');
+const NomenclatureModel = require('../Models/NomenclatureModel');
 function createInventaire(req, res) {
   const { numInventaire, dateInventaire, produits } = req.body;
   InventaireModel.addInventaire(numInventaire, dateInventaire)
     .then(() => {
-      InventaireModel.insertCompter(numInventaire, produits)
+      NomenclatureModel.updateInventaire(produits)
         .then(() => {
-          res.status(200).json({ response: 'inventaire created' });
+          InventaireModel.insertCompter(numInventaire, produits)
+            .then(() => {
+              res.status(200).json({ response: 'inventaire created' });
+            })
+            .catch(() => res.status(500).json({ response: 'internal error' }));
         })
         .catch(() => res.status(500).json({ response: 'internal error' }));
     })
@@ -15,15 +20,12 @@ function createInventaire(req, res) {
 }
 function validInventaire(req, res) {
   const { numInventaire } = req.body;
-  InventaireModel.validInvetaireStatus(numInventaire)
-    .then(() => {
-      InventaireService.addRegistre(numInventaire)
-        .then(() => {
-          res.status(200).json({ response: 'invetaire validated' });
-        })
-        .catch(() => {
-          res.status(500).json({ response: 'internal error' });
-        });
+  const currentYear = new Date().getFullYear();
+  InventaireModel.changeInvetaireStatus(numInventaire, 'valid')
+    .then(async () => {
+      InventaireService.addFiches(currentYear).then(() => {
+        res.status(200).json({ response: 'validated' });
+      });
     })
     .catch(() => {
       res.status(500).json({ response: 'internal error' });
@@ -33,11 +35,18 @@ function updateInventaire(req, res) {
   const { numInventaire, produits } = req.body;
   InventaireModel.getInventaireStatus(numInventaire)
     .then(status => {
-      if (status === 'valid') res.status(400).json({ response: 'prohibited' });
+      if (status === 'valid' || status === 'confirme')
+        res.status(400).json({ response: 'prohibited' });
       else {
-        InventaireModel.updateInventaire(numInventaire, produits)
+        NomenclatureModel.updateInventaire(produits)
           .then(() => {
-            res.status(200).json({ response: 'updated' });
+            InventaireModel.updateInventaire(numInventaire, produits)
+              .then(() => {
+                res.status(200).json({ response: 'updated' });
+              })
+              .catch(() => {
+                res.status(500).json({ response: 'internal error' });
+              });
           })
           .catch(() => {
             res.status(500).json({ response: 'internal error' });
@@ -48,23 +57,35 @@ function updateInventaire(req, res) {
       res.status(500).json({ response: 'internal error' });
     });
 }
-function update(req, res) {
+function confirmInventaire(req, res) {
   const { numInventaire } = req.body;
-  console.log('hi');
-  InventaireModel.getInventaire(numInventaire)
-    .then(produits => {
-      console.log({ produits });
-      InventaireModel.updateQuantite(produits)
-        .then(() => {
-          res.status(200).json({ response: 'updated' });
-        })
-        .catch(() => {
-          res.status(500).json({ response: 'internal error' });
-        });
+  InventaireModel.changeInvetaireStatus(numInventaire, 'confirme')
+    .then(() => {
+      res.status(200).json({ response: 'confirmed' });
     })
     .catch(() => {
       res.status(500).json({ response: 'internal error' });
     });
+}
+function update(req, res) {
+  const { numInventaire } = req.body;
+
+  InventaireModel.deleteRefs(numInventaire).then(() => {
+    InventaireModel.countQuantitePhys()
+      .then(produits => {
+        console.log({ produits });
+        InventaireModel.updateQuantite(produits)
+          .then(() => {
+            res.status(200).json({ response: 'updated' });
+          })
+          .catch(() => {
+            res.status(500).json({ response: 'internal error' });
+          });
+      })
+      .catch(() => {
+        res.status(500).json({ response: 'internal error' });
+      });
+  });
 }
 function showInventaires(req, res) {
   InventaireModel.getInventaires()
@@ -118,4 +139,5 @@ module.exports = {
   deleteInventaire,
   validInventaire,
   update,
+  confirmInventaire,
 };

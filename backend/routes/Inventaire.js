@@ -17,7 +17,7 @@ router.get(
   authMiddleware('show inventaires'),
   inventaireController.showInventaires
 );
-router.post(
+router.get(
   '/showInventaire',
   authMiddleware('show inventaire'),
   inventaireController.showInventaire
@@ -33,4 +33,5 @@ router.delete(
   inventaireController.deleteInventaire
 );
 router.put('/update', authMiddleware('update'), inventaireController.update);
+router.put('/confirmInventaire', inventaireController.confirmInventaire);
 module.exports = router;

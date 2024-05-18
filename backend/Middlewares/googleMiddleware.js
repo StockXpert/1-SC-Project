@@ -128,6 +128,20 @@ async function addRow(ligne, Content, idCopy, type) {
         ];
         ec = 6;
         break;
+      case 'fiche':
+        valuesToInsert = [
+          ligne - 10,
+          Content.designation,
+          Content.num_inventaires,
+          Content.reste,
+          Content.entree,
+          Content.sortie,
+          Content.quantite,
+          Content.quantite_phys,
+          parseInt(Content.quantite) - parseInt(Content.quantite_phys),
+          Content.raison,
+        ];
+        ec = 10;
       default:
         break;
     }
@@ -150,7 +164,12 @@ async function addRow(ligne, Content, idCopy, type) {
       'with values',
       valuesToInsert
     );
-    if (type != 'sortie' && type != 'decharge' && type != 'registre') {
+    if (
+      type != 'sortie' &&
+      type != 'decharge' &&
+      type != 'registre' &&
+      type != 'fiche'
+    ) {
       const res = await sheets.spreadsheets.batchUpdate({
         spreadsheetId: idCopy,
         requestBody: {
