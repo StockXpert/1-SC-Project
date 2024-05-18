@@ -254,18 +254,7 @@ class AddBonReception extends AddCmdsIntView {
         helpers.resetConfirmWindowBtnsEventListenners(
           '.container-confirm-added-products'
         );
-        console.log(this._refrences, this._inputRemainings);
-        console.log(this._refrences.length);
-        console.log(
-          (this._refrences.some(el => el != null) &&
-            this._refrences.length != 0) ||
-            (this._inputRemainings.some(el => !isNaN(el)) &&
-              this._inputRemainings.length != 0)
-        );
-        console.log(
-          this._refrences.some(el => el != null),
-          this._inputRemainings.some(el => !isNaN(el))
-        );
+
         if (
           (this._refrences.some(el => el != null) &&
             this._refrences.length != 0) ||
