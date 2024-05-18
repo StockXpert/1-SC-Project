@@ -94,7 +94,7 @@ async function addRow(ligne,Content,idCopy,type)
                 ec=3;
                  break; 
             case 'registre':
-                valuesToInsert = [Content.id_produit,Content.dateI,Content.date,Content.designation,Content.fournisseur,Content.value];
+                valuesToInsert = [Content.num_inventaire,Content.date_inscription,Content.date_inventaire,Content.designation,Content.fournisseur,Content.prix_unitaire];
                 ec=6;
                  break;     
             case 'fiche':
