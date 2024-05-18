@@ -826,10 +826,7 @@ export const loadBonRec = async function (numCommande) {
     `${API_URL}/Entrees/showBonReception`,
     uploadData
   );
-  console.log(data, numCommande);
-  // console.log(data.response);
   state.bdr.all = data.response;
-  console.log(state.bdr.all);
 };
 
 export const loadBonCmdProducts = async function (numCommande) {
@@ -840,9 +837,7 @@ export const loadBonCmdProducts = async function (numCommande) {
     `${API_URL}/Entrees/showCommandeProducts`,
     uploadData
   );
-
   state.bdr_products.all = data.response;
-  console.log(state.bdr_products.all);
 };
 
 export const deleteBonRec = async function (numReception, numCommande) {

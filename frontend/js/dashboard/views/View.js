@@ -126,6 +126,7 @@ export default class View {
     }
   }
   renderSpinner = function (message = '', isTrueParent = false) {
+    console.log('rendering spinner', message);
     let height = helpers.getVisibleHeight2(this._parentElement);
     const markup = `
       <div class="spinner-parent" ${

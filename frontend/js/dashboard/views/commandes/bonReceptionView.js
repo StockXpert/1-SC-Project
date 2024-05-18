@@ -1,8 +1,10 @@
 import * as helpers from '../../helpers.js';
+import { EditCmdsIntView } from '../commandesInt/editCmdsIntView.js';
 import View from '../view.js';
-import * as model from '../../model.js';
+// import { EditCmdsView } from './editCmdsView.js';
+// import * as model from '../../model.js';
 
-class BonReceptionView extends View {
+class BonReceptionView extends EditCmdsIntView {
   _btnOpen = document.querySelectorAll('.view-btr-btn');
   _window = document.querySelector('.big-container-bdr');
   _overlay = document.querySelector('.overlayBDR');
@@ -10,69 +12,40 @@ class BonReceptionView extends View {
   _parentElement = document.querySelector('.results-bdrs');
   _trueParentElement = document.querySelector('.show-bdr-cart');
 
+  addHandlerShowWindow(OpClassName, windowClassName) {
+    this._window = document.querySelector(windowClassName);
+    this._btnOpen = document.querySelectorAll(OpClassName);
+    this._btnOpen.forEach(btn => {
+      btn.addEventListener('click', this._boundToggleWindow);
+    });
+  }
   constructor() {
-    super();
+    super(true);
   }
-  toggleWindow() {
-    this._window.classList.toggle('hidden');
-    this._overlay.classList.toggle('hidden');
-  }
-
-  _addHandlerShowWindow() {
-    const btnsOpen = Array.from(document.querySelectorAll('.view-btr-btn'));
-    btnsOpen.forEach(btn =>
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        this.toggleWindow();
+  addHandlerShow(controller) {
+    this.addHandlerShowWindow('.view-btr-btn', '.big-container-bdr');
+    this.addHandlerHideWindow('#bdr-close', '.big-container-bdr');
+    this._btnOpen.forEach(btn =>
+      btn.addEventListener('click', async e => {
+        await controller(e);
       })
     );
   }
 
-  addHandlerShow(controller) {
-    const btnsOpen = Array.from(document.querySelectorAll('.view-btr-btn'));
-    btnsOpen.forEach(btn => btn.addEventListener('click', controller));
-  }
-  _addHandlerHideWindow() {
-    const btnClose = this._btnClose;
-    const overlay = this._overlay;
-    btnClose.addEventListener('click', e => {
-      e.preventDefault();
-      this.toggleWindow();
-      model.state.bdc.selected = '';
-    });
-    overlay.addEventListener('click', e => {
-      e.preventDefault();
-      this.toggleWindow();
-      model.state.bdc.selected = '';
-    });
-  }
-
-  addHandlerToggleWindow() {
-    this._addHandlerShowWindow();
-    this._addHandlerHideWindow();
-  }
-
   _generateMarkup() {
-    console.log(this._data);
     if (this._data.length === 0)
       return `<tr><td colspan=${
         document
           .querySelector('.table-container-bdc')
           .querySelector('thead')
           .querySelectorAll('th').length
-      }><b>Aucun Bon de Réception est trouvée</b></td></tr>`;
+      }><b>Aucun bon de réception n'a été trouvé !</b></td></tr>`;
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');
   }
 
   _generateMarkupPreview(result) {
-    const date = helpers.formatDate(result.date_reception);
-    // const day = date.getUTCDate();
-    // const month = date.getUTCMonth() + 1;
-    // const year = date.getUTCFullYear();
-    console.log(date);
-
     return `
       <tr>
         <td>
@@ -85,7 +58,7 @@ class BonReceptionView extends View {
             <p class="colomn-tags-name-bdc">${result.num_bon}</p>
           </div>
         </td>
-        <td>${date}</td>
+        <td>${helpers.formatDate(result.date_reception)}</td>
         <td class="td-view-bdl">
           <a class="view-bdl-btn" href="../../backend/${
             result.link_livraison

@@ -352,7 +352,7 @@ aside .sidebar a:hover span {
   display: flex;
   justify-content: space-between;
   background-color: white;
-  box-shadow: 0px 2px 10px 0px #00000080;
+  box-shadow: 0px 1px 5px 0px #00000080;
   border-radius: 20px;
   padding: 0.2rem;
 }
@@ -559,7 +559,7 @@ aside .sidebar a:hover span {
 .btn-maj-inv:hover {
   background-color: #3963b5;
   /* transform: translateY(-2px); */
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 .add-users-btn:active,
@@ -731,6 +731,7 @@ aside .sidebar a:hover span {
 .btn-cancel-ref,
 .btn-save-ref,
 .heading-table-btn-bdci {
+  transition: all 0.3s;
   width: 9rem;
   height: 2.5rem;
   font-weight: 700;
@@ -1025,11 +1026,11 @@ aside .sidebar a:hover span {
 .table-container-see-bdci,
 .table-container-bdd,
 .table-container-ref {
-  width: auto;
+  width: 65rem;
   max-height: 49.6vh;
   overflow-y: auto;
-  border-radius: 20px;
-  box-shadow: 0px 2px 4px 0px #00000066;
+  /* border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px #00000066; */
 
   transition: all 0.3s ease;
 }
@@ -1452,7 +1453,7 @@ table tbody tr:last-child td {
   color: red;
 }
 .green-ref {
-  width: 13rem;
+  width: 20rem;
   font-weight: 600;
   font-size: 1.5rem;
   color: #49bf20;
@@ -1987,7 +1988,7 @@ table tbody tr:last-child td {
 }
 .add-bdr-cart,
 .verif-bdci-cart {
-  width: 76rem;
+  width: 80rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -2869,6 +2870,10 @@ a.password-icon:active {
 .results-ref-produits {
   position: relative;
 }
+/* .results-ref-produits tr {
+  border-right: 5px solid #000;
+  border-left: 5px solid #000;
+} */
 .container-select-bdc {
   width: 100%;
   display: flex;

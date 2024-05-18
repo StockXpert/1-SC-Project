@@ -220,7 +220,7 @@ function showBonReception(req, res) {
   const { numCommande } = req.body;
   EntreeModel.getBonReception(numCommande)
     .then(response => {
-      res.status(500).json({ response });
+      res.status(200).json({ response });
     })
     .catch(() => {
       res.status(500).json({ response: 'internal error' });

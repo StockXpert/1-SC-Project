@@ -764,7 +764,6 @@ const controlLoadCmds = async function () {
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
   cmdsView.resetPointers();
-  bonReceptionView.addHandlerToggleWindow();
   bonReceptionView.addHandlerShow(controlLoadBRec);
 };
 
@@ -981,10 +980,6 @@ const controlAddProductBdc = newProduct => {
 
 const handleAddedProducts = () => {
   if (model.state.bdc_products.added.length != 0) {
-    //TODO: also on input of any, if any products have been added, show a confirm message to resetting the added products.
-    // console.log(state);
-    //show the confirm window;
-    //TODO: renderConfirmWindow(confirmFunction, cancelFunction='', errorText)
     const confirmFunction = () => {
       model.state.bdc_products.added = [];
       addCmdsView.render(model.state.bdc_products.added);
@@ -1009,9 +1004,6 @@ const handleAddedProducts = () => {
       cancelFunction,
       errorText
     );
-
-    //keep the old details
-    // state.bdc_products.added = [];
   }
 };
 
@@ -1151,63 +1143,77 @@ const controlCancelCmds = async function () {
     });
 };
 
-const controlLoadBRec = async function () {
-  if (model.state.bdc.selected === '') {
-    const target = this;
-    const targetIndex = helpers.findNodeIndex(
-      document.querySelectorAll('.view-btr-btn'),
-      target
-    );
-    bonReceptionView._clear();
-    model.state.bdc.selected =
-      model.state.bdc.allCommandes[targetIndex].num_commande;
-  }
-  console.log(model.state.bdc.selected);
+const controlLoadBRec = async function (e) {
+  const target = e.currentTarget;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.view-btr-btn'),
+    target
+  );
+  model.state.bdc.selected =
+    model.state.bdc.allCommandes[targetIndex].num_commande;
+
+  // TODO:
+  // deleteBonReception.allowDeleteBtn(false, '.btn-delete-bdr');
+  // TODO:
+  deleteBonReception.addDeleteController(controlDeleteBonRec);
   bonReceptionView.renderSpinner('', true);
+  // vvvvvvvvv model.state.bdr.all vvvvvvvv
   await model.loadBonRec(model.state.bdc.selected);
   bonReceptionView.unrenderSpinner(true);
-  // bonReceptionView._clear();
   bonReceptionView.render(model.state.bdr.all);
-  addBonReception.addControllerWindow();
-  addBonReception._clear();
+  addBonReception.allowBlueBtn(false, '.btn-add-bdr');
+  // vvvvvv state.bdr_products.all  vvvvvvvv
   await model.loadBonCmdProducts(model.state.bdc.selected);
   addBonReception.renderSpinner('Loading products');
   addBonReception.render(model.state.bdr_products.all);
-  addBonReception.handleUpdate(controlAddBRec);
-  deleteBonReception.addDeleteController(controlDeleteBonRec);
+  if (model.state.bdr_products.all.length != 0)
+    addBonReception.allowBlueBtn(true, '.btn-add-bdr');
+  // addBonReception.handleUpdate(controlAddBRec);
+  addBonReception.resetPointers();
 };
+// #f00
+addBonReception.addHandlerCancel();
 
+// const controlAddBDR = async function (
+//   produits,
+//   liv,
+//   numLiv,
+//   facture = '',
+//   numFacture = ''
+// ) {};
 function fun() {
   console.log('fun');
 }
 
 const controlAddBRec = async function (
-  numBonLivraison,
   products,
   linkLivraison,
-  numFacture = '',
-  linkFacture = ''
+  numBonLivraison,
+  linkFacture = '',
+  numFacture = ''
 ) {
-  const currentDay = new Date();
-  const year = currentDay.getFullYear();
-  const month = String(currentDay.getMonth() + 1).padStart(2, '0');
-  const day = String(currentDay.getDate()).padStart(2, '0');
-  console.log(`${year}/${month}/${day}`);
+  // const currentDay = new Date();
+  // const year = currentDay.getFullYear();
+  // const month = String(currentDay.getMonth() + 1).padStart(2, '0');
+  // const day = String(currentDay.getDate()).padStart(2, '0');
+  // console.log(`${year}/${month}/${day}`);
 
   const newReception = new FormData();
   newReception.append('numCommande', model.state.bdc.selected);
   newReception.append('numLivraison', numBonLivraison);
   newReception.append('produits', JSON.stringify(products));
   newReception.append('bonLivraison', linkLivraison);
-  newReception.append('dateReception', `${year}-${month}-${day}`);
+  newReception.append('dateReception', helpers.getFormattedDate('/'));
   if (numFacture.length != 0 && linkFacture.length != 0) {
     newReception.append('numFacture', numFacture);
     newReception.append('facture', linkFacture);
   }
 
   console.log([...newReception]);
+  addBonReception.renderSpinner('Ajout du bon reception...');
   await model.addBonReception(newReception);
-  // await controlLoadBRec(model.state.bdc.selected);
+  addBonReception.renderSpinner('');
+  await controlLoadBRec(model.state.bdc.selected);
   // await controlLoadCmds();
 };
 
@@ -1314,7 +1320,7 @@ const controlCmdsIntFilters = filterValuesArr => {
       afterFilters = beforeFilters;
       break;
     case 'demandee':
-      afterFilters = beforeFilters.filter(entry => entry.etat == 'demande');
+      afterFilters = beforeFilters.filter(entry => entry.etat == 'demandee');
       break;
     case 'visee par resp':
       afterFilters = beforeFilters.filter(
@@ -1326,7 +1332,7 @@ const controlCmdsIntFilters = filterValuesArr => {
         entry => entry.etat == 'visee par dg'
       );
       break;
-    case 'pret':
+    case 'prete':
       afterFilters = beforeFilters.filter(entry => entry.etat == 'pret');
       break;
     case 'servie':
@@ -2675,6 +2681,12 @@ addCmdsView.addHandlerFournisseurSearch(
 // #F00
 // controlUpdateArticles();
 // controlUpdateFournisseurs();
+
+//#f00 TODO:
+addBonReception.addHandlerNext();
+addBonReception.addHandlerBack();
+addBonReception.addHandlerSave(controlAddBRec);
+
 addCmdsView.addHandlerArticleSearch(
   controlSearchArticlesCmds,
   model.state.articles

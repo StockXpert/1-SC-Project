@@ -529,7 +529,7 @@ export const removeArrayByBooleans = (dataArray, booleanArray) => {
   }
   return filteredArray;
 };
-export const getFormattedDate = () => {
+export const getFormattedDate = (seperator = '-') => {
   const today = new Date();
 
   const year = today.getFullYear();
@@ -539,7 +539,7 @@ export const getFormattedDate = () => {
 
   const day = today.getDate().toString().padStart(2, '0');
 
-  return `${year}-${month}-${day}`;
+  return `${year}${seperator}${month}${seperator}${day}`;
 };
 export const renderError = function (heading, content) {
   console.log('RENDING AN ERROR');
@@ -687,7 +687,7 @@ export const validateIntegerInput = function (input, maxValue = 0) {
     if (isNaN(intValue) || intValue < 0) {
       intValue = 0;
     } else if (intValue >= maxValue) {
-      if (maxValue) intValue = Math.abs(maxValue); // If maxValue is inclusive, use maxValue instead of maxValue - 1
+      if (maxValue) intValue = maxValue; // If maxValue is inclusive, use maxValue instead of maxValue - 1
     }
 
     // Update input value
@@ -1061,7 +1061,8 @@ export function renderConfirmWindow(
   windowClass,
   confirmFunction,
   cancelFunction = () => {},
-  errorText
+  errorText,
+  confirmsArgument = ''
 ) {
   let window = document.querySelector(windowClass);
   window.querySelector('.supp-confirm-text').innerHTML = errorText;
@@ -1074,8 +1075,36 @@ export function renderConfirmWindow(
     .querySelector('.supp-confirm-confirmer')
     .addEventListener('click', e => {
       e.preventDefault();
-      confirmFunction();
+      confirmFunction(confirmsArgument);
       window.classList.add('hidden');
     });
   window.classList.remove('hidden');
+}
+export function removeAllEventListeners(element) {
+  const newElement = element.cloneNode(true);
+  element.parentNode.replaceChild(newElement, element);
+}
+export function resetConfirmWindowBtnsEventListenners(windowClass) {
+  let window = document.querySelector(windowClass);
+  removeAllEventListeners(window.querySelector('.supp-confirm-confirmer'));
+  removeAllEventListeners(window.querySelector('.supp-confirm-annuler'));
+}
+export function organizeProducts(designations, quantities, references) {
+  const result = [];
+  let refIndex = 0;
+  designations.forEach((designation, i) => {
+    const quantite = parseInt(quantities[i], 10);
+    const product = {
+      designation: designation,
+      quantite: quantite,
+      refs: [],
+    };
+    for (let j = 0; j < quantite; j++) {
+      product.refs.push(references[refIndex]);
+      refIndex++;
+    }
+    result.push(product);
+  });
+
+  return result;
 }
