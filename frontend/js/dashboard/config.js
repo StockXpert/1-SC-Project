@@ -39,6 +39,14 @@ export const FUSE_OPTIONS_CMDSINT = {
   keys: ['num_demande', 'id_demandeur'],
 };
 
+export const FUSE_OPTIONS_PROD = {
+  isCaseSensitive: false,
+  includeScore: true,
+  shouldSort: true,
+  threshold: 0.3,
+  keys: ['article', 'description', 'designation'],
+};
+
 export const GROUP_DEFINITIONS = {
   'Par Defaut': ['show user', 'change password auth'],
   Utilisateurs: [

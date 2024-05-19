@@ -492,7 +492,7 @@ aside .sidebar a:hover span {
 .add-produits-btn {
   min-width: 8rem;
   /* height: 3rem; */
-  padding: 0.6rem;
+  /* padding: 0.6rem; */
   font-size: 1rem;
   font-weight: 700;
   color: white;
@@ -1037,7 +1037,7 @@ aside .sidebar a:hover span {
 .table-container-see-bdci,
 .table-container-bdd,
 .table-container-ref {
-  width: 65rem;
+  /* width: 65rem; */
   max-height: 49.6vh;
   overflow-y: auto;
   /* border-radius: 20px;

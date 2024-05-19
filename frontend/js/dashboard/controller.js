@@ -2267,6 +2267,93 @@ const controlSearchChapter = async function (query) {
   numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
 };
 
+const controlProdFilters = filterValuesArr => {
+  const beforeFilters = model.state.products.afterSearch;
+  let afterFilters = [];
+  switch (filterValuesArr[0]) {
+    case 'dcd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(b.date_demande) - new Date(a.date_demande)
+      );
+      break;
+    case 'acd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(a.date_demande) - new Date(b.date_demande)
+      );
+      break;
+    case 'default':
+      afterFilters = beforeFilters.sort(helpers.newCustomSortForCmdsInt);
+      break;
+    default:
+      afterFilters = beforeFilters;
+  }
+  switch (filterValuesArr[1]) {
+    case 'all':
+      afterFilters = beforeFilters;
+      break;
+    case 'demandee':
+      afterFilters = beforeFilters.filter(entry => entry.etat == 'demandee');
+      break;
+    case 'visee par resp':
+      afterFilters = beforeFilters.filter(
+        entry => entry.etat == 'visee par resp'
+      );
+      break;
+    case 'visee par dg':
+      afterFilters = beforeFilters.filter(
+        entry => entry.etat == 'visee par dg'
+      );
+      break;
+    case 'prete':
+      afterFilters = beforeFilters.filter(entry => entry.etat == 'pret');
+      break;
+    case 'servie':
+      afterFilters = beforeFilters.filter(entry => entry.etat == 'servie');
+      break;
+    default:
+      afterFilters = beforeFilters;
+  }
+  productsView.render(afterFilters);
+  model.state.products.rendered = afterFilters;
+  //TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
+  // seeCmdsIntView.resetPointers();
+  // seeCmdsIntView.addSeeController(controlViewCmdInt);
+  // cmdsIntView.resetPointers();
+  // validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  model.state.commandesInt.afterFilters = afterFilters;
+};
+
+const controlProdSearch = searchInput => {
+  const beforeSearch = model.state.products.all;
+  let afterSearch = [];
+  console.log(beforeSearch);
+  const fuze = model.fuseMakerProd(beforeSearch);
+  const results = fuze.search(searchInput);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  afterSearch = extractItems(results);
+  if (afterSearch.length == 0) {
+    if (searchInput !== '') {
+      afterSearch = [];
+    } else {
+      afterSearch = beforeSearch;
+    }
+  }
+  console.log(afterSearch);
+  productsView.render(afterSearch);
+  model.state.products.rendered = afterSearch;
+  // TODO: seeCmdsIntView.resetPointers();
+  // TODO: seeCmdsIntView.addSeeController(controlViewCmdInt);
+  // TODO: cmdsIntView.resetPointers();
+  // TODO: validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  // TODO: addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  // TODO: addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  model.state.products.afterSearch = afterSearch;
+};
+
 const controlLoadProducts = async function () {
   try {
     if (
@@ -2284,33 +2371,34 @@ const controlLoadProducts = async function () {
     productsView.restrict(model.state.me.permissions.all);
     addProductsView.restrict(model.state.me.permissions.all);
     // deleteStructureView.restrict(model.state.me.permissions.all);
-    productsView.renderSpinner('Loading Products');
+    productsView.renderSpinner('Chargement des produits...');
     await model.loadAllProducts();
     productsView.render(model.state.products.all);
+    // console.log(model.state.products.all);
     // deleteStructureView.addDeleteController(controlDeleteStructure);
 
     // numberChaptersView.render(model.state.chapters);
     // numberChaptersView.updateMasterCheckbox();
     // numberChaptersView.addHandlerNumber(controleSelectChapters);
     // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
-    productsView.addSearchController(controlSearchProduct);
+    // productsView.addSearchController(controlSearchProduct);
   } catch (error) {
     console.error(error);
   }
 };
 
-const controlSearchProduct = async function (query) {
-  const results = model.state.products.all.filter(product =>
-    product.designation.toLowerCase().includes(query.toLowerCase())
-  );
-  model.state.products.searched.all = results;
+// const controlSearchProduct = async function (query) {
+//   const results = model.state.products.all.filter(product =>
+//     product.designation.toLowerCase().includes(query.toLowerCase())
+//   );
+//   model.state.products.searched.all = results;
 
-  productsView.render(model.state.products.searched.all);
-  // numberChaptersView.render(model.state.chapters.searched);
-  // numberChaptersView.updateMasterCheckbox();
-  // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
-  // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
-};
+//   productsView.render(model.state.products.searched.all);
+//   // numberChaptersView.render(model.state.chapters.searched);
+//   // numberChaptersView.updateMasterCheckbox();
+//   // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
+//   // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
+// };
 
 const controlAddProduct = async function (newProduct) {
   try {
@@ -2692,6 +2780,7 @@ addCmdsView.addHandlerFournisseurSearch(
 addBonReception.addHandlerNext();
 addBonReception.addHandlerBack();
 addBonReception.addHandlerSave(controlAddBRec);
+productsView.addHandlerProdSearch(controlProdSearch, controlProdFilters);
 
 addCmdsView.addHandlerArticleSearch(
   controlSearchArticlesCmds,

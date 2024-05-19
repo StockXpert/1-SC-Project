@@ -9,6 +9,7 @@ import {
   FUSE_OPTIONS_FOURNISSEURS,
   FUSE_OPTIONS_ARTICLES,
   FUSE_OPTIONS_CMDSINT,
+  FUSE_OPTIONS_PROD,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -176,6 +177,8 @@ export const state = {
       all: [],
       selected: 0,
     },
+    rendered: [],
+    afterSearch: [],
   },
   articles: {
     all: [],
@@ -556,6 +559,7 @@ export const fuseMakerProducts = data => {
   return new Fuse(data, FUSE_OPTIONS_ARTICLES);
 };
 export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
+export const fuseMakerProd = data => new Fuse(data, FUSE_OPTIONS_PROD);
 
 export const loadRoles = async function () {
   try {
@@ -756,6 +760,8 @@ export const loadProducts = async function (article) {
 export const loadAllProducts = async function () {
   let products = await helpers.getJSON(`${API_URL}/Nomenclatures/showProducts`);
   state.products.all = products.response;
+  state.products.afterFilters = state.products.all;
+  state.products.afterSearch = state.products.all;
   return products.response;
 };
 
