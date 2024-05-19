@@ -58,21 +58,19 @@ import validateInvView from './views/inventaires/validateInvView.js';
 import deleteArticleView from './views/nomenclatures/articles/deleteArticleView.js';
 import numberArticlesView from './views/nomenclatures/articles/numberArticlesView.js';
 import addProductsView from './views/nomenclatures/produits/addProductsView.js';
+import profileView from './views/profile/profileView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
   // document.addEventListener('DOMContentLoaded', () => {
   sideView.renderSpinner();
+  profileView.renderSpinner('', true);
+  // profileView.renderMini(false);
   await model.getMyPerms();
-  // sideView.hideBtns(model.state.me.permissions.all);
-  // console.log(
-  //   model.organizePermissionsByGroup(
-  //     model.state.me.permissions.all,
-  //     true,
-  //     false
-  //   )
-  // );
   sideView.render(model.state.me.permissions.wellFormed);
+  profileView.unrenderSpinner(true);
+  profileView.render(model.state.me);
+  profileView.renderMini();
   sideView.reselectBtns();
   // sideView.unrenderSpinner();
 };
@@ -709,9 +707,11 @@ function filterArrayByBooleans(dataArray, booleanArray) {
   }
   return filteredArray;
 }
-const controlProfile = function () {
+const controlProfile = async function () {
   sideView.divs.forEach(div => div.classList.add('hidden'));
   sideView.divs[0].classList.remove('hidden');
+  productsView.renderSpinner();
+  profileView.render(model.state.me);
 };
 
 const controlRoleSwitch = (e, selectedIndex) => {
@@ -731,10 +731,6 @@ const controlCmdsFiltersChanges = function (newFiltersState = {}) {
   // switch
   //trigger a new search (with the same current query, but new search pool (according to the new filter state))
 };
-
-cmdsView.addHandlerCmdsFiltersChange(controlCmdsFiltersChanges);
-cmdsView.addHandlerCmdsSearch(controlCmdsSearch, model.state.bdc.filtersState);
-// searchView.addHandlerSearchV2(controlFuzzySearch);
 
 const controlLoadCmds = async function () {
   if (
@@ -1176,8 +1172,6 @@ const controlLoadBRec = async function (event = '', number = '') {
   // addBonReception.handleUpdate(controlAddBRec);
   addBonReception.resetPointers();
 };
-// #f00
-addBonReception.addHandlerCancel();
 
 // const controlAddBDR = async function (
 //   produits,
@@ -2727,6 +2721,7 @@ const controllers = [
 /////// B A C K  O '  B E Y O N D #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
+await controlProfile();
 
 addCmdsView.addHandlerDeleteAddedProducts(controlDeleteAddedProducts);
 addCmdsIntView.addHandlerDeleteAddedProducts(controlDeleteAddedProductsInt);

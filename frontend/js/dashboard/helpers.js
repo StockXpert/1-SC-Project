@@ -35,6 +35,21 @@ export const formatDate = inputDate => {
   return formattedDate;
 };
 
+export function formatDateProfile(inputDate) {
+  // Create a new Date object from the input date string
+  const date = new Date(inputDate);
+
+  // Extract the day, month, and year from the Date object
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed, so we add 1
+  const year = date.getUTCFullYear();
+
+  // Format the date as dd/mm/yyyy
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
+}
+
 // export const AJAX = async function (url, uploadData = undefined) {
 //   try {
 //     const fetchPro = uploadData

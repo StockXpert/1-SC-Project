@@ -1035,9 +1035,17 @@ aside .sidebar a:hover span {
 .table-container-inv,
 .table-container-inv-verif,
 .table-container-see-bdci,
-.table-container-bdd,
-.table-container-ref {
+.table-container-bdd {
   /* width: 65rem; */
+  max-height: 49.6vh;
+  overflow-y: auto;
+  /* border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px #00000066; */
+
+  transition: all 0.3s ease;
+}
+.table-container-ref {
+  width: 65rem;
   max-height: 49.6vh;
   overflow-y: auto;
   /* border-radius: 20px;
@@ -2659,7 +2667,7 @@ a.password-icon:active {
 .inputs-profile {
   height: auto;
   width: auto;
-  background-color: white;
+  /* background-color: white; */
   border-radius: 20px;
   padding: 1.8rem;
   box-shadow: 0px 2px 10px 0px #00000080;
