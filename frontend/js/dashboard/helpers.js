@@ -8,6 +8,13 @@ export const timeout = function (s) {
     }, s * 1000);
   });
 };
+export const timeoutRes = function (s) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      resolve(500);
+    }, s * 1000);
+  });
+};
 export const isNodeList = function (obj) {
   return NodeList.prototype.isPrototypeOf(obj);
 };

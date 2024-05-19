@@ -190,12 +190,9 @@ class AddBonReception extends AddCmdsIntView {
       this._inputRemainings.push(NaN);
       helpers.validateIntegerInput(input, input.dataset.max);
       input.addEventListener('input', e => {
-        console.log(e.target.dataset.max);
-        console.log(e.target.value);
         this._inputRemainings[index] = e.target.value
           ? e.target.value - this._data[index].quantite
           : NaN;
-        console.log(this._inputRemainings[index]);
         const allZero = this._inputRemainings.every(value => value === 0);
         this._inputFactureContainer.classList.toggle('hidden', !allZero);
         this._inputNumFactureContainer.classList.toggle('hidden', !allZero);
@@ -348,7 +345,7 @@ class AddBonReception extends AddCmdsIntView {
         flexible.classList.toggle('hidden')
       );
       this.renderRefTable(
-        this._data,
+        this._data.filter(el => el.quantite > el.quantite_recu),
         [...this._numericInputs].map(input => input.value)
       );
       this._refrences = [];
@@ -377,24 +374,29 @@ class AddBonReception extends AddCmdsIntView {
   addHandlerSave(savingHandler) {
     this._sauvegardeForm.addEventListener('submit', async e => {
       e.preventDefault();
+      let productsArray = this._data
+        .filter(el => el.quantite > el.quantite_recu)
+        .map(el => el.designation);
+      let quantities = [...this._numericInputs].map(input => input.value);
+      this._data.forEach(product => {
+        if ((product.quantite = product.quantite_recu)) {
+          productsArray.push(product.designation);
+          quantities.push(0);
+        }
+      });
+
       console.log(
-        helpers.organizeProducts(
-          this._data.map(el => el.designation),
-          [...this._numericInputs].map(input => input.value),
-          this._refrences
-        ),
+        helpers.organizeProducts(productsArray, quantities, this._refrences),
         this._inputLiv.files[0],
         this._inputNumLiv.value,
         this._inputFacture.required ? this._inputFacture.files[0] : '',
         this._inputNumFacture.required ? this._inputNumFacture.value : ''
       );
-      this._btnClose.click();
+      // this._btnClose.click();
+      this.toggleWindow.bind(this)();
+
       await savingHandler(
-        helpers.organizeProducts(
-          this._data.map(el => el.designation),
-          [...this._numericInputs].map(input => input.value),
-          this._refrences
-        ),
+        helpers.organizeProducts(productsArray, quantities, this._refrences),
         this._inputLiv.files[0],
         this._inputNumLiv.value,
         this._inputFacture.required ? this._inputFacture.files[0] : '',

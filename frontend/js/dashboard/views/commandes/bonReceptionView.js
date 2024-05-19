@@ -25,11 +25,7 @@ class BonReceptionView extends EditCmdsIntView {
   addHandlerShow(controller) {
     this.addHandlerShowWindow('.view-btr-btn', '.big-container-bdr');
     this.addHandlerHideWindow('#bdr-close', '.big-container-bdr');
-    this._btnOpen.forEach(btn =>
-      btn.addEventListener('click', async e => {
-        await controller(e);
-      })
-    );
+    this._btnOpen.forEach(btn => btn.addEventListener('click', controller));
   }
 
   _generateMarkup() {

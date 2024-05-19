@@ -852,6 +852,26 @@ export const deleteBonRec = async function (numReception, numCommande) {
   console.log(data);
 };
 
+// export const addBonReception = async function (newReception) {
+//   try {
+//     const res = await fetch(`${API_URL}/Entrees/updateQuantite`, {
+//       method: 'POST',
+//       headers: {
+//         Authorization: localStorage.getItem('JWT'),
+//       },
+//       body: newReception,
+//     });
+//     if (!res.ok) {
+//       throw new Error('Erreur lors de la requête');
+//     }
+//     const data = res.json();
+//     console.log(res);
+//     console.log(data);
+//     return data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 export const addBonReception = async function (newReception) {
   try {
     const res = await fetch(`${API_URL}/Entrees/updateQuantite`, {
@@ -864,10 +884,17 @@ export const addBonReception = async function (newReception) {
     if (!res.ok) {
       throw new Error('Erreur lors de la requête');
     }
-    const data = res.json();
+    const data = await res.json();
     console.log(res);
     console.log(data);
-    return data;
+    // const response = await helpers.timeoutRes(5);
+    // console.log(response);
+    // let response = await helpers.postJSONReturnResRespNoTO(
+    //   '/Entrees/updateQuantite',
+    //   newReception
+    // );
+    // console.log(response);
+    // return response;
   } catch (error) {
     throw error;
   }

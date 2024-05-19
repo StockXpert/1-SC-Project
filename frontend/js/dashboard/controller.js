@@ -1143,20 +1143,25 @@ const controlCancelCmds = async function () {
     });
 };
 
-const controlLoadBRec = async function (e) {
-  const target = e.currentTarget;
-  const targetIndex = helpers.findNodeIndex(
-    document.querySelectorAll('.view-btr-btn'),
-    target
-  );
-  model.state.bdc.selected =
-    model.state.bdc.allCommandes[targetIndex].num_commande;
-
+const controlLoadBRec = async function (event = '', number = '') {
+  if (event != '') {
+    const target = event.currentTarget;
+    const targetIndex = helpers.findNodeIndex(
+      document.querySelectorAll('.view-btr-btn'),
+      target
+    );
+    model.state.bdc.selected =
+      model.state.bdc.allCommandes[targetIndex].num_commande;
+  } else {
+    console.log(number);
+    model.state.bdc.selected = number;
+  }
+  console.log(model.state.bdc.selected);
   // TODO:
   // deleteBonReception.allowDeleteBtn(false, '.btn-delete-bdr');
   // TODO:
   deleteBonReception.addDeleteController(controlDeleteBonRec);
-  bonReceptionView.renderSpinner('', true);
+  bonReceptionView.renderSpinner('Chargement des bons de récéptions', true);
   // vvvvvvvvv model.state.bdr.all vvvvvvvv
   await model.loadBonRec(model.state.bdc.selected);
   bonReceptionView.unrenderSpinner(true);
@@ -1164,7 +1169,7 @@ const controlLoadBRec = async function (e) {
   addBonReception.allowBlueBtn(false, '.btn-add-bdr');
   // vvvvvv state.bdr_products.all  vvvvvvvv
   await model.loadBonCmdProducts(model.state.bdc.selected);
-  addBonReception.renderSpinner('Loading products');
+  addBonReception.renderSpinner('Chargement des produits');
   addBonReception.render(model.state.bdr_products.all);
   if (model.state.bdr_products.all.length != 0)
     addBonReception.allowBlueBtn(true, '.btn-add-bdr');
@@ -1208,12 +1213,13 @@ const controlAddBRec = async function (
     newReception.append('numFacture', numFacture);
     newReception.append('facture', linkFacture);
   }
-
+  console.log(products);
   console.log([...newReception]);
-  addBonReception.renderSpinner('Ajout du bon reception...');
+  bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
   await model.addBonReception(newReception);
-  addBonReception.renderSpinner('');
-  await controlLoadBRec(model.state.bdc.selected);
+  // await helpers.timeoutRes(5);
+  bonReceptionView.unrenderSpinner(true);
+  await controlLoadBRec('', model.state.bdc.selected);
   // await controlLoadCmds();
 };
 
@@ -1238,7 +1244,7 @@ const controlDeleteBonRec = async function () {
   });
   // back to main menu
   // controlLoadCmds();
-  window.location.reload();
+  // window.location.reload();
 };
 /*
 const controlDeleteStructure = function () {
