@@ -74,7 +74,7 @@ function updateQuantite(req,res)
       EntreeService.uploadvalidity(numCommande).then((response)=>{
         let products=EntreeService.changeTabFormat(produits);
         console.log(products)
-        EntreeModel.addRefs(products,dateReception).then(()=>{
+        EntreeModel.addRefs(products,dateReception,numCommande).then(()=>{
          EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink).then((response)=>{
             res.status(200).json({response})
           }).catch((response)=>res.status(500).json({response}))
