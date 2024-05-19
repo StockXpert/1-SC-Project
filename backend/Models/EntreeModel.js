@@ -986,7 +986,7 @@ function updateReception(
     });
   });
 }
-function addRefs(produits, dateReception) {
+function addRefs(produits, dateReception, numCommande) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     connection.connect(err => {
@@ -1026,8 +1026,8 @@ function addRefs(produits, dateReception) {
 
                 // Insérer les données dans ma_table avec l'ID produit récupéré
                 connection.query(
-                  'INSERT INTO reference (id_produit, designation,date_inscription) VALUES (?, ?, ?)',
-                  [id_produit, produit.ref, dateReception],
+                  'INSERT INTO reference (id_produit, designation,date_inscription,num_commande) VALUES (?, ?, ?,?)',
+                  [id_produit, produit.ref, dateReception, numCommande],
                   (err, result) => {
                     if (err) {
                       return callback(err);

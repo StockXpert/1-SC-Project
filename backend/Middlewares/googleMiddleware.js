@@ -119,12 +119,12 @@ async function addRow(ligne, Content, idCopy, type) {
         break;
       case 'registre':
         valuesToInsert = [
-          Content.id_produit,
-          Content.dateI,
-          Content.date,
+          Content.num_inventaire,
+          Content.date_inscription,
+          Content.date_inventaire,
           Content.designation,
           Content.fournisseur,
-          Content.value,
+          Content.prix_unitaire,
         ];
         ec = 6;
         break;

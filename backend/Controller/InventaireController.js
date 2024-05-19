@@ -23,9 +23,11 @@ function validInventaire(req, res) {
   const currentYear = new Date().getFullYear();
   InventaireModel.changeInvetaireStatus(numInventaire, 'valid')
     .then(async () => {
-      InventaireService.addFiches(currentYear).then(() => {
-        res.status(200).json({ response: 'validated' });
-      });
+      await Promise.all([
+        InventaireService.addRegistre(numInventaire),
+        InventaireService.addFiches(currentYear),
+      ]);
+      res.status(200).json({ response: 'validated' });
     })
     .catch(() => {
       res.status(500).json({ response: 'internal error' });
