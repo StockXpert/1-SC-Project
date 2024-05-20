@@ -1157,7 +1157,7 @@ const controlLoadBRec = async function (event = '', number = '') {
   // deleteBonReception.allowDeleteBtn(false, '.btn-delete-bdr');
   // TODO:
   deleteBonReception.addDeleteController(controlDeleteBonRec);
-  bonReceptionView.renderSpinner('Chargement des bons de récéptions', true);
+  bonReceptionView.renderSpinner('Chargement des bons de récéptions ...', true);
   // vvvvvvvvv model.state.bdr.all vvvvvvvv
   addBonReception._message.classList.add('hiddenTrans');
   addBonReception._btnOpen.classList.add('hidden');
@@ -1204,7 +1204,10 @@ const controlAddBRec = async function (
   const newReception = new FormData();
   newReception.append('numCommande', model.state.bdc.selected);
   newReception.append('numLivraison', numBonLivraison);
-  newReception.append('produits', JSON.stringify(products));
+  newReception.append(
+    'produits',
+    JSON.stringify(products.filter(prod => prod.quantite > 0))
+  );
   newReception.append('bonLivraison', linkLivraison);
   newReception.append('dateReception', helpers.getFormattedDate('/'));
   if (numFacture.length != 0 && linkFacture.length != 0) {
@@ -1216,7 +1219,6 @@ const controlAddBRec = async function (
   console.log(newReception);
   bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
   await model.addBonReception(newReception);
-  await helpers.timeoutRes(3);
   bonReceptionView.unrenderSpinner(true);
   await controlLoadBRec('', model.state.bdc.selected);
   // await controlLoadCmds();
