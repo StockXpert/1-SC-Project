@@ -828,6 +828,9 @@ aside .sidebar a:hover span {
   transform: translateY(-2px);
   transition: transform 525ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
+.btn-add-bdr {
+  transition: all 1s;
+}
 .btn-edit:active,
 .btn-edit-bdci:active,
 .btn-edit-chapitres:active,
@@ -1022,7 +1025,7 @@ aside .sidebar a:hover span {
 .table-container-bdr-produits,
 .table-container-show-bdr {
   margin: 1rem 0rem;
-  width: 70rem;
+  width: 59rem;
   max-height: 50.6vh;
   overflow-y: auto;
   /* border-radius: 20px; */
@@ -1978,7 +1981,7 @@ table tbody tr:last-child td {
   overflow: hidden;
 }
 .add-bdc-cart {
-  max-width: 74rem;
+  max-width: 61rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -2651,6 +2654,9 @@ a.password-icon:active {
 }
 .hidden {
   display: none;
+}
+.hiddenTrans {
+  opacity: 0;
 }
 
 .inputs-edit,
@@ -3471,4 +3477,10 @@ a.password-icon:active {
 
 .checkbox-wrapper-18 .round input[type='checkbox']:checked + label:after {
   opacity: 1;
+}
+.bdr-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  transition: all 2s;
 }

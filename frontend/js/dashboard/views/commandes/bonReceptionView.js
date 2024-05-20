@@ -18,7 +18,6 @@ class BonReceptionView extends EditCmdsIntView {
     this._btnOpen.forEach(btn => {
       btn.addEventListener('click', this._boundToggleWindow);
     });
-    this.AddHandlerAddedProductsCheckboxes();
   }
   _btnDeleteProducts = this._window.querySelector('.btn-delete-bdr');
 
@@ -35,10 +34,12 @@ class BonReceptionView extends EditCmdsIntView {
     this._checkboxesAddProduct = this._parentElement.querySelectorAll(
       'input[type="checkbox"]'
     );
+    console.log(this._checkboxesAddProduct);
     const handleCheckboxChange = () => {
       const checkedCheckboxes = this._parentElement.querySelectorAll(
         'input[type="checkbox"]:checked'
       );
+      console.log(checkedCheckboxes);
       if (checkedCheckboxes?.length === 0) {
         this.allowDeleteBtn(false, '.btn-delete-bdr');
       } else if (checkedCheckboxes?.length === 1) {

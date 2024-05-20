@@ -31,7 +31,6 @@ class DeleteBonReception extends View {
     const confirmBtn = this._confirm;
     confirmBtn.addEventListener('click', e => {
       e.preventDefault();
-      console.log('CONF');
       ctrler();
       closeBtn.click();
     });

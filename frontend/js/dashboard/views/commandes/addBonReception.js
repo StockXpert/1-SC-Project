@@ -6,6 +6,7 @@ class AddBonReception extends AddCmdsIntView {
   _btnOpen = document.querySelector('.btn-add-bdr');
   _btnClose = document.querySelector('.cancel-btn-add-bdr');
   _window = document.querySelector('.big-container-bdr-add');
+  _message = document.querySelector('.bdr-title');
   _parentElement = document.querySelector('.results-bdr-produits');
   _numericInputs;
   _sauvegarde = document.querySelector('.btn-save-bdr-qt');
@@ -109,8 +110,9 @@ class AddBonReception extends AddCmdsIntView {
     if (
       this._data.every(result => result.quantite - result.quantite_recu === 0)
     ) {
-      helpers.renderError('Tout Est livré', 'Il ne reste plus rien à livrer');
-      this._sauvgarde.classList.toggle('hidden');
+      this._message.classList.remove('hiddenTrans');
+    } else {
+      this._btnOpen.classList.remove('hidden');
     }
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
@@ -248,6 +250,7 @@ class AddBonReception extends AddCmdsIntView {
     [this._btnClose, this._overlay].forEach(triggerer =>
       triggerer.addEventListener('click', e => {
         e.preventDefault();
+        console.log('CANCEL CLICK', triggerer);
         helpers.resetConfirmWindowBtnsEventListenners(
           '.container-confirm-added-products'
         );
@@ -385,16 +388,18 @@ class AddBonReception extends AddCmdsIntView {
         }
       });
 
-      console.log(
-        helpers.organizeProducts(productsArray, quantities, this._refrences),
-        this._inputLiv.files[0],
-        this._inputNumLiv.value,
-        this._inputFacture.required ? this._inputFacture.files[0] : '',
-        this._inputNumFacture.required ? this._inputNumFacture.value : ''
-      );
+      // console.log(
+      //   helpers.organizeProducts(productsArray, quantities, this._refrences),
+      //   this._inputLiv.files[0],
+      //   this._inputNumLiv.value,
+      //   this._inputFacture.required ? this._inputFacture.files[0] : '',
+      //   this._inputNumFacture.required ? this._inputNumFacture.value : ''
+      // );
       // this._btnClose.click();
       this.toggleWindow.bind(this)();
-
+      console.log('SUBMIT!');
+      await helpers.timeoutRes(5);
+      // console.log('finished');
       await savingHandler(
         helpers.organizeProducts(productsArray, quantities, this._refrences),
         this._inputLiv.files[0],
@@ -404,116 +409,116 @@ class AddBonReception extends AddCmdsIntView {
       );
     });
   }
-  async handleUpdate(control) {
-    const bonLivraisonInput = this._window.querySelector(
-      'input[name="bonLivraison"]'
-    );
-    const factureInput = this._window.querySelector('input[name="facture"]');
-    const numBonLivraison = this._window.querySelector(
-      'input[name="num-livraison"]'
-    );
-    const numFacture = this._window.querySelector('input[name="num-facture"');
-    const tableRows = this._parentElement.querySelectorAll('tr');
-    let results = [];
-    let mustIncludeFacture;
-    tableRows.forEach(row => {
-      const elementQuantite = +row.querySelector('td:nth-child(4)').textContent;
-      // helpers.validateInput(row.querySelector('input[type="number"]'));
-      row
-        .querySelector('input[type="number"]')
-        ?.addEventListener('input', e => {
-          e.target.value = e.target.value.replace(/^0+/, '');
-          const enteredValue = parseInt(e.target.value);
-          if (parseInt(e.target.value) < 1 || isNaN(parseInt(e.target.value))) {
-            // If entered value is not a number, reset to empty string
-            e.target.value = '';
-          } else if (enteredValue < 0 || enteredValue > elementQuantite) {
-            // If entered value is outside the range, reset to the nearest limit
-            e.target.value = Math.min(
-              Math.max(enteredValue, 0),
-              elementQuantite
-            );
-          }
-          results.push(e.target.value - elementQuantite);
-        });
-      row
-        .querySelector('input[type="number"]')
-        ?.addEventListener('input', e => {
-          mustIncludeFacture = results.every(el => el === 0);
-          if (mustIncludeFacture) {
-            factureInput.parentElement.classList.remove('hidden');
-            numFacture.parentElement.classList.remove('hidden');
-          } else {
-            factureInput.parentElement.classList.add('hidden');
-            numFacture.parentElement.classList.add('hidden');
-          }
-        });
-    });
+  // async handleUpdate(control) {
+  //   const bonLivraisonInput = this._window.querySelector(
+  //     'input[name="bonLivraison"]'
+  //   );
+  //   const factureInput = this._window.querySelector('input[name="facture"]');
+  //   const numBonLivraison = this._window.querySelector(
+  //     'input[name="num-livraison"]'
+  //   );
+  //   const numFacture = this._window.querySelector('input[name="num-facture"');
+  //   const tableRows = this._parentElement.querySelectorAll('tr');
+  //   let results = [];
+  //   let mustIncludeFacture;
+  //   tableRows.forEach(row => {
+  //     const elementQuantite = +row.querySelector('td:nth-child(4)').textContent;
+  //     // helpers.validateInput(row.querySelector('input[type="number"]'));
+  //     row
+  //       .querySelector('input[type="number"]')
+  //       ?.addEventListener('input', e => {
+  //         e.target.value = e.target.value.replace(/^0+/, '');
+  //         const enteredValue = parseInt(e.target.value);
+  //         if (parseInt(e.target.value) < 1 || isNaN(parseInt(e.target.value))) {
+  //           // If entered value is not a number, reset to empty string
+  //           e.target.value = '';
+  //         } else if (enteredValue < 0 || enteredValue > elementQuantite) {
+  //           // If entered value is outside the range, reset to the nearest limit
+  //           e.target.value = Math.min(
+  //             Math.max(enteredValue, 0),
+  //             elementQuantite
+  //           );
+  //         }
+  //         results.push(e.target.value - elementQuantite);
+  //       });
+  //     row
+  //       .querySelector('input[type="number"]')
+  //       ?.addEventListener('input', e => {
+  //         mustIncludeFacture = results.every(el => el === 0);
+  //         if (mustIncludeFacture) {
+  //           factureInput.parentElement.classList.remove('hidden');
+  //           numFacture.parentElement.classList.remove('hidden');
+  //         } else {
+  //           factureInput.parentElement.classList.add('hidden');
+  //           numFacture.parentElement.classList.add('hidden');
+  //         }
+  //       });
+  //   });
 
-    this._sauvgarde.addEventListener('click', async e => {
-      e.preventDefault();
+  //   this._sauvgarde.addEventListener('click', async e => {
+  //     e.preventDefault();
 
-      const dataArray = [];
-      tableRows.forEach(row => {
-        const elementQuantite =
-          +row.querySelector('td:nth-child(3)').textContent;
-        let inputQuatite;
-        try {
-          inputQuatite = +row.querySelector('input[type="number"]').value;
-        } catch (error) {
-          helpers.renderError(
-            'Tout Est livré',
-            'Il ne reste plus rien à livrer'
-          );
-        }
-        console.log(elementQuantite);
-        if (!inputQuatite) return;
-        if (inputQuatite <= elementQuantite) {
-          const dataObject = {
-            designation: row.querySelector('td:nth-child(2)').textContent,
-            quantite: inputQuatite,
-          };
-          console.log(dataObject);
-          dataArray.push(dataObject);
-        } else throw new Error('Quantité Errorr');
-      });
-      if (dataArray.length === 0)
-        return helpers.renderError(
-          'Aucune modification',
-          'Cliquez sur annuler si vous ne voulez pas ajouter un bon de réception'
-        );
-      console.log('SAUVEGARDE', numBonLivraison.value, numFacture.value);
-      if (bonLivraisonInput.files.length === 0 && !numBonLivraison.value)
-        return helpers.renderError(
-          'Vous devez ajouter un bon de livraison ',
-          'Le bon de livraison est obligatoire'
-        );
-      if (!mustIncludeFacture) {
-        console.log(dataArray);
-        await control(
-          +numBonLivraison.value,
-          dataArray,
-          bonLivraisonInput.files[0]
-        );
-      } else {
-        if (factureInput.files.length === 0 && !numFacture.value)
-          return helpers.renderError(
-            'Vous devez ajouter une facture',
-            'La facture est obligatoire lorsque tous les produit sont livré'
-          );
-        console.log(dataArray);
-        await control(
-          +numBonLivraison.value,
-          dataArray,
-          bonLivraisonInput.files[0],
-          numFacture.value,
-          factureInput.files[0]
-        );
-      }
+  //     const dataArray = [];
+  //     tableRows.forEach(row => {
+  //       const elementQuantite =
+  //         +row.querySelector('td:nth-child(3)').textContent;
+  //       let inputQuatite;
+  //       try {
+  //         inputQuatite = +row.querySelector('input[type="number"]').value;
+  //       } catch (error) {
+  //         helpers.renderError(
+  //           'Tout Est livré',
+  //           'Il ne reste plus rien à livrer'
+  //         );
+  //       }
+  //       console.log(elementQuantite);
+  //       if (!inputQuatite) return;
+  //       if (inputQuatite <= elementQuantite) {
+  //         const dataObject = {
+  //           designation: row.querySelector('td:nth-child(2)').textContent,
+  //           quantite: inputQuatite,
+  //         };
+  //         console.log(dataObject);
+  //         dataArray.push(dataObject);
+  //       } else throw new Error('Quantité Errorr');
+  //     });
+  //     if (dataArray.length === 0)
+  //       return helpers.renderError(
+  //         'Aucune modification',
+  //         'Cliquez sur annuler si vous ne voulez pas ajouter un bon de réception'
+  //       );
+  //     console.log('SAUVEGARDE', numBonLivraison.value, numFacture.value);
+  //     if (bonLivraisonInput.files.length === 0 && !numBonLivraison.value)
+  //       return helpers.renderError(
+  //         'Vous devez ajouter un bon de livraison ',
+  //         'Le bon de livraison est obligatoire'
+  //       );
+  //     if (!mustIncludeFacture) {
+  //       console.log(dataArray);
+  //       await control(
+  //         +numBonLivraison.value,
+  //         dataArray,
+  //         bonLivraisonInput.files[0]
+  //       );
+  //     } else {
+  //       if (factureInput.files.length === 0 && !numFacture.value)
+  //         return helpers.renderError(
+  //           'Vous devez ajouter une facture',
+  //           'La facture est obligatoire lorsque tous les produit sont livré'
+  //         );
+  //       console.log(dataArray);
+  //       await control(
+  //         +numBonLivraison.value,
+  //         dataArray,
+  //         bonLivraisonInput.files[0],
+  //         numFacture.value,
+  //         factureInput.files[0]
+  //       );
+  //     }
 
-      this.toggleWindow();
-    });
-  }
+  //     this.toggleWindow();
+  //   });
+  // }
 }
 
 export default new AddBonReception();

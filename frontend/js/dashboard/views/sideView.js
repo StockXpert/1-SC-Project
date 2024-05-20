@@ -130,7 +130,6 @@ class SideView extends View {
 
   // TODO: MAKE A CONFIG ARRAY THAT HAS: KEY(PERM GROUP) VALUE(HTML)
   _generateMarkup() {
-    console.log(this._data);
     return `
     ${this._data.map(el => this._generateMarkupPerview(el.groupName)).join('')} 
     <a class="sidebar-btns" href="/frontend/html/login.html">

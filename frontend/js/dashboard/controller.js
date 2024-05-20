@@ -1159,9 +1159,13 @@ const controlLoadBRec = async function (event = '', number = '') {
   deleteBonReception.addDeleteController(controlDeleteBonRec);
   bonReceptionView.renderSpinner('Chargement des bons de récéptions', true);
   // vvvvvvvvv model.state.bdr.all vvvvvvvv
+  addBonReception._message.classList.add('hiddenTrans');
+  addBonReception._btnOpen.classList.add('hidden');
+
   await model.loadBonRec(model.state.bdc.selected);
   bonReceptionView.unrenderSpinner(true);
   bonReceptionView.render(model.state.bdr.all);
+  bonReceptionView.AddHandlerAddedProductsCheckboxes();
   addBonReception.allowBlueBtn(false, '.btn-add-bdr');
   // vvvvvv state.bdr_products.all  vvvvvvvv
   await model.loadBonCmdProducts(model.state.bdc.selected);
@@ -1209,9 +1213,10 @@ const controlAddBRec = async function (
   }
   console.log(products);
   console.log([...newReception]);
+  console.log(newReception);
   bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
   await model.addBonReception(newReception);
-  // await helpers.timeoutRes(5);
+  await helpers.timeoutRes(3);
   bonReceptionView.unrenderSpinner(true);
   await controlLoadBRec('', model.state.bdc.selected);
   // await controlLoadCmds();
@@ -1228,10 +1233,10 @@ const controlDeleteBonRec = async function () {
   ).forEach(async el => {
     console.log(el);
     bonReceptionView.renderSpinner(
-      "Suppression d'un bon de reception  " + el.num_bon + '...',
+      'Suppression du bon de reception  N°' + el.num_bon + '...',
       true
     );
-    bonReceptionView.renderSpinner('', true);
+    // await helpers.timeoutRes(1500);
     await model.deleteBonRec(el.num_bon, el.numCommande);
     bonReceptionView.unrenderSpinner(true);
     bonReceptionView.toggleWindow();
@@ -1888,7 +1893,7 @@ const controlValidateCmdsInt = async () => {
   let appObject = validateCmdsIntView.extractObject();
   let returnValue;
   validateCmdsIntView._btnClose.click();
-  cmdsIntView.renderSpinner('Approbation ...');
+  cmdsIntView.renderSpinner('Validation ...');
   switch (validateCmdsIntView._role) {
     case 'Responsable directe':
       returnValue = await model.resAppCmdInt(appObject);

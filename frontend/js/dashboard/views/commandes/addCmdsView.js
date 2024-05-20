@@ -733,7 +733,6 @@ export class AddCmdsView extends AddUserView {
   ) {
     this._windowEditProduct = document.querySelector(windowClassName);
     this._btnsOpenEditProduct = this._window.querySelectorAll(OpClassName);
-    console.log(this._btnsOpenEditProduct);
     this._btnsOpenEditProduct.forEach(btn => {
       btn.addEventListener('click', e => {
         this._boundToggleEditProductWindow(e);

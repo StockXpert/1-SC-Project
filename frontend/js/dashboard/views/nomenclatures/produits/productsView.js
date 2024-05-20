@@ -13,7 +13,6 @@ class ProductsView extends View {
   }
 
   addHandlerProdSearch(handler, filterHandler) {
-    console.log(this._searchBox, this._filters.querySelectorAll('select'));
     this._searchBox.addEventListener('input', e => {
       console.log('PRESSED');
       handler(this._searchBox.value);

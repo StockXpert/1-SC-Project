@@ -891,8 +891,8 @@ export const addBonReception = async function (newReception) {
       throw new Error('Erreur lors de la requête');
     }
     const data = await res.json();
-    console.log(res);
-    console.log(data);
+    // console.log(res);
+    // console.log(data);
     // const response = await helpers.timeoutRes(5);
     // console.log(response);
     // let response = await helpers.postJSONReturnResRespNoTO(
