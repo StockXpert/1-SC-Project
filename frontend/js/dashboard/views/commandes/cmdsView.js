@@ -79,6 +79,8 @@ export class CmdsView extends UsersView {
     this._checkboxes = this._parentElement.querySelectorAll(
       'input[type="checkbox"]'
     );
+    console.log(this._parentElement.querySelectorAll('input[type="checkbox"]'));
+    console.log(this._checkboxes);
     this.addEventListenerCheckboxesChange();
   }
 

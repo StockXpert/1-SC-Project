@@ -4,6 +4,8 @@ export class InvView extends CmdsIntView {
   constructor() {
     super();
   }
+  _checkboxes;
+  _btnContinueInv = document.querySelector('.btn-continue-inv');
   _btnAddInv = document.querySelector('.add-inv-btn');
   _btnUpdateInv = document.querySelector('.btn-maj-inv');
   _btnDeleteInv = document.querySelector('.btn-delete-inv');
@@ -85,7 +87,9 @@ export class InvView extends CmdsIntView {
       case 'Magasinier':
         console.log(this);
         this._btnDeleteInv.classList.remove('hidden');
-        this._btnModifyInv.classList.remove('hidden');
+        this._btnContinueInv.classList.remove('hidden');
+        //TODO:
+        // this._btnModifyInv.classList.remove('hidden');
         this._btnAddInv.classList.remove('hidden');
         break;
       default:

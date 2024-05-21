@@ -3,10 +3,16 @@ import * as helpers from '../../helpers.js';
 
 // Product === Info
 class AddInvView extends AddCmdsIntView {
-  _inputs = this._window.querySelectorAll('.quantity-ph input');
+  // _inputs = this._window.querySelectorAll('.quantity-ph input');
+  _numberContainer;
+  _btnContinueInv = document.querySelector('.btn-continue-inv');
+  _refInputs;
   _parentElement = document.querySelector('.results-produits-inv');
   _window = document.querySelector('.big-container-inv');
-  _form = this._window.querySelector('.inv-cart');
+  _numberContainer = this._window.querySelector('.heading-table-text-add-inv');
+  _inputs = this._window.querySelectorAll('.td-exist input');
+  _title = this._window.querySelector('.inv-title');
+  _form = this._window.querySelector('.heading-table-btns-inv');
   _numInventaire = this._window.querySelector('.input-num-inv');
   _overlay = document.querySelector('.overlayInv');
   _btnOpen = document.querySelector('.add-inv-btn');
@@ -32,7 +38,6 @@ class AddInvView extends AddCmdsIntView {
   }
   addHandlerEdit(controller) {
     this._btnOpen.addEventListener('click', async e => await controller());
-    // this.addHandlerEdit();
   }
   addHandlerSetRemark(handler) {
     this._editProductForm.addEventListener('submit', e => {
@@ -51,30 +56,45 @@ class AddInvView extends AddCmdsIntView {
   //     });
   //   });
   // }
-
-  resetPointers(controlInput) {
+  resetPointers(controlInput, controlRefInput) {
     this.addHandlerShowEditProductWindow(
       '.info-btn-inv',
       '.edit-info-container',
       false
     );
-    this._inputs = this._window.querySelectorAll('.quantity-ph input');
+    this._inputs = this._window.querySelectorAll('.td-exist input');
+
+    this._refInputs = this._window.querySelectorAll('.ref-intenre-input input');
+
     this._inputs.forEach(input => {
-      helpers.validateIntegerInput(input);
+      // helpers.validateIntegerInput(input);
       input.addEventListener('input', e => {
+        e.preventDefault();
         let currentIndex = helpers.findNodeIndex(this._inputs, e.currentTarget);
-        controlInput(input.value, currentIndex);
-        if (
-          e.currentTarget.value == this._data.produits[currentIndex].quantiteLog
-        ) {
-          e.currentTarget.classList.remove('red-qt');
-          e.currentTarget.classList.add('green-qt');
+        controlInput(input.checked, currentIndex);
+        if (e.currentTarget.checked) {
           this._btnsOpenEditProduct[currentIndex].classList.add('hidden');
         } else {
-          e.currentTarget.classList.add('red-qt');
-          e.currentTarget.classList.remove('green-qt');
           this._btnsOpenEditProduct[currentIndex].classList.remove('hidden');
         }
+        this._resetWindows(this._windowEditProduct);
+      });
+    });
+    this._refInputs.forEach(input => {
+      //TODO:
+      // helpers.validateIntegerInput(input);
+      input.addEventListener('input', e => {
+        console.log(
+          helpers.findNodeIndex(
+            this._parentElement.querySelectorAll('.ref-interne'),
+            e.currentTarget.parentElement.parentElement
+          )
+        );
+        let currentIndex = helpers.findNodeIndex(
+          this._parentElement.querySelectorAll('.ref-interne'),
+          e.currentTarget.parentElement.parentElement
+        );
+        controlRefInput(input.value, currentIndex);
         this._resetWindows(this._windowEditProduct);
       });
     });
@@ -86,17 +106,20 @@ class AddInvView extends AddCmdsIntView {
     });
   }
   _generateMarkup() {
+    let counter = 0;
     if (this._data.length == 0) {
       return `<td colspan="4" class="empty-table--products">
       Aucun Produit
     </td>`;
     } else {
       return this._data.produits
-        .map(result => this._generateMarkupPreview(result, this._perms))
+        .map((result, index) =>
+          this._generateMarkupPreview(result, this._perms, index)
+        )
         .join('');
     }
   }
-  _generateMarkupPreview(result, permissions) {
+  _generateMarkupPreview(result, permissions, index) {
     /*    const html = `<tr>
     <td>
       <div class="colomn-product-des">
@@ -122,6 +145,8 @@ class AddInvView extends AddCmdsIntView {
       </button>
     </td>
   </tr>`;*/
+    console.log(result);
+
     const html = `<tr>
     <td>
       <div class="colomn-product-des">
@@ -132,28 +157,31 @@ class AddInvView extends AddCmdsIntView {
       <div class="ref-externe">${result.reference}</div>
     </td>
     <td class="ref-interne">
-     <!--  <div class="hidden">
-        <input class="green-ref-inv" type="text" value="esi-canon-12">
-        <span class="material-icons-sharp">
-          drive_file_rename_outline
-        </span>
-      </div>-->
-      <div class="">${result.num_inventaire}</div>
+    ${
+      result.num_inventaire
+        ? `<div class="">${result.num_inventaire}</div>`
+        : ` <div class="ref-intenre-input">
+              <input class="green-ref-inv" type="text" value="55" placeholder="numInventaire" autocomplete="off">
+              <span class="material-icons-sharp">
+                drive_file_rename_outline
+              </span>
+            </div>`
+    }    
     </td>
-    <td class="td-exist blue-exist input-changeble3">
+    <td class="td-exist blue-exist">
       <button class="exist-btn-inv">
         <div class="checkbox-wrapper-18">
           <div class="round">
-            <input type="checkbox" id="checkbox-1" ${
-              result.present ? 'checked' : 'unchecked'
-            }>
-            <label for="checkbox-1"></label>
+            <input type="checkbox" id="checkbox-${index}" ${
+      result.present ? 'checked' : 'unchecked'
+    }>
+            <label for="checkbox-${index}"></label>
           </div>
         </div>
       </button>
     </td>
     <td class="td-justify ">
-      <button class="info-btn-inv  ${
+      <button type="button" class="info-btn-inv  ${
         result.raison == '' ? 'red-info' : 'green-info'
       } ${result.present ? 'hidden' : ''}">
         <span class="material-icons-sharp info-icon">
@@ -165,23 +193,34 @@ class AddInvView extends AddCmdsIntView {
     return html;
   }
   getValidityState() {
-    console.log(this._inputs);
     let arrayFromNodeList = [...this._inputs];
-    return arrayFromNodeList.every(input => {
-      return (
-        (input.classList.contains('green-qt') &&
-          this._btnsOpenEditProduct[
-            helpers.findNodeIndex(this._inputs, input)
-          ].classList.contains('hidden')) ||
-        (input.classList.contains('red-qt') &&
-          !this._btnsOpenEditProduct[
-            helpers.findNodeIndex(this._inputs, input)
-          ].classList.contains('hidden') &&
-          this._btnsOpenEditProduct[
-            helpers.findNodeIndex(this._inputs, input)
-          ].classList.contains('green-info'))
-      );
-    });
+    let arrayFromNodeList2 = [...this._refInputs];
+    console.log(
+      arrayFromNodeList.every(input => {
+        return (
+          input.checked ||
+          (input.checked &&
+            this._data[helpers.findNodeIndex(this._inputs, input)].raison !==
+              '')
+        );
+      }),
+      arrayFromNodeList2.every(input => {
+        input != '';
+      })
+    );
+    return (
+      arrayFromNodeList.every(input => {
+        return (
+          input.checked ||
+          (input.checked &&
+            this._data[helpers.findNodeIndex(this._inputs, input)].raison !==
+              '')
+        );
+      }) &&
+      arrayFromNodeList2.every(input => {
+        input != '';
+      })
+    );
   }
   addHandlerSavingInv(handler) {
     this._form.addEventListener('submit', e => {
@@ -205,9 +244,38 @@ class AddInvView extends AddCmdsIntView {
       //   }
       // }
       const numInventaire = this._numInventaire.value;
+      console.log(e.target);
+      console.log(e.currentTarget);
+      console.log('SUBMIT', this.getValidityState());
       e.preventDefault();
       handler(this.getValidityState(), numInventaire);
     });
+  }
+
+  render(data, numeroInv = '') {
+    this._data = data;
+    const markup = this._generateMarkup();
+    this._parentElement.innerHTML = '';
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    if (numeroInv != '') {
+      this._numberContainer.innerHTML = '';
+    } else {
+      this._numberContainer.innerHTML = `
+        <div class="num-inv-inputs">
+          <p>Entez le numero de l'état d'inventaire :</p>
+          <input
+            value=""
+            class="input-num-inv"
+            name="numInventaire"
+            type="number"
+            autocomplete="off"
+            required
+          />
+        </div>`;
+    }
+    this._title.innerHTML = `Etat de l'inventaire ${
+      numeroInv ? `N°${numeroInv}` : ``
+    }`;
   }
 }
 export default new AddInvView();

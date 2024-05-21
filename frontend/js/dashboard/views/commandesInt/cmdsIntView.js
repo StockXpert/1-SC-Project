@@ -193,8 +193,11 @@ export class CmdsIntView extends CmdsView {
       this._btnUpdateInv,
       this._btnModifyBdci,
       this._btnLivrerBdci,
+      this._btnContinueInv,
     ]);
-
+    console.log(this._btnContinueInv);
+    console.log(this);
+    console.log(this._checkboxes);
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
         disableBtns([
@@ -205,6 +208,7 @@ export class CmdsIntView extends CmdsView {
           this._btnUpdateInv,
           this._btnModifyBdci,
           this._btnLivrerBdci,
+          this._btnContinueInv,
         ]);
         const tthis = e.currentTarget;
         let etat =
@@ -234,6 +238,7 @@ export class CmdsIntView extends CmdsView {
             this._btnDeleteInv,
             this._btnModifyInv,
             this._btnUpdateInv,
+            this._btnContinueInv,
           ]);
         } else if (this._checkedCheckboxes.length === 1) {
           switch (etat) {
@@ -261,6 +266,13 @@ export class CmdsIntView extends CmdsView {
               console.log('null');
               enableBtns([this._btnDeleteBdci]);
               break;
+            case 'en cours':
+              enableBtns([
+                this._btnContinueInv,
+                this._btnDeleteInv,
+                this._btnModifyInv,
+              ]);
+              break;
             default:
               disableBtns([
                 this._btnCancelBdc,
@@ -270,6 +282,7 @@ export class CmdsIntView extends CmdsView {
                 this._btnUpdateInv,
                 this._btnDeleteInv,
                 this._btnModifyInv,
+                this._btnContinueInv,
               ]);
               break;
           }

@@ -1564,7 +1564,7 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
       break;
     case 'AddInvView':
       productsArray = model.state.inventaires.new.produits;
-      console.log(targetIndex);
+      console.log(targetIndex, 'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       console.log(productsArray[targetIndex]);
       //TODO:
@@ -2024,7 +2024,14 @@ const controlLoadInv = async () => {
   validateInvView.resetPointers(controlValidatingInv);
 };
 const controlInput = (value, index) => {
-  model.state.inventaires.new.produits[index].quantitePhys = parseInt(value);
+  model.state.inventaires.new.produits[index].present = value;
+};
+const controlRefInput = (value, index) => {
+  model.state.inventaires.new.produits[index].num_inventaire = !model.state
+    .inventaires.new.oldProducts[index].num_inventaire
+    ? value
+    : model.state.inventaires.new.oldProducts[index].num_inventaire;
+  console.log(model.state.inventaires.new);
 };
 // const controlModifyCmdsInt = async function () {
 const controlSetRemark = remark => {
@@ -2040,31 +2047,39 @@ const controlSetRemark = remark => {
   console.log(model.state.inventaires.new);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
-const controlAddInv = async function () {
+const controlAddInv = async function (numeroInv = '') {
   //ONCLICK OF the Créer un état inventaire BUTTON
   addInvView.renderSpinner('');
-  const allProducts = await model.loadAllProductsPerms();
-  model.prepareNewInventaire(allProducts[1].response);
-  addInvView.render(model.state.inventaires.new);
-  addInvView.resetPointers(controlInput);
+  const allProducts = await model.loadAllInvProducts();
+  if (numeroInv == '') {
+    model.prepareNewInventaire(allProducts[1].response);
+    addInvView.render(model.state.inventaires.new, numeroInv);
+  } else {
+  }
+  addInvView.resetPointers(controlInput, controlRefInput);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 
 const controlSaveInv = async function (validityState, numInv) {
-  if (!validityState) {
-    helpers.renderError(
-      `Erreur lors de l'introduction des données `,
-      `<p class="error-message"><b>Remplir les raisons pour les valeurs physiques de produits.</b></p>
-      `
-    );
-    return;
-  } else {
-    addInvView._btnClose.click();
-    invView.renderSpinner('Sauvegarde en cours... ');
-    await model.createInv(numInv);
-    invView.unrenderSpinner();
-    await controlLoadInv();
+  // if (!validityState) {
+  //   helpers.renderError(
+  //     `Erreur lors de l'introduction des données `,
+  //     `<p class="error-message"><b>Remplir les raisons pour les produits déclarés comme non existants.</b></p>
+  //     `
+  //   );
+  //   return;
+  // } else {
+  console.log(validityState, numInv);
+  addInvView._btnClose.click();
+  invView.renderSpinner('Sauvegarde en cours... ');
+  await model.createInv(numInv);
+  if (validityState) {
+    invView.renderSpinner("Confirmation de l'état en cours... ");
+    await model.confirmInv(numInv);
   }
+  invView.unrenderSpinner();
+  await controlLoadInv();
+  // }
 };
 
 const controlDeleteInv = async function () {
@@ -2079,6 +2094,15 @@ const controlDeleteInv = async function () {
   await model.deleteInv(numInventaire);
   invView.unrenderSpinner();
   await controlLoadInv();
+};
+const controlContinueInv = async function () {
+  const targetIndex = Array.from(invView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numInventaire = model.state.inventaires.all[targetIndex].num_inventaire;
+  invView.renderSpinner('Suppression en cours...');
+  // console.log();
+  await controlAddInv(numInventaire);
 };
 const controlValidatingInv = async (e, view = false) => {
   console.log('controlValidatingInv');

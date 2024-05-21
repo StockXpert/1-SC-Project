@@ -153,8 +153,10 @@ export const state = {
         },
         {},
       ],
+      oldProducts: [],
       selectedProduct: '',
     },
+
     selected: {
       numInventaire: '',
       oldProduits: {},
@@ -1039,53 +1041,128 @@ export const loadAllProductsPerms = async function () {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 };
+export const loadAllInvProducts = async function () {
+  try {
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Nomenclatures/showRefs`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} La route "show refs" a mal fonctioné, il peut se trouver qu'il s'agit d'un problème de permissions: </br>
+        show refs :
+        'Afficher tout les produits avec des references',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
 export const createInv = async function (numInv) {
   try {
     console.log(state.inventaires.new.produits);
     let newProduitsArr = state.inventaires.new.produits.map(produit => {
-      const { designation, quantitePhys, quantiteLog, raison } = produit;
+      /*
+    designation:"Photocopieur LEX MARK MX510"
+    num_inventaire:55
+    present:true
+    raison:""
+    reference:"a1"
+
+
+      "reference": "a1",
+      "numInventaire":"55",
+      "datePrise":"2024-05-14",
+      "present":true
+   */
+      const { designation, num_inventaire, present, raison, reference } =
+        produit;
       return {
-        designation,
-        quantitePhys,
-        raison: quantiteLog === quantitePhys ? '' : raison,
+        reference,
+        numInventaire: num_inventaire,
+        //TODO:
+        datePrise: helpers.getFormattedDate(),
+        raison: present ? '' : raison,
       };
     });
-    console.log(newProduitsArr);
     let postObj = {
       numInventaire: numInv,
       dateInventaire: helpers.getFormattedDate(),
       produits: newProduitsArr,
     };
-    let responseArray = await helpers.postJSONReturnResResp(
-      `${API_URL}/Inventaire/createInventaire`,
-      postObj
-    );
-    if (!responseArray[0].ok) {
-      helpers.renderError(
-        'ERREUR!',
-        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
-        create inventaire :
-        'Créer un nouvel état d'état de l'inventaire',
-        `
-      );
-      return false;
-    }
-    return responseArray;
+    console.log(postObj);
+    // let responseArray = await helpers.postJSONReturnResResp(
+    //   `${API_URL}/Inventaire/createInventaire`,
+    //   postObj
+    // );
+    // if (!responseArray[0].ok) {
+    //   helpers.renderError(
+    //     'ERREUR!',
+    //     `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+    //     create inventaire :
+    //     'Créer un nouvel état d'état de l'inventaire',
+    //     `
+    //   );
+    //   return false;
+    // }
+    // return responseArray;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
   // return postObj;
   // return;
 };
+
+export const confirmInv = async function (numInv) {
+  try {
+    console.log(numInv);
+    let putObj = {
+      numInventaire: numInv,
+    };
+    console.log(putObj);
+    // let responseArray = await helpers.putJSON(
+    //   `${API_URL}/Inventaire/confirmInventaire`,
+    //   putObj
+    // );
+    // if (!responseArray[0].ok) {
+    //   helpers.renderError(
+    //     'ERREUR!',
+    //     `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+    //     confirm inventaire :
+    //     'Confirmer/finaliser un nouvel état d'état de l'inventaire',
+    //     `
+    //   );
+    //   return false;
+    // }
+    // return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+  // return postObj;
+  // return;
+};
+
 export const prepareNewInventaire = async function (productsArr = []) {
   const newInv = productsArr.map(product => {
     return {
       raison: '',
-      designation: product.designation,
-      quantiteLog: product.quantite,
-      quantitePhys: '',
+      designation: product.produit,
+      reference: product.reference,
+      num_inventaire: product.num_inventaire,
+      present: false,
+
+      /*    "produit": "Photocopieur LEX MARK MX510",
+            "reference": "a1",
+            "num_inventaire": 55,
+            "date_inventaire": "2024-05-13T23:00:00.000Z"
+             */
     };
   });
+  state.inventaires.new.oldProducts = newInv;
   state.inventaires.new.produits = newInv;
   return newInv;
 };
