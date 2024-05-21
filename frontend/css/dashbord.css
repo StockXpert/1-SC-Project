@@ -1962,6 +1962,10 @@ table tbody tr:last-child td {
   pointer-events: none;
   cursor: default;
 }
+.input-changeble3 {
+  pointer-events: none;
+  cursor: default;
+}
 /*
 .input-changeble input::placeholder {
    color: #4b4b4b; 

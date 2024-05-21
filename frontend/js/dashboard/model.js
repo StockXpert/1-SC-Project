@@ -1261,7 +1261,6 @@ export async function loadInventaire(numInventaire) {
       );
       return false;
     }
-    console.log(responseArray);
     return responseArray[1].response;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);

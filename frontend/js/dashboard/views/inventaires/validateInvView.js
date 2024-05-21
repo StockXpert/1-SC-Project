@@ -70,27 +70,67 @@ export class ValidateInvView extends ValidateCmdsIntView {
       this._InvNum = parseInt(cmd);
       const heading = this._title;
       heading.innerHTML = `${
-        !view ? "Validation de l'" : ''
-      }état d'inventaire N°${cmd}`;
+        !view ? 'Validation de ' : ''
+      }l'état d'inventaire N°${cmd}`;
     }
     let productsHTML =
       products.length != 0
         ? products
             .map(product => {
+              //   return `<tr>
+              //   <td>
+              //     <div class="colomn-product-des">
+              //       <p class="colomn-des-name-product">${product.designation}</p>
+              //     </div>
+              //   </td>
+              //   <td>${product.quantite}</td>
+              //   <td class="quantity-ph">${product.quantite_phys}</td>
+              //   <td class="td-justify">
+              //     <button class="info-btn-inv ${
+              //       product.raison == '' ? 'red-info' : 'green-info'
+              //     } ${
+              //     product.quantite_phys == product.quantite ? 'hidden' : ''
+              //   } ">
+              //       <span class="material-icons-sharp info-icon">
+              //         info
+              //       </span>
+              //     </button>
+              //   </td>
+              // </tr>`;
               return `<tr>
               <td>
                 <div class="colomn-product-des">
                   <p class="colomn-des-name-product">${product.designation}</p>
                 </div>
               </td>
-              <td>${product.quantite}</td>
-              <td class="quantity-ph">${product.quantite_phys}</td>
-              <td class="td-justify">
-                <button class="info-btn-inv ${
-                  product.raison == '' ? 'red-info' : 'green-info'
-                } ${
-                product.quantite_phys == product.quantite ? 'hidden' : ''
-              } ">
+              <td>
+                <div class="ref-externe">${product.reference}</div>
+              </td>
+              <td class="ref-interne">
+               <!--  <div class="hidden">
+                  <input class="green-ref-inv" type="text" value="esi-canon-12">
+                  <span class="material-icons-sharp">
+                    drive_file_rename_outline
+                  </span>
+                </div>-->
+                <div class="">${product.num_inventaire}</div>
+              </td>
+              <td class="td-exist blue-exist input-changeble3">
+                <button class="exist-btn-inv">
+                  <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="checkbox-1" ${
+                        product.present ? 'checked' : 'unchecked'
+                      }>
+                      <label for="checkbox-1"></label>
+                    </div>
+                  </div>
+                </button>
+              </td>
+              <td class="td-justify ">
+                <button class="info-btn-inv red-info ${
+                  product.present ? 'hidden' : ''
+                }">
                   <span class="material-icons-sharp info-icon">
                     info
                   </span>
