@@ -617,7 +617,7 @@ function deleteRefs(numInventaire)
             // Utiliser une boucle asynchrone pour traiter chaque produit
             async.eachSeries(produits, (produit, callback) => {
                 // Insérer les données dans ma_table avec l'ID produit fourni
-                connection.query('delete from reference where designation in (select reference from compter where num_inventaire=? and present=false)', [numInventaire], (err, result) => {
+                connection.query('update reference set existe=? where designation in (select reference from compter where num_inventaire=? and present=false)', [numInventaire], (err, result) => {
                     if (err) {
                         return callback(err);
                     }
