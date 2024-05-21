@@ -141,7 +141,7 @@ function getInventaire(numInventaire)
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
           
-        const query = `select c.present ,c.reference,p.designation,c.raison from produit p,compter c,reference r
+        const query = `select c.present ,c.reference,p.designation,c.raison,r.num_inventaire,r.date_inventaire from produit p,compter c,reference r
         where c.num_inventaire=? and c.reference=r.designation and p.id_produit=r.id_produit`;
         const values=[numInventaire]
         connection.connect((err) => {
