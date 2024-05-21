@@ -142,7 +142,7 @@ function getInventaire(numInventaire)
         const connection = mysql.createConnection(connectionConfig);
           
         const query = `select c.present ,c.reference,p.designation,c.raison from produit p,compter c,reference r
-        where c.num_inventaire=? and c.reference=r.reference and p.id_produit=r.id_produit`;
+        where c.num_inventaire=? and c.reference=r.designation and p.id_produit=r.id_produit`;
         const values=[numInventaire]
         connection.connect((err) => {
           if (err) {
@@ -653,16 +653,47 @@ function getProductArticleForFiche(year,article)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select p.id_produit , p.designation ,count(r.designation) as quantite_phys,p.quantite ,GROUP_CONCAT(r.num_inventaire SEPARATOR ' ') AS num_inventaires,
+    const query = `select p.id_produit , p.designation ,count(r.designation) as quantite_phys,p.quantite ,GROUP_CONCAT(r.num_inventaire SEPARATOR ',') AS num_inventaires,
     COUNT(CASE WHEN YEAR(r.date_inscription) < ? THEN 1 END) as reste,
-    SUM(CASE WHEN YEAR(d.date_sortie) = ? THEN f.quantite_servie ELSE 0 END) AS sortie,
-    COUNT(CASE WHEN YEAR(r.date_inscription) < ? THEN 1 END) as entree
-    from produit p,reference r,fournir f,demande_fourniture d where
-    p.id_produit=r.id_produit and p.id_produit=f.id_produit and d.num_demande=f.id_demande
+    COUNT(CASE WHEN YEAR(r.date_inscription) = ? THEN 1 END) as entree
+    from produit p,reference r where
+    p.id_produit=r.id_produit 
     and p.id_produit in
     (select id_produit from contient where id_article=?)
     group by p.id_produit , p.designation`;
-    const values=[year,year,year,article]
+    const values=[year,year,article]
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})
+}
+function getProductArticleSortie(year,article)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select p.id_produit,
+    SUM(CASE WHEN YEAR(d.date_sortie) = ? THEN f.quantite_servie ELSE 0 END) AS sortie
+    from produit p,fournir f,demande_fourniture d where
+    p.id_produit=f.id_produit and d.num_demande=f.id_demande
+    and p.id_produit in
+    (select id_produit from contient where id_article=?)
+    group by p.id_produit , p.designation`;
+    const values=[year,article]
     connection.connect((err) => {
       if (err) {
         console.error('Erreur de connexion :', err);
@@ -684,4 +715,5 @@ function getProductArticleForFiche(year,article)
 }
 module.exports={addInventaire,insertCompter,changeInvetaireStatus,getInventaires,getInventaire,getInventaireStatus
 ,deleteInventaire,updateInventaire,deleteCompter,getProductFournisseur,avgProductValue,inscriptionDate,
-getInventaireYear,getInventaireProducts,insertLink,updateQuantite,countQuantitePhys,deleteRefs,getProductArticleForFiche}
+getInventaireYear,getInventaireProducts,insertLink,updateQuantite,countQuantitePhys,deleteRefs,getProductArticleForFiche,
+getProductArticleSortie}
