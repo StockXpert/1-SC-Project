@@ -18,10 +18,9 @@ function validInventaire(req,res)
   const {numInventaire}=req.body;
   const currentYear = new Date().getFullYear();
   InventaireModel.changeInvetaireStatus(numInventaire,'valid').then(async()=>{
-    await Promise.all([
-    InventaireService.addRegistre(numInventaire),    
-    InventaireService.addFiches(currentYear)
-    ])
+    
+    //await InventaireService.addRegistre(numInventaire),    
+    await InventaireService.addFiches(currentYear,numInventaire)
     res.status(200).json({response:"validated"})
   }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
