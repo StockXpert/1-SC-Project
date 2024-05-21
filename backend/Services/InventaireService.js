@@ -50,7 +50,7 @@ async function generateFicheInventaire(Id,article,produits,year,numInventaire)
             {
                 await googleMiddleware.addRow(i,produit,Id,'fiche')
                 i++;
-                delay(60000)
+                await delay(30000)
             }
         await googleMiddleware.generatePDF(Id,'fiche','fiche'+article.num_article+numInventaire)
         await googleMiddleware.generateCSV(Id,'fiche','fiche'+article.num_article+numInventaire)  
