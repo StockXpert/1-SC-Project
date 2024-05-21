@@ -834,9 +834,9 @@ const controlSearchArticlesCmds = input => {
 const controlUpdateProducts = async articleName => {
   // addCmdsView.r
   // addCmdsView._btnsOpenAddProduct.classList.add('hidden');
-  addCmdsView.renderSpinner('', true);
+  // addCmdsView.renderSpinner('', true);
   const products = await model.loadProducts(articleName);
-  addCmdsView.unrenderSpinner(true);
+  // addCmdsView.unrenderSpinner(true);
   // addCmdsView._btnsOpenAddProduct.classList.remove('hidden');
   model.state.bdc_products.all = products;
 };
@@ -1214,9 +1214,6 @@ const controlAddBRec = async function (
     newReception.append('numFacture', numFacture);
     newReception.append('facture', linkFacture);
   }
-  console.log(products);
-  console.log([...newReception]);
-  console.log(newReception);
   bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
   await model.addBonReception(newReception);
   bonReceptionView.unrenderSpinner(true);

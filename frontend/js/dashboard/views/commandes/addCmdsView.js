@@ -3,13 +3,14 @@ import * as helpers from '../../helpers.js';
 
 export class AddCmdsView extends AddUserView {
   _raison;
-  _parentElement = document.querySelector('.results-bdc-produits');
   _window = document.querySelector('.big-container');
+  _parentElement = this._window.querySelector('.results-bdc-produits');
+
   _trueParentElement = this._window.querySelector('.inputs-add-product-bdc');
   _save = this._window.querySelector('.btn-save-bdc');
   _btnOpen = document.querySelector('.add-bdc-btn');
   _overlay = document.querySelector('.overlayAddCmd');
-  _btnClose = document.querySelector('.btn-add-bdr-qt');
+  _btnClose = this._window.querySelector('.btn-add-bdr-qt');
   // _btnsOpenAddProduct = this._window.querySelector('.btn-add-product');
   _btnCloseAddProduct;
   _windowAddProduct;
@@ -167,11 +168,10 @@ export class AddCmdsView extends AddUserView {
     windowClassName,
     needsvalidity = true
   ) {
-    this._windowAddProduct = document.querySelector(windowClassName);
+    this._windowAddProduct = this._window.querySelector(windowClassName);
     this._btnCloseAddProduct =
       this._windowAddProduct.querySelector(CloserClassName);
     this._product.parentElement.classList.remove('input-product--valid');
-    // console.log(this._btnCloseAddProduct, this);
     this._btnCloseAddProduct.addEventListener('click', e =>
       this._boundToggleAddProductWindow(e, needsvalidity)
     );
@@ -181,7 +181,7 @@ export class AddCmdsView extends AddUserView {
     windowClassName,
     needsvalidity = true
   ) {
-    this._windowAddProduct = document.querySelector(windowClassName);
+    this._windowAddProduct = this._window.querySelector(windowClassName);
     this._btnsOpenAddProduct = this._window.querySelectorAll(OpClassName);
     this._btnsOpenAddProduct.forEach(btn =>
       btn.addEventListener('click', e =>

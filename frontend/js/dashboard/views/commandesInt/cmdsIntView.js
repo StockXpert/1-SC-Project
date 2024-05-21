@@ -165,7 +165,18 @@ export class CmdsIntView extends CmdsView {
           : ''
       }
         
-      </td>`
+      </td>
+      <td class="td-view-bdci"> ${
+        result.etat?.includes('demandee')
+          ? `<button class="details-btn print-bdci-btn">
+        <span class="material-icons-sharp info-icon">
+          info
+        </span>
+        </button>
+      `
+          : ''
+      }</td>
+      `
         : ``
     }
 
