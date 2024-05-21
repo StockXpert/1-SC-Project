@@ -97,7 +97,7 @@ class AddInvView extends AddCmdsIntView {
     }
   }
   _generateMarkupPreview(result, permissions) {
-    const html = `<tr>
+    /*    const html = `<tr>
     <td>
       <div class="colomn-product-des">
         <p class="colomn-des-name-product">${result.designation}</p>
@@ -116,6 +116,46 @@ class AddInvView extends AddCmdsIntView {
       <button class="info-btn-inv ${
         result.raison == '' ? 'red-info' : 'green-info'
       } ${result.quantitePhys == result.quantiteLog ? 'hidden' : ''}">
+        <span class="material-icons-sharp info-icon">
+          info
+        </span>
+      </button>
+    </td>
+  </tr>`;*/
+    const html = `<tr>
+    <td>
+      <div class="colomn-product-des">
+        <p class="colomn-des-name-product">${result.designation}</p>
+      </div>
+    </td>
+    <td>
+      <div class="ref-externe">${result.reference}</div>
+    </td>
+    <td class="ref-interne">
+     <!--  <div class="hidden">
+        <input class="green-ref-inv" type="text" value="esi-canon-12">
+        <span class="material-icons-sharp">
+          drive_file_rename_outline
+        </span>
+      </div>-->
+      <div class="">${result.num_inventaire}</div>
+    </td>
+    <td class="td-exist blue-exist input-changeble3">
+      <button class="exist-btn-inv">
+        <div class="checkbox-wrapper-18">
+          <div class="round">
+            <input type="checkbox" id="checkbox-1" ${
+              result.present ? 'checked' : 'unchecked'
+            }>
+            <label for="checkbox-1"></label>
+          </div>
+        </div>
+      </button>
+    </td>
+    <td class="td-justify ">
+      <button class="info-btn-inv  ${
+        result.raison == '' ? 'red-info' : 'green-info'
+      } ${result.present ? 'hidden' : ''}">
         <span class="material-icons-sharp info-icon">
           info
         </span>

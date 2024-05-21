@@ -128,9 +128,9 @@ export class ValidateInvView extends ValidateCmdsIntView {
                 </button>
               </td>
               <td class="td-justify ">
-                <button class="info-btn-inv red-info ${
-                  product.present ? 'hidden' : ''
-                }">
+                <button class="info-btn-inv  ${
+                  product.raison == '' ? 'red-info' : 'green-info'
+                } ${product.present ? 'hidden' : ''}">
                   <span class="material-icons-sharp info-icon">
                     info
                   </span>
