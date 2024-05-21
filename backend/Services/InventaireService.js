@@ -2,6 +2,8 @@ const { reject } = require('async');
 const InventaireModel=require('../Models/InventaireModel');
 const googleMiddleware=require('../Middlewares/googleMiddleware')
 const nomencaltureModel=require('../Models/NomenclatureModel');
+const admZip=require('adm-zip');
+const path=require('path')
 function addRegistre(numInventaire)
 {
   return new Promise((resolve,reject)=>{
@@ -50,7 +52,7 @@ async function generateFicheInventaire(Id,article,produits,year,numInventaire)
             {
                 await googleMiddleware.addRow(i,produit,Id,'fiche')
                 i++;
-                await delay(30000)
+                await delay(5000)
             }
         await googleMiddleware.generatePDF(Id,'fiche','fiche'+article.num_article+numInventaire)
         await googleMiddleware.generateCSV(Id,'fiche','fiche'+article.num_article+numInventaire)  
@@ -67,18 +69,29 @@ async function generateFicheInventaire(Id,article,produits,year,numInventaire)
 function addFiches(year,numInventaire)
 {
     return new Promise((resolve,reject)=>{
-        nomencaltureModel.getArticles().then((articles)=>{
-            console.log(articles)
-           InventaireModel.getProductArticleForFiche(year,articles[3].num_article).then((produits1)=>{
-            console.log({produits1})
-            InventaireModel.getProductArticleSortie(year,articles[3].num_article).then((produits2)=>{
-                let produits=fusionTab(produits1,produits2)
-                generateFicheInventaire('1nIexOErp8aW2vX9NjO40UQGF5Aif6BZORVUQqVIbrss',articles[3],produits,year,numInventaire).then(()=>{
-                    resolve('')
-                }).catch(()=>{reject('')})
-            }).catch(()=>{reject('')})
-           }).catch(()=>{reject('')})
-        }).catch(()=>{reject('')})
+        let files=[path.join('backend','registre',`registre${numInventaire}.pdf`)]
+        let zip=new admZip()
+        nomencaltureModel.getArticles().then(async(articles)=>{
+            for(let article of articles)
+                {
+                    files.push(path.join('backend','fiche',`fiche${article.num_article}${numInventaire}.pdf`))
+                     await InventaireModel.getProductArticleForFiche(year,article.num_article).then(async(produits1)=>{
+                        await InventaireModel.getProductArticleSortie(year,article.num_article).then(async(produits2)=>{
+                          let produits=fusionTab(produits1,produits2)
+                          if(produits)
+                           await generateFicheInventaire('1nIexOErp8aW2vX9NjO40UQGF5Aif6BZORVUQqVIbrss',article,produits,year,numInventaire).then(()=>{
+                          files.forEach(file => {
+                          zip.addLocalFile(file);
+                          });
+                        const outputFilePath = path.join('backend',`inventaire`,`inventaire${numInventaire}.zip`);
+                        zip.writeZip(outputFilePath);
+                        InventaireModel.insertInvetaireLink(numInventaire,outputFilePath)
+                        resolve('')
+                }).catch((err)=>{console.log(err);reject('')})
+                 }).catch((err)=>{console.log(err);reject('')})
+                 }).catch((err)=>{console.log(err);reject('')})
+                }
+        }).catch((err)=>{console.log(err);reject('')})
         
 })
 }
