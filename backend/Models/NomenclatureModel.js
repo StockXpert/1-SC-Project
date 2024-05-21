@@ -953,7 +953,7 @@ function updateInventaire(produits) {
 function getRefs(produit) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select p.designation as produit,r.designation as reference from reference r ,produit p where p.id_produit=r.id_produit 
+    const query = `select p.designation as produit,r.designation as reference ,r.num_inventaire,r.date_inventaire from reference r ,produit p where p.id_produit=r.id_produit 
     ${produit ? 'and p.designation=?' : ''}`;
     let values = [];
     if (produit) values.push(produit);
