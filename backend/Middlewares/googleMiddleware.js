@@ -90,7 +90,7 @@ async function addRow(ligne,Content,idCopy,type)
                 ec=6;
                  break; 
             case 'decharge':
-                valuesToInsert = [Content.designation,Content.reference+`\n`+Content.num_inventaire,Content.observation];
+                valuesToInsert = [Content.designation,"N° serie:"+Content.reference+`\n`+"N° inventaire:"+Content.num_inventaire,Content.observation];
                 ec=3;
                  break; 
             case 'registre':
