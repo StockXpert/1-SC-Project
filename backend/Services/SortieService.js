@@ -27,8 +27,8 @@ function canUpdate(numDemande,role)
 function genererBonSortie(numDemande,dateSortie,produits,id)
 {
     return new Promise(async(resolve,reject)=>{
-        await googleMiddleware.updateCel('E3',`Le:${dateSortie}`,id);
-        let i=5;
+        await googleMiddleware.updateCel('E10',`Le:${dateSortie}`,id);
+        let i=12;
         for(let produit of produits)
         {
             await googleMiddleware.addRow(i,produit,id,"sortie")
@@ -36,7 +36,7 @@ function genererBonSortie(numDemande,dateSortie,produits,id)
         }
         await googleMiddleware.generatePDF(id,`sortie`,`sortie${numDemande}`);
         await googleMiddleware.generateCSV(id,`sortie`,`sortie${numDemande}`);
-        await googleMiddleware.deleteRows(5,i-1,id);
+        await googleMiddleware.deleteRows(12,i-1,id);
         const link=`sortie/sortie${numDemande}.`
         SortieModel.insertLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
             resolve(link)
@@ -64,9 +64,9 @@ function genererBonDecharge(Id,products,dateDecharge,numDemande)
     return new Promise(async(resolve,reject)=>{
     console.log(products)
     changeProductsStructure(products)
-    await googleMiddleware.updateCel('B3',"DECHARGE "+numDemande,Id);
-    await googleMiddleware.updateCel('B10',`Sidi Bel Abbés le ${dateDecharge}`,Id)
-    let i=6; 
+    await googleMiddleware.updateCel('B7',"DECHARGE "+numDemande,Id);
+    await googleMiddleware.updateCel('B14',`Sidi Bel Abbés le ${dateDecharge}`,Id)
+    let i=10; 
     for(let product of products )
     {
         await googleMiddleware.addRow(i,product,Id,'decharge')
@@ -75,7 +75,7 @@ function genererBonDecharge(Id,products,dateDecharge,numDemande)
     let link=`bonDecharge/bonDecharge${numDemande}.`;
     await googleMiddleware.generatePDF(Id,'bonDecharge',`bonDecharge${numDemande}`)
     await googleMiddleware.generateCSV(Id,'bonDecharge',`bonDecharge${numDemande}`)
-    await googleMiddleware.deleteRows(6,i-1,Id);
+    await googleMiddleware.deleteRows(10,i-1,Id);
     SortieModel.insertDechargeLink(numDemande,link+'pdf',link+'xlsx').then(()=>{
         resolve('success')
     }).catch(()=>{reject('error')})

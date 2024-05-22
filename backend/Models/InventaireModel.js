@@ -141,7 +141,7 @@ function insertInvetaireLink(numInventaire,link)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `update num_inventaire set zip=? where num_inventaire=?`;
+    const query = `update inventaire set zip=? where num_inventaire=?`;
     const values=[link,numInventaire]
     connection.connect((err) => {
       if (err) {
