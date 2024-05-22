@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
             destinationFolder = 'backend/bonDecharge';
           }
      else {
-      destinationFolder = ''; // Dossier par défaut si le champ n'est pas reconnu
+      destinationFolder = 'parametre'; // Dossier par défaut si le champ n'est pas reconnu
     }
     callback(null, destinationFolder);
   },
@@ -52,7 +52,9 @@ const upload = multer({ storage: storage }).fields([
   { name: 'bonReception', maxCount: 1 },
   { name: 'sortie', maxCount: 1 },
   { name: 'bonDecharge', maxCount: 1 },
-  { name: 'facture', maxCount: 1 }
+  { name: 'facture', maxCount: 1 },
+  { name: 'header', maxCount: 1 },
+  { name: 'logo', maxCount: 1 }
 ]);
 
 module.exports = upload;

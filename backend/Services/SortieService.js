@@ -24,10 +24,11 @@ function canUpdate(numDemande,role)
         })
     })   
 }
-function genererBonSortie(numDemande,dateSortie,produits,id)
+function genererBonSortie(numDemande,dateSortie,produits,id,structure)
 {
     return new Promise(async(resolve,reject)=>{
         await googleMiddleware.updateCel('E10',`Le:${dateSortie}`,id);
+        await googleMiddleware.updateCel('A10',`Service: ${structure}`,id);
         let i=12;
         for(let produit of produits)
         {
@@ -63,7 +64,6 @@ function genererBonDecharge(Id,products,dateDecharge,numDemande)
 {
     return new Promise(async(resolve,reject)=>{
     console.log(products)
-    changeProductsStructure(products)
     await googleMiddleware.updateCel('B7',"DECHARGE "+numDemande,Id);
     await googleMiddleware.updateCel('B14',`Sidi Bel Abbés le ${dateDecharge}`,Id)
     let i=10; 
@@ -92,19 +92,21 @@ function changeProductsStructure(products)
       else designation=product.designation;  
    }
 }
-function addDecharge(Id,products,dateDecharge,numDemande)
+function addDecharge(Id,dateDecharge,numDemande)
 {
     return new Promise((resolve,reject)=>{
         
-        SortieModel.insertDateDecharge(numDemande,dateDecharge).then(()=>{
-            console.log("before insert decharge")
-            SortieModel.insertDecharge(numDemande,products).then(()=>{
-                console.log("after insert decharge")
-                genererBonDecharge(Id,products,dateDecharge,numDemande).then(()=>{
-                    resolve('');
+        SortieModel.getDechargedProducts(numDemande).then((products)=>{
+            SortieModel.insertDateDecharge(numDemande,dateDecharge).then(()=>{
+                console.log("before insert decharge")
+                SortieModel.insertDecharge(numDemande,products).then(()=>{
+                    console.log("after insert decharge")
+                    genererBonDecharge(Id,products,dateDecharge,numDemande).then(()=>{
+                        resolve('');
+                    }).catch(()=>{reject('')})
                 }).catch(()=>{reject('')})
             }).catch(()=>{reject('')})
-        }).catch(()=>{reject('')})
+        })
     })
 }
 function allZero(products)
