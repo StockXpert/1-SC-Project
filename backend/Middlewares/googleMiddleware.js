@@ -112,7 +112,11 @@ async function addRow(ligne, Content, idCopy, type) {
       case 'decharge':
         valuesToInsert = [
           Content.designation,
-          Content.reference,
+          'N° serie:' +
+            Content.reference +
+            `\n` +
+            'N° inventaire:' +
+            Content.num_inventaire,
           Content.observation,
         ];
         ec = 3;

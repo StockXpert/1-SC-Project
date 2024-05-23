@@ -6,6 +6,32 @@ const connectionConfig = {
   password: 'w7Xaq1AwW42V3jvOiTgb',
   database: 'bibznsnq8nf1q3j7r74o'
 };
+function getDechargedProducts(numDemande)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select p.designation ,r.designation as reference,r.num_inventaire from decharge d,produit p
+                   where d.id_demande=? and r.designation=d.reference `;           
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,[numDemande],(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})  
+}
 function isExterior(numDemande)
 {
     return new Promise((resolve, reject) => {
@@ -838,6 +864,34 @@ function insertDechargeLink(numDemande,dechargeLink,link2)
         });
       });
 }
+function getDemandeurStructure(numDemande)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `select s.designation from structure where id_structure=(select id_structure where email=
+        select id_demandeur from demande_fourniture where num_demande=?
+    ) `;
+   
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve(results[0].designation);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });}) 
+}
 function insertDateDecharge(numDemande,dateDecharge)
 {
     return new Promise((resolve, reject) => {
@@ -937,4 +991,4 @@ module.exports={addFourniture,insertFournir,updateAccordedQuantite,changeDemande
                deleteFourniture,canDeleteFourniture,getNewDemandes,getAllDemandes,updateDemandedQuantite,
             getDemandeStatus,deleteProductsFournir,readNotif,insertLink,
             getDemandeProducts,insertDateSortie,readAllNotif,getDemande,isExterior,insertDechargeLink
-        ,insertDateDecharge,insertDecharge}
+        ,insertDateDecharge,insertDecharge,getDechargedProducts,getDemandeurStructure}
