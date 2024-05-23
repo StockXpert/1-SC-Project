@@ -153,6 +153,32 @@ function getInventaires() {
     });
   });
 }
+function insertInvetaireLink(numInventaire, link) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+
+    const query = `update inventaire set zip=? where num_inventaire=?`;
+    const values = [link, numInventaire];
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        resolve('');
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function getInventaire(numInventaire) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
@@ -789,4 +815,5 @@ module.exports = {
   deleteRefs,
   getProductArticleForFiche,
   getProductArticleSortie,
+  insertInvetaireLink,
 };
