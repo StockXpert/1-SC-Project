@@ -664,7 +664,7 @@ function deleteRefs(numInventaire) {
           (produit, callback) => {
             // Insérer les données dans ma_table avec l'ID produit fourni
             connection.query(
-              'delete from reference where designation in (select reference from compter where num_inventaire=? and present=false)',
+              'update reference set existe=? where designation in (select reference from compter where num_inventaire=? and present=false)',
               [numInventaire],
               (err, result) => {
                 if (err) {
