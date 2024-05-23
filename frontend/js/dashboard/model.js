@@ -145,24 +145,28 @@ export const state = {
     new: {
       numInventaire: '',
       dateInventaire: '',
-      produits: [
-        {
-          designation: '',
-          quantitePhys: '',
-          raison: '',
-        },
-        {},
-      ],
+      produits: [],
       oldProducts: [],
       selectedProduct: '',
+      isNew: true,
     },
 
     selected: {
       numInventaire: '',
+      renderedProducts: [],
+      selectedProduct: '',
+      produits: [],
       oldProduits: {},
       currentProduits: {},
+      isNew: false,
     },
-    rendered: {},
+    rendered: [],
+    //TODO:
+    // rendered: {
+    //   numInventaire: '',
+    //   produits: [],
+    //   selectedProduct: '',
+    // },
   },
   chapters: {
     all: [],
@@ -1062,11 +1066,35 @@ export const loadAllInvProducts = async function () {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 };
-export const createInv = async function (numInv) {
+export const preprareSelectedInventaire = async function () {
   try {
-    console.log(state.inventaires.new.produits);
-    let newProduitsArr = state.inventaires.new.produits.map(produit => {
-      /*
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Sortie`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} La route "show refs" a mal fonctioné, il peut se trouver qu'il s'agit d'un problème de permissions: </br>
+        show refs :
+        'Afficher tout les produits avec des references',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const createInv = async function () /*numInv*/
+/*, isRouteCreate = true */ {
+  try {
+    console.log(state.inventaires.selected);
+    // let newProduitsArr = state.inventaires.new.produits.map(produit => {
+    let newProduitsArr = state.inventaires.selected.renderedProducts.map(
+      produit => {
+        /*
     designation:"Photocopieur LEX MARK MX510"
     num_inventaire:55
     present:true
@@ -1079,37 +1107,67 @@ export const createInv = async function (numInv) {
       "datePrise":"2024-05-14",
       "present":true
    */
-      const { designation, num_inventaire, present, raison, reference } =
-        produit;
-      return {
-        reference,
-        numInventaire: num_inventaire,
-        //TODO:
-        datePrise: helpers.getFormattedDate(),
-        raison: present ? '' : raison,
-      };
-    });
+        const {
+          designation,
+          num_inventaire,
+          present,
+          raison,
+          reference,
+          date_inventaire,
+        } = produit;
+        return {
+          reference,
+          numInventaire: num_inventaire,
+          //TODO: can i just update them overall in all products at once is that okay? or do i need to have to each product its own priseDate
+          // datePrise: date_inventaire
+          //   ? date_inventaire
+          //   : helpers.getFormattedDate(),
+          datePrise: helpers.getFormattedDate(),
+          raison: present ? '' : raison,
+          present: present,
+        };
+      }
+    );
     let postObj = {
-      numInventaire: numInv,
+      numInventaire: state.inventaires.selected.numInventaire,
       dateInventaire: helpers.getFormattedDate(),
       produits: newProduitsArr,
     };
     console.log(postObj);
-    // let responseArray = await helpers.postJSONReturnResResp(
-    //   `${API_URL}/Inventaire/createInventaire`,
-    //   postObj
-    // );
-    // if (!responseArray[0].ok) {
-    //   helpers.renderError(
-    //     'ERREUR!',
-    //     `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
-    //     create inventaire :
-    //     'Créer un nouvel état d'état de l'inventaire',
-    //     `
-    //   );
-    //   return false;
-    // }
-    // return responseArray;
+    if (state.inventaires.selected.isNew) {
+      let responseArray = await helpers.postJSONReturnResResp(
+        `${API_URL}/Inventaire/createInventaire`,
+        postObj
+      );
+      if (!responseArray[0].ok) {
+        helpers.renderError(
+          'ERREUR!',
+          `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        create inventaire :
+        'Créer un nouvel état d'état de l'inventaire',
+        `
+        );
+        return false;
+      }
+      return responseArray;
+    } else {
+      console.log('UPDATE INVENTAIIIIIIIIIRE');
+      let responseArray = await helpers.putJSONReturnResResp(
+        `${API_URL}/Inventaire/updateInventaire`,
+        postObj
+      );
+      if (!responseArray[0].ok) {
+        helpers.renderError(
+          'ERREUR!',
+          `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        update inventaire :
+        'Metter à jour un nouvel état d'état de l'inventaire (continuer la saisie)',
+        `
+        );
+        return false;
+      }
+      return responseArray;
+    }
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
@@ -1121,25 +1179,26 @@ export const confirmInv = async function (numInv) {
   try {
     console.log(numInv);
     let putObj = {
-      numInventaire: numInv,
+      numInventaire: state.inventaires.selected.numInventaire,
     };
     console.log(putObj);
-    // let responseArray = await helpers.putJSON(
-    //   `${API_URL}/Inventaire/confirmInventaire`,
-    //   putObj
-    // );
-    // if (!responseArray[0].ok) {
-    //   helpers.renderError(
-    //     'ERREUR!',
-    //     `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
-    //     confirm inventaire :
-    //     'Confirmer/finaliser un nouvel état d'état de l'inventaire',
-    //     `
-    //   );
-    //   return false;
-    // }
-    // return responseArray;
+    let responseArray = await helpers.putJSON(
+      `${API_URL}/Inventaire/confirmInventaire`,
+      putObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        confirm inventaire :
+        'Confirmer/finaliser un nouvel état d'état de l'inventaire',
+        `
+      );
+      return false;
+    }
+    return responseArray;
   } catch (err) {
+    console.err(err);
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
   // return postObj;
@@ -1162,6 +1221,9 @@ export const prepareNewInventaire = async function (productsArr = []) {
              */
     };
   });
+  state.inventaires.new.isNew = true;
+  state.inventaires.new.numInventaire = '';
+  //TODO: these are pointers and not copies. ... so if produits changes, oldProducts also changes!!
   state.inventaires.new.oldProducts = newInv;
   state.inventaires.new.produits = newInv;
   return newInv;
@@ -1338,7 +1400,30 @@ export async function loadInventaire(numInventaire) {
       );
       return false;
     }
-    return responseArray[1].response;
+    let produitsFetched = responseArray[1].response.map(prod => {
+      let {
+        date_inventaire,
+        designation,
+        num_inventaire,
+        present,
+        raison,
+        reference,
+      } = prod;
+      return {
+        present: present ? true : false,
+        reference,
+        num_inventaire,
+        designation,
+        raison,
+        date_inventaire,
+      };
+    });
+    console.log('loadInventaire', produitsFetched);
+    state.inventaires.selected.isNew = false;
+    state.inventaires.selected.numInventaire = numInventaire;
+    state.inventaires.selected.produits =
+      state.inventaires.selected.oldProduits = produitsFetched;
+    return produitsFetched;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }

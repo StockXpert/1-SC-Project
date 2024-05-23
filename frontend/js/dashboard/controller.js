@@ -1563,12 +1563,12 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
       model.state.commandesInt.selected.products = productsArray;
       break;
     case 'AddInvView':
-      productsArray = model.state.inventaires.new.produits;
-      console.log(targetIndex, 'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
+      // productsArray = model.state.inventaires.rendered.produits;
+      productsArray = model.state.inventaires.selected.renderedProducts;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       console.log(productsArray[targetIndex]);
       //TODO:
-      model.state.inventaires.new.selectedProduct = targetIndex;
+      model.state.inventaires.selected.selectedProduct = targetIndex;
       break;
   }
 
@@ -2022,64 +2022,109 @@ const controlLoadInv = async () => {
   model.updateRenderedInv(model.state.inventaires.all);
   invView.resetPointers();
   validateInvView.resetPointers(controlValidatingInv);
+  addInvView.addHandlerView(controlContinueInv);
 };
+
+const controlAddInv = async function () {
+  //ONCLICK OF the Créer un état inventaire BUTTON
+  addInvView.renderSpinner('');
+  const allProducts = await model.loadAllInvProducts();
+  model.prepareNewInventaire(allProducts[1].response);
+  addInvView.render(model.state.inventaires.new);
+  model.state.inventaires.selected = model.state.inventaires.new;
+  model.state.inventaires.selected.renderedProducts =
+    model.state.inventaires.new.produits;
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+
+const controlContinueInv = async function () {
+  const targetIndex = Array.from(invView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numInventaire = model.state.inventaires.all[targetIndex].num_inventaire;
+  // // console.log();
+  // await controlAddInv(numInventaire);
+  //ONCLICK OF the Créer un état inventaire BUTTON
+
+  addInvView.renderSpinner('');
+  await model.loadInventaire(numInventaire);
+  addInvView.render(model.state.inventaires.selected);
+  model.state.inventaires.selected.renderedProducts =
+    model.state.inventaires.selected.produits;
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+
+  // const allProducts = await model.loadAllInvProducts();
+  // model.prepareNewInventaire(allProducts[1].response);
+  // addInvView.render(model.state.inventaires.new, numeroInv);
+  // model.state.inventaires.rendered = model.state.inventaires.new;
+  // addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  // addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+
+//TODO: incase you wanna only allow a specific number of inventaires
+//ON INPUT OF NUMERO INVENTAIRE NUMBER:
+const controlNumInv = value => {
+  model.state.inventaires.selected.numInventaire = value;
+  console.log(model.state.inventaires.selected);
+};
+//ON INPUT OF
 const controlInput = (value, index) => {
-  model.state.inventaires.new.produits[index].present = value;
+  model.state.inventaires.selected.renderedProducts[index].present = value;
+  console.log(model.state.inventaires.selected);
 };
+//ON INPUT OF
 const controlRefInput = (value, index) => {
-  model.state.inventaires.new.produits[index].num_inventaire = !model.state
-    .inventaires.new.oldProducts[index].num_inventaire
-    ? value
-    : model.state.inventaires.new.oldProducts[index].num_inventaire;
-  console.log(model.state.inventaires.new);
+  // model.state.inventaires.rendered.produits[index].num_inventaire = !model.state
+  //   .inventaires.new.oldProducts[index].num_inventaire
+  //   ? value
+  //   : model.state.inventaires.rendered.oldProducts[index].num_inventaire;
+  // console.log(model.state.inventaires.rendered);
+  model.state.inventaires.selected.renderedProducts[index].num_inventaire =
+    value;
+  console.log(model.state.inventaires.selected);
 };
 // const controlModifyCmdsInt = async function () {
 const controlSetRemark = remark => {
-  model.state.inventaires.new.produits[
-    model.state.inventaires.new.selectedProduct
+  model.state.inventaires.selected.renderedProducts[
+    model.state.inventaires.selected.selectedProduct
   ].raison = remark;
+  // const controlSetRemark = remark => {
+  //   model.state.inventaires.new.produits[
+  //     model.state.inventaires.new.selectedProduct
+  //   ].raison = remark;
+
   // model.state.inventaires.new.produits[
   //   model.state.inventaires.new.selectedProduct
   // ].quantitePhys =
   //   addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
-  addInvView.render(model.state.inventaires.new);
-  addInvView.resetPointers(controlInput);
+  addInvView.render(model.state.inventaires.selected);
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   console.log(model.state.inventaires.new);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
-const controlAddInv = async function (numeroInv = '') {
-  //ONCLICK OF the Créer un état inventaire BUTTON
-  addInvView.renderSpinner('');
-  const allProducts = await model.loadAllInvProducts();
-  if (numeroInv == '') {
-    model.prepareNewInventaire(allProducts[1].response);
-    addInvView.render(model.state.inventaires.new, numeroInv);
-  } else {
-  }
-  addInvView.resetPointers(controlInput, controlRefInput);
-  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-};
 
-const controlSaveInv = async function (validityState, numInv) {
-  // if (!validityState) {
-  //   helpers.renderError(
-  //     `Erreur lors de l'introduction des données `,
-  //     `<p class="error-message"><b>Remplir les raisons pour les produits déclarés comme non existants.</b></p>
-  //     `
-  //   );
-  //   return;
-  // } else {
-  console.log(validityState, numInv);
-  addInvView._btnClose.click();
-  invView.renderSpinner('Sauvegarde en cours... ');
-  await model.createInv(numInv);
-  if (validityState) {
-    invView.renderSpinner("Confirmation de l'état en cours... ");
-    await model.confirmInv(numInv);
+const controlSaveInv = async function (validityState) {
+  if (model.state.inventaires.selected.numInventaire == '') {
+    helpers.renderError(
+      `Erreur lors de l'introduction des données `,
+      `<p class="error-message"><b>Veuillez introduire le Numéro de l'inventaire.</b></p>
+      `
+    );
+    return;
+  } else {
+    console.log(validityState);
+    addInvView._btnClose.click();
+    invView.renderSpinner('Sauvegarde en cours... ');
+    await model.createInv();
+    if (validityState) {
+      invView.renderSpinner("Confirmation de l'état en cours... ");
+      await model.confirmInv();
+    }
+    invView.unrenderSpinner();
+    await controlLoadInv();
   }
-  invView.unrenderSpinner();
-  await controlLoadInv();
-  // }
 };
 
 const controlDeleteInv = async function () {
@@ -2095,15 +2140,7 @@ const controlDeleteInv = async function () {
   invView.unrenderSpinner();
   await controlLoadInv();
 };
-const controlContinueInv = async function () {
-  const targetIndex = Array.from(invView._checkboxes).findIndex(
-    checkbox => checkbox.checked
-  );
-  const numInventaire = model.state.inventaires.all[targetIndex].num_inventaire;
-  invView.renderSpinner('Suppression en cours...');
-  // console.log();
-  await controlAddInv(numInventaire);
-};
+
 const controlValidatingInv = async (e, view = false) => {
   console.log('controlValidatingInv');
   console.log(validateCmdsIntView._parentElement);
@@ -2127,7 +2164,6 @@ const controlValidatingInv = async (e, view = false) => {
     model.state.inventaires.rendered[targetIndex].num_inventaire
   );
   validateInvView.unrenderSpinner(true);
-  console.log(selectedInvProducts);
   validateInvView.changeDetails(
     selectedInvProducts,
     model.state.inventaires.rendered[targetIndex].num_inventaire,

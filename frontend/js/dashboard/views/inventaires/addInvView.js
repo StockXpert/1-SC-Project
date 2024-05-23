@@ -27,11 +27,20 @@ class AddInvView extends AddCmdsIntView {
     if (!isNerfed) {
       this.addHandlerShowWindow('.add-inv-btn', '.big-container-inv');
       this.addHandlerHideWindow('.btn-cancel-inv', '.big-container-inv');
+      this.addHandlerShowWindowContinue(
+        '.btn-continue-inv',
+        '.big-container-inv'
+      );
       this.addHandlerHideEditProductWindow(
         '.cancel-btn-edit-info',
         '.edit-info-container',
         false
       );
+      this._btnClose.addEventListener('click', e => {
+        console.log('HIDING THE REASON WINDOW');
+        this.clearEditProductForm();
+        this._windowEditProduct.classList.add('hidden');
+      });
       this._editProductForm =
         this._windowEditProduct.querySelector('.inputs-info');
     }
@@ -56,7 +65,22 @@ class AddInvView extends AddCmdsIntView {
   //     });
   //   });
   // }
-  resetPointers(controlInput, controlRefInput) {
+  addHandlerShowWindowContinue(OpClassName, windowClassName) {
+    this._window = document.querySelector(windowClassName);
+    this._btnContinueInv = document.querySelectorAll(OpClassName);
+    this._btnContinueInv.forEach(btn =>
+      btn.addEventListener('click', this._boundToggleWindow)
+    );
+  }
+  addHandlerView(controller) {
+    this._btnContinueInv.forEach(btn =>
+      btn.addEventListener('click', async e => {
+        await controller();
+      })
+    );
+  }
+
+  resetPointers(controlInput, controlRefInput, controlInvNum) {
     this.addHandlerShowEditProductWindow(
       '.info-btn-inv',
       '.edit-info-container',
@@ -66,6 +90,11 @@ class AddInvView extends AddCmdsIntView {
 
     this._refInputs = this._window.querySelectorAll('.ref-intenre-input input');
 
+    this._numInventaire = this._window?.querySelector('.input-num-inv');
+    if (this._numInventaire)
+      this._numInventaire.addEventListener('input', e => {
+        controlInvNum(e.currentTarget.value);
+      });
     this._inputs.forEach(input => {
       // helpers.validateIntegerInput(input);
       input.addEventListener('input', e => {
@@ -98,6 +127,7 @@ class AddInvView extends AddCmdsIntView {
         this._resetWindows(this._windowEditProduct);
       });
     });
+    this._numInventaire = this._window.querySelector('.input-num-inv');
   }
   _resetWindows(...windows) {
     windows.forEach(window => {
@@ -113,13 +143,23 @@ class AddInvView extends AddCmdsIntView {
     </td>`;
     } else {
       return this._data.produits
-        .map((result, index) =>
-          this._generateMarkupPreview(result, this._perms, index)
-        )
+        .map((result, index) => this._generateMarkupPreview(result, index))
         .join('');
     }
   }
-  _generateMarkupPreview(result, permissions, index) {
+  // _generateMarkupContinue() {
+  //   let counter = 0;
+  //   if (this._data.length == 0) {
+  //     return `<td colspan="4" class="empty-table--products">
+  //     Aucun Produit
+  //   </td>`;
+  //   } else {
+  //     return this._data
+  //       .map((result, index) => this._generateMarkupPreview(result, index))
+  //       .join('');
+  //   }
+  // }
+  _generateMarkupPreview(result, index) {
     /*    const html = `<tr>
     <td>
       <div class="colomn-product-des">
@@ -145,7 +185,6 @@ class AddInvView extends AddCmdsIntView {
       </button>
     </td>
   </tr>`;*/
-    console.log(result);
 
     const html = `<tr>
     <td>
@@ -161,7 +200,7 @@ class AddInvView extends AddCmdsIntView {
       result.num_inventaire
         ? `<div class="">${result.num_inventaire}</div>`
         : ` <div class="ref-intenre-input">
-              <input class="green-ref-inv" type="text" value="55" placeholder="numInventaire" autocomplete="off">
+              <input class="green-ref-inv" type="text" value="" placeholder="numInventaire" autocomplete="off">
               <span class="material-icons-sharp">
                 drive_file_rename_outline
               </span>
@@ -199,22 +238,22 @@ class AddInvView extends AddCmdsIntView {
       arrayFromNodeList.every(input => {
         return (
           input.checked ||
-          (input.checked &&
-            this._data[helpers.findNodeIndex(this._inputs, input)].raison !==
-              '')
+          (!input.checked &&
+            this._data.produits[helpers.findNodeIndex(this._inputs, input)]
+              .raison !== '')
         );
       }),
       arrayFromNodeList2.every(input => {
-        input != '';
+        input.value != '';
       })
     );
     return (
       arrayFromNodeList.every(input => {
         return (
           input.checked ||
-          (input.checked &&
-            this._data[helpers.findNodeIndex(this._inputs, input)].raison !==
-              '')
+          (!input.checked &&
+            this._data.produits[helpers.findNodeIndex(this._inputs, input)]
+              .raison !== '')
         );
       }) &&
       arrayFromNodeList2.every(input => {
@@ -224,6 +263,7 @@ class AddInvView extends AddCmdsIntView {
   }
   addHandlerSavingInv(handler) {
     this._form.addEventListener('submit', e => {
+      e.preventDefault();
       // // Get the form element
       // const formElement = this._form;
 
@@ -243,21 +283,22 @@ class AddInvView extends AddCmdsIntView {
       //     }
       //   }
       // }
-      const numInventaire = this._numInventaire.value;
-      console.log(e.target);
-      console.log(e.currentTarget);
-      console.log('SUBMIT', this.getValidityState());
+      // const numInventaire = this._numInventaire.value;
+      let validity = this.getValidityState();
+      console.log('SUBMIT', validity);
       e.preventDefault();
-      handler(this.getValidityState(), numInventaire);
+      //TODO:
+      handler(validity /*, numInventaire */);
     });
   }
 
-  render(data, numeroInv = '') {
+  render(data) {
+    console.log(data);
     this._data = data;
     const markup = this._generateMarkup();
     this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
-    if (numeroInv != '') {
+    if (this._data.numInventaire != '') {
       this._numberContainer.innerHTML = '';
     } else {
       this._numberContainer.innerHTML = `
@@ -274,7 +315,7 @@ class AddInvView extends AddCmdsIntView {
         </div>`;
     }
     this._title.innerHTML = `Etat de l'inventaire ${
-      numeroInv ? `N°${numeroInv}` : ``
+      this._data.numInventaire ? `N°${this._data.numInventaire}` : ``
     }`;
   }
 }

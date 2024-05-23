@@ -195,9 +195,7 @@ export class CmdsIntView extends CmdsView {
       this._btnLivrerBdci,
       this._btnContinueInv,
     ]);
-    console.log(this._btnContinueInv);
-    console.log(this);
-    console.log(this._checkboxes);
+
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
         disableBtns([
