@@ -19,6 +19,7 @@ try {
 async function login(req, res) {
   const { email, password } = req.body;
   const SecretKey = process.env.KEY;
+  console.log("hi")
   userService
     .verifyUser(email)
     .then(response => {
