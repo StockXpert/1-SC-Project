@@ -3,6 +3,8 @@ import * as helpers from '../../helpers.js';
 
 // Product === Info
 class AddInvView extends AddCmdsIntView {
+  _dataProducts;
+
   // _inputs = this._window.querySelectorAll('.quantity-ph input');
   _numberContainer;
   _btnContinueInv = document.querySelector('.btn-continue-inv');
@@ -13,6 +15,7 @@ class AddInvView extends AddCmdsIntView {
   _inputs = this._window.querySelectorAll('.td-exist input');
   _title = this._window.querySelector('.inv-title');
   _form = this._window.querySelector('.heading-table-btns-inv');
+  _searchInput = this._window.querySelector('.searchbar-add-inv-text');
   _numInventaire = this._window.querySelector('.input-num-inv');
   _overlay = document.querySelector('.overlayInv');
   _btnOpen = document.querySelector('.add-inv-btn');
@@ -133,6 +136,12 @@ class AddInvView extends AddCmdsIntView {
     windows.forEach(window => {
       window.querySelectorAll('input').forEach(input => (input.value = ''));
       window.classList.add('hidden');
+    });
+  }
+  addSearchController(controller) {
+    this._searchInput = this._window.querySelector('.searchbar-add-inv-text');
+    this._searchInput.addEventListener('input', e => {
+      controller(e.currentTarget.value);
     });
   }
   _generateMarkup() {
@@ -317,6 +326,24 @@ class AddInvView extends AddCmdsIntView {
     this._title.innerHTML = `Etat de l'inventaire ${
       this._data.numInventaire ? `N°${this._data.numInventaire}` : ``
     }`;
+  }
+  renderProducts(data) {
+    console.log(data);
+    this._dataProducts = data;
+    let markup;
+    if (data.length == 0) {
+      markup = `<td colspan="5" class="empty-table--products">
+<b>Aucun résultat trouvé</b>
+</td>`;
+    } else
+      markup = this._dataProducts
+        .map((result, index) => this._generateMarkupPreview(result, index))
+        .join('');
+    this._parentElement.innerHTML = '';
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+  resetSearchbar() {
+    this._searchInput.value = '';
   }
 }
 export default new AddInvView();

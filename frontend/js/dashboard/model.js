@@ -10,6 +10,7 @@ import {
   FUSE_OPTIONS_ARTICLES,
   FUSE_OPTIONS_CMDSINT,
   FUSE_OPTIONS_PROD,
+  FUSE_OPTIONS_PROD_INV,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -159,6 +160,8 @@ export const state = {
       oldProduits: {},
       currentProduits: {},
       isNew: false,
+      afterSearch: [],
+      afterFilters: [],
     },
     rendered: [],
     //TODO:
@@ -566,6 +569,7 @@ export const fuseMakerProducts = data => {
 };
 export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
 export const fuseMakerProd = data => new Fuse(data, FUSE_OPTIONS_PROD);
+export const fuseMakerProdInv = data => new Fuse(data, FUSE_OPTIONS_PROD_INV);
 
 export const loadRoles = async function () {
   try {
@@ -1224,7 +1228,8 @@ export const prepareNewInventaire = async function (productsArr = []) {
   state.inventaires.new.isNew = true;
   state.inventaires.new.numInventaire = '';
   //TODO: these are pointers and not copies. ... so if produits changes, oldProducts also changes!!
-  state.inventaires.new.oldProducts = newInv;
+  // state.inventaires.new.oldProducts = Array.makeShallowCopy(newInv);
+  state.inventaires.new.oldProducts = newInv.map(item => ({ ...item }));
   state.inventaires.new.produits = newInv;
   return newInv;
 };

@@ -2025,6 +2025,63 @@ const controlLoadInv = async () => {
   addInvView.addHandlerView(controlContinueInv);
 };
 
+const controlInvProdFilters = filterValuesArr => {
+  const beforeFilters = model.state.commandesInt.afterSearch;
+  let afterFilters = [];
+  afterFilters = beforeFilters.filter(
+    entry => entry.chapitre == filterValuesArr[0]
+  );
+  afterFilters = beforeFilters.filter(
+    entry => entry.article == filterValuesArr[1]
+  );
+  addInvView.render(afterFilters);
+  model.state.inventaires.selected.renderedProducts = afterFilters;
+
+  // seeCmdsIntView.resetPointers();
+  // seeCmdsIntView.addSeeController(controlViewCmdInt);
+  // cmdsIntView.resetPointers();
+  // validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  // model.state.commandesInt.afterFilters = afterFilters;
+  model.state.inventaires.selected.afterFilters = afterFilters;
+};
+
+const controlInvProdSearch = searchInput => {
+  // const beforeSearch = model.state.commandesInt.all; TODO:
+  const beforeSearch = model.state.inventaires.new.produits;
+  let afterSearch = [];
+  const fuze = model.fuseMakerProdInv(beforeSearch);
+  const results = fuze.search(searchInput);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  afterSearch = extractItems(results);
+  if (afterSearch.length == 0) {
+    if (searchInput !== '') {
+      afterSearch = [];
+    } else {
+      afterSearch = beforeSearch;
+    }
+  }
+  addInvView.renderProducts(afterSearch);
+  // model.state.commandesInt.rendered = afterSearch;
+  model.state.inventaires.selected.renderedProducts = afterSearch;
+  // seeCmdsIntView.resetPointers();
+  // seeCmdsIntView.addSeeController(controlViewCmdInt);
+  // cmdsIntView.resetPointers();
+  // validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  // model.state.commandesInt.afterSearch = afterSearch;
+  model.state.inventaires.selected.afterSearch = afterSearch;
+};
+addInvView.addSearchController(controlInvProdSearch);
+
 const controlAddInv = async function () {
   //ONCLICK OF the Créer un état inventaire BUTTON
   addInvView.renderSpinner('');
@@ -2101,6 +2158,7 @@ const controlSetRemark = remark => {
   //   addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
   addInvView.render(model.state.inventaires.selected);
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.resetSearchbar();
   console.log(model.state.inventaires.new);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };

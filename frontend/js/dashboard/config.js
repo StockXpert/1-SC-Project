@@ -46,6 +46,13 @@ export const FUSE_OPTIONS_PROD = {
   threshold: 0.3,
   keys: ['article', 'description', 'designation'],
 };
+export const FUSE_OPTIONS_PROD_INV = {
+  isCaseSensitive: false,
+  includeScore: true,
+  shouldSort: true,
+  threshold: 0.3,
+  keys: ['raison', 'reference', 'designation', 'num_inventaire'],
+};
 
 export const GROUP_DEFINITIONS = {
   'Par Defaut': ['show user', 'change password auth'],
