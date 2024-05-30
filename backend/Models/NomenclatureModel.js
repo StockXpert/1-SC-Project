@@ -931,8 +931,10 @@ function getRefs(produit)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select p.designation as produit,r.designation as reference ,r.num_inventaire,r.date_inventaire,p.consommable from reference r ,produit p where p.id_produit=r.id_produit 
-    and r.existe=true ${produit?'and p.designation=?':''}`;
+    const query = `select p.designation as produit,r.designation as reference ,r.num_inventaire,r.date_inventaire,p.consommable ,a.designation as article, c.designation as chapitre
+    from reference r ,produit p ,chapitre c,article a,contient n
+    where p.id_produit=r.id_produit and r.existe=true ${produit?'and p.designation=?':''} 
+    and a.num_article=n.id_article and a.num_chap=c.num_chap and n.id_produit=p.id_produit `;
     let values=[];
     if(produit)values.push(produit)
   
