@@ -46,6 +46,13 @@ export const FUSE_OPTIONS_PROD = {
   threshold: 0.3,
   keys: ['article', 'description', 'designation'],
 };
+export const FUSE_OPTIONS_PROD_INV = {
+  isCaseSensitive: false,
+  includeScore: true,
+  shouldSort: true,
+  threshold: 0.3,
+  keys: ['raison', 'reference', 'designation', 'num_inventaire'],
+};
 
 export const GROUP_DEFINITIONS = {
   'Par Defaut': ['show user', 'change password auth'],
@@ -93,6 +100,10 @@ export const GROUP_DEFINITIONS = {
     'delete reception',
     'show bon reception',
     'show bon reception products',
+    'upload bon de reception',
+    'upload bon de commande',
+    'upload bon decharge',
+    'upload sortie',
   ],
   Roles: ['show roles', 'add role', 'delete role'],
   Permissions: ['show permissions', 'add permissions', 'delete permissions'],
@@ -148,6 +159,7 @@ export const GROUP_DEFINITIONS = {
     'commandesStat',
     'consumerMostdemmandedProduct',
   ],
+  Notifications: ['read notif', 'read all notif', 'save token'],
 };
 export const PERM_NAMES = {
   register: 'Inscrire un nouvel utilisateur',
@@ -174,7 +186,7 @@ export const PERM_NAMES = {
   'show chapters': 'Afficher les chapitres',
   'bon commande': 'Ajouter un bon de commande',
   'delete commande': 'Supprimer la commande',
-  'update quantite': 'Mettre à jour la quantité',
+  'update quantite': 'Ajouter un bon de Récéption',
   'cancel commande': 'Annuler la commande',
   'show commandes': 'Afficher les commandes',
   'update bon commande': 'Mettre à jour le bon de commande',
@@ -294,6 +306,7 @@ export const GROUP_BTNS = {
   <h3>Statistiques</h3>
 </a>
   `,
+  Notifications: ``,
 };
 export const ORDER_OF_GROUPS = [
   'Par Defaut',
@@ -309,5 +322,6 @@ export const ORDER_OF_GROUPS = [
   'Fournisseurs',
   'Inventaire',
   'Statistiques',
+  'Notifications',
   'Autre',
 ];

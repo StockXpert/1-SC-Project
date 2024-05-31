@@ -165,7 +165,18 @@ export class CmdsIntView extends CmdsView {
           : ''
       }
         
-      </td>`
+      </td>
+      <td class="td-view-bdci"> ${
+        result.etat?.includes('demandee')
+          ? `<button class="details-btn print-bdci-btn">
+        <span class="material-icons-sharp info-icon">
+          info
+        </span>
+        </button>
+      `
+          : ''
+      }</td>
+      `
         : ``
     }
 
@@ -182,6 +193,7 @@ export class CmdsIntView extends CmdsView {
       this._btnUpdateInv,
       this._btnModifyBdci,
       this._btnLivrerBdci,
+      this._btnContinueInv,
     ]);
 
     this._checkboxes.forEach(cbx =>
@@ -194,6 +206,7 @@ export class CmdsIntView extends CmdsView {
           this._btnUpdateInv,
           this._btnModifyBdci,
           this._btnLivrerBdci,
+          this._btnContinueInv,
         ]);
         const tthis = e.currentTarget;
         let etat =
@@ -223,6 +236,7 @@ export class CmdsIntView extends CmdsView {
             this._btnDeleteInv,
             this._btnModifyInv,
             this._btnUpdateInv,
+            this._btnContinueInv,
           ]);
         } else if (this._checkedCheckboxes.length === 1) {
           switch (etat) {
@@ -250,6 +264,13 @@ export class CmdsIntView extends CmdsView {
               console.log('null');
               enableBtns([this._btnDeleteBdci]);
               break;
+            case 'en cours':
+              enableBtns([
+                this._btnContinueInv,
+                this._btnDeleteInv,
+                this._btnModifyInv,
+              ]);
+              break;
             default:
               disableBtns([
                 this._btnCancelBdc,
@@ -259,6 +280,7 @@ export class CmdsIntView extends CmdsView {
                 this._btnUpdateInv,
                 this._btnDeleteInv,
                 this._btnModifyInv,
+                this._btnContinueInv,
               ]);
               break;
           }

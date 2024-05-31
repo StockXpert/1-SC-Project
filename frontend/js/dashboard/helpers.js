@@ -196,8 +196,7 @@ export const putJSON = async function (url, uploadData) {
       timeout(TIMEOUT_SEC),
     ]);
     const data = await res.json();
-    console.log(res);
-    console.log(data);
+    console.log([res, data]);
     if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
@@ -219,8 +218,7 @@ export const putJSONReturnResResp = async function (url, uploadData) {
     timeout(TIMEOUT_SEC),
   ]);
   const data = await res.json();
-  console.log(res);
-  console.log(data);
+  console.log([res, data]);
   return [res, data];
   //   if (!res.ok) throw new Error(`${data.message} (${res.status}`);
   //   return data;
@@ -332,8 +330,7 @@ export const getJSONReturnResResp = async function (url) {
     timeout(TIMEOUT_SEC),
   ]);
   const data = await res.json();
-  console.log(res);
-  console.log(data);
+  console.log([res, data]);
   if (!res.ok && res.status !== 403) {
     // return res;
     throw new Error(`${res.statusText} (${res.status}) : ${data.error}
@@ -1129,4 +1126,26 @@ export function organizeProducts(designations, quantities, references) {
   });
 
   return result;
+}
+export function extractChapitres(items) {
+  const chapitres = items.map(item => item.chapitre);
+  return [...new Set(chapitres)];
+}
+export function extractArticles(items) {
+  const articles = items.map(item => item.article);
+  return [...new Set(articles)];
+}
+export function isInputUnused(input) {
+  if (input.type === 'file') {
+    return input.files.length === 0;
+  } else if (input.type === 'checkbox' || input.type === 'radio') {
+    return !input.checked;
+  } else if (
+    input.type === 'text' ||
+    input.type === 'number' ||
+    input.type === 'textarea'
+  ) {
+    return input.value.trim() === '';
+  }
+  return false;
 }

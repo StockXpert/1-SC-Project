@@ -153,12 +153,38 @@ function getInventaires() {
     });
   });
 }
+function insertInvetaireLink(numInventaire, link) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+
+    const query = `update inventaire set zip=? where num_inventaire=?`;
+    const values = [link, numInventaire];
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        resolve('');
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function getInventaire(numInventaire) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
 
-    const query = `select c.present ,c.reference,p.designation,c.raison from produit p,compter c,reference r
-        where c.num_inventaire=? and c.reference=r.reference and p.id_produit=r.id_produit`;
+    const query = `select c.present ,c.reference,p.designation,c.raison,r.num_inventaire,r.date_inventaire from produit p,compter c,reference r
+        where c.num_inventaire=? and c.reference=r.designation and p.id_produit=r.id_produit`;
     const values = [numInventaire];
     connection.connect(err => {
       if (err) {
@@ -664,7 +690,7 @@ function deleteRefs(numInventaire) {
           (produit, callback) => {
             // Insérer les données dans ma_table avec l'ID produit fourni
             connection.query(
-              'delete from reference where designation in (select reference from compter where num_inventaire=? and present=false)',
+              'update reference set existe=? where designation in (select reference from compter where num_inventaire=? and present=false)',
               [numInventaire],
               (err, result) => {
                 if (err) {
@@ -707,16 +733,47 @@ function getProductArticleForFiche(year, article) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
 
-    const query = `select p.id_produit , p.designation ,count(r.designation) as quantite_phys,p.quantite ,GROUP_CONCAT(r.num_inventaire SEPARATOR ' ') AS num_inventaires,
+    const query = `select p.id_produit , p.designation ,count(r.designation) as quantite_phys,p.quantite ,GROUP_CONCAT(r.num_inventaire SEPARATOR ',') AS num_inventaires,
     COUNT(CASE WHEN YEAR(r.date_inscription) < ? THEN 1 END) as reste,
-    SUM(CASE WHEN YEAR(d.date_sortie) = ? THEN f.quantite_servie ELSE 0 END) AS sortie,
-    COUNT(CASE WHEN YEAR(r.date_inscription) < ? THEN 1 END) as entree
-    from produit p,reference r,fournir f,demande_fourniture d where
-    p.id_produit=r.id_produit and p.id_produit=f.id_produit and d.num_demande=f.id_demande
+    COUNT(CASE WHEN YEAR(r.date_inscription) = ? THEN 1 END) as entree
+    from produit p,reference r where
+    p.id_produit=r.id_produit 
     and p.id_produit in
     (select id_produit from contient where id_article=?)
     group by p.id_produit , p.designation`;
-    const values = [year, year, year, article];
+    const values = [year, year, article];
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        resolve(results);
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function getProductArticleSortie(year, article) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+
+    const query = `select p.id_produit,
+    SUM(CASE WHEN YEAR(d.date_sortie) = ? THEN f.quantite_servie ELSE 0 END) AS sortie
+    from produit p,fournir f,demande_fourniture d where
+    p.id_produit=f.id_produit and d.num_demande=f.id_demande
+    and p.id_produit in
+    (select id_produit from contient where id_article=?)
+    group by p.id_produit , p.designation`;
+    const values = [year, article];
     connection.connect(err => {
       if (err) {
         console.error('Erreur de connexion :', err);
@@ -757,4 +814,6 @@ module.exports = {
   countQuantitePhys,
   deleteRefs,
   getProductArticleForFiche,
+  getProductArticleSortie,
+  insertInvetaireLink,
 };

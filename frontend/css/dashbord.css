@@ -673,6 +673,9 @@ aside .sidebar a:hover span {
   justify-content: end;
   gap: 1.2rem;
 }
+.heading-table-btns-inv-verif {
+  background-color: #fff;
+}
 .num-bdr-inputs,
 .num-bdd-inputs,
 .num-ref-inputs {
@@ -1661,6 +1664,25 @@ table tbody tr:last-child td {
   border-radius: 15px;
   box-shadow: 1px 1px 1px 0px #00000066;
 }
+.inputs-date-statistiques {
+  position: relative;
+}
+.desc-input-statistique {
+  position: absolute;
+  bottom: 17px;
+  left: 8px;
+  background-color: white;
+}
+.input-date-statistique {
+  font-size: 1rem;
+  text-align: center;
+  color: #477ce2;
+  font-weight: 600;
+  padding: 0.2rem;
+  border: 1px solid #e4e4e4;
+  border-radius: 15px;
+  box-shadow: 1px 1px 1px 0px #00000066;
+}
 
 /* .dropbtn {
   height: 1.8rem;
@@ -1962,6 +1984,15 @@ table tbody tr:last-child td {
   pointer-events: none;
   cursor: default;
 }
+.input-changeble3 {
+  pointer-events: none;
+  cursor: default;
+}
+.input-changeble4 input {
+  border: none;
+  pointer-events: none;
+  cursor: default;
+}
 /*
 .input-changeble input::placeholder {
    color: #4b4b4b; 
@@ -2024,7 +2055,8 @@ table tbody tr:last-child td {
   overflow: hidden;
 }
 .inv-cart {
-  width: 55rem;
+  /* width: 55rem; */
+  width: 80rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column !important;
@@ -3333,6 +3365,7 @@ a.password-icon:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.2rem;
 }
 .statistiques-filters {
   display: flex;
@@ -3483,4 +3516,14 @@ a.password-icon:active {
   font-weight: 500;
   color: var(--color-primary);
   transition: all 0.5s;
+}
+select.filters-add-inv {
+  width: 100%; /* Adjust the width as needed */
+  max-width: 300px; /* Example maximum width */
+}
+
+select.filters-add-inv option {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all; /* Break long words */
 }
