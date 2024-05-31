@@ -17,7 +17,7 @@ router.get(
   authMiddleware('show inventaires'),
   inventaireController.showInventaires
 );
-router.get(
+router.post(
   '/showInventaire',
   authMiddleware('show inventaire'),
   inventaireController.showInventaire

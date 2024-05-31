@@ -46,7 +46,7 @@ async function genererBondeCommande(
 ) {
   return new Promise(async (resolve, reject) => {
     await googleMiddleware.updateCel(
-      'C1',
+      'C7',
       `République Algerienne démoctatique et populaire
         Bon de commande
         N° ${num_commande} ${date}`,
@@ -57,48 +57,48 @@ async function genererBondeCommande(
       .then(async fournisseur => {
         await Promise.all([
           googleMiddleware.updateCel(
-            'C11',
+            'C17',
             'Adresse ' + fournisseur.adresse,
             Id
           ),
           googleMiddleware.updateCel(
-            'C8',
+            'C14',
             'Nom et prénom ' + fournisseur.raison_sociale,
             Id
           ),
           googleMiddleware.updateCel(
-            'C9',
+            'C15',
             'Ou Raison Sociale: ' + fournisseur.raison_sociale,
             Id
           ),
           googleMiddleware.updateCel(
-            'C12',
+            'C18',
             'Telephone et fax:' + fournisseur.telephone + '/' + fournisseur.fax,
             Id
           ),
           googleMiddleware.updateCel(
-            'C13',
+            'C19',
             'N° R.C : ' + fournisseur.num_registre,
             Id
           ),
           googleMiddleware.updateCel(
-            'F13',
+            'F19',
             `N.I.F : ${fournisseur.nif ? fournisseur.nif : ''}`,
             Id
           ),
           googleMiddleware.updateCel(
-            'F14',
+            'F20',
             `N.I.S : ${+fournisseur.nis ? fournisseur.nis : ''}`,
             Id
           ),
-          googleMiddleware.updateCel('F22', montantHT(produits) + '.00', Id),
+          googleMiddleware.updateCel('F28', montantHT(produits) + '.00', Id),
           googleMiddleware.updateCel(
-            'C15',
+            'C21',
             `RIB (ou RIP) :${fournisseur.rib_ou_rip}`,
             Id
           ),
           googleMiddleware.updateCel(
-            'F18',
+            'F24',
             `Objet de la commande: ${objet}`,
             Id
           ),
@@ -106,26 +106,26 @@ async function genererBondeCommande(
         let range;
         switch (type) {
           case 'materiel':
-            range = 'A18';
+            range = 'A24';
             break;
           case 'fourniture':
-            range = 'A19';
+            range = 'A25';
             break;
           case 'service':
-            range = 'A20';
+            range = 'A26';
             break;
           default:
             break;
         }
         await Promise.all([
-          googleMiddleware.updateCel('D23', `TVA ${tva}%`, Id),
+          googleMiddleware.updateCel('D29', `TVA ${tva}%`, Id),
           googleMiddleware.updateCel(
-            'F23',
+            'F29',
             TVA(montantHT(produits), tva) + '.00',
             Id
           ),
           googleMiddleware.updateCel(
-            'F24',
+            'F30',
             TVA(montantHT(produits), tva) + montantHT(produits) + '.00',
             Id
           ),
@@ -135,10 +135,10 @@ async function genererBondeCommande(
           'fr'
         ).result.fullText;
         await Promise.all([
-          googleMiddleware.updateCel('A27', `${myNumber} dinars algérien`, Id),
+          googleMiddleware.updateCel('A33', `${myNumber} dinars algérien`, Id),
           googleMiddleware.updateCel(range, true, Id),
         ]);
-        let i = 22;
+        let i = 28;
         for (const produit of produits) {
           await googleMiddleware.addRow(i, produit, Id, 'commande');
           i++;
@@ -157,7 +157,7 @@ async function genererBondeCommande(
         ]);
         await Promise.all([
           googleMiddleware.updateCel(range, false, Id),
-          googleMiddleware.deleteRows(22, i - 1, Id),
+          googleMiddleware.deleteRows(28, i - 1, Id),
         ]);
         const link = `BonCommande/commande${num_commande}.`;
         EntreeModel.insertLink(link + 'pdf', link + 'xlsx', num_commande)
@@ -353,23 +353,23 @@ async function genererBonReception(
   Id
 ) {
   return new Promise(async (resolve, reject) => {
-    await googleMiddleware.updateCel('A6', `Fournisseur: ${fournisseur}`, Id);
+    await googleMiddleware.updateCel('A10', `Fournisseur: ${fournisseur}`, Id);
     await googleMiddleware.updateCel(
-      'C4',
-      `N° ${numReception} Date ${dateReception}`,
+      'C8',
+      `              N° ${numReception} Date ${dateReception}`,
       Id
     );
     await googleMiddleware.updateCel(
-      'A7',
+      'A11',
       `N° du Bon de commande : ${numCommande}`,
       Id
     );
     await googleMiddleware.updateCel(
-      'D7',
+      'D11',
       `Date du Bon de Commande : ${dateCommande}`,
       Id
     );
-    let i = 11;
+    let i = 15;
     console.log(produits);
     for (const produit of produits) {
       console.log(produit);
@@ -389,7 +389,7 @@ async function genererBonReception(
       `BonReception`,
       `reception${numReception}`
     );
-    await googleMiddleware.deleteRows(11, i - 1, Id);
+    await googleMiddleware.deleteRows(15, i - 1, Id);
     const link = `BonReception/reception${numReception}.`;
     EntreeModel.insertReceptionLink(link + 'pdf', link + 'xlsx', numReception)
       .then(() => {

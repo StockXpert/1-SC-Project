@@ -22,6 +22,7 @@ app.use('/bonReception', express.static(path.join(__dirname, 'bonReception')));
 app.use('/bonLivraison', express.static(path.join(__dirname, 'bonLivraison')));
 app.use('/Facture', express.static(path.join(__dirname, 'Facture')));
 app.use('/sortie', express.static(path.join(__dirname, 'sorite')));
+app.use('/inventaire', express.static(path.join(__dirname, 'inventaire')));
 app.listen(port, () => {
   console.log(`app is listening in port ${port}`);
 });

@@ -834,9 +834,9 @@ const controlSearchArticlesCmds = input => {
 const controlUpdateProducts = async articleName => {
   // addCmdsView.r
   // addCmdsView._btnsOpenAddProduct.classList.add('hidden');
-  addCmdsView.renderSpinner('', true);
+  // addCmdsView.renderSpinner('', true);
   const products = await model.loadProducts(articleName);
-  addCmdsView.unrenderSpinner(true);
+  // addCmdsView.unrenderSpinner(true);
   // addCmdsView._btnsOpenAddProduct.classList.remove('hidden');
   model.state.bdc_products.all = products;
 };
@@ -1157,11 +1157,15 @@ const controlLoadBRec = async function (event = '', number = '') {
   // deleteBonReception.allowDeleteBtn(false, '.btn-delete-bdr');
   // TODO:
   deleteBonReception.addDeleteController(controlDeleteBonRec);
-  bonReceptionView.renderSpinner('Chargement des bons de récéptions', true);
+  bonReceptionView.renderSpinner('Chargement des bons de récéptions ...', true);
   // vvvvvvvvv model.state.bdr.all vvvvvvvv
+  addBonReception._message.classList.add('hiddenTrans');
+  addBonReception._btnOpen.classList.add('hidden');
+
   await model.loadBonRec(model.state.bdc.selected);
   bonReceptionView.unrenderSpinner(true);
   bonReceptionView.render(model.state.bdr.all);
+  bonReceptionView.AddHandlerAddedProductsCheckboxes();
   addBonReception.allowBlueBtn(false, '.btn-add-bdr');
   // vvvvvv state.bdr_products.all  vvvvvvvv
   await model.loadBonCmdProducts(model.state.bdc.selected);
@@ -1200,18 +1204,18 @@ const controlAddBRec = async function (
   const newReception = new FormData();
   newReception.append('numCommande', model.state.bdc.selected);
   newReception.append('numLivraison', numBonLivraison);
-  newReception.append('produits', JSON.stringify(products));
+  newReception.append(
+    'produits',
+    JSON.stringify(products.filter(prod => prod.quantite > 0))
+  );
   newReception.append('bonLivraison', linkLivraison);
   newReception.append('dateReception', helpers.getFormattedDate('/'));
   if (numFacture.length != 0 && linkFacture.length != 0) {
     newReception.append('numFacture', numFacture);
     newReception.append('facture', linkFacture);
   }
-  console.log(products);
-  console.log([...newReception]);
   bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
   await model.addBonReception(newReception);
-  // await helpers.timeoutRes(5);
   bonReceptionView.unrenderSpinner(true);
   await controlLoadBRec('', model.state.bdc.selected);
   // await controlLoadCmds();
@@ -1228,10 +1232,10 @@ const controlDeleteBonRec = async function () {
   ).forEach(async el => {
     console.log(el);
     bonReceptionView.renderSpinner(
-      "Suppression d'un bon de reception  " + el.num_bon + '...',
+      'Suppression du bon de reception  N°' + el.num_bon + '...',
       true
     );
-    bonReceptionView.renderSpinner('', true);
+    // await helpers.timeoutRes(1500);
     await model.deleteBonRec(el.num_bon, el.numCommande);
     bonReceptionView.unrenderSpinner(true);
     bonReceptionView.toggleWindow();
@@ -1559,12 +1563,12 @@ const controlEditProductBtnsInt = (view = addCmdsIntView, e) => {
       model.state.commandesInt.selected.products = productsArray;
       break;
     case 'AddInvView':
-      productsArray = model.state.inventaires.new.produits;
-      console.log(targetIndex);
+      // productsArray = model.state.inventaires.rendered.produits;
+      productsArray = model.state.inventaires.selected.renderedProducts;
       targetIndex = helpers.findNodeIndex(view._btnsOpenEditProduct, target);
       console.log(productsArray[targetIndex]);
       //TODO:
-      model.state.inventaires.new.selectedProduct = targetIndex;
+      model.state.inventaires.selected.selectedProduct = targetIndex;
       break;
   }
 
@@ -1888,7 +1892,7 @@ const controlValidateCmdsInt = async () => {
   let appObject = validateCmdsIntView.extractObject();
   let returnValue;
   validateCmdsIntView._btnClose.click();
-  cmdsIntView.renderSpinner('Approbation ...');
+  cmdsIntView.renderSpinner('Validation ...');
   switch (validateCmdsIntView._role) {
     case 'Responsable directe':
       returnValue = await model.resAppCmdInt(appObject);
@@ -2018,46 +2022,164 @@ const controlLoadInv = async () => {
   model.updateRenderedInv(model.state.inventaires.all);
   invView.resetPointers();
   validateInvView.resetPointers(controlValidatingInv);
+  addInvView.addHandlerView(controlContinueInv);
 };
+
+const controlInvProdFilters = filterValuesArr => {
+  const beforeFilters = model.state.commandesInt.afterSearch;
+  let afterFilters = [];
+  afterFilters = beforeFilters.filter(
+    entry => entry.chapitre == filterValuesArr[0]
+  );
+  afterFilters = beforeFilters.filter(
+    entry => entry.article == filterValuesArr[1]
+  );
+  addInvView.render(afterFilters);
+  model.state.inventaires.selected.renderedProducts = afterFilters;
+
+  // seeCmdsIntView.resetPointers();
+  // seeCmdsIntView.addSeeController(controlViewCmdInt);
+  // cmdsIntView.resetPointers();
+  // validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  // model.state.commandesInt.afterFilters = afterFilters;
+  model.state.inventaires.selected.afterFilters = afterFilters;
+};
+
+const controlInvProdSearch = searchInput => {
+  // const beforeSearch = model.state.commandesInt.all; TODO:
+  const beforeSearch = model.state.inventaires.new.produits;
+  let afterSearch = [];
+  const fuze = model.fuseMakerProdInv(beforeSearch);
+  const results = fuze.search(searchInput);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  afterSearch = extractItems(results);
+  if (afterSearch.length == 0) {
+    if (searchInput !== '') {
+      afterSearch = [];
+    } else {
+      afterSearch = beforeSearch;
+    }
+  }
+  addInvView.renderProducts(afterSearch);
+  // model.state.commandesInt.rendered = afterSearch;
+  model.state.inventaires.selected.renderedProducts = afterSearch;
+  // seeCmdsIntView.resetPointers();
+  // seeCmdsIntView.addSeeController(controlViewCmdInt);
+  // cmdsIntView.resetPointers();
+  // validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
+  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
+  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  // model.state.commandesInt.afterSearch = afterSearch;
+  model.state.inventaires.selected.afterSearch = afterSearch;
+};
+addInvView.addSearchController(controlInvProdSearch);
+
+const controlAddInv = async function () {
+  //ONCLICK OF the Créer un état inventaire BUTTON
+  addInvView.renderSpinner('');
+  const allProducts = await model.loadAllInvProducts();
+  model.prepareNewInventaire(allProducts[1].response);
+  addInvView.render(model.state.inventaires.new);
+  model.state.inventaires.selected = model.state.inventaires.new;
+  model.state.inventaires.selected.renderedProducts =
+    model.state.inventaires.new.produits;
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+
+const controlContinueInv = async function () {
+  const targetIndex = Array.from(invView._checkboxes).findIndex(
+    checkbox => checkbox.checked
+  );
+  const numInventaire = model.state.inventaires.all[targetIndex].num_inventaire;
+  // // console.log();
+  // await controlAddInv(numInventaire);
+  //ONCLICK OF the Créer un état inventaire BUTTON
+
+  addInvView.renderSpinner('');
+  await model.loadInventaire(numInventaire);
+  addInvView.render(model.state.inventaires.selected);
+  model.state.inventaires.selected.renderedProducts =
+    model.state.inventaires.selected.produits;
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+
+  // const allProducts = await model.loadAllInvProducts();
+  // model.prepareNewInventaire(allProducts[1].response);
+  // addInvView.render(model.state.inventaires.new, numeroInv);
+  // model.state.inventaires.rendered = model.state.inventaires.new;
+  // addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  // addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+};
+
+//TODO: incase you wanna only allow a specific number of inventaires
+//ON INPUT OF NUMERO INVENTAIRE NUMBER:
+const controlNumInv = value => {
+  model.state.inventaires.selected.numInventaire = value;
+  console.log(model.state.inventaires.selected);
+};
+//ON INPUT OF
 const controlInput = (value, index) => {
-  model.state.inventaires.new.produits[index].quantitePhys = parseInt(value);
+  model.state.inventaires.selected.renderedProducts[index].present = value;
+  console.log(model.state.inventaires.selected);
+};
+//ON INPUT OF
+const controlRefInput = (value, index) => {
+  // model.state.inventaires.rendered.produits[index].num_inventaire = !model.state
+  //   .inventaires.new.oldProducts[index].num_inventaire
+  //   ? value
+  //   : model.state.inventaires.rendered.oldProducts[index].num_inventaire;
+  // console.log(model.state.inventaires.rendered);
+  model.state.inventaires.selected.renderedProducts[index].num_inventaire =
+    value;
+  console.log(model.state.inventaires.selected);
 };
 // const controlModifyCmdsInt = async function () {
 const controlSetRemark = remark => {
-  model.state.inventaires.new.produits[
-    model.state.inventaires.new.selectedProduct
+  model.state.inventaires.selected.renderedProducts[
+    model.state.inventaires.selected.selectedProduct
   ].raison = remark;
+  // const controlSetRemark = remark => {
+  //   model.state.inventaires.new.produits[
+  //     model.state.inventaires.new.selectedProduct
+  //   ].raison = remark;
+
   // model.state.inventaires.new.produits[
   //   model.state.inventaires.new.selectedProduct
   // ].quantitePhys =
   //   addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
-  addInvView.render(model.state.inventaires.new);
-  addInvView.resetPointers(controlInput);
+  addInvView.render(model.state.inventaires.selected);
+  addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
+  addInvView.resetSearchbar();
   console.log(model.state.inventaires.new);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
-const controlAddInv = async function () {
-  //ONCLICK OF the Créer un état inventaire BUTTON
-  addInvView.renderSpinner('');
-  const allProducts = await model.loadAllProductsPerms();
-  model.prepareNewInventaire(allProducts[1].response);
-  addInvView.render(model.state.inventaires.new);
-  addInvView.resetPointers(controlInput);
-  addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-};
 
-const controlSaveInv = async function (validityState, numInv) {
-  if (!validityState) {
+const controlSaveInv = async function (validityState) {
+  if (model.state.inventaires.selected.numInventaire == '') {
     helpers.renderError(
       `Erreur lors de l'introduction des données `,
-      `<p class="error-message"><b>Remplir les raisons pour les valeurs physiques de produits.</b></p>
+      `<p class="error-message"><b>Veuillez introduire le Numéro de l'inventaire.</b></p>
       `
     );
     return;
   } else {
+    console.log(validityState);
     addInvView._btnClose.click();
     invView.renderSpinner('Sauvegarde en cours... ');
-    await model.createInv(numInv);
+    await model.createInv();
+    if (validityState) {
+      invView.renderSpinner("Confirmation de l'état en cours... ");
+      await model.confirmInv();
+    }
     invView.unrenderSpinner();
     await controlLoadInv();
   }
@@ -2076,6 +2198,7 @@ const controlDeleteInv = async function () {
   invView.unrenderSpinner();
   await controlLoadInv();
 };
+
 const controlValidatingInv = async (e, view = false) => {
   console.log('controlValidatingInv');
   console.log(validateCmdsIntView._parentElement);
@@ -2099,7 +2222,6 @@ const controlValidatingInv = async (e, view = false) => {
     model.state.inventaires.rendered[targetIndex].num_inventaire
   );
   validateInvView.unrenderSpinner(true);
-  console.log(selectedInvProducts);
   validateInvView.changeDetails(
     selectedInvProducts,
     model.state.inventaires.rendered[targetIndex].num_inventaire,

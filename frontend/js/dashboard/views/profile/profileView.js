@@ -26,7 +26,6 @@ class ProfileView extends View {
   _parentElement = document.querySelector('.inputs-profile');
   _trueParentElement = document.querySelector('#main-profile-table');
   _generateMarkup() {
-    console.log(this._data);
     return `
             <div class="groupe-5-profile">
               <p>Vos Informations</p>

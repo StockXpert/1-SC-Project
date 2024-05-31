@@ -1569,6 +1569,11 @@
                   >
                     Supprimer
                   </button>
+                  <button
+                    class="heading-table-btn btn-edit-bdc disabled-button hidden"
+                  >
+                    Modifier
+                  </button>
                 </div>
               </div>
               <div class="heading-table-line">
@@ -2082,7 +2087,7 @@
                     Modifier
                   </button>
                   <button
-                    class="heading-table-btn btn-continue-inv disabled-save-button"
+                    class="heading-table-btn btn-continue-inv disabled-save-button hidden"
                     data-type="blue"
                   >
                     Continuer la saisie
@@ -4684,6 +4689,9 @@
             <div class="heading-table-show-bdr">
               <div class="container-heading-table-show-bdr">
                 <div class="heading-table-text-show-bdr">
+                  <b class="bdr-title hiddenTrans"
+                    ><i>La commande est deja totalement livrée !</i></b
+                  >
                   <!-- <p class="table-text-show-bdr">
                     Tout les Bons de Receptions (<b class="number-users">245</b
                     >)
@@ -5109,6 +5117,319 @@
           </div>
         </div>
       </div>
+
+      <div class="big-container-edit hidden">
+        <div class="edit-product-bdc-container hidden">
+          <div class="edit-product-bdc-cart">
+            <div class="heading-edit-product-bdc">
+              <p>Modifier</p>
+            </div>
+            <form class="inputs-edit-product-bdc">
+              <div class="input-product-bdc-edit">
+                <input
+                  type="text"
+                  placeholder="Chercher la Designation du Produit"
+                  name="designation"
+                  id="bdc-product-edit"
+                  autocomplete="off"
+                  required
+                />
+                <div class="search-results edit-product-search-results">
+                  <ul class="product-search-results-container-edit">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
+                <div class="validity-message hidden"></div>
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  type="number"
+                  placeholder="Modifier la Quantité"
+                  value="4"
+                  name="quantite"
+                  required
+                />
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  type="number"
+                  placeholder="Modifier le Prix Unitaire"
+                  value="20.000 DA"
+                  name="prixUnitaire"
+                  required
+                />
+              </div>
+              <div class="btn-product-bdc-edit">
+                <button class="cancel-btn-edit-bdc">Annuler</button>
+                <button class="add-btn-edit-bdc">Modifier</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-product-bdc-container hidden">
+          <div class="add-product-bdc-cart">
+            <div class="heading-add-product-bdc">
+              <p>Ajouter un Produit</p>
+            </div>
+            <form class="inputs-add-product-bdc">
+              <div class="input-product-bdc">
+                <input
+                  type="text"
+                  placeholder="Chercher la Designation du Produit"
+                  name="designation"
+                  id="bdc-product"
+                  autocomplete="off"
+                  required
+                />
+                <div class="search-results bdc-add-product-search-results">
+                  <ul class="product-search-results-container">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
+                <div class="validity-message hidden"></div>
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  name="quantite"
+                  placeholder="Entrez la Quantité"
+                  id="bdc-quantity"
+                  autocomplete="off"
+                  type="number"
+                  required
+                />
+              </div>
+              <div class="input-product-bdc">
+                <input
+                  name="prixUnitaire"
+                  type="number"
+                  placeholder="Entrez le Prix Unitaire"
+                  id="bdc-price"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+              <div class="btn-product-bdc">
+                <button class="cancel-btn-add-bdc">Annuler</button>
+                <button class="add-btn-add-bdc">Ajouter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="add-bdc-container">
+          <div class="add-bdc-cart">
+            <form class="container-select-bdc">
+              <div class="dropbtn dropbtn-fournisseurs">
+                <input
+                  name="fournisseur"
+                  class="filters-fournisseur"
+                  id="filter-fournisseur"
+                  placeholder="Cherchez le fournisseur..."
+                  required
+                  autocomplete="off"
+                />
+                <div class="search-results four-search-results">
+                  <ul class="four-search-results-container">
+                    <!-- <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li>
+                    <li>SARL MANSOUR</li> -->
+                  </ul>
+                </div>
+                <div class="validity-message hidden"></div>
+              </div>
+              <!-- <div class="dropbtn dropbtn-Article">
+                <span class="material-icons-sharp"> search </span>
+                <select
+                  name="fournisseur"
+                  class="filters-fournisseur"
+                  placeholder="Fournisseur"
+                  required
+                >
+                  <option value="" disabled="" selected="">Articles</option>
+                </select>
+              </div> -->
+              <div class="dropbtn dropbtn-articles">
+                <input
+                  name="article"
+                  class="filters-article"
+                  id="filter-article"
+                  placeholder="Cherchez l'article..."
+                  required
+                  autocomplete="off"
+                  required
+                />
+                <div class="search-results article-search-results">
+                  <ul class="article-search-results-container"></ul>
+                </div>
+                <div class="validity-message hidden"></div>
+              </div>
+              <div class="dropbtn dropbtn-type">
+                <select
+                  name="type"
+                  class="types-article"
+                  id="type-options"
+                  placeholder="Choisissez le chapitre"
+                  required
+                >
+                  <option value="" disabled="" selected="">Types</option>
+                  <option value="materiel">Matérielles</option>
+                  <option value="fourniture">Fournitures</option>
+                  <option value="service">Services</option>
+                </select>
+              </div>
+              <div class="btn-add-product">
+                <button>Ajouter Produit</button>
+                <span class="material-icons-sharp"> add </span>
+              </div>
+            </form>
+            <div class="heading-table-add-bdc">
+              <div class="container-heading-table-add-bdc">
+                <div class="heading-table-text-add-bdc">
+                  <!-- <p class="table-text-add-bdc">
+                    Tout les Produits (<b class="number-users">245</b>)
+                  </p>
+                  <p class="table-text-add-bdc">
+                    Selectionnés (<b class="number-users">245</b>)
+                  </p> -->
+                </div>
+                <div class="heading-table-btns-add-bdc">
+                  <!-- <button
+                    class="heading-table-btn btn-edit btn-edit-produits-bdc"
+                  >
+                    Modifier
+                  </button> -->
+                  <button
+                    class="heading-table-btn btn-delete btn-delete-produits-bdc disabled-delete-button"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="heading-table-line">
+                <hr class="line-style-table" />
+              </div>
+            </div>
+            <div class="table-container-bdc-produits">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Numéro</p>
+                      </div>
+                    </th>
+                    <th>Designation</th>
+                    <th>Quantité</th>
+                    <th>Prix.U</th>
+                    <th>Montant</th>
+                    <th>Modifier</th>
+                  </tr>
+                </thead>
+                <tbody class="results-bdc-produits">
+                  <!-- <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdc-add">
+                        <input
+                          class=""
+                          type="checkbox"
+                          id="checkbox-table-bdc-add"
+                        />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit">
+                      <input type="text" placeholder="8" />
+                    </td>
+                    <td class="input-changeble price-produit">
+                      <input type="text" placeholder="10.000" />
+                    </td>
+                    <td class="price-produit-montant">80.000</td>
+                    <td>
+                      <button class="details-btn-bdc-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="selected-row">
+                    <td>
+                      <div class="checkbox-colomn-bdc-add">
+                        <input type="checkbox" id="checkbox-table-bdc-add" />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit">
+                      <input type="text" placeholder="8" />
+                    </td>
+                    <td class="input-changeble price-produit">
+                      <input type="text" placeholder="10.000" />
+                    </td>
+
+                    <td class="price-produit-montant">80.000</td>
+                    <td>
+                      <button class="details-btn-bdc-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="checkbox-colomn-bdc-add">
+                        <input type="checkbox" id="checkbox-table-bdc-add" />
+                        <p class="colomn-tags-name-bdc">1</p>
+                      </div>
+                    </td>
+                    <td>Pc dell xps</td>
+
+                    <td class="input-changeble quantity-produit">
+                      <input type="text" placeholder="8" />
+                    </td>
+                    <td class="input-changeble price-produit">
+                      <input type="text" placeholder="10.000" />
+                    </td>
+                    <td class="price-produit-montant">80.000</td>
+                    <td>
+                      <button class="details-btn-bdc-add">
+                        <span class="material-icons-sharp info-icon">
+                          edit
+                        </span>
+                      </button>
+                    </td>
+                  </tr> -->
+                  <td colspan="6" class="empty-table--products">
+                    Les produits que vous ajouterez apparaîtront ici !
+                  </td>
+                </tbody>
+              </table>
+            </div>
+            <form class="heading-table-btns-add-bdr">
+              <button
+                class="heading-table-btn-bdr cancel-btn-add-bdc btn-add-bdr-qt"
+                id="add-bdc-close"
+              >
+                Annuler
+              </button>
+              <button class="heading-table-btn-bdr add-users-btn btn-save-bdc">
+                Sauvegarder
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!-- debut section pour add un nv bdci -->
       <div class="big-container-bdci hidden">
         <div class="edit-product-bdci-container hidden">
@@ -5561,7 +5882,7 @@
       </div>
       <!-- fin section pour voir les bdci -->
       <!-- debut section pour cree un état d'inventaire -->
-      <div class="big-container-inv">
+      <div class="big-container-inv hidden">
         <div class="edit-info-container hidden">
           <div class="edit-info-cart">
             <div class="heading-edit-info">
@@ -5586,13 +5907,14 @@
             </form>
           </div>
         </div>
-        <div class="add-inv-container hidden">
+        <div class="add-inv-container">
           <div class="inv-cart">
             <p class="inv-title">Etat de l'inventaire</p>
             <div class="heading-table-text-add-inv">
               <div class="num-inv-inputs">
                 <p>Entez le numero de l'état d'inventaire :</p>
                 <input
+                  value=""
                   class="input-num-inv"
                   name="numInventaire"
                   type="number"
@@ -5619,8 +5941,7 @@
                       name="chapitre"
                       class="filters-add-inv"
                       id="filter-chapitre-options-add-inv"
-                      placeholder="Selectionnés le chapitre"
-                      required
+                      placeholder="Selectionnez le chapitre"
                     >
                       <option value="" disabled="" selected="">
                         Choisissez un Chapitre
@@ -5636,7 +5957,6 @@
                       class="filters-add-inv"
                       id="filter-article-options-add-inv"
                       placeholder="Selectionnés l'article"
-                      required
                     >
                       <option value="" disabled="" selected="">
                         Choisissez un article
@@ -5847,13 +6167,22 @@
               <table>
                 <thead>
                   <tr class="header-inv-verif">
-                    <th>
+                    <!-- <th>
                       <div class="first-col">
                         <p class="colomn-tags">Designation</p>
                       </div>
                     </th>
                     <th>Quantité logique</th>
                     <th>Quantité physique</th>
+                    <th>Justification</th> -->
+                    <th>
+                      <div class="first-col">
+                        <p class="colomn-tags">Designation</p>
+                      </div>
+                    </th>
+                    <th>Réference externe</th>
+                    <th>Réference interne</th>
+                    <th>Existance</th>
                     <th>Justification</th>
                   </tr>
                 </thead>
@@ -6183,6 +6512,7 @@
       <div class="overlay overlayEditStr hidden"></div>
       <div class="overlay overlayDelStr hidden"></div>
       <div class="overlay overlayAddCmd hidden"></div>
+      <div class="overlay overlayEditCmd hidden"></div>
       <div class="overlay overlayError hidden"></div>
       <div class="overlay overlayBDR hidden"></div>
       <div class="overlay overlayAddBDR hidden"></div>

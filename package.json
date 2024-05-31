@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "adm-zip": "^0.5.12",
     "async": "^3.2.5",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.2",

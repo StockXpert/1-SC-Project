@@ -10,6 +10,7 @@ import {
   FUSE_OPTIONS_ARTICLES,
   FUSE_OPTIONS_CMDSINT,
   FUSE_OPTIONS_PROD,
+  FUSE_OPTIONS_PROD_INV,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -145,22 +146,30 @@ export const state = {
     new: {
       numInventaire: '',
       dateInventaire: '',
-      produits: [
-        {
-          designation: '',
-          quantitePhys: '',
-          raison: '',
-        },
-        {},
-      ],
+      produits: [],
+      oldProducts: [],
       selectedProduct: '',
+      isNew: true,
     },
+
     selected: {
       numInventaire: '',
+      renderedProducts: [],
+      selectedProduct: '',
+      produits: [],
       oldProduits: {},
       currentProduits: {},
+      isNew: false,
+      afterSearch: [],
+      afterFilters: [],
     },
-    rendered: {},
+    rendered: [],
+    //TODO:
+    // rendered: {
+    //   numInventaire: '',
+    //   produits: [],
+    //   selectedProduct: '',
+    // },
   },
   chapters: {
     all: [],
@@ -560,6 +569,7 @@ export const fuseMakerProducts = data => {
 };
 export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
 export const fuseMakerProd = data => new Fuse(data, FUSE_OPTIONS_PROD);
+export const fuseMakerProdInv = data => new Fuse(data, FUSE_OPTIONS_PROD_INV);
 
 export const loadRoles = async function () {
   try {
@@ -891,8 +901,8 @@ export const addBonReception = async function (newReception) {
       throw new Error('Erreur lors de la requête');
     }
     const data = await res.json();
-    console.log(res);
-    console.log(data);
+    // console.log(res);
+    // console.log(data);
     // const response = await helpers.timeoutRes(5);
     // console.log(response);
     // let response = await helpers.postJSONReturnResRespNoTO(
@@ -1039,53 +1049,187 @@ export const loadAllProductsPerms = async function () {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 };
-export const createInv = async function (numInv) {
+export const loadAllInvProducts = async function () {
   try {
-    console.log(state.inventaires.new.produits);
-    let newProduitsArr = state.inventaires.new.produits.map(produit => {
-      const { designation, quantitePhys, quantiteLog, raison } = produit;
-      return {
-        designation,
-        quantitePhys,
-        raison: quantiteLog === quantitePhys ? '' : raison,
-      };
-    });
-    console.log(newProduitsArr);
-    let postObj = {
-      numInventaire: numInv,
-      dateInventaire: helpers.getFormattedDate(),
-      produits: newProduitsArr,
-    };
     let responseArray = await helpers.postJSONReturnResResp(
-      `${API_URL}/Inventaire/createInventaire`,
-      postObj
+      `${API_URL}/Nomenclatures/showRefs`
     );
     if (!responseArray[0].ok) {
       helpers.renderError(
         'ERREUR!',
-        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
-        create inventaire :
-        'Créer un nouvel état d'état de l'inventaire',
+        `${responseArray[1].error} La route "show refs" a mal fonctioné, il peut se trouver qu'il s'agit d'un problème de permissions: </br>
+        show refs :
+        'Afficher tout les produits avec des references',
         `
       );
       return false;
     }
+    console.log(responseArray);
     return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const preprareSelectedInventaire = async function () {
+  try {
+    let responseArray = await helpers.postJSONReturnResResp(
+      `${API_URL}/Sortie`
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} La route "show refs" a mal fonctioné, il peut se trouver qu'il s'agit d'un problème de permissions: </br>
+        show refs :
+        'Afficher tout les produits avec des references',
+        `
+      );
+      return false;
+    }
+    console.log(responseArray);
+    return responseArray;
+  } catch (err) {
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+};
+export const createInv = async function () /*numInv*/
+/*, isRouteCreate = true */ {
+  try {
+    console.log(state.inventaires.selected);
+    // let newProduitsArr = state.inventaires.new.produits.map(produit => {
+    let newProduitsArr = state.inventaires.selected.renderedProducts.map(
+      produit => {
+        /*
+    designation:"Photocopieur LEX MARK MX510"
+    num_inventaire:55
+    present:true
+    raison:""
+    reference:"a1"
+
+
+      "reference": "a1",
+      "numInventaire":"55",
+      "datePrise":"2024-05-14",
+      "present":true
+   */
+        const {
+          designation,
+          num_inventaire,
+          present,
+          raison,
+          reference,
+          date_inventaire,
+        } = produit;
+        return {
+          reference,
+          numInventaire: num_inventaire,
+          //TODO: can i just update them overall in all products at once is that okay? or do i need to have to each product its own priseDate
+          // datePrise: date_inventaire
+          //   ? date_inventaire
+          //   : helpers.getFormattedDate(),
+          datePrise: helpers.getFormattedDate(),
+          raison: present ? '' : raison,
+          present: present,
+        };
+      }
+    );
+    let postObj = {
+      numInventaire: state.inventaires.selected.numInventaire,
+      dateInventaire: helpers.getFormattedDate(),
+      produits: newProduitsArr,
+    };
+    console.log(postObj);
+    if (state.inventaires.selected.isNew) {
+      let responseArray = await helpers.postJSONReturnResResp(
+        `${API_URL}/Inventaire/createInventaire`,
+        postObj
+      );
+      if (!responseArray[0].ok) {
+        helpers.renderError(
+          'ERREUR!',
+          `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        create inventaire :
+        'Créer un nouvel état d'état de l'inventaire',
+        `
+        );
+        return false;
+      }
+      return responseArray;
+    } else {
+      console.log('UPDATE INVENTAIIIIIIIIIRE');
+      let responseArray = await helpers.putJSONReturnResResp(
+        `${API_URL}/Inventaire/updateInventaire`,
+        postObj
+      );
+      if (!responseArray[0].ok) {
+        helpers.renderError(
+          'ERREUR!',
+          `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        update inventaire :
+        'Metter à jour un nouvel état d'état de l'inventaire (continuer la saisie)',
+        `
+        );
+        return false;
+      }
+      return responseArray;
+    }
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
   // return postObj;
   // return;
 };
+
+export const confirmInv = async function (numInv) {
+  try {
+    console.log(numInv);
+    let putObj = {
+      numInventaire: state.inventaires.selected.numInventaire,
+    };
+    console.log(putObj);
+    let responseArray = await helpers.putJSON(
+      `${API_URL}/Inventaire/confirmInventaire`,
+      putObj
+    );
+    if (!responseArray[0].ok) {
+      helpers.renderError(
+        'ERREUR!',
+        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        confirm inventaire :
+        'Confirmer/finaliser un nouvel état d'état de l'inventaire',
+        `
+      );
+      return false;
+    }
+    return responseArray;
+  } catch (err) {
+    console.err(err);
+    helpers.renderError('FATAL ERROR!', `${err}`);
+  }
+  // return postObj;
+  // return;
+};
+
 export const prepareNewInventaire = async function (productsArr = []) {
   const newInv = productsArr.map(product => {
     return {
       raison: '',
-      designation: product.designation,
-      quantiteLog: product.quantite,
-      quantitePhys: '',
+      designation: product.produit,
+      reference: product.reference,
+      num_inventaire: product.num_inventaire,
+      present: false,
+
+      /*    "produit": "Photocopieur LEX MARK MX510",
+            "reference": "a1",
+            "num_inventaire": 55,
+            "date_inventaire": "2024-05-13T23:00:00.000Z"
+             */
     };
   });
+  state.inventaires.new.isNew = true;
+  state.inventaires.new.numInventaire = '';
+  //TODO: these are pointers and not copies. ... so if produits changes, oldProducts also changes!!
+  // state.inventaires.new.oldProducts = Array.makeShallowCopy(newInv);
+  state.inventaires.new.oldProducts = newInv.map(item => ({ ...item }));
   state.inventaires.new.produits = newInv;
   return newInv;
 };
@@ -1261,8 +1405,30 @@ export async function loadInventaire(numInventaire) {
       );
       return false;
     }
-    console.log(responseArray);
-    return responseArray[1].response;
+    let produitsFetched = responseArray[1].response.map(prod => {
+      let {
+        date_inventaire,
+        designation,
+        num_inventaire,
+        present,
+        raison,
+        reference,
+      } = prod;
+      return {
+        present: present ? true : false,
+        reference,
+        num_inventaire,
+        designation,
+        raison,
+        date_inventaire,
+      };
+    });
+    console.log('loadInventaire', produitsFetched);
+    state.inventaires.selected.isNew = false;
+    state.inventaires.selected.numInventaire = numInventaire;
+    state.inventaires.selected.produits =
+      state.inventaires.selected.oldProduits = produitsFetched;
+    return produitsFetched;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }

@@ -196,8 +196,7 @@ export const putJSON = async function (url, uploadData) {
       timeout(TIMEOUT_SEC),
     ]);
     const data = await res.json();
-    console.log(res);
-    console.log(data);
+    console.log([res, data]);
     if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
@@ -219,8 +218,7 @@ export const putJSONReturnResResp = async function (url, uploadData) {
     timeout(TIMEOUT_SEC),
   ]);
   const data = await res.json();
-  console.log(res);
-  console.log(data);
+  console.log([res, data]);
   return [res, data];
   //   if (!res.ok) throw new Error(`${data.message} (${res.status}`);
   //   return data;
@@ -332,8 +330,7 @@ export const getJSONReturnResResp = async function (url) {
     timeout(TIMEOUT_SEC),
   ]);
   const data = await res.json();
-  console.log(res);
-  console.log(data);
+  console.log([res, data]);
   if (!res.ok && res.status !== 403) {
     // return res;
     throw new Error(`${res.statusText} (${res.status}) : ${data.error}

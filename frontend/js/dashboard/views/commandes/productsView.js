@@ -7,7 +7,6 @@ class ProductsView extends UsersView {
   }
 
   _generateMarkupPreview(result, perms = []) {
-    console.log(result);
     return `
     <tr>
     <td>
