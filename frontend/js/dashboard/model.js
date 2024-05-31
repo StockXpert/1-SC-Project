@@ -153,6 +153,8 @@ export const state = {
     },
 
     selected: {
+      chapitres: [],
+      articles: [],
       numInventaire: '',
       renderedProducts: [],
       selectedProduct: '',
@@ -1216,6 +1218,8 @@ export const prepareNewInventaire = async function (productsArr = []) {
       designation: product.produit,
       reference: product.reference,
       num_inventaire: product.num_inventaire,
+      chapitre: product.chapitre,
+      article: product.article,
       present: false,
 
       /*    "produit": "Photocopieur LEX MARK MX510",
@@ -1231,6 +1235,7 @@ export const prepareNewInventaire = async function (productsArr = []) {
   // state.inventaires.new.oldProducts = Array.makeShallowCopy(newInv);
   state.inventaires.new.oldProducts = newInv.map(item => ({ ...item }));
   state.inventaires.new.produits = newInv;
+
   return newInv;
 };
 

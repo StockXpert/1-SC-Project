@@ -17,6 +17,7 @@ class AddInvView extends AddCmdsIntView {
   _form = this._window.querySelector('.heading-table-btns-inv');
   _searchInput = this._window.querySelector('.searchbar-add-inv-text');
   _numInventaire = this._window.querySelector('.input-num-inv');
+  _filters = this._window.querySelector('.container-filter-add-inv');
   _overlay = document.querySelector('.overlayInv');
   _btnOpen = document.querySelector('.add-inv-btn');
   _product = document.querySelector('#justify');
@@ -25,6 +26,7 @@ class AddInvView extends AddCmdsIntView {
   _btnsOpenEditProduct;
   _btnCloseEditProduct;
   _save = this._window.querySelector('.btn-save-inv');
+
   constructor(isNerfed = false) {
     super(true);
     if (!isNerfed) {
@@ -138,10 +140,15 @@ class AddInvView extends AddCmdsIntView {
       window.classList.add('hidden');
     });
   }
-  addSearchController(controller) {
+  addSearchController(controller, filterHandler) {
     this._searchInput = this._window.querySelector('.searchbar-add-inv-text');
     this._searchInput.addEventListener('input', e => {
       controller(e.currentTarget.value);
+      filterHandler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
     });
   }
   _generateMarkup() {
@@ -344,6 +351,48 @@ class AddInvView extends AddCmdsIntView {
   }
   resetSearchbar() {
     this._searchInput.value = '';
+  }
+  addChangeFiltersHandler(handler) {
+    this._filters.addEventListener('change', e => {
+      handler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
+  }
+  updateFilterDropdownOptions(newSetOfOptionsChapter, newSetOfOptionsArticle) {
+    let optionsArray = [];
+    //chapitres
+    optionsArray.push(`<option value="all" disabled="" selected="">
+    Choisissez un Chapitre
+  </option>`);
+    optionsArray.push(`<option value="all" >
+    Tous les Chapitres
+  </option>`);
+    newSetOfOptionsChapter.forEach(opt => {
+      optionsArray.push(`<option value="${opt}">
+      ${opt}
+    </option>`);
+    });
+    this._filters.querySelectorAll('select')[0].innerHTML =
+      optionsArray.join('');
+
+    optionsArray = [];
+    //articles
+    optionsArray.push(`<option value="all" disabled="" selected="">
+    Choisissez un Article
+  </option>`);
+    optionsArray.push(`<option value="all" >
+  Tous les Articles
+</option>`);
+    newSetOfOptionsArticle.forEach(opt => {
+      optionsArray.push(`<option value="${opt}">
+      ${opt}
+    </option>`);
+    });
+    this._filters.querySelectorAll('select')[1].innerHTML =
+      optionsArray.join('');
   }
 }
 export default new AddInvView();

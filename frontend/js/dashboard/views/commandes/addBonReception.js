@@ -259,7 +259,15 @@ class AddBonReception extends AddCmdsIntView {
           (this._refrences.some(el => el != null) &&
             this._refrences.length != 0) ||
           (this._inputRemainings.some(el => !isNaN(el)) &&
-            this._inputRemainings.length != 0)
+            this._inputRemainings.length != 0) ||
+          // this._inputFacture.value ||
+          // this._inputNumFacture.value ||
+          // this._inputLiv.value ||
+          // this._inputNumLiv.value
+          this._inputFacture.files.length != 0 ||
+          this._inputNumFacture.value != 0 ||
+          this._inputNumLiv.value != 0 ||
+          this._inputLiv.files.length != 0
         ) {
           helpers.renderConfirmWindow(
             '.container-confirm-added-products',

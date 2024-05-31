@@ -1304,6 +1304,7 @@ const controlSavingBDC = async function () {
 const controlCmdsIntFilters = filterValuesArr => {
   const beforeFilters = model.state.commandesInt.afterSearch;
   let afterFilters = [];
+  console.log(filterValuesArr);
   switch (filterValuesArr[0]) {
     case 'dcd':
       afterFilters = beforeFilters.sort(
@@ -1380,7 +1381,7 @@ const controlCmdsIntSearch = searchInput => {
   addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   model.state.commandesInt.afterSearch = afterSearch;
 };
-
+cmdsIntView.addChangeFiltersHandler(controlCmdsIntFilters);
 const controlLoadCmdsInt = async function () {
   if (
     !model.state.me.permissions.all.find(
@@ -1396,7 +1397,7 @@ const controlLoadCmdsInt = async function () {
   }
   cmdsIntView.restrictUsingRole(model.state.me.role);
   cmdsIntView.resetSearchInputs();
-  cmdsIntView.addChangeFiltersHandler(controlCmdsIntFilters);
+  //TODO: thisLine-16 used to be here
   cmdsIntView.addHandlerCmdsIntSearch(
     controlCmdsIntSearch,
     controlCmdsIntFilters
@@ -2026,32 +2027,28 @@ const controlLoadInv = async () => {
 };
 
 const controlInvProdFilters = filterValuesArr => {
-  const beforeFilters = model.state.commandesInt.afterSearch;
+  const beforeFilters = model.state.inventaires.selected.afterSearch;
   let afterFilters = [];
-  afterFilters = beforeFilters.filter(
-    entry => entry.chapitre == filterValuesArr[0]
-  );
-  afterFilters = beforeFilters.filter(
-    entry => entry.article == filterValuesArr[1]
-  );
-  addInvView.render(afterFilters);
+  console.log(filterValuesArr);
+  afterFilters =
+    filterValuesArr[0] == 'all'
+      ? beforeFilters
+      : beforeFilters.filter(entry => entry.chapitre == filterValuesArr[0]);
+  afterFilters =
+    filterValuesArr[1] == 'all'
+      ? afterFilters
+      : afterFilters.filter(entry => entry.article == filterValuesArr[1]);
+  addInvView.renderProducts(afterFilters);
   model.state.inventaires.selected.renderedProducts = afterFilters;
-
-  // seeCmdsIntView.resetPointers();
-  // seeCmdsIntView.addSeeController(controlViewCmdInt);
-  // cmdsIntView.resetPointers();
-  // validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
-  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
-  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
+  //TODO: watch for double EL additions
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-  // model.state.commandesInt.afterFilters = afterFilters;
   model.state.inventaires.selected.afterFilters = afterFilters;
 };
 
 const controlInvProdSearch = searchInput => {
   // const beforeSearch = model.state.commandesInt.all; TODO:
-  const beforeSearch = model.state.inventaires.new.produits;
+  const beforeSearch = model.state.inventaires.selected.produits;
   let afterSearch = [];
   const fuze = model.fuseMakerProdInv(beforeSearch);
   const results = fuze.search(searchInput);
@@ -2067,32 +2064,46 @@ const controlInvProdSearch = searchInput => {
     }
   }
   addInvView.renderProducts(afterSearch);
-  // model.state.commandesInt.rendered = afterSearch;
   model.state.inventaires.selected.renderedProducts = afterSearch;
-  // seeCmdsIntView.resetPointers();
-  // seeCmdsIntView.addSeeController(controlViewCmdInt);
-  // cmdsIntView.resetPointers();
-  // validateCmdsIntView.resetPointers(controlValidatingCmdsInt);
-  // addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
-  // addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-  // model.state.commandesInt.afterSearch = afterSearch;
   model.state.inventaires.selected.afterSearch = afterSearch;
 };
-addInvView.addSearchController(controlInvProdSearch);
+addInvView.addSearchController(controlInvProdSearch, controlInvProdFilters);
+const controlUpdateAddInvFilters = async function () {
+  model.state.inventaires.selected.chapitres = helpers.extractChapitres(
+    model.state.inventaires.selected.renderedProducts
+  );
+  model.state.inventaires.selected.articles = helpers.extractArticles(
+    model.state.inventaires.selected.renderedProducts
+  );
+  console.log(
+    model.state.inventaires.selected.chapitres,
+    model.state.inventaires.selected.articles
+  );
+  addInvView.updateFilterDropdownOptions(
+    model.state.inventaires.selected.chapitres,
+    model.state.inventaires.selected.articles
+  );
+};
 
+addInvView.addChangeFiltersHandler(controlInvProdFilters);
 const controlAddInv = async function () {
   //ONCLICK OF the Créer un état inventaire BUTTON
   addInvView.renderSpinner('');
   const allProducts = await model.loadAllInvProducts();
+
   model.prepareNewInventaire(allProducts[1].response);
   addInvView.render(model.state.inventaires.new);
   model.state.inventaires.selected = model.state.inventaires.new;
   model.state.inventaires.selected.renderedProducts =
     model.state.inventaires.new.produits;
+  model.state.inventaires.selected.afterSearch =
+    model.state.inventaires.new.produits;
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  controlUpdateAddInvFilters();
+  //ADD EVENT LISTENNERS ?
 };
 
 const controlContinueInv = async function () {
@@ -2111,13 +2122,6 @@ const controlContinueInv = async function () {
     model.state.inventaires.selected.produits;
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
-
-  // const allProducts = await model.loadAllInvProducts();
-  // model.prepareNewInventaire(allProducts[1].response);
-  // addInvView.render(model.state.inventaires.new, numeroInv);
-  // model.state.inventaires.rendered = model.state.inventaires.new;
-  // addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
-  // addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
 };
 
 //TODO: incase you wanna only allow a specific number of inventaires
@@ -2133,11 +2137,6 @@ const controlInput = (value, index) => {
 };
 //ON INPUT OF
 const controlRefInput = (value, index) => {
-  // model.state.inventaires.rendered.produits[index].num_inventaire = !model.state
-  //   .inventaires.new.oldProducts[index].num_inventaire
-  //   ? value
-  //   : model.state.inventaires.rendered.oldProducts[index].num_inventaire;
-  // console.log(model.state.inventaires.rendered);
   model.state.inventaires.selected.renderedProducts[index].num_inventaire =
     value;
   console.log(model.state.inventaires.selected);
@@ -2147,15 +2146,6 @@ const controlSetRemark = remark => {
   model.state.inventaires.selected.renderedProducts[
     model.state.inventaires.selected.selectedProduct
   ].raison = remark;
-  // const controlSetRemark = remark => {
-  //   model.state.inventaires.new.produits[
-  //     model.state.inventaires.new.selectedProduct
-  //   ].raison = remark;
-
-  // model.state.inventaires.new.produits[
-  //   model.state.inventaires.new.selectedProduct
-  // ].quantitePhys =
-  //   addInvView._inputs[model.state.inventaires.new.selectedProduct].value;
   addInvView.render(model.state.inventaires.selected);
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.resetSearchbar();
@@ -2977,3 +2967,4 @@ addCmdsView.addHandlerAddingProduct(
   model.state,
   handleAddedProducts
 );
+addBonReception.addHandlerCancel();

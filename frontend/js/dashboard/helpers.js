@@ -1127,3 +1127,25 @@ export function organizeProducts(designations, quantities, references) {
 
   return result;
 }
+export function extractChapitres(items) {
+  const chapitres = items.map(item => item.chapitre);
+  return [...new Set(chapitres)];
+}
+export function extractArticles(items) {
+  const articles = items.map(item => item.article);
+  return [...new Set(articles)];
+}
+export function isInputUnused(input) {
+  if (input.type === 'file') {
+    return input.files.length === 0;
+  } else if (input.type === 'checkbox' || input.type === 'radio') {
+    return !input.checked;
+  } else if (
+    input.type === 'text' ||
+    input.type === 'number' ||
+    input.type === 'textarea'
+  ) {
+    return input.value.trim() === '';
+  }
+  return false;
+}
