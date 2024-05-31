@@ -1188,6 +1188,39 @@ function fun() {
   console.log('fun');
 }
 
+// const controlAddBRec = async function (
+//   products,
+//   linkLivraison,
+//   numBonLivraison,
+//   linkFacture = '',
+//   numFacture = ''
+// ) {
+//   // const currentDay = new Date();
+//   // const year = currentDay.getFullYear();
+//   // const month = String(currentDay.getMonth() + 1).padStart(2, '0');
+//   // const day = String(currentDay.getDate()).padStart(2, '0');
+//   // console.log(`${year}/${month}/${day}`);
+
+//   const newReception = new FormData();
+//   newReception.append('numCommande', model.state.bdc.selected);
+//   newReception.append('numLivraison', numBonLivraison);
+//   newReception.append(
+//     'produits',
+//     JSON.stringify(products.filter(prod => prod.quantite > 0))
+//   );
+//   newReception.append('bonLivraison', linkLivraison);
+//   newReception.append('dateReception', helpers.getFormattedDate('/'));
+//   if (numFacture.length != 0 && linkFacture.length != 0) {
+//     newReception.append('numFacture', numFacture);
+//     newReception.append('facture', linkFacture);
+//   }
+//   bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
+//   await model.addBonReception(newReception);
+//   bonReceptionView.unrenderSpinner(true);
+//   await controlLoadBRec('', model.state.bdc.selected);
+//   // await controlLoadCmds();
+// };
+
 const controlAddBRec = async function (
   products,
   linkLivraison,
@@ -1195,30 +1228,33 @@ const controlAddBRec = async function (
   linkFacture = '',
   numFacture = ''
 ) {
-  // const currentDay = new Date();
-  // const year = currentDay.getFullYear();
-  // const month = String(currentDay.getMonth() + 1).padStart(2, '0');
-  // const day = String(currentDay.getDate()).padStart(2, '0');
-  // console.log(`${year}/${month}/${day}`);
+  try {
+    const newReception = new FormData();
+    newReception.append('numCommande', model.state.bdc.selected);
+    newReception.append('numLivraison', numBonLivraison);
+    newReception.append(
+      'produits',
+      JSON.stringify(products.filter(prod => prod.quantite > 0))
+    );
+    newReception.append('bonLivraison', linkLivraison);
+    newReception.append('dateReception', helpers.getFormattedDate('/'));
+    if (numFacture.length != 0 && linkFacture.length != 0) {
+      newReception.append('numFacture', numFacture);
+      newReception.append('facture', linkFacture);
+    }
 
-  const newReception = new FormData();
-  newReception.append('numCommande', model.state.bdc.selected);
-  newReception.append('numLivraison', numBonLivraison);
-  newReception.append(
-    'produits',
-    JSON.stringify(products.filter(prod => prod.quantite > 0))
-  );
-  newReception.append('bonLivraison', linkLivraison);
-  newReception.append('dateReception', helpers.getFormattedDate('/'));
-  if (numFacture.length != 0 && linkFacture.length != 0) {
-    newReception.append('numFacture', numFacture);
-    newReception.append('facture', linkFacture);
+    bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
+    await model.addBonReception(newReception);
+    // console.log(newReception);
+    // await helpers.timeoutRes(5);
+    bonReceptionView.unrenderSpinner(true);
+    await controlLoadBRec('', model.state.bdc.selected);
+    // await controlLoadCmds();  // Uncomment if needed
+  } catch (error) {
+    console.error('Error adding reception:', error);
+    bonReceptionView.unrenderSpinner(true);
+    // Handle the error appropriately (e.g., show an error message to the user)
   }
-  bonReceptionView.renderSpinner('Ajout du bon de récéption', true);
-  await model.addBonReception(newReception);
-  bonReceptionView.unrenderSpinner(true);
-  await controlLoadBRec('', model.state.bdc.selected);
-  // await controlLoadCmds();
 };
 
 const controlDeleteBonRec = async function () {

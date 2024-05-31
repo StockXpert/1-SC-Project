@@ -3517,3 +3517,13 @@ a.password-icon:active {
   color: var(--color-primary);
   transition: all 0.5s;
 }
+select.filters-add-inv {
+  width: 100%; /* Adjust the width as needed */
+  max-width: 300px; /* Example maximum width */
+}
+
+select.filters-add-inv option {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all; /* Break long words */
+}
