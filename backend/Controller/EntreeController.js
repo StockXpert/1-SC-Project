@@ -74,11 +74,11 @@ function updateQuantite(req,res)
       EntreeService.uploadvalidity(numCommande).then((response)=>{
         let products=EntreeService.changeTabFormat(produits);
         console.log(products)
-        EntreeModel.addRefs(products,dateReception,numCommande).then(()=>{
-         EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink).then((response)=>{
+        
+         EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink,products).then((response)=>{
             res.status(200).json({response})
           }).catch((response)=>res.status(500).json({response}))
-        }).catch((response)=>res.status(500).json({response}))
+
       })
    }).catch((response)=>res.status(500).json({response}))
 }
@@ -149,10 +149,12 @@ function updateReception(req,res)
 function deleteReception(req,res)
 {
    const {numReception,numCommande}=req.body;
+   console.log({numCommande})
    EntreeService.restoreQuantite(numReception,numCommande,null).then(()=>{
        EntreeService.uploadvalidity(numCommande).then(()=>{
          EntreeModel.deleteReception(numReception).then(()=>{
-            EntreeModel.deleteLivre(numReception).then((response)=>{
+            EntreeModel.deleteLivre(numReception).then(async(response)=>{
+               await EntreeModel.deleteRefs(numReception)
                res.status(200).json({response})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
          }).catch(()=>{res.status(500).json({response:'internal error'})})

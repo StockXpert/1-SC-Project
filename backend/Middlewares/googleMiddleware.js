@@ -74,19 +74,19 @@ async function addRow(ligne,Content,idCopy,type)
         await sheets.spreadsheets.batchUpdate(insertRequest);
         switch (type) {
             case 'commande':
-                valuesToInsert = [rowIndex-21,'',Content.designation,Content.quantite,Content.prixUnitaire?Content.prixUnitaire:Content.prix_unitaire+'.00',Content.quantite*(Content.prixUnitaire?Content.prixUnitaire:Content.prix_unitaire)+'.00'];
+                valuesToInsert = [rowIndex-27,'',Content.designation,Content.quantite,Content.prixUnitaire?Content.prixUnitaire:Content.prix_unitaire+'.00',Content.quantite*(Content.prixUnitaire?Content.prixUnitaire:Content.prix_unitaire)+'.00'];
                 sc=0,
                 ec=2
                 break;
             case 'reception':
                 console.log(Content.quantite)
-                valuesToInsert = [rowIndex-10,Content.designation,'','','',Content.quantite];
+                valuesToInsert = [rowIndex-15,Content.designation,'','','',Content.quantite];
                 console.log(valuesToInsert)
                 sc=1;
                 ec=5;
                 break;
             case 'sortie':
-                valuesToInsert = [rowIndex-4,Content.designation,Content.quantite_demande,Content.quantite_servie,'',''];
+                valuesToInsert = [rowIndex-12,Content.designation,Content.quantite_demande,Content.quantite_servie,'',''];
                 ec=6;
                  break; 
             case 'decharge':
@@ -98,7 +98,7 @@ async function addRow(ligne,Content,idCopy,type)
                 ec=6;
                  break;     
             case 'fiche':
-                valuesToInsert = [ligne-10,Content.designation,Content.num_inventaires,Content.reste,Content.entree,Content.sortie,Content.quantite,Content.quantite_phys,parseInt(Content.quantite)-parseInt(Content.quantite_phys),Content.raison];
+                valuesToInsert = [ligne-21,Content.designation,Content.num_inventaires,Content.reste,Content.entree,Content.sortie,Content.quantite,Content.quantite_phys,parseInt(Content.quantite)-parseInt(Content.quantite_phys),Content.raison];
                 ec=10;          
             default:
                 break;

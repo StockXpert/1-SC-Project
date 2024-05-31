@@ -65,7 +65,7 @@ async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tv
             googleMiddleware.updateCel('F29',TVA(montantHT(produits),tva)+'.00',Id),
             googleMiddleware.updateCel('F30',TVA(montantHT(produits),tva)+montantHT(produits)+'.00',Id),
             ])
-            const myNumber=new numberWord(TVA(montantHT(produits),tva)+montantHT(produits),'fr').result.fullText
+            const myNumber=nombreEnLettres(TVA(montantHT(produits),tva)+montantHT(produits))
             await Promise.all([
              googleMiddleware.updateCel('A33',`${myNumber} dinars algérien`,Id),
              googleMiddleware.updateCel(range,true,Id),
@@ -162,18 +162,20 @@ function changeBonCommande(objet,fournisseur,deletedProducts,addedProducts,date,
     }
    })
 }
-function createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink)
+function createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink,products)
 {
   return new Promise ((resolve,reject)=>{
     EntreeModel.insertBonReception(numCommande, dateReception,bonLivraisonLink,factureLink,numFacture,numLivraison)
     .then((numReception)=>{
         EntreeModel.insertLivre(numReception,produits).then(()=>{
-            EntreeModel.getCommande(numCommande).then((commande)=>{
-                console.log(numCommande)
-                genererBonReception(produits,numCommande,commande.fournisseur,commande.date_commande,
-                    dateReception,numReception,'1CkIm8C3xJloKITIqfm-LsfqMpiZSSrGk1TVG6tzI1_w').then(()=>{
-                        resolve('bon reception created');
-                    }).catch((err)=>{console.log(err);reject(err)})
+            EntreeModel.addRefs(products,dateReception,numCommande,numReception).then(()=>{
+                EntreeModel.getCommande(numCommande).then((commande)=>{
+                    console.log(numCommande)
+                    genererBonReception(produits,numCommande,commande.fournisseur,commande.date_commande,
+                        dateReception,numReception,'1CkIm8C3xJloKITIqfm-LsfqMpiZSSrGk1TVG6tzI1_w').then(()=>{
+                            resolve('bon reception created');
+                        }).catch((err)=>{console.log(err);reject(err)})
+                }).catch((err)=>{console.log(err);reject(err)})
             }).catch((err)=>{console.log(err);reject(err)})
         }).catch((err)=>{console.log(err);reject(err)})
     }).catch((err)=>{console.log(err);reject(err)})
@@ -220,7 +222,7 @@ function restoreQuantite(numReception,numCommande,products)
             await nomencaltureModel.getProductId(product.designation).then(async(productId)=>{
                 response=await EntreeModel.updateQuantiteCommande('-'+product.quantite,numCommande,productId)
                 if(response!='success'){console.log('erreur');  reject('internal error')}
-                response=await EntreeModel.updateQuantite(-parseInt('-'+product.quantite),productId)
+                response=await EntreeModel.updateQuantite('-'+product.quantite,productId)
                 if(response!='success'){console.log('erreur');  reject('internal error')}
             })
         }
@@ -261,6 +263,68 @@ function changeTabFormat(produits)
                 }
         }
         return products
+}
+function nombreEnLettres(nombre) {
+    const unités = ["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf"];
+    const dizaines = ["", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante-dix", "quatre-vingt", "quatre-vingt-dix"];
+    const dizaines_spéciales = ["dix", "onze", "douze", "treize", "quatorze", "quinze", "seize"];
+    
+    if (nombre === 0) return "zéro";
+    
+    function enLettres(nombre) {
+        if (nombre < 10) {
+            return unités[nombre];
+        } else if (nombre < 17) {
+            return dizaines_spéciales[nombre - 10];
+        } else if (nombre < 20) {
+            return "dix-" + unités[nombre - 10];
+        } else if (nombre < 70) {
+            if (nombre % 10 === 1 && nombre > 20) {
+                return dizaines[Math.floor(nombre / 10)] + "-et-un";
+            } else {
+                return dizaines[Math.floor(nombre / 10)] + (nombre % 10 > 0 ? "-" + unités[nombre % 10] : "");
+            }
+        } else if (nombre < 80) {
+            return "soixante-" + enLettres(nombre - 60);
+        } else if (nombre < 100) {
+            return "quatre-vingt" + (nombre % 10 > 0 ? "-" + unités[nombre % 10] : "");
+        } else if (nombre < 1000) {
+            if (nombre === 100) {
+                return "cent";
+            } else if (nombre < 200) {
+                return "cent " + enLettres(nombre - 100);
+            } else {
+                return unités[Math.floor(nombre / 100)] + "-cent" + (nombre % 100 > 0 ? "-" + enLettres(nombre % 100) : "");
+            }
+        } else if (nombre < 1000000) {
+            if (nombre === 1000) {
+                return "mille";
+            } else if (nombre < 2000) {
+                return "mille " + enLettres(nombre % 1000);
+            } else {
+                return enLettres(Math.floor(nombre / 1000)) + "-mille" + (nombre % 1000 > 0 ? "-" + enLettres(nombre % 1000) : "");
+            }
+        } else if (nombre < 1000000000) {
+            if (nombre === 1000000) {
+                return "un million";
+            } else if (nombre < 2000000) {
+                return "un million " + enLettres(nombre % 1000000);
+            } else {
+                return enLettres(Math.floor(nombre / 1000000)) + "-millions" + (nombre % 1000000 > 0 ? "-" + enLettres(nombre % 1000000) : "");
+            }
+        } else if (nombre < 1000000000000) {
+            if (nombre === 1000000000) {
+                return "un milliard";
+            } else if (nombre < 2000000000) {
+                return "un milliard " + enLettres(nombre % 1000000000);
+            } else {
+                return enLettres(Math.floor(nombre / 1000000000)) + "-milliards" + (nombre % 1000000000 > 0 ? "-" + enLettres(nombre % 1000000000) : "");
+            }
+        }
+        return "";
+    }
+
+    return enLettres(nombre).replace(/-$/, '').trim();
 }
 module.exports={getDate,genererBondeCommande,montantHT,TVA,
     changeQuantite,changeBonCommande,uploadvalidity,createReception,restoreQuantite,changeTabFormat}
