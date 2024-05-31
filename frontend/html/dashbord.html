@@ -2861,7 +2861,7 @@
                   <div class="statistiques-filters">
                     <select
                       name="date-statistiques"
-                      class="filters-bdci"
+                      class="filters-statistiques"
                       id="filter-statistiques-date"
                       placeholder="Date"
                       required
@@ -2872,7 +2872,7 @@
                     </select>
                     <select
                       name="option-statistiques"
-                      class="filters-bdci"
+                      class="filters-statistiques"
                       id="filter-statistiques-option"
                       placeholder="Structure"
                       required
@@ -2883,6 +2883,10 @@
                       <option value="acd">CPI</option>
                       <option value="dcd">SC</option>
                     </select>
+                    <form class="inputs-date-statistiques">
+                      <p class="desc-input-statistique">date fin</p>
+                      <input class="input-date-statistique" type="date" />
+                    </form>
                   </div>
                 </div>
                 <div class="graph-statistiques">
@@ -2890,7 +2894,19 @@
                 </div>
               </div>
               <div class="grid-2">
-                <p class="cart-description-statistiques">Produits</p>
+                <div class="top-statistiques-cart">
+                  <p class="cart-description-statistiques">Produits</p>
+                  <div class="statistiques-filters">
+                    <form class="inputs-date-statistiques">
+                      <p class="desc-input-statistique">date début</p>
+                      <input class="input-date-statistique" type="date" />
+                    </form>
+                    <form class="inputs-date-statistiques">
+                      <p class="desc-input-statistique">date fin</p>
+                      <input class="input-date-statistique" type="date" />
+                    </form>
+                  </div>
+                </div>
                 <div
                   class="graph-statistiques spinner-parent"
                   style="height: 100%; width: 100%; position: static"
