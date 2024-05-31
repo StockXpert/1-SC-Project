@@ -1658,6 +1658,25 @@ table tbody tr:last-child td {
   border-radius: 15px;
   box-shadow: 1px 1px 1px 0px #00000066;
 }
+.inputs-date-statistiques {
+  position: relative;
+}
+.desc-input-statistique {
+  position: absolute;
+  bottom: 17px;
+  left: 8px;
+  background-color: white;
+}
+.input-date-statistique {
+  font-size: 1rem;
+  text-align: center;
+  color: #477ce2;
+  font-weight: 600;
+  padding: 0.2rem;
+  border: 1px solid #e4e4e4;
+  border-radius: 15px;
+  box-shadow: 1px 1px 1px 0px #00000066;
+}
 
 /* .dropbtn {
   height: 1.8rem;
@@ -3327,6 +3346,7 @@ a.password-icon:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.2rem;
 }
 .statistiques-filters {
   display: flex;
