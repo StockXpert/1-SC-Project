@@ -892,21 +892,21 @@ export const deleteBonRec = async function (numReception, numCommande) {
 // };
 export const addBonReception = async function (newReception) {
   // try {
-    const res = await fetch(`${API_URL}/Entrees/updateQuantite`, {
-      method: 'POST',
-      headers: {
-        Authorization: localStorage.getItem('JWT'),
-      },
-      body: newReception,
-    });
-    // if (!res.ok) {
-      // throw new Error('Erreur lors de la requête');
-    // }
-    const data = await res.json();
-    return data;
+  const res = await fetch(`${API_URL}/Entrees/updateQuantite`, {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('JWT'),
+    },
+    body: newReception,
+  });
+  // if (!res.ok) {
+  // throw new Error('Erreur lors de la requête');
+  // }
+  const data = await res.json();
+  return data;
   // } catch (error) {
-    // throw error;
-  }
+  // throw error;
+  // }
 };
 
 export const loadCommandeIntProducts = async function (numDemande) {
@@ -1212,7 +1212,7 @@ export const prepareNewInventaire = async function (productsArr = []) {
       chapitre: product.chapitre,
       article: product.article,
       present: false,
-
+      remote: product.num_inventaire ? true : false,
       /*    "produit": "Photocopieur LEX MARK MX510",
             "reference": "a1",
             "num_inventaire": 55,
