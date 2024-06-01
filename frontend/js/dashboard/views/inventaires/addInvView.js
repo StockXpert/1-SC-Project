@@ -153,9 +153,9 @@ class AddInvView extends AddCmdsIntView {
   }
   _generateMarkup() {
     let counter = 0;
-    if (this._data.length == 0) {
-      return `<td colspan="4" class="empty-table--products">
-      Aucun Produit
+    if (this._data.produits.length == 0) {
+      return `<td colspan="5" class="empty-table--products">
+      <b>Aucun Produit</b>
     </td>`;
     } else {
       return this._data.produits
@@ -202,6 +202,19 @@ class AddInvView extends AddCmdsIntView {
     </td>
   </tr>`;*/
 
+    /*
+${
+  result.num_inventaire
+    ? `<div class="">${result.num_inventaire}</div>`
+    : ` <div class="ref-intenre-input">
+          <input class="green-ref-inv" type="text" value="" placeholder="numInventaire" autocomplete="off">
+          <span class="material-icons-sharp">
+            drive_file_rename_outline
+          </span>
+        </div>`
+}    
+</td>*/
+
     const html = `<tr>
     <td>
       <div class="colomn-product-des">
@@ -212,17 +225,22 @@ class AddInvView extends AddCmdsIntView {
       <div class="ref-externe">${result.reference}</div>
     </td>
     <td class="ref-interne">
-    ${
-      result.num_inventaire
-        ? `<div class="">${result.num_inventaire}</div>`
-        : ` <div class="ref-intenre-input">
-              <input class="green-ref-inv" type="text" value="" placeholder="numInventaire" autocomplete="off">
-              <span class="material-icons-sharp">
-                drive_file_rename_outline
-              </span>
-            </div>`
-    }    
-    </td>
+      ${
+        result.remote
+          ? `
+      <div class="">${result.num_inventaire}</div>
+      `
+          : `
+      <div class="ref-intenre-input">
+          <input class="green-ref-inv" type="text" value="${
+            result.num_inventaire == null ? '' : result.num_inventaire
+          }" placeholder="numInventaire" autocomplete="off">
+          <span class="material-icons-sharp">
+            drive_file_rename_outline
+          </span>
+        </div>
+      `
+      }
     <td class="td-exist blue-exist">
       <button class="exist-btn-inv">
         <div class="checkbox-wrapper-18">

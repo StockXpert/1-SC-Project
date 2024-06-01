@@ -1220,6 +1220,7 @@ export const prepareNewInventaire = async function (productsArr = []) {
              */
     };
   });
+  console.log(newInv);
   state.inventaires.new.isNew = true;
   state.inventaires.new.numInventaire = '';
   //TODO: these are pointers and not copies. ... so if produits changes, oldProducts also changes!!
@@ -1391,6 +1392,7 @@ export async function loadInventaire(numInventaire) {
       `${API_URL}/Inventaire/showInventaire`,
       post
     );
+    console.log(responseArray);
     if (!responseArray[0].ok) {
       helpers.renderError(
         'ERREUR!',
@@ -1399,6 +1401,7 @@ export async function loadInventaire(numInventaire) {
         "Voir un état de l'inventaire",
         `
       );
+      throw new Error(responseArray[1].error);
       return false;
     }
     let produitsFetched = responseArray[1].response.map(prod => {
@@ -1417,13 +1420,14 @@ export async function loadInventaire(numInventaire) {
         designation,
         raison,
         date_inventaire,
+        remote: num_inventaire ? true : false,
       };
     });
     console.log('loadInventaire', produitsFetched);
     state.inventaires.selected.isNew = false;
     state.inventaires.selected.numInventaire = numInventaire;
-    state.inventaires.selected.produits =
-      state.inventaires.selected.oldProduits = produitsFetched;
+    state.inventaires.selected.produits = produitsFetched;
+    state.inventaires.selected.oldProduits = produitsFetched;
     return produitsFetched;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
