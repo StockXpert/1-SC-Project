@@ -1,4 +1,3 @@
-const { response } = require('express');
 const InventaireModel=require('../Models/InventaireModel');
 const InventaireService=require('../Services/InventaireService');
 const NomenclatureModel=require('../Models/NomenclatureModel');
