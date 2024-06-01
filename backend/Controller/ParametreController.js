@@ -1,3 +1,4 @@
+const { response } = require('express')
 const ParametreModel=require('../Models/ParametreModel')
 function changeCompletName(req,res)
 {
@@ -50,4 +51,26 @@ function showInformations(req,res)
     res.status(200).json({response:parametre})
    }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
-module.exports={uploadHeader,uploadLogo,changeAbstractName,changeCompletName,changeName,showInformations,changeAppName}
+function changeAdresse(req,res)
+{
+    const {adresse}=req.body
+    ParametreModel.updateAdresse(adresse).then(()=>{
+        res.status(200).json({response:'changed'})
+       }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
+function changeTelFax(req,res)
+{
+    const {telFax}=req.body
+    ParametreModel.updateTelFax(telFax).then(()=>{
+        res.status(200).json({response:'changed'})
+       }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
+function changeGestionCode(req,res)
+{
+    const {gCode}=req.body
+    ParametreModel.updateGestionCode(gCode).then(()=>{
+        res.status(200).json({response:'changed'})
+       }).catch(()=>{res.status(500).json({response:'internal error'})})
+}
+module.exports={uploadHeader,uploadLogo,changeAbstractName,changeCompletName,
+    changeName,showInformations,changeAppName,changeAdresse,changeGestionCode,changeTelFax}
