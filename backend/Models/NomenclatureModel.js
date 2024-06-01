@@ -894,15 +894,15 @@ function updateInventaire(produits) {
               async.eachSeries(produits, (produit, callback) => {
                 
                   // Insérer les données dans ma_table avec l'ID produit fourni
-                  if(produit.numInventaire)
-                  {connection.query('update reference set num_inventaire=?, date_inventaire=? where designation=?', [produit.numInventaire, produit.datePrise, produit.reference], (err, result) => {
+                  
+                  connection.query(`update reference set num_inventaire=?, date_inventaire=? where designation=?`, [produit.numInventaire, produit.datePrise, produit.reference], (err, result) => {
                       if (err) {
                           return callback(err);
                       }
                       console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', produit.id_produit);
                       callback();
                   });
-              }}, (err) => {
+              }, (err) => {
                   if (err) {
                       return connection.rollback(() => {
                           console.error('Erreur lors du traitement des produits : ', err);
