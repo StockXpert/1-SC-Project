@@ -23,7 +23,7 @@ function addInventaire(numInventaire,dateInventaire)
           connection.query(query,values,(error, results, fields) => {
             if (error) {
               console.error('Erreur lors de l\'exécution de la requête :', error);
-              if(error.code=='ER_DUP_ENTRY') reject('duplicate num inventaire')
+              if(error.code=='ER_DUP_ENTRY') reject(`numéro d'inventaire déja utilisé `)
               else  
               reject("internal error");
               return;
