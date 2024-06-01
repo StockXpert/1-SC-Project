@@ -1,5 +1,6 @@
 const { response } = require('express')
 const ParametreModel=require('../Models/ParametreModel')
+const ParametreService=require('../Services/ParametreService')
 function changeCompletName(req,res)
 {
     const {completName}=req.body
@@ -41,7 +42,8 @@ function changeAbstractName(req,res)
 function uploadHeader(req,res)
 {
     const headerLink = 'parametre/'+req.files['header'][0].filename
-    ParametreModel.updateHeader(headerLink).then(()=>{
+    ParametreModel.updateHeader(headerLink).then(async()=>{
+        await ParametreService.changeHeader(headerLink)
         res.status(200).json({response:'updated'})
     }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
