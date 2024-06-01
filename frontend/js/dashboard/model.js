@@ -1084,26 +1084,12 @@ export const preprareSelectedInventaire = async function () {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 };
-export const createInv = async function () /*numInv*/
-/*, isRouteCreate = true */ {
+export const createInv = async function () {
+  /*numInv*/
   try {
     console.log(state.inventaires.selected);
-    // let newProduitsArr = state.inventaires.new.produits.map(produit => {
     let newProduitsArr = state.inventaires.selected.renderedProducts.map(
       produit => {
-        /*
-    designation:"Photocopieur LEX MARK MX510"
-    num_inventaire:55
-    present:true
-    raison:""
-    reference:"a1"
-
-
-      "reference": "a1",
-      "numInventaire":"55",
-      "datePrise":"2024-05-14",
-      "present":true
-   */
         const {
           designation,
           num_inventaire,
@@ -1114,7 +1100,7 @@ export const createInv = async function () /*numInv*/
         } = produit;
         return {
           reference,
-          numInventaire: num_inventaire,
+          numInventaire: num_inventaire == null ? NaN : num_inventaire,
           //TODO: can i just update them overall in all products at once is that okay? or do i need to have to each product its own priseDate
           // datePrise: date_inventaire
           //   ? date_inventaire
@@ -1132,7 +1118,7 @@ export const createInv = async function () /*numInv*/
     };
     console.log(postObj);
     if (state.inventaires.selected.isNew) {
-      let responseArray = await helpers.postJSONReturnResResp(
+      let responseArray = await helpers.postJSONReturnResRespNoTO(
         `${API_URL}/Inventaire/createInventaire`,
         postObj
       );
@@ -1148,7 +1134,6 @@ export const createInv = async function () /*numInv*/
       }
       return responseArray;
     } else {
-      console.log('UPDATE INVENTAIIIIIIIIIRE');
       let responseArray = await helpers.putJSONReturnResResp(
         `${API_URL}/Inventaire/updateInventaire`,
         postObj

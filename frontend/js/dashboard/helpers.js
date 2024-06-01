@@ -297,24 +297,25 @@ export const postJSONReturnResResp = async function (url, uploadData) {
   // }
 };
 export const postJSONReturnResRespNoTO = async function (url, uploadData) {
-  // try {
-  console.log(uploadData);
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: localStorage.getItem('JWT'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(uploadData),
-  });
-  const data = await res.json();
-  // console.log(data);
-  return [res, data];
-  // if (!res.ok) throw new Error(`${data.message} (${res.status}`);
-  // return data;
-  // } catch (err) {
-  // throw err;
-  // }
+  try {
+    console.log(uploadData);
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: localStorage.getItem('JWT'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(uploadData),
+    });
+    const data = await res.json();
+    // console.log(data);
+
+    if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+    // return data;.
+    return [res, data];
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const getJSONReturnResResp = async function (url) {

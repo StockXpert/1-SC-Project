@@ -2158,6 +2158,7 @@ const controlContinueInv = async function () {
     model.state.inventaires.selected.produits;
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
+  controlUpdateAddInvFilters();
 };
 
 //TODO: incase you wanna only allow a specific number of inventaires
