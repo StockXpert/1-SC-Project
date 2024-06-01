@@ -16,7 +16,7 @@ function createInventaire(req, res) {
         })
         .catch(() => res.status(500).json({ response: 'internal error' }));
     })
-    .catch(() => res.status(500).json({ response: 'internal error' }));
+    .catch(err => res.status(500).json({ response: err }));
 }
 function validInventaire(req, res) {
   const { numInventaire } = req.body;

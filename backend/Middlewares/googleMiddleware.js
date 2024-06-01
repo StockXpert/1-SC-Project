@@ -69,7 +69,7 @@ async function addRow(ligne, Content, idCopy, type) {
     switch (type) {
       case 'commande':
         valuesToInsert = [
-          rowIndex - 21,
+          rowIndex - 27,
           '',
           Content.designation,
           Content.quantite,
@@ -87,7 +87,7 @@ async function addRow(ligne, Content, idCopy, type) {
       case 'reception':
         console.log(Content.quantite);
         valuesToInsert = [
-          rowIndex - 10,
+          rowIndex - 15,
           Content.designation,
           '',
           '',
@@ -100,7 +100,7 @@ async function addRow(ligne, Content, idCopy, type) {
         break;
       case 'sortie':
         valuesToInsert = [
-          rowIndex - 4,
+          rowIndex - 12,
           Content.designation,
           Content.quantite_demande,
           Content.quantite_servie,
@@ -134,7 +134,7 @@ async function addRow(ligne, Content, idCopy, type) {
         break;
       case 'fiche':
         valuesToInsert = [
-          ligne - 10,
+          ligne - 21,
           Content.designation,
           Content.num_inventaires,
           Content.reste,

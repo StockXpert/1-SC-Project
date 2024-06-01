@@ -121,21 +121,19 @@ function updateQuantite(req, res) {
       EntreeService.uploadvalidity(numCommande).then(response => {
         let products = EntreeService.changeTabFormat(produits);
         console.log(products);
-        EntreeModel.addRefs(products, dateReception, numCommande)
-          .then(() => {
-            EntreeService.createReception(
-              numCommande,
-              produits,
-              numFacture,
-              numLivraison,
-              dateReception,
-              bonLivraisonLink,
-              factureLink
-            )
-              .then(response => {
-                res.status(200).json({ response });
-              })
-              .catch(response => res.status(500).json({ response }));
+
+        EntreeService.createReception(
+          numCommande,
+          produits,
+          numFacture,
+          numLivraison,
+          dateReception,
+          bonLivraisonLink,
+          factureLink,
+          products
+        )
+          .then(response => {
+            res.status(200).json({ response });
           })
           .catch(response => res.status(500).json({ response }));
       });
@@ -298,6 +296,7 @@ function updateReception(req, res) {
 }
 function deleteReception(req, res) {
   const { numReception, numCommande } = req.body;
+  console.log({ numCommande });
   EntreeService.restoreQuantite(numReception, numCommande, null)
     .then(() => {
       EntreeService.uploadvalidity(numCommande)
@@ -305,7 +304,8 @@ function deleteReception(req, res) {
           EntreeModel.deleteReception(numReception)
             .then(() => {
               EntreeModel.deleteLivre(numReception)
-                .then(response => {
+                .then(async response => {
+                  await EntreeModel.deleteRefs(numReception);
                   res.status(200).json({ response });
                 })
                 .catch(() => {

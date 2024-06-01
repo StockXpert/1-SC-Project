@@ -441,6 +441,32 @@ function deleteCommande(numCommande) {
     });
   });
 }
+function deleteRefs(numReception) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+
+    const query = `delete from reference where num_reception=?`;
+    const values = [numReception];
+    connection.connect(err => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
+          return;
+        }
+        resolve('success');
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function deleteBonCommande(numCommande) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
@@ -661,6 +687,7 @@ function updateQuantite(quantite, idProduit) {
     const connection = mysql.createConnection(connectionConfig);
     quantite = parseInt(quantite);
     const query = `update produit set quantite=quantite+? where id_produit=?`;
+    console.log({ quantite });
     const values = [quantite, idProduit];
     connection.connect(err => {
       if (err) {
@@ -986,7 +1013,7 @@ function updateReception(
     });
   });
 }
-function addRefs(produits, dateReception, numCommande) {
+function addRefs(produits, dateReception, numCommande, numReception) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
     connection.connect(err => {
@@ -1026,8 +1053,14 @@ function addRefs(produits, dateReception, numCommande) {
 
                 // Insérer les données dans ma_table avec l'ID produit récupéré
                 connection.query(
-                  'INSERT INTO reference (id_produit, designation,date_inscription,num_commande) VALUES (?, ?, ?,?)',
-                  [id_produit, produit.ref, dateReception, numCommande],
+                  'INSERT INTO reference (id_produit, designation,date_inscription,num_commande,num_reception) VALUES (?, ?, ?,?,?)',
+                  [
+                    id_produit,
+                    produit.ref,
+                    dateReception,
+                    numCommande,
+                    numReception,
+                  ],
                   (err, result) => {
                     if (err) {
                       return callback(err);
@@ -1071,6 +1104,7 @@ function addRefs(produits, dateReception, numCommande) {
     });
   });
 }
+
 module.exports = {
   insertBonCommande,
   insertLink,
@@ -1102,4 +1136,5 @@ module.exports = {
   getBonCommandeFournisseur,
   getBonCommande,
   addRefs,
+  deleteRefs,
 };
