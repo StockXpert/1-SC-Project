@@ -411,6 +411,7 @@ ${
     });
     this._filters.querySelectorAll('select')[1].innerHTML =
       optionsArray.join('');
+    console.log(newSetOfOptionsChapter, newSetOfOptionsArticle);
   }
 }
 export default new AddInvView();

@@ -2156,6 +2156,7 @@ const controlContinueInv = async function () {
   addInvView.render(model.state.inventaires.selected);
   model.state.inventaires.selected.renderedProducts =
     model.state.inventaires.selected.produits;
+  console.log(model.state.inventaires.selected.renderedProducts);
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
   controlUpdateAddInvFilters();
