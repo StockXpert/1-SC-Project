@@ -970,6 +970,7 @@ export const loadAllInv = async function () {
     let response = responseArray[1].response.sort(
       (a, b) => b.num_inventaire - a.num_inventaire
     );
+    state.inventaires.afterSearch = response;
     return response;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
