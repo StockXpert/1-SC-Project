@@ -22,7 +22,8 @@ function addInventaire(numInventaire, dateInventaire) {
       connection.query(query, values, (error, results, fields) => {
         if (error) {
           console.error("Erreur lors de l'exécution de la requête :", error);
-          if (error.code == 'ER_DUP_ENTRY') reject('duplicate num inventaire');
+          if (error.code == 'ER_DUP_ENTRY')
+            reject(`numéro d'inventaire déja utilisé `);
           else reject('internal error');
           return;
         }
@@ -184,8 +185,10 @@ function getInventaire(numInventaire) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
 
-    const query = `select c.present ,c.reference,p.designation,c.raison,r.num_inventaire,r.date_inventaire from produit p,compter c,reference r
-        where c.num_inventaire=? and c.reference=r.designation and p.id_produit=r.id_produit`;
+    const query = `select a.designation as article,t.designation as chapitre c.present ,c.reference,p.designation,c.raison,r.num_inventaire,r.date_inventaire 
+        from produit p,compter c,reference r,chapitre c ,contient , article a
+        where c.num_inventaire=? and c.reference=r.designation and p.id_produit=r.id_produit
+        p.id_produit=n.id_produit and n.id_article=a.num_article and a.num_chap=t.num_chap`;
     const values = [numInventaire];
     connection.connect(err => {
       if (err) {

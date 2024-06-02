@@ -569,6 +569,59 @@ async function addBorder(rowIndex, idCopy, sc, ec) {
     console.error('Error inserting row:', error);
   }
 }
+async function uploadImageToDrive(filePath, fileName) {
+  const drive = google.drive({ version: 'v3', auth: oAuth2Client });
+
+  const fileMetadata = {
+    name: fileName,
+    mimeType: 'image/jpeg',
+  };
+
+  const media = {
+    mimeType: 'image/jpeg',
+    body: fs.createReadStream(filePath),
+  };
+
+  const res = await drive.files.create({
+    resource: fileMetadata,
+    media: media,
+    fields: 'id',
+  });
+
+  const fileId = res.data.id;
+
+  // Rendre le fichier public
+  await drive.permissions.create({
+    fileId: fileId,
+    requestBody: {
+      role: 'reader',
+      type: 'anyone',
+    },
+  });
+
+  // Obtenir l'URL du fichier
+  const file = await drive.files.get({
+    fileId: fileId,
+    fields: 'webViewLink',
+  });
+
+  return file.data.webViewLink;
+}
+async function insertImageURLInSheet(spreadsheetId, imageURL) {
+  const sheets = google.sheets({ version: 'v4', auth: oAuth2Client });
+
+  const request = {
+    spreadsheetId: spreadsheetId,
+    range: 'A1',
+    valueInputOption: 'USER_ENTERED',
+    resource: {
+      values: [[`=IMAGE("${imageURL}")`]],
+    },
+  };
+
+  const response = await sheets.spreadsheets.values.update(request);
+  console.log('Cell updated:', response.data);
+}
 module.exports = {
   generatePDF,
   getCopy,
@@ -577,4 +630,6 @@ module.exports = {
   deleteRows,
   addBorder,
   generateCSV,
+  uploadImageToDrive,
+  insertImageURLInSheet,
 };
