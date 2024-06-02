@@ -2828,6 +2828,11 @@ const controlSearchFournisseurs = function () {
 /////////////// S T A T I S T I Q U E S #fff//////////////////////
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
+console.log(
+  model.state.me.permissions.wellFormed.filter(
+    e => e.groupName == 'Statistiques'
+  )[0].permissions
+);
 const controlLoadStatistiques = async () => {
   // const labels = helpers.generateMonthLabels();
   // const data = {
@@ -2865,6 +2870,7 @@ const controlLoadStatistiques = async () => {
   const postObj = {
     produit: 'Duplicopieur - Monochrome - A3',
   };
+
   statsView.renderGraphSpin(
     'Top Demandeurs',
     'g2',

@@ -66,7 +66,6 @@ class StatsView extends View {
       .querySelector(parentElement)
       .insertAdjacentHTML('afterbegin', html);
     const results = await promise;
-    console.log(results.response, title);
     document
       .querySelector(parentElement)
       .querySelector(

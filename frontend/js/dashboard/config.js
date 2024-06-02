@@ -332,3 +332,13 @@ export const ORDER_OF_GROUPS = [
   'Notifications',
   'Autre',
 ];
+export const STATS_STYLINGS = {
+  topDemandeurs: {
+    title: 'Top Demandeurs',
+    size: 'g2',
+    old: true,
+  },
+  topDemandeurs: {},
+  topDemandeurs: {},
+  topDemandeurs: {},
+};

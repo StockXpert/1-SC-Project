@@ -1355,7 +1355,6 @@ export const deleteInv = async function (numInventaire) {
 };
 
 export const getGraphPromise = async function (graphLink, optionalBody = null) {
-  console.log(graphLink, optionalBody);
   const resultsPro = await Promise.race([
     fetch(`${API_URL}/Statistique/${graphLink}`, {
       method: 'POST',
@@ -1367,7 +1366,6 @@ export const getGraphPromise = async function (graphLink, optionalBody = null) {
     }),
     helpers.timeout(TIMEOUT_SEC),
   ]);
-  console.log(resultsPro.body);
   return resultsPro.json();
 };
 
