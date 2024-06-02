@@ -8,18 +8,20 @@ class ProfileView extends View {
 
   renderMini(render = true) {
     if (render) {
-      this._mini.innerHTML = `  
+      this._mini.innerHTML =
+        this._data.nom !== this._data.role
+          ? `  
     <div class="info">
-      <p>${this._data.nom} <b>${
-        this._data.prenom ? this._data.prenom : this._data.role
-      }</b></p>
-      <small class="text-muted">${
-        this._data.nom ? this._data.role : this._data.email
-      }</small>
+      <p>${this._data.nom} <b>${this._data.prenom}</b></p>
+      <small class="text-muted">${this._data.role}</small>
     </div>
     <!-- <div class="profile-photo">
       <img src="../img/use-img.jpeg" alt="photo du user" />
-    </div> -->`;
+    </div> -->`
+          : `<div class="info">
+    <p><b>${this._data.role}</b></p>
+    <small class="text-muted">${this._data.email}</small>
+  </div>`;
     } else this._mini.innerHTML = '';
   }
   _mini = document.querySelector('.nav .profile');
