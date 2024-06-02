@@ -13,6 +13,17 @@ export class InvView extends CmdsIntView {
   _parentElement = document.querySelector('.results-inv');
   _trueParentElement = document.querySelector('.table-top-inv');
   _searchBox = document.querySelector('.searchbar-text-inv');
+  _filters = document.querySelector('.container-filter-inv');
+  _generateMarkup() {
+    if (this._data.length == 0)
+      return `<tr><td colspan=${
+        document.querySelector('.load-inv-container').querySelectorAll('th')
+          .length
+      }><b>Aucun Etat d'inventaire n'a été trouvée</b></td></tr>`;
+    return this._data
+      .map(result => this._generateMarkupPreview(result, this._perms))
+      .join('');
+  }
   _generateMarkupPreview(result, perms = []) {
     return `
   <tr>
@@ -94,6 +105,25 @@ export class InvView extends CmdsIntView {
       default:
         break;
     }
+  }
+  addHandlerInvSearch(handler, filterHandler) {
+    this._searchBox.addEventListener('input', e => {
+      handler(this._searchBox.value);
+      filterHandler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
+  }
+  addChangeFiltersHandler(handler) {
+    this._filters.addEventListener('change', e => {
+      handler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
   }
 }
 

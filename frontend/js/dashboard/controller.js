@@ -1418,6 +1418,10 @@ const controlCmdsIntSearch = searchInput => {
   model.state.commandesInt.afterSearch = afterSearch;
 };
 cmdsIntView.addChangeFiltersHandler(controlCmdsIntFilters);
+cmdsIntView.addHandlerCmdsIntSearch(
+  controlCmdsIntSearch,
+  controlCmdsIntFilters
+);
 const controlLoadCmdsInt = async function () {
   if (
     !model.state.me.permissions.all.find(
@@ -1434,10 +1438,7 @@ const controlLoadCmdsInt = async function () {
   cmdsIntView.restrictUsingRole(model.state.me.role);
   cmdsIntView.resetSearchInputs();
   //TODO: thisLine-16 used to be here
-  cmdsIntView.addHandlerCmdsIntSearch(
-    controlCmdsIntSearch,
-    controlCmdsIntFilters
-  );
+
   cmdsIntHeaderView.render(model.state.me.role);
   addCmdsIntView.allowDeleteBtn(false, '.btn-delete-bdci');
   addCmdsIntView.allowWhiteBtn(false, '.btn-edit-bdci');
@@ -2039,6 +2040,77 @@ const controlDechargerCmdsInt = async dataObj => {
 /////// I N V E N T A I R E  #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
+const controlInvFilters = filterValuesArr => {
+  const beforeFilters = model.state.inventaires.afterSearch;
+  let afterFilters = [];
+  console.log(filterValuesArr);
+  switch (filterValuesArr[0]) {
+    case 'dcd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(b.date_inventaire) - new Date(a.date_inventaire)
+      );
+      break;
+    case 'acd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(a.date_inventaire) - new Date(b.date_inventaire)
+      );
+      break;
+    case 'default':
+      afterFilters = beforeFilters.sort(
+        (a, b) => b.num_inventaire - a.num_inventaire
+      );
+      break;
+  }
+  switch (filterValuesArr[1]) {
+    case 'all':
+      afterFilters = beforeFilters;
+      break;
+    default:
+      afterFilters = beforeFilters.filter(
+        entry => entry.etat == filterValuesArr[1]
+      );
+      break;
+  }
+  invView.render(afterFilters, true, model.state.me.permissions.all, '', false);
+  // model.state.inventaires.rendered = model.state.inventaires.all;
+  //TODO: do something to make calls like these automatic upon any render (maybe give render something called renderRoutineInv that includes all these)
+  model.updateRenderedInv(model.state.inventaires.all);
+  invView.resetPointers();
+  validateInvView.resetPointers(controlValidatingInv);
+  addInvView.addHandlerView(controlContinueInv);
+  model.state.inventaires.rendered = afterFilters;
+  model.state.inventaires.afterFilters = afterFilters;
+};
+
+const controlInvSearch = searchInput => {
+  const beforeSearch = model.state.inventaires.all;
+  let afterSearch = [];
+  const fuze = model.fuseMakerInv(beforeSearch);
+  const results = fuze.search(searchInput);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  afterSearch = extractItems(results);
+  if (afterSearch.length == 0) {
+    if (searchInput !== '') {
+      afterSearch = [];
+    } else {
+      afterSearch = beforeSearch;
+    }
+  }
+  invView.render(afterSearch, true, model.state.me.permissions.all, '', false);
+  // model.state.inventaires.rendered = model.state.inventaires.all;
+  //TODO: do something to make calls like these automatic upon any render (maybe give render something called renderRoutineInv that includes all these)
+  model.updateRenderedInv(model.state.inventaires.all);
+  invView.resetPointers();
+  validateInvView.resetPointers(controlValidatingInv);
+  addInvView.addHandlerView(controlContinueInv);
+  model.state.inventaires.rendered = afterSearch;
+  model.state.inventaires.afterSearch = afterSearch;
+};
+invView.addChangeFiltersHandler(controlInvFilters);
+invView.addHandlerInvSearch(controlInvSearch, controlInvFilters);
+
 const controlLoadInv = async () => {
   invView.restrictActionsUsingRoleInv(model.state.me.role);
   invView.renderSpinner();
@@ -2065,7 +2137,6 @@ const controlLoadInv = async () => {
 const controlInvProdFilters = filterValuesArr => {
   const beforeFilters = model.state.inventaires.selected.afterSearch;
   let afterFilters = [];
-  console.log(filterValuesArr);
   afterFilters =
     filterValuesArr[0] == 'all'
       ? beforeFilters
@@ -2076,14 +2147,12 @@ const controlInvProdFilters = filterValuesArr => {
       : afterFilters.filter(entry => entry.article == filterValuesArr[1]);
   addInvView.renderProducts(afterFilters);
   model.state.inventaires.selected.renderedProducts = afterFilters;
-  //TODO: watch for double EL additions
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
   model.state.inventaires.selected.afterFilters = afterFilters;
 };
 
 const controlInvProdSearch = searchInput => {
-  // const beforeSearch = model.state.commandesInt.all; TODO:
   const beforeSearch = model.state.inventaires.selected.produits;
   let afterSearch = [];
   const fuze = model.fuseMakerProdInv(beforeSearch);
@@ -2152,7 +2221,11 @@ const controlContinueInv = async function () {
   //ONCLICK OF the Créer un état inventaire BUTTON
 
   addInvView.renderSpinner('');
-  await model.loadInventaire(numInventaire);
+  const responseBool = await model.loadInventaire(numInventaire);
+  if (!responseBool) {
+    addInvView._btnClose.click();
+    return;
+  }
   addInvView.render(model.state.inventaires.selected);
   model.state.inventaires.selected.renderedProducts =
     model.state.inventaires.selected.produits;
@@ -2249,13 +2322,18 @@ const controlValidatingInv = async (e, view = false) => {
   let selectedInvProducts = await model.loadInventaire(
     model.state.inventaires.rendered[targetIndex].num_inventaire
   );
+  validateInvView.resetPointers();
+  if (!selectedInvProducts) {
+    console.log(validateInvView);
+    validateInvView._overlay.click();
+    return;
+  }
   validateInvView.unrenderSpinner(true);
   validateInvView.changeDetails(
     selectedInvProducts,
     model.state.inventaires.rendered[targetIndex].num_inventaire,
     view
   );
-  // validateInvView.resetPointers();
 };
 
 const controlValidateInv = async () => {

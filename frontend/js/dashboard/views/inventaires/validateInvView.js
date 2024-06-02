@@ -23,14 +23,20 @@ export class ValidateInvView extends ValidateCmdsIntView {
   // TODO:
   _btnLivrerBdci = document.querySelector('.btn-maj-inv');
   // _checkboxes;
+  addHandlerHideWindow(CloserClassName, windowClassName) {
+    this._window = document.querySelector(windowClassName);
+    // this._btnClose = this._window.querySelector(CloserClassName);
+    // this._btnClose.addEventListener('click', this._boundToggleWindow);
+    this._overlay.addEventListener('click', this._boundToggleWindow);
+  }
 
   constructor(nerfed = false) {
     super(true);
     if (!nerfed) {
-      // this.addHandlerHideWindow(
-      //   '.btn-cancel-inv-verif',
-      //   '.big-container-inv-verif'
-      // );
+      this.addHandlerHideWindow(
+        '.btn-cancel-inv-verif',
+        '.big-container-inv-verif'
+      );
     }
   }
 

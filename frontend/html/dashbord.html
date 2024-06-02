@@ -2038,9 +2038,12 @@
                     placeholder="Date"
                     required
                   >
-                    <option value="all" disabled="" selected="">Date:</option>
-                    <option value="acd">Acendant</option>
-                    <option value="dcd">Decendant</option>
+                    <option value="default" disabled="" selected="">
+                      Ordre de Tri:
+                    </option>
+                    <option value="acd">Date (Acendant)</option>
+                    <option value="dcd">Date (Decendant)</option>
+                    <option value="default">Par défaut</option>
                   </select>
                 </div>
                 <div class="dropbtn-text-inv">
@@ -2048,13 +2051,14 @@
                     name="status"
                     class="filters-inv"
                     id="filter-inv-status"
-                    placeholder="Selectionnés un status"
+                    placeholder="Selectionnez un statut"
                     required
                   >
                     <option value="all" disabled="" selected="">Statut:</option>
-                    <option value="all">Toutes</option>
-                    <option value="en-attente">non valide</option>
-                    <option value="v-responsable">valide</option>
+                    <option value="all">Tout les statuts</option>
+                    <option value="en cours">En Cours de Realisation</option>
+                    <option value="confirme">Confirmé</option>
+                    <option value="valid">Validé</option>
                   </select>
                 </div>
               </div>

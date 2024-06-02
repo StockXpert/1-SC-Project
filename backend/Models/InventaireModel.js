@@ -186,9 +186,9 @@ function getInventaire(numInventaire) {
     const connection = mysql.createConnection(connectionConfig);
 
     const query = `select a.designation as article,t.designation as chapitre c.present ,c.reference,p.designation,c.raison,r.num_inventaire,r.date_inventaire 
-        from produit p,compter c,reference r,chapitre c ,contient , article a
-        where c.num_inventaire=? and c.reference=r.designation and p.id_produit=r.id_produit
-        p.id_produit=n.id_produit and n.id_article=a.num_article and a.num_chap=t.num_chap`;
+    from produit p,compter c,reference r,chapitre c ,contient , article a
+    where c.num_inventaire=? and c.reference=r.designation and p.id_produit=r.id_produit
+    p.id_produit=n.id_produit and n.id_article=a.num_article and a.num_chap=t.num_chap`;
     const values = [numInventaire];
     connection.connect(err => {
       if (err) {

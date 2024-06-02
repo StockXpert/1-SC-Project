@@ -11,6 +11,7 @@ import {
   FUSE_OPTIONS_CMDSINT,
   FUSE_OPTIONS_PROD,
   FUSE_OPTIONS_PROD_INV,
+  FUSE_OPTIONS_INV,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -166,6 +167,8 @@ export const state = {
       afterFilters: [],
     },
     rendered: [],
+    afterFilters: [],
+    afterSearch: [],
     //TODO:
     // rendered: {
     //   numInventaire: '',
@@ -570,6 +573,7 @@ export const fuseMakerProducts = data => {
   return new Fuse(data, FUSE_OPTIONS_ARTICLES);
 };
 export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
+export const fuseMakerInv = data => new Fuse(data, FUSE_OPTIONS_INV);
 export const fuseMakerProd = data => new Fuse(data, FUSE_OPTIONS_PROD);
 export const fuseMakerProdInv = data => new Fuse(data, FUSE_OPTIONS_PROD_INV);
 
@@ -1381,13 +1385,14 @@ export async function loadInventaire(numInventaire) {
     if (!responseArray[0].ok) {
       helpers.renderError(
         'ERREUR!',
-        `${responseArray[1].error} car il semble qu'il vous manque la permission suivante: <br/>
+        `${responseArray[1].response} car il semble qu'il vous manque la permission suivante: <br/>
         show inventaire:
         "Voir un état de l'inventaire",
         `
       );
-      throw new Error(responseArray[1].error);
-      return false;
+      throw new Error(
+        ` ${responseArray[1].response} -  (${responseArray[0].status}) `
+      );
     }
     let produitsFetched = responseArray[1].response.map(prod => {
       let {
@@ -1415,7 +1420,9 @@ export async function loadInventaire(numInventaire) {
     state.inventaires.selected.oldProduits = produitsFetched;
     return produitsFetched;
   } catch (err) {
-    helpers.renderError('FATAL ERROR!', `${err}`);
+    helpers.renderError(`ERREUR!`, `${err}`);
+    console.error(err);
+    return false;
   }
 }
 export async function validateInv(numInventaire) {
