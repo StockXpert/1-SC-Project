@@ -14,6 +14,15 @@ export class CmdsView extends UsersView {
       handler(this._searchBox.value, filterState);
     });
   }
+  addChangeFiltersHandler(handler) {
+    this._filters.addEventListener('change', e => {
+      handler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
+    });
+  }
   _checkboxes;
   _checkedCheckboxes;
   _btnDeleteBdc = document.querySelector('.btn-delete-bdc');
@@ -82,7 +91,8 @@ export class CmdsView extends UsersView {
     this.addEventListenerCheckboxesChange();
   }
 
-  _filters = document.querySelectorAll('.filters-bdc');
+  // _filters = document.querySelectorAll('.filters-bdc');
+  _filters = document.querySelector('.container-filter-bdc');
   addHandlerCmdsFiltersChange(handler) {
     let newFiltersState = ['', ''];
     this._filters.forEach((filter, index) => {

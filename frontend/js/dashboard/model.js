@@ -9,6 +9,7 @@ import {
   FUSE_OPTIONS_FOURNISSEURS,
   FUSE_OPTIONS_ARTICLES,
   FUSE_OPTIONS_CMDSINT,
+  FUSE_OPTIONS_CMDS,
   FUSE_OPTIONS_PROD,
   FUSE_OPTIONS_PROD_INV,
   FUSE_OPTIONS_INV,
@@ -67,8 +68,10 @@ export const state = {
   },
   bdc: {
     allCommandes: [],
-    filtersState: [],
+    afterSearch: [],
+    afterFilters: [],
     selected: '',
+    rendered: [],
   },
   bdr: {
     all: [],
@@ -573,6 +576,7 @@ export const fuseMakerProducts = data => {
   console.log(data);
   return new Fuse(data, FUSE_OPTIONS_ARTICLES);
 };
+export const fuseMakerCmds = data => new Fuse(data, FUSE_OPTIONS_CMDS);
 export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
 export const fuseMakerInv = data => new Fuse(data, FUSE_OPTIONS_INV);
 export const fuseMakerProd = data => new Fuse(data, FUSE_OPTIONS_PROD);
@@ -581,7 +585,6 @@ export const fuseMakerProdInv = data => new Fuse(data, FUSE_OPTIONS_PROD_INV);
 export const loadRoles = async function () {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showRoles`);
-    // console.log('loadRoles', data);
     state.roles.all = data.response;
     return data.response;
   } catch (err) {
@@ -719,12 +722,12 @@ export const deleteRole = async function (role) {
 };
 
 export const loadCmds = async function () {
-  let commandes = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
-  commandes = commandes.commandes;
-  // console.log(commandes);
+  let { commandes } = await helpers.getJSON(`${API_URL}/Entrees/showCommandes`);
+  console.log(commandes);
   state.bdc.allCommandes = commandes.sort(
     (a, b) => b.num_commande - a.num_commande
   );
+  state.bdc.afterSearch = commandes.map(item => ({ ...item }));
   return commandes;
 };
 export const loadCmdsInt = async function () {
@@ -749,8 +752,6 @@ export const loadCommandeproducts = async function (numCommande) {
     { numCommande: `${numCommande}` }
   );
   return products;
-  // produits = produits.produits;
-  // return produits;
 };
 
 export const loadFournisseurs = async function () {
@@ -758,7 +759,6 @@ export const loadFournisseurs = async function () {
     `${API_URL}/Nomenclatures/showFournisseurs`
   );
   state.fournisseur.all = fournisseurs.response;
-  console.log(state.fournisseur.all);
   return fournisseurs.response;
 };
 

@@ -40,17 +40,14 @@ export class SeeCmdsView extends DeleteUserView {
   // }
   addSeeController(ctrler) {
     const toggleWindow = function () {
-      console.log(this._overlay);
       this._overlay.classList.toggle('hidden');
       this._window.classList.toggle('hidden');
     };
     const newThis = this;
     this._btnOpen.forEach(btn =>
       btn.addEventListener('click', async function (e) {
-        console.log('click !');
         e.preventDefault();
         toggleWindow.bind(newThis)();
-        // this._btnClose.click();
         await ctrler(this);
       })
     );

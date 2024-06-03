@@ -46,7 +46,7 @@ export class CmdsIntView extends CmdsView {
   _searchBox = document.querySelector('.searchbar-text-bdci');
   _btnDeleteBdci = document.querySelector('.btn-delete-bdci');
   // _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
-  _filters = document.querySelectorAll('.filters-bdci');
+  // _filters = document.querySelectorAll('.filters-bdci');
   _btnModifyBdci = document.querySelector('.btn-edit-bdci');
   _btnLivrerBdci = document.querySelector('.btn-deliver-bdci');
   _role;

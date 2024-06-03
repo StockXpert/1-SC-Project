@@ -743,14 +743,94 @@ const controlRoleSwitch = (e, selectedIndex) => {
 /////// B O N S  D E  C O M M A N D E S #fff
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
-const controlCmdsSearch = function (query, filtersState) {};
-const controlCmdsFiltersChanges = function (newFiltersState = {}) {
-  model.state.bdc.filtersState = newFiltersState;
+// const controlCmdsSearch = function (query, filtersState) {};
+// const controlCmdsFiltersChanges = function (newFiltersState = {}) {
+//   model.state.bdc.filtersState = newFiltersState;
 
-  console.log(model.state.bdc.filtersState);
-  // switch
-  //trigger a new search (with the same current query, but new search pool (according to the new filter state))
+//   console.log(model.state.bdc.filtersState);
+//   // switch
+//   //trigger a new search (with the same current query, but new search pool (according to the new filter state))
+// };
+
+const controlCmdsFilters = filterValuesArr => {
+  const beforeFilters = model.state.bdc.afterSearch;
+  console.log(beforeFilters);
+  let afterFilters = [];
+
+  switch (filterValuesArr[0]) {
+    case 'dcd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(b.date_commande) - new Date(a.date_commande)
+      );
+      break;
+    case 'acd':
+      afterFilters = beforeFilters.sort(
+        (a, b) => new Date(a.date_commande) - new Date(b.date_commande)
+      );
+      break;
+    case 'default':
+      afterFilters = beforeFilters.sort(
+        (a, b) => b.num_commande - a.num_commande
+      );
+      break;
+  }
+  console.log(afterFilters);
+  switch (filterValuesArr[1]) {
+    case 'all':
+      afterFilters = beforeFilters;
+      break;
+    default:
+      afterFilters = beforeFilters.filter(
+        entry => entry.etat == `${filterValuesArr[1]}`
+      );
+      break;
+  }
+  model.state.bdc.rendered = afterFilters;
+  model.state.bdc.afterFilters = afterFilters;
+  cmdsView.render(afterFilters, true, model.state.me.permissions.all);
+  // seeCmdsView.renderSpinner('Loading articles...');
+  // seeCmdsView.renderSpinner('Loading fournisseurs...', true);
+  // if (model.state.me.role == 'Service achat')
+  // await controlUpdateFournisseursAndArticles();
+  // seeCmdsView.unrenderSpinner(true);
+  seeCmdsView.resetPointers();
+  seeCmdsView.addSeeController(controlViewCmd);
+  cmdsView.resetPointers();
+  bonReceptionView.addHandlerShow(controlLoadBRec);
 };
+
+const controlCmdsSearch = searchInput => {
+  const beforeSearch = model.state.bdc.allCommandes;
+  let afterSearch = [];
+  const fuze = model.fuseMakerCmds(beforeSearch);
+  const results = fuze.search(searchInput);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  afterSearch = extractItems(results);
+  if (afterSearch.length == 0) {
+    if (searchInput !== '') {
+      afterSearch = [];
+    } else {
+      afterSearch = beforeSearch;
+    }
+  }
+  model.state.bdc.rendered = afterSearch;
+  model.state.bdc.afterSearch = afterSearch;
+  cmdsView.render(afterSearch, true, model.state.me.permissions.all);
+  // seeCmdsView.renderSpinner('Loading articles...');
+  // seeCmdsView.renderSpinner('Loading fournisseurs...', true);
+  // if (model.state.me.role == 'Service achat')
+  // await controlUpdateFournisseursAndArticles();
+  // seeCmdsView.unrenderSpinner(true);
+  seeCmdsView.resetPointers();
+  seeCmdsView.addSeeController(controlViewCmd);
+  cmdsView.resetPointers();
+  bonReceptionView.addHandlerShow(controlLoadBRec);
+};
+
+cmdsView.addChangeFiltersHandler(controlCmdsFilters);
+cmdsView.addHandlerCmdsSearch(controlCmdsSearch, controlCmdsFilters);
 
 const controlLoadCmds = async function () {
   if (

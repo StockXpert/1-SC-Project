@@ -31,6 +31,22 @@ export const FUSE_OPTIONS_ARTICLES = {
   keys: ['designation'],
 };
 
+export const FUSE_OPTIONS_CMDS = {
+  isCaseSensitive: false,
+  includeScore: true,
+  shouldSort: true,
+  threshold: 0.3,
+  keys: ['num_commande', 'fournisseur', 'num_commande', 'objet', 'type'],
+};
+const lc = {
+  date_commande: '2024-06-02T23:00:00.000Z',
+  etat: 'delivrer',
+  fournisseur: 'MACIF FOURNITURE',
+  link: 'BonCommande/commande65.pdf',
+  num_commande: 65,
+  objet: "Papier d'enseignement",
+  type: 'fourniture',
+};
 export const FUSE_OPTIONS_CMDSINT = {
   isCaseSensitive: false,
   includeScore: true,
