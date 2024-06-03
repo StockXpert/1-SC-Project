@@ -272,7 +272,6 @@ export const GROUP_BTNS = {
   Utilisateurs: `<a href="" class="sidebar-btns utilisateurs utilisateurs-btn" name="Utilisateurs">
   <span class="material-icons-sharp"> person_outline</span>
   <h3>Utilisateurs</h3>
-  <span class="message-count">27</span>
 </a>`,
   Roles: `<a href="" class="sidebar-btns roles-btn" name="Roles">
   <span class="material-icons-sharp"> work </span>

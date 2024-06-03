@@ -500,6 +500,12 @@ aside .sidebar a:hover span {
   cursor: pointer;
   border-radius: 25px;
 }
+.add-chapitres-btn,
+.add-produits-btn,
+.add-articles-btn,
+.add-fournisseur-btn {
+  padding: 0.6rem;
+}
 .add-bdc-btn,
 .add-bdci-btn {
   width: 10rem;
@@ -1758,13 +1764,9 @@ table tbody tr:last-child td {
   box-shadow: 0px 10px 10px 10px #00000040;
 }
 .add-structure-cart,
-.add-article-cart,
-.edit-article-cart,
-.add-produits-cart,
 .edit-produits-cart,
 .add-structure-cart,
 .add-edit-cart,
-.add-chapitre-cart,
 .edit-chapitre-cart,
 .add-role-cart {
   width: 33rem;
@@ -1773,6 +1775,22 @@ table tbody tr:last-child td {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 10px 10px 10px #00000040;
+}
+.add-chapitre-cart,
+.add-produits-cart,
+.add-article-cart,
+.edit-article-cart {
+  width: 33rem;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   align-items: center;
   padding: 1rem;
   background-color: white;
@@ -2317,7 +2335,6 @@ table tbody tr:last-child td {
 .add-user-inputs,
 .add-structure-inputs,
 .add-chapitre-inputs,
-.add-article-inputs,
 .edit-article-inputs,
 .add-produits-inputs,
 .edit-produits-inputs,
@@ -2330,6 +2347,12 @@ table tbody tr:last-child td {
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+  align-items: center;
+}
+.add-article-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   align-items: center;
 }
 
@@ -2433,6 +2456,13 @@ table tbody tr:last-child td {
   outline: 1px solid #929292;
   border-radius: 1rem;
   transition: all 0.3s ease;
+  position: relative;
+}
+.produit-info-add {
+  position: absolute;
+  bottom: 18px;
+  left: 10px;
+  background-color: white;
 }
 .dropdown-active {
   color: #49bf20;
@@ -2486,7 +2516,9 @@ table tbody tr:last-child td {
   background-color: transparent;
   /* transition: all 0.3s ease; */
 }
-
+.add-chapitre-inputs div input {
+  padding: 1rem;
+}
 /* pour enlever icon de base du type date */
 input[type='date']::-webkit-calendar-picker-indicator {
   display: none;
@@ -3368,6 +3400,9 @@ a.password-icon:active {
 .graph-statistiques {
   /* width: 24rem; */
   height: 24rem;
+}
+.add-users-btn-new {
+  padding: 0.6rem;
 }
 .top-statistiques-cart {
   display: flex;
