@@ -1278,12 +1278,20 @@ table tbody tr:last-child td {
   transform: translate(-50%, -50%);
 }
 .add-info-container,
-.edit-info-container,
 .add-info-container-verif {
   display: block;
   position: fixed;
   z-index: 1000;
   left: calc(50% + 37rem);
+  /* left: 89.5%; */
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.edit-info-container {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: calc(50% + 51.5rem);
   /* left: 89.5%; */
   top: 50%;
   transform: translate(-50%, -50%);

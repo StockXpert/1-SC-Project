@@ -71,7 +71,9 @@ export default class View {
       switch (type) {
         case 'responsable':
           optionElement.value = option.email;
-          optionElement.textContent = `${option?.nom} ${option.prenom}`;
+          optionElement.textContent = option?.nom
+            ? `${option?.nom} ${option.prenom}`
+            : `${option?.role}`;
           break;
         case 'structure':
           optionElement.value = option;

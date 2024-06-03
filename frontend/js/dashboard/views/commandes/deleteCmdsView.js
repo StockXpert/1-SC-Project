@@ -20,6 +20,7 @@ export class DeleteCmdsView extends DeleteUserView {
   addDeleteController(controller) {
     const closeBtn = this._btnClose;
     this._confirm.addEventListener('click', async function (e) {
+      console.log('HI');
       e.preventDefault();
       closeBtn.click();
       await controller();

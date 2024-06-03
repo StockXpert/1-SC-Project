@@ -172,34 +172,6 @@ const controlViewCmd = async function (target) {
   //                                                                           TODO:
 };
 
-const controlEditStructure = function () {
-  const target = this;
-  const targetIndex = helpers.findNodeIndex(
-    document.querySelectorAll('.details-btn-structures'),
-    target
-  );
-  // console.log(targetIndex);
-  // console.log(model.state.structures.results[targetIndex]);
-  editStructureView.changeInputs(model.state.structures.results[targetIndex]);
-  editStructureView.addHandlerUpdate(controlUpdateStructure);
-};
-
-const controlUpdateStructure = async function (oldStructure, newStructure) {
-  try {
-    // if (
-    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
-    //     .length === 0
-    // ) return;
-    // console.log(oldStructure.designation, newStructure.designation);
-    if (oldStructure.designation === newStructure.designation) return;
-    structuresView.renderSpinner('Modification de la structure...');
-    await model.updateStructure(oldStructure, newStructure);
-    controlLoadStructures();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const controlNumber = function () {
   numberView._clear();
   model.state.displayed.selected = numberView.calculateCheckboxes();
@@ -246,6 +218,12 @@ const controleSelectStructures = function () {
   numberStructuresView.render(model.state.structures);
 };
 
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/////// S T R U C T U R E S #fff
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
 const controlLoadStructures = async function () {
   try {
     if (
@@ -263,7 +241,7 @@ const controlLoadStructures = async function () {
     structuresView.restrict(model.state.me.permissions.all);
     addStructureView.restrict(model.state.me.permissions.all);
     deleteStructureView.restrict(model.state.me.permissions.all);
-    structuresView.renderSpinner('Loading Structures');
+    structuresView.renderSpinner('');
     await model.loadStructures();
     const emails = await model.getResponsiblesEmail();
     addStructureView.addToSelection(emails, 'search-responsable');
@@ -274,32 +252,91 @@ const controlLoadStructures = async function () {
       model.state.me.permissions.all
     );
     numberStructuresView.render(model.state.structures);
-    numberStructuresView.updateMasterCheckbox();
-    numberStructuresView.addHandlerNumber(controleSelectStructures);
-    numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
-    editStructureView.addHandlerShowWindow();
-    editStructureView.addHandlerHideWindow();
-    editStructureView.addHandlerEdit(controlEditStructure);
-    deleteStructureView.addDeleteController(controlDeleteStructure);
+    numberStructuresView.updateMasterCheckbox(); //
+    numberStructuresView.addHandlerNumber(controleSelectStructures); //
+    numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures); //
+    editStructureView.addHandlerEdit(controlEditStructure); //
+    editStructureView.addHandlerShowWindow(); //
   } catch (error) {
+    structuresView.unrenderSpinner();
     console.error(error);
+    helpers.renderError('ERREUR !', error.message);
   }
 };
 
 const controlAddStructure = async function (newStructure) {
   try {
-    await model.uploadStructure(newStructure);
-    console.log(model.state.structures.results);
-    await controlLoadStructures();
+    structuresView.renderSpinner('Ajout de la stucture');
+    addStructureView._btnClose.click();
     addStructureView.clearForm();
-    //Close Window
-    setTimeout(function () {
-      addStructureView.toggleWindow();
-    }, MODAL_CLOSE_SEC * 1000);
+    await model.uploadStructure(newStructure);
+    structuresView.unrenderSpinner();
+    await controlLoadStructures();
+  } catch (error) {
+    console.error(error);
+    structuresView.unrenderSpinner();
+    helpers.renderError('ERREUR !', error.message);
+  }
+};
+
+const controlDeleteStructure = function () {
+  try {
+    filterArrayByBooleans(
+      model.state.structures.results,
+      helpers.getCheckboxStates(
+        document
+          .querySelector('.table-structures')
+          .querySelectorAll('input[type="checkbox"]')
+      )
+    ).forEach(async el => {
+      structuresView.renderSpinner(
+        'Suppression de la Structure ' + el.designation + '...'
+      );
+      await model.deleteStructure(el);
+      structuresView.unrenderSpinner();
+      await controlLoadStructures();
+    });
+  } catch (error) {
+    console.error(error);
+    structuresView.unrenderSpinner();
+    helpers.renderError('ERREUR !', error.message);
+  }
+};
+
+const controlEditStructure = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.details-btn-structures'),
+    target
+  );
+  editStructureView.changeInputs(model.state.structures.results[targetIndex]);
+};
+
+const controlUpdateStructure = async function (oldStructure, newStructure) {
+  try {
+    // if (
+    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
+    //     .length === 0
+    // )
+    //   return;
+    console.log(oldStructure, newStructure);
+    console.log(helpers.getUpdateObject(oldStructure, newStructure));
+    if (oldStructure.designation === newStructure.designation) return;
+    structuresView.renderSpinner('Modification de la structure...');
+    await model.updateStructure(oldStructure, newStructure);
+    structuresView.unrenderSpinner();
+    await controlLoadStructures();
   } catch (error) {
     console.error(error);
   }
 };
+editStructureView.addHandlerHideWindow();
+editStructureView.addHandlerUpdate(controlUpdateStructure);
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/////// U S E R S  R E C H E R C H E #fff
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 
 const controlShowUsersEmail = async function () {
   try {
@@ -679,23 +716,6 @@ const controlAddRole = async function (newRole) {
   } catch (err) {
     console.error(err);
   }
-};
-
-const controlDeleteStructure = function () {
-  filterArrayByBooleans(
-    model.state.structures.results,
-    helpers.getCheckboxStates(
-      document
-        .querySelector('.table-structures')
-        .querySelectorAll('input[type="checkbox"]')
-    )
-  ).forEach(async el => {
-    console.log(el);
-    usersView.renderSpinner('Suppression Structure ' + el.designation + '...');
-    await model.deleteStructure(el);
-    // back to main menu
-    await controlLoadStructures();
-  });
 };
 
 function filterArrayByBooleans(dataArray, booleanArray) {
@@ -2831,7 +2851,7 @@ const controlSearchFournisseurs = function () {
 console.log(
   model.state.me.permissions.wellFormed.filter(
     e => e.groupName == 'Statistiques'
-  )[0].permissions
+  )[0]?.permissions
 );
 const controlLoadStatistiques = async () => {
   // const labels = helpers.generateMonthLabels();
@@ -2984,10 +3004,7 @@ editRoleView.addHandlerHideWindow('.cancel-permission-btn', controlReloadPerms);
 // controlShowUsersEmail();
 numberRoleView.addHandlerNumber(controlNumberRoles);
 addStructureView.addHandlerUpload(controlAddStructure);
-numberStructuresView.addHandlerNumber(controlNumber);
-numberStructuresView.addHandlerMasterCheckbox(controleSelectStructures);
-editStructureView.addHandlerShowWindow();
-editStructureView.addHandlerEdit(controlEditStructure);
+
 deleteStructureView.addDeleteController(controlDeleteStructure);
 deleteChapterView.addDeleteController(controlDeleteChapter);
 deleteArticleView.addDeleteController(controlDeleteArticle);

@@ -165,6 +165,8 @@ export const GROUP_DEFINITIONS = {
     'mostdemmandedProduct',
     'commandesStat',
     'consumerMostdemmandedProduct',
+    'bciStat',
+    'bciStructureStat',
   ],
   Notifications: ['read notif', 'read all notif', 'save token'],
 };

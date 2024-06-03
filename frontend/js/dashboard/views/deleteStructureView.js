@@ -32,7 +32,6 @@ class DeleteStructureView extends View {
     const confirmBtn = this._confirm;
     confirmBtn.addEventListener('click', e => {
       e.preventDefault();
-      console.log('CONF');
       closeBtn.click();
       ctrler();
     });

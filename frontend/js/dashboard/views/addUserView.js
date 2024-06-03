@@ -6,7 +6,7 @@ export class AddUserView extends View {
   _window = document.querySelector('.add-user-container');
   _overlay = document.querySelector('.overlayAdd');
   _btnOpen = document.querySelector('.add-users-btn');
-  _btnClose;
+  _btnClose = this._window.querySelector('.edit-btn-save');
   _parentElement = document.querySelector('.add-user-container');
   _form = document.querySelector('.add-user-inputs');
   _inputsContainer = document.querySelector('.groupe-2-add');

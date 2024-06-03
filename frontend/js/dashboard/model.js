@@ -447,6 +447,7 @@ export const getResponsiblesEmail = async function () {
           email: user.email,
           nom: user.nom,
           prenom: user.prenom,
+          role: user.role,
         };
       });
   } catch (error) {
@@ -704,6 +705,7 @@ export const deleteStructure = async function (structure) {
     await helpers.delJSON(`${API_URL}/Users/deleteStructure`, uploadData);
   } catch (error) {
     console.error(error);
+    helpers.renderError('ERREUR !', error.message);
   }
 };
 

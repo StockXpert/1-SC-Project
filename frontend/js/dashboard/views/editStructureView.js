@@ -47,7 +47,6 @@ class EditStructureView extends View {
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', controller);
     });
-
     this._form.addEventListener('submit', e => {});
   }
 
@@ -78,9 +77,8 @@ class EditStructureView extends View {
       const newStructure = {
         designation: formElement.querySelector('#name-structure-edit').value,
       };
-      console.log(this.currStructure, newStructure);
+      this._btnClose.click();
       controller(this.currStructure, newStructure);
-      this.toggleWindow();
     });
   }
 }
