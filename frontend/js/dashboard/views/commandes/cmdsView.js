@@ -34,6 +34,7 @@ export class CmdsView extends UsersView {
     if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
+        console.log('CHANGE');
         const tthis = e.currentTarget;
         if (tthis.checked) {
           helpers.findClosestTrParent(tthis).classList.add('selected-row');
@@ -88,6 +89,7 @@ export class CmdsView extends UsersView {
     this._checkboxes = this._parentElement.querySelectorAll(
       'input[type="checkbox"]'
     );
+
     this.addEventListenerCheckboxesChange();
   }
 

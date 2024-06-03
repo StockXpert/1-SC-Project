@@ -754,7 +754,6 @@ const controlRoleSwitch = (e, selectedIndex) => {
 
 const controlCmdsFilters = filterValuesArr => {
   const beforeFilters = model.state.bdc.afterSearch;
-  console.log(beforeFilters);
   let afterFilters = [];
 
   switch (filterValuesArr[0]) {
@@ -774,7 +773,6 @@ const controlCmdsFilters = filterValuesArr => {
       );
       break;
   }
-  console.log(afterFilters);
   switch (filterValuesArr[1]) {
     case 'all':
       afterFilters = beforeFilters;
@@ -852,6 +850,7 @@ const controlLoadCmds = async function () {
   await model.loadCmds();
   const allCommandes = model.state.bdc.allCommandes;
   cmdsView.render(allCommandes, true, model.state.me.permissions.all);
+  cmdsView.resetPointers();
   seeCmdsView.renderSpinner('Loading articles...');
   seeCmdsView.renderSpinner('Loading fournisseurs...', true);
   if (model.state.me.role == 'Service achat')
@@ -859,7 +858,6 @@ const controlLoadCmds = async function () {
   seeCmdsView.unrenderSpinner(true);
   seeCmdsView.resetPointers();
   seeCmdsView.addSeeController(controlViewCmd);
-  cmdsView.resetPointers();
   bonReceptionView.addHandlerShow(controlLoadBRec);
 };
 
@@ -1183,6 +1181,7 @@ const controlDeleteCmds = async function () {
     .forEach(async bdc => {
       // console.log(bdc.role);
       console.log(bdc);
+      cmdsView.renderSpinner('Suppression de la commande...  ');
       const responseNData = await model.deleteCmd(bdc.num_commande);
       console.log(responseNData);
       if (!responseNData[0].ok) {
@@ -1191,6 +1190,7 @@ const controlDeleteCmds = async function () {
           `Le Bon de Commande que vous voulez supprimer contient deja un bon de réception`
         );
       } else {
+        cmdsView.unrenderSpinner();
         await controlLoadCmds();
       }
       // back to main menu
@@ -1400,34 +1400,42 @@ const controlDeleteStructure = function () {
 */
 
 const controlSavingBDC = async function () {
-  if (model.state.fournisseurs.selected == '') {
-    helpers.renderError(
-      `Erreur lors de l'introduction des données `,
-      `<p class="error-message"><b>Aucun fournisseur n'a été sélectionné.</b></p>
+  try {
+    if (model.state.fournisseurs.selected == '') {
+      helpers.renderError(
+        `Erreur lors de l'introduction des données `,
+        `<p class="error-message"><b>Aucun fournisseur n'a été sélectionné.</b></p>
       <p>Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
-    );
-  } else if (model.state.articles.selected == '') {
-    helpers.renderError(
-      `Erreur lors de l'introduction des données `,
-      `<p class="error-message"><b>Aucun article n'a été sélectionné. </b></p>
+      );
+    } else if (model.state.articles.selected == '') {
+      helpers.renderError(
+        `Erreur lors de l'introduction des données `,
+        `<p class="error-message"><b>Aucun article n'a été sélectionné. </b></p>
       <p class="error-message">Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
-    );
-  } else if (model.state.type.selected == '') {
-    helpers.renderError(
-      `Erreur lors de l'introduction des données `,
-      `<p class="error-message"><b>Aucun chapitre n'a été sélectionné. </b></p>
+      );
+    } else if (model.state.type.selected == '') {
+      helpers.renderError(
+        `Erreur lors de l'introduction des données `,
+        `<p class="error-message"><b>Aucun chapitre n'a été sélectionné. </b></p>
       <p class="error-message">Veuillez vérifier que celui-ci ainsi que le reste des entrées essentielles ont été séléctionnées depuis les menus déroulant qui apparaissent en-dessous des leurs barres de recherche respectifs.</p>`
-    );
-  } else if (model.state.bdc_products.added.length == 0) {
-    helpers.renderError(
-      `Erreur lors de l'introduction des données `,
-      `<p class="error-message"><b>Aucun produit n'a été ajouté au bon de commande.</b></p>
+      );
+    } else if (model.state.bdc_products.added.length == 0) {
+      helpers.renderError(
+        `Erreur lors de l'introduction des données `,
+        `<p class="error-message"><b>Aucun produit n'a été ajouté au bon de commande.</b></p>
       <p class="error-message">Veuillez ajouter les produits souhaités et vérifier s'ils sont affichés dans le tableau des produits.</p`
-    );
-  } else {
-    await model.createBDC();
-    // addCmdsView._boundToggleWindow();
-    await controlLoadCmds();
+      );
+    } else {
+      cmdsView.renderSpinner('Ajout de la commande...');
+      await model.createBDC();
+      cmdsView.unrenderSpinner('');
+      await controlLoadCmds();
+    }
+  } catch (err) {
+    cmdsView.unrenderSpinner('');
+    helpers.renderError('ERROR! ', err);
+    // helpers.renderError('ERROR! ', err.message);
+    console.error(err);
   }
 };
 

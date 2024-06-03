@@ -79,10 +79,10 @@ export class AddCmdsView extends AddUserView {
   }
   //TODO: FORM INSTEAD OF SAVE
   addHandlerSavingBDC(handler, state) {
-    this._save.addEventListener('click', e => {
+    this._save.addEventListener('click', async e => {
       e.preventDefault();
       this._btnClose.click();
-      handler();
+      await handler();
     });
   }
 

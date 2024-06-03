@@ -13,6 +13,7 @@ export class DeleteCmdsView extends DeleteUserView {
         e.preventDefault();
         this.toggleWindow.bind(this)();
       });
+      this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
       this._overlay.addEventListener('click', this.toggleWindow.bind(this));
     }
   }

@@ -784,15 +784,19 @@ export const loadAllProducts = async function () {
 };
 
 export const createBDC = async function () {
-  const postBDCOBJ = {
-    produits: state.bdc_products.added,
-    objet: state.articles.selected,
-    type: state.type.selected,
-    fournisseur: state.fournisseurs.selected,
-    date: helpers.getFormattedDate(),
-  };
-  console.log(postBDCOBJ);
-  await helpers.sendJSON(`${API_URL}/Entrees/bonCommande`, postBDCOBJ);
+  try {
+    const postBDCOBJ = {
+      produits: state.bdc_products.added,
+      objet: state.articles.selected,
+      type: state.type.selected,
+      fournisseur: state.fournisseurs.selected,
+      date: helpers.getFormattedDate(),
+    };
+    console.log(postBDCOBJ);
+    await helpers.sendJSON(`${API_URL}/Entrees/bonCommande`, postBDCOBJ);
+  } catch (err) {
+    throw err;
+  }
 };
 export const createBDCI = async function () {
   const postBDCIOBJ = {

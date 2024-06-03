@@ -174,8 +174,7 @@ export const sendJSON = async function (url, uploadData) {
       timeout(TIMEOUT_SEC),
     ]);
     const data = await res.json();
-
-    // if (!res.ok) throw new Error(`${data.message} (${res.status}`);
+    debugger;
     return data;
   } catch (err) {
     throw err;
