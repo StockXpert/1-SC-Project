@@ -869,9 +869,18 @@ function getDemandeurStructure(numDemande)
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query = `select s.designation from structure where id_structure=(select id_structure where email=
-        select id_demandeur from demande_fourniture where num_demande=?
-    ) `;
+    const query = `SELECT s.designation 
+    FROM structure s 
+    WHERE s.id_structure = (
+        SELECT u.id_structure 
+        FROM utilisateur u 
+        WHERE u.email = (
+            SELECT df.id_demandeur 
+            FROM demande_fourniture df 
+            WHERE df.num_demande = ?
+        )
+    );
+    `;
    
     connection.connect((err) => {
       if (err) {
@@ -880,7 +889,7 @@ function getDemandeurStructure(numDemande)
         return;
       }
       
-      connection.query(query,(error, results, fields) => {
+      connection.query(query,[numDemande],(error, results, fields) => {
         if (error) {
           console.error('Erreur lors de l\'exécution de la requête :', error);
           reject("request error");
