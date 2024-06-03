@@ -1,10 +1,46 @@
 import { UsersView } from '../usersView.js';
 import * as helpers from '../../helpers.js';
-
+function enableBtns(btnsArray) {
+  btnsArray.forEach(btn => {
+    if (btn) {
+      btn.disabled = false;
+      switch (btn.dataset.type) {
+        case 'red':
+          btn.classList.remove('disabled-delete-button');
+          break;
+        case 'blue':
+          btn.classList.remove('disabled-save-button');
+          break;
+        default:
+          btn.classList.remove('disabled-button');
+          break;
+      }
+    }
+  });
+}
+function disableBtns(btnsArray) {
+  btnsArray.forEach(btn => {
+    if (btn) {
+      btn.disabled = true;
+      switch (btn.dataset.type) {
+        case 'red':
+          btn.classList.add('disabled-delete-button');
+          break;
+        case 'blue':
+          btn.classList.add('disabled-save-button');
+          break;
+        default:
+          btn.classList.add('disabled-button');
+          break;
+      }
+    }
+  });
+}
 export class CmdsView extends UsersView {
   constructor() {
     super();
   }
+
   _parentElement = document
     .querySelector('#main-table-bdc')
     .querySelector('.results');
@@ -28,14 +64,90 @@ export class CmdsView extends UsersView {
   _btnDeleteBdc = document.querySelector('.btn-delete-bdc');
   _btnCancelBdc = document.querySelector('.btn-cancel-bdc');
 
+  // addEventListenerCheckboxesChange(handler = '') {
+  //   //TODO:
+  //   this._btnDeleteBdc.disabled = true;
+  //   this._btnCancelBdc.disabled = true;
+  //   if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;
+  //   this._checkboxes.forEach(cbx =>
+  //     cbx.addEventListener('change', e => {
+  //       console.log('CHANGE');
+  //       const tthis = e.currentTarget;
+  //       if (tthis.checked) {
+  //         helpers.findClosestTrParent(tthis).classList.add('selected-row');
+  //         this._checkboxes.forEach(otherCheckbox => {
+  //           if (otherCheckbox !== tthis) {
+  //             helpers
+  //               .findClosestTrParent(otherCheckbox)
+  //               .classList.remove('selected-row');
+  //             otherCheckbox.checked = false;
+  //           }
+  //         });
+  //       } else {
+  //         helpers.findClosestTrParent(tthis).classList.remove('selected-row');
+  //       }
+  //       this._checkedCheckboxes = this._parentElement.querySelectorAll(
+  //         'input[type="checkbox"]:checked'
+  //       );
+  //       if (this._checkedCheckboxes.length === 0) {
+  //         this._btnCancelBdc.disabled = true;
+  //         this._btnDeleteBdc.disabled = true;
+  //         this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
+  //         this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
+  //         this._btnDeleteBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
+  //         this._btnModifyBdc
+  //           ? this._btnModifyBdc.classList.add('disabled-button')
+  //           : ''; // Apply disabled appearance)
+  //       } else if (this._checkedCheckboxes.length === 1) {
+  //         this._btnCancelBdc.disabled = false;
+  //         this._btnDeleteBdc.disabled = false;
+  //         this._btnModifyBdc ? (this._btnModifyBdc.disabled = false) : '';
+  //         this._btnCancelBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
+  //         this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
+  //         this._btnModifyBdc
+  //           ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
+  //           : '';
+  //       } else {
+  //         this._btnCancelBdc.disabled = true;
+  //         this._btnDeleteBdc.disabled = false;
+  //         this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
+  //         this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
+  //         this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
+  //         this._btnModifyBdc
+  //           ? this._btnModifyBdc.classList.add('disabled-button') // Remove disabled appearance
+  //           : '';
+  //       }
+  //     })
+  //   );
+  // }
+
   addEventListenerCheckboxesChange(handler = '') {
-    this._btnDeleteBdc.disabled = true;
-    this._btnCancelBdc.disabled = true;
-    if (this._btnModifyBdc) this._btnModifyBdc.disabled = true;
+    disableBtns([
+      this._btnDeleteBdc,
+      this._btnCancelBdc,
+      // this._btnDeleteInv,
+      // this._btnModifyInv,
+      // this._btnUpdateInv,
+      // this._btnModifyBdci,
+      // this._btnLivrerBdci,
+      // this._btnContinueInv,
+    ]);
+
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
-        console.log('CHANGE');
+        disableBtns([
+          this._btnDeleteBdc,
+          this._btnCancelBdc,
+          // this._btnDeleteInv,
+          // this._btnModifyInv,
+          // this._btnUpdateInv,
+          // this._btnModifyBdci,
+          // this._btnLivrerBdci,
+          // this._btnContinueInv,
+        ]);
         const tthis = e.currentTarget;
+        let etat =
+          this._data[helpers.findNodeIndex(this._checkboxes, tthis)].etat;
         if (tthis.checked) {
           helpers.findClosestTrParent(tthis).classList.add('selected-row');
           this._checkboxes.forEach(otherCheckbox => {
@@ -53,32 +165,63 @@ export class CmdsView extends UsersView {
           'input[type="checkbox"]:checked'
         );
         if (this._checkedCheckboxes.length === 0) {
-          this._btnCancelBdc.disabled = true;
-          this._btnDeleteBdc.disabled = true;
-          this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
-          this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
-          this._btnDeleteBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
-          this._btnModifyBdc
-            ? this._btnModifyBdc.classList.add('disabled-button')
-            : ''; // Apply disabled appearance)
+          disableBtns([
+            this._btnCancelBdc,
+            this._btnDeleteBdc,
+            // this._btnModifyBdci,
+            // this._btnLivrerBdci,
+            // this._btnDeleteInv,
+            // this._btnModifyInv,
+            // this._btnUpdateInv,
+            // this._btnContinueInv,
+          ]);
         } else if (this._checkedCheckboxes.length === 1) {
-          this._btnCancelBdc.disabled = false;
-          this._btnDeleteBdc.disabled = false;
-          this._btnModifyBdc ? (this._btnModifyBdc.disabled = false) : '';
-          this._btnCancelBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
-          this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
-          this._btnModifyBdc
-            ? this._btnModifyBdc.classList.remove('disabled-button') // Remove disabled appearance
-            : '';
-        } else {
-          this._btnCancelBdc.disabled = true;
-          this._btnDeleteBdc.disabled = false;
-          this._btnModifyBdc ? (this._btnModifyBdc.disabled = true) : '';
-          this._btnCancelBdc.classList.add('disabled-delete-button'); // Apply disabled appearance
-          this._btnDeleteBdc.classList.remove('disabled-delete-button'); // Remove disabled appearance
-          this._btnModifyBdc
-            ? this._btnModifyBdc.classList.add('disabled-button') // Remove disabled appearance
-            : '';
+          switch (etat) {
+            case 'en cours':
+              console.log(this._btnCancelBdc, this._btnDeleteBdc);
+              enableBtns([
+                this._btnCancelBdc,
+                this._btnDeleteBdc,
+                // this._btnModifyBdc,
+              ]);
+              break;
+            // case 'prete':
+            //   enableBtns([this._btnLivrerBdci]);
+            //   break;
+            // case 'no valid':
+            //   console.log([this._btnDeleteInv, this._btnModifyInv]);
+            //   enableBtns([this._btnDeleteInv, this._btnModifyInv]);
+            //   break;
+            // case 'valid':
+            //   enableBtns([this._btnUpdateInv]);
+            //   break;
+            // case 'refusee':
+            //   enableBtns([this._btnDeleteBdci]);
+            //   break;
+            // case null:
+            //   console.log('null');
+            //   enableBtns([this._btnDeleteBdci]);
+            //   break;
+            // case 'en cours':
+            //   enableBtns([
+            //     this._btnContinueInv,
+            //     this._btnDeleteInv,
+            //     this._btnModifyInv,
+            //   ]);
+            //   break;
+            default:
+              disableBtns([
+                this._btnCancelBdc,
+                this._btnDeleteBdc,
+                // this._btnModifyBdci,
+                // this._btnLivrerBdci,
+                // this._btnUpdateInv,
+                // this._btnDeleteInv,
+                // this._btnModifyInv,
+                // this._btnContinueInv,
+              ]);
+              break;
+          }
         }
       })
     );
