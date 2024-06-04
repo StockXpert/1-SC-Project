@@ -61,6 +61,13 @@ export const FUSE_OPTIONS_INV = {
   threshold: 0.3,
   keys: ['num_inventaire'],
 };
+export const FUSE_OPTIONS_REF = {
+  isCaseSensitive: false,
+  includeScore: true,
+  shouldSort: true,
+  threshold: 0.3,
+  keys: ['reference'],
+};
 
 export const FUSE_OPTIONS_PROD = {
   isCaseSensitive: false,

@@ -62,6 +62,7 @@ import profileView from './views/profile/profileView.js';
 import editFournisseurView from './views/nomenclatures/fournisseur/editFournisseurView.js';
 import detailFournisseurView from './views/nomenclatures/fournisseur/detailFournisseurView.js';
 import addFournisseurView from './views/nomenclatures/fournisseur/addFournisseurView.js';
+import deleteFournisseurView from './views/nomenclatures/fournisseur/deleteFournisseurView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2076,6 +2077,13 @@ const controlValidateCmdsInt = async () => {
 };
 
 //#0f0 use livrer == mettre a jour (something similar)
+const updateAllProducts = async () => {
+  let allProducts;
+  allProducts = await model.loadAllInvProducts();
+  console.log(allProducts[1]);
+  model.state.allProducts = allProducts[1].response;
+  return allProducts;
+};
 const controlDeliverCmdsInt = async view => {
   let postObj;
   if (
@@ -2109,8 +2117,9 @@ const controlDeliverCmdsInt = async view => {
         Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
       ].num_demande;
     console.log(newArrProducts);
+    await updateAllProducts();
     deliverCmdsExtView.render(newArrProducts);
-    deliverCmdsExtView.resetPointers();
+    deliverCmdsExtView.resetPointers(controlGetRefrenceSearchResults);
   } else {
     //#0f0 HERE (PT 2): this is livrer
     cmdsIntView.renderSpinner(
@@ -2133,7 +2142,21 @@ const controlDeliverCmdsInt = async view => {
     await controlLoadCmdsInt();
   }
 };
-
+const controlGetRefrenceSearchResults = (inputValue, productName) => {
+  // const fuze = model.fuseMakerInv(beforeSearch);
+  console.log(model.state.allProducts);
+  const fuze = model.fuseMakerRef(
+    model.state.allProducts.filter(
+      product => product.produit == 'Duplicopieur - Monochrome - A3'
+    )
+  );
+  const results = fuze.search(inputValue);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  console.log(extractItems(results));
+  return extractItems(results).slice(0, 3);
+};
 const controlDechargerCmdsInt = async dataObj => {
   let postObj = {
     numDemande: model.state.commandesInt.deliver.numDemande,
@@ -2941,7 +2964,7 @@ const controlLoadFournisseurs = async function () {
     detailFournisseurView.addHandlerShowWindow();
     detailFournisseurView.addHandlerHideWindow();
     detailFournisseurView.addHandlerEdit(controlDetailFournisseur);
-    // deleteChapterView.addDeleteController(controlDeleteStructure);
+    deleteFournisseurView.addDeleteController(controlDeleteFournisseur);
   } catch (error) {
     console.error(error);
   }
@@ -2996,12 +3019,33 @@ const controlUpdateFournisseur = async function (
 ) {
   try {
     if (helpers.areValuesEqual(oldFournisseur, newFournisseur)) return;
-    fournisseurView.renderSpinner('Modification de la structure...');
+    editFournisseurView.renderSpinner('Modification du Fournisseur...');
     await model.updateFournisseur(newFournisseur);
+    editFournisseurView.toggleWindow();
     await controlLoadFournisseurs();
   } catch (error) {
     console.error(error);
+    editFournisseurView.unrenderSpinner();
   }
+};
+
+const controlDeleteFournisseur = async function () {
+  filterArrayByBooleans(
+    model.state.fournisseur.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-fournisseur')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    fournisseurView.renderSpinner(
+      'Suppression du Fournisseur ' + el.raison_sociale + '...'
+    );
+    await model.deleteFournisseur(el);
+    // back to main menu
+    await controlLoadFournisseurs();
+  });
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
