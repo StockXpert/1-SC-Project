@@ -2156,34 +2156,40 @@ const controlGetRefrenceSearchResults = (inputValue, productName) => {
   return extractItems(results).slice(0, 3);
 };
 const controlDechargerCmdsInt = async dataObj => {
-  let postObj = {
-    numDemande: model.state.commandesInt.deliver.numDemande,
-    dateDecharge: helpers.getFormattedDate(),
-    numDecharge: dataObj.numDecharge,
-    products: [],
-  };
-  console.log(model.state.commandesInt.deliver.products);
-  dataObj.refrencesArray.forEach((refrence, index) => {
-    postObj.products.push({
-      designation: model.state.commandesInt.deliver.products[index].designation,
-      reference: refrence,
+  try {
+    let postObj = {
+      numDemande: model.state.commandesInt.deliver.numDemande,
+      dateDecharge: helpers.getFormattedDate(),
+      numDecharge: dataObj.numDecharge,
+      products: [],
+    };
+    console.log(model.state.commandesInt.deliver.products);
+    dataObj.refrencesArray.forEach((refrence, index) => {
+      postObj.products.push({
+        designation:
+          model.state.commandesInt.deliver.products[index].designation,
+        reference: refrence,
+      });
     });
-  });
-  cmdsIntView.renderSpinner(
-    `Validation finale de la commande N°${
-      model.state.commandesInt.rendered[
-        Array.from(cmdsIntView._checkboxes).findIndex(
-          cbx => cbx.checked == true
-        )
-      ].num_demande
-    } ...`
-  );
-  if (!(await model.dechargerCmdsInt(postObj))) {
-    sideView.btns[0].click();
-    return;
+    cmdsIntView.renderSpinner(
+      `Validation finale de la commande N°${
+        model.state.commandesInt.rendered[
+          Array.from(cmdsIntView._checkboxes).findIndex(
+            cbx => cbx.checked == true
+          )
+        ].num_demande
+      } ...`
+    );
+    if (!(await model.dechargerCmdsInt(postObj))) {
+      sideView.btns[0].click();
+      return;
+    }
+    cmdsIntView.unrenderSpinner('');
+    await controlLoadCmdsInt();
+  } catch (error) {
+    helpers.renderError('ERREUR', error.message);
+    console.error(error);
   }
-  cmdsIntView.unrenderSpinner('');
-  await controlLoadCmdsInt();
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
