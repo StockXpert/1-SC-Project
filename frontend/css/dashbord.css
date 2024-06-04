@@ -2174,6 +2174,7 @@ table tbody tr:last-child td {
   width: 5px;
   /* height: 5px; */
 }
+
 .roles-cart::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
@@ -2296,6 +2297,7 @@ table tbody tr:last-child td {
 }
 .text-permissions::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 .container-checkboxes-permissions::-webkit-scrollbar {
   width: 5px;
@@ -2307,6 +2309,13 @@ table tbody tr:last-child td {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
+/* 
+.text-permissions::-webkit-scrollbar-thumb:horizontal {
+  width: 1px; Adjust for desired thickness (horizontal)
+  height: 0px;
+  background-color: #ff0000; Darker gray thumb
+  border-radius: 5px; Rounded corners for thumb
+} */
 /* .role-tag {
   display: flex;
   justify-content: center;
