@@ -120,9 +120,6 @@ function isUsedFournisseur(fournisseur) {
         console.log({ length: results.length });
         if (results.length == 0) resolve('');
         else reject('prohibited');
-        console.log({ length: results.length });
-        if (results.length == 0) resolve('');
-        else reject('prohibited');
       });
 
       connection.end(); // Fermer la connexion après l'exécution de la requête
