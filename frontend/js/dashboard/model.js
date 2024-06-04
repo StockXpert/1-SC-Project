@@ -13,6 +13,7 @@ import {
   FUSE_OPTIONS_PROD,
   FUSE_OPTIONS_PROD_INV,
   FUSE_OPTIONS_INV,
+  FUSE_OPTIONS_REF,
 } from './config.js';
 import * as helpers from './helpers.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
@@ -23,6 +24,7 @@ export const state = {
       wellFormed: [],
     },
   },
+  allProducts: [],
   validityMsgs: {
     addbdci: {
       addProduct: {
@@ -215,15 +217,21 @@ export const state = {
   },
 };
 export const getMyPerms = async function () {
-  const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
-  state.me = { ...result.response[0] };
-  const myPerms = JSON.parse(localStorage.getItem('permissions'));
-  state.me.permissions = {
-    all: myPerms,
-    wellFormed: organizePermissionsByGroup(myPerms, false, false),
-  };
-  console.log(state.me);
-  return state.me;
+  try {
+    const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
+    state.me = { ...result.response[0] };
+    const myPerms = JSON.parse(localStorage.getItem('permissions'));
+    state.me.permissions = {
+      all: myPerms,
+      wellFormed: organizePermissionsByGroup(myPerms, false, false),
+    };
+    console.log(state.me);
+    return state.me;
+  } catch (error) {
+    helpers.renderError('API Error in getMyPerms', error.message); // More specific error handling possible
+    // console.error('Error in sendJSON:', error); // Optional for logging detailed errors
+    throw error; // Re-throw for potential global error handling (optional)
+  }
 };
 
 export const updateFilters = function (filterValues, isFilterring) {
@@ -581,6 +589,7 @@ export const fuseMakerProducts = data => {
 export const fuseMakerCmds = data => new Fuse(data, FUSE_OPTIONS_CMDS);
 export const fuseMakerCmdsInt = data => new Fuse(data, FUSE_OPTIONS_CMDSINT);
 export const fuseMakerInv = data => new Fuse(data, FUSE_OPTIONS_INV);
+export const fuseMakerRef = data => new Fuse(data, FUSE_OPTIONS_REF);
 export const fuseMakerProd = data => new Fuse(data, FUSE_OPTIONS_PROD);
 export const fuseMakerProdInv = data => new Fuse(data, FUSE_OPTIONS_PROD_INV);
 

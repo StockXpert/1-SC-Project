@@ -3654,3 +3654,30 @@ select.filters-add-inv option {
   color: #777;
   margin-top: 0.8rem;
 }
+.reference {
+  position: relative;
+}
+
+.suggestions-box {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 25px;
+}
+
+.suggestions-box p {
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions-box p:hover {
+  background-color: #f0f0f0;
+}

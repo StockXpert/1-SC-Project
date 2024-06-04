@@ -66,23 +66,42 @@ import deleteFournisseurView from './views/nomenclatures/fournisseur/deleteFourn
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
-  // document.addEventListener('DOMContentLoaded', () => {
-  sideView.renderSpinner();
-  profileView.renderSpinner('', true);
-  // profileView.renderMini(false);
-  await model.getMyPerms();
-  sideView.render(model.state.me.permissions.wellFormed);
-  profileView.unrenderSpinner(true);
-  profileView.render(model.state.me);
-  profileView.renderMini();
-  sideView.reselectBtns();
-  // sideView.unrenderSpinner();
+  try {
+    // document.addEventListener('DOMContentLoaded', () => {
+    sideView.renderSpinner();
+    profileView.renderSpinner('', true);
+    // profileView.renderMini(false);
+    await model.getMyPerms();
+    sideView.render(model.state.me.permissions.wellFormed);
+    profileView.unrenderSpinner(true);
+    profileView.render(model.state.me);
+    profileView.renderMini();
+    sideView.reselectBtns();
+    // sideView.unrenderSpinner();
+  } catch (error) {
+    sideView.unrenderSpinner();
+    profileView.unrenderSpinner(true);
+    helpers.renderError('ERREUR SERVEUR', error.message); // More specific error handling possible
+    // helpers.renderConfirmWindow()
+    console.error(error); // Optional for logging detailed errors
+  }
+};
+const controlCommandeExterne = newState => {
+  model.state.commandesInt.selected.ext = newState;
 };
 // console.log(model.state);
 // };
+const init = async () => {
+  await controlUpdateMyPerms();
+  addCmdsIntView.addHandlerCheckboxedBtn(
+    '.check-bdd',
+    controlCommandeExterne,
+    model.state.me.role == 'Magasinier'
+  );
+};
+await init();
 
-await controlUpdateMyPerms();
-
+// await controlUpdateMyPerms();
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 // let editUserView = new EditUserView();
@@ -1597,6 +1616,7 @@ const controlLoadCmdsInt = async function () {
 
   // }
   // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
+  addCmdsIntView.restrict(model.state.me.permissions.all);
 };
 
 const controlAddProductBdcInt = newProduct => {
@@ -1881,10 +1901,6 @@ const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
   // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
-const controlCommandeExterne = newState => {
-  model.state.commandesInt.selected.ext = newState;
-};
-
 const controlSavingBDCI = async function () {
   if (model.state.bdci_products.added.length == 0) {
     helpers.renderError(
@@ -2035,7 +2051,7 @@ const controlValidatingCmdsInt = async e => {
   );
   validateCmdsIntView.changeDetails(
     selectedCmdIntProducts,
-    model.state.commandesInt.rendered[targetIndex].num_demande
+    model.state.commandesInt.rendered[targetIndex]
   );
 };
 
@@ -2061,6 +2077,13 @@ const controlValidateCmdsInt = async () => {
 };
 
 //#0f0 use livrer == mettre a jour (something similar)
+const updateAllProducts = async () => {
+  let allProducts;
+  allProducts = await model.loadAllInvProducts();
+  console.log(allProducts[1]);
+  model.state.allProducts = allProducts[1].response;
+  return allProducts;
+};
 const controlDeliverCmdsInt = async view => {
   let postObj;
   if (
@@ -2094,8 +2117,9 @@ const controlDeliverCmdsInt = async view => {
         Array.from(view._checkboxes).findIndex(cbx => cbx.checked == true)
       ].num_demande;
     console.log(newArrProducts);
+    await updateAllProducts();
     deliverCmdsExtView.render(newArrProducts);
-    deliverCmdsExtView.resetPointers();
+    deliverCmdsExtView.resetPointers(controlGetRefrenceSearchResults);
   } else {
     //#0f0 HERE (PT 2): this is livrer
     cmdsIntView.renderSpinner(
@@ -2118,7 +2142,21 @@ const controlDeliverCmdsInt = async view => {
     await controlLoadCmdsInt();
   }
 };
-
+const controlGetRefrenceSearchResults = (inputValue, productName) => {
+  // const fuze = model.fuseMakerInv(beforeSearch);
+  console.log(model.state.allProducts);
+  const fuze = model.fuseMakerRef(
+    model.state.allProducts.filter(
+      product => product.produit == 'Duplicopieur - Monochrome - A3'
+    )
+  );
+  const results = fuze.search(inputValue);
+  function extractItems(data) {
+    return data.map(entry => entry.item);
+  }
+  console.log(extractItems(results));
+  return extractItems(results).slice(0, 3);
+};
 const controlDechargerCmdsInt = async dataObj => {
   let postObj = {
     numDemande: model.state.commandesInt.deliver.numDemande,
@@ -3223,7 +3261,7 @@ addCmdsIntView.addHandlerAddProduct(
   controlAddProductBdcInt,
   model.state.bdci_products
 );
-addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
+// addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
 editCmdsIntView.addHandlerAddProduct(
   controlAddProductBdcIntEdit,
   model.state.bdci_products

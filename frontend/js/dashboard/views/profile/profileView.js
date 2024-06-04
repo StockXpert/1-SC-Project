@@ -86,7 +86,9 @@ class ProfileView extends View {
                   <p>Rôle:</p>
                 </div>
                 <div class="input-groupe-profile input-profile-role">
-                  <input name="role" type="text" class="input name input-profile-role" autocomplete="name" placeholder="Nom" value="Magasinier">
+                  <input name="role" type="text" class="input name input-profile-role" autocomplete="name" placeholder="Nom" value="${
+                    this._data.role
+                  }">
                   <span class="material-icons-sharp input-icon">
                     work_outline
                   </span>

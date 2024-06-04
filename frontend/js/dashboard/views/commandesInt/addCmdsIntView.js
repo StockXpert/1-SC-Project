@@ -19,7 +19,7 @@ export class AddCmdsIntView extends AddCmdsView {
   // _btnsOpenAddProduct;
   // _btnCloseAddProduct;
   // _windowAddProduct;
-  // _restricted = [[this._btnOpen, 'bon commande'], 'none'];
+  _restricted = [['.add-bdci-btn', 'demande fourniture'], 'none'];
   _resultsContainerProduct = document.querySelector(
     '.bdci-product-search-results-container'
   );
@@ -55,12 +55,18 @@ export class AddCmdsIntView extends AddCmdsView {
       // this.addHandlerCheckboxedBtn('.check-bdd');
     }
   }
-  addHandlerCheckboxedBtn(btnClass = '.check-bdd', handler) {
+  addHandlerCheckboxedBtn(
+    btnClass = '.check-bdd',
+    handler, //controlCommandeExterne
+    isONStateForced = false
+  ) {
+    //
     const toggleButton = () => {
       const checkbox = document
         .querySelector(btnClass)
         .querySelector('input[type="checkbox"]');
       const button = document.querySelector(btnClass);
+
       if (checkbox.checked) {
         checkbox.checked = false;
         button.classList.remove('checked');
@@ -70,11 +76,23 @@ export class AddCmdsIntView extends AddCmdsView {
       }
       handler(checkbox.checked);
     };
-    document
-      .querySelector(btnClass)
-      .querySelector('input[type="checkbox"]')
-      .addEventListener('change', toggleButton);
-    document.querySelector(btnClass).addEventListener('click', toggleButton);
+
+    if (isONStateForced) {
+      document.querySelector(btnClass).classList.add('checked');
+      document
+        .querySelector(btnClass)
+        .querySelector('input[type="checkbox"]').checked = true;
+      document
+        .querySelector(btnClass)
+        .querySelector('input[type="checkbox"]').disabled = true;
+      handler(true);
+    } else {
+      document
+        .querySelector(btnClass)
+        .querySelector('input[type="checkbox"]')
+        .addEventListener('change', toggleButton);
+      document.querySelector(btnClass).addEventListener('click', toggleButton);
+    }
   }
 
   // addHandlerCommandeExterne2(handler) {

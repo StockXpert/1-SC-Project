@@ -126,10 +126,10 @@ export class CmdsIntView extends CmdsView {
     ${
       this._role.includes('Directeur')
         ? `
-      <td class="td-verif-bdci-RD">
+      <td class="td-verif-bdci-RD DIR">
         <button class="verif-bdci-RD ${
           result.etat.includes('visee par resp') ||
-          (result.etat.includes('demandee') && result?.exterieur)
+          result.etat.includes('demandee')
             ? ''
             : 'hidden'
         }">

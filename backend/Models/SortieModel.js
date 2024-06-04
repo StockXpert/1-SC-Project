@@ -556,6 +556,7 @@ function getAllDemandes(etat, statement, email, role) {
             : ''
         }`;
       values = [];
+      console.log({ query });
       if (etat === 'en attente' && role != 'Magasinier') values.push(email);
     }
     if (role === 'Magasinier') values.push(email);

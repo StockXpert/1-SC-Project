@@ -14,7 +14,6 @@ export class AddCmdsView extends AddUserView {
   // _btnsOpenAddProduct = this._window.querySelector('.btn-add-product');
   _btnCloseAddProduct;
   _windowAddProduct;
-  _restricted = [[this._btnOpen, 'bon commande'], 'none'];
   _four = document.querySelector('#filter-fournisseur');
   _article = document.querySelector('#filter-article');
   _product = document.querySelector('#bdc-product');
