@@ -114,5 +114,6 @@ export class AddCmdsIntView extends AddCmdsView {
   </tr>
     `;
   }
+  // _restricted = [['.view-btc-btn', 'delete user'], 'none'];
 }
 export default new AddCmdsIntView();

@@ -2033,7 +2033,7 @@ const controlValidatingCmdsInt = async e => {
   );
   validateCmdsIntView.changeDetails(
     selectedCmdIntProducts,
-    model.state.commandesInt.rendered[targetIndex].num_demande
+    model.state.commandesInt.rendered[targetIndex]
   );
 };
 

@@ -69,7 +69,11 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
 
               ${
                 this._role.includes('Directeur')
-                  ? `<td>${product.quantite_accorde}</td>`
+                  ? `<td>${
+                      product.quantite_accorde
+                        ? product.quantite_accorde
+                        : product.quantite_accorde
+                    }</td>`
                   : ``
               }
 
@@ -114,9 +118,10 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
       .forEach(input => helpers.validateIntegerInput(input, input.dataset.max));
   }
 
-  changeHeader() {
+  changeHeader(direct = false) {
     // console.log(this._role);
     this._header.innerHTML = '';
+    console.log(this);
     const html = `
         <th>
           <div class="first-col">
@@ -129,12 +134,7 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
         ${
           this._role.includes('Responsable directe') ||
           this._role.includes('Directeur')
-            ? '<th>Quantité accordée(RD)</th>'
-            : ''
-        }
-        ${
-          this._role.includes('Directeur')
-            ? `<th>Quantité accordée(D)</th>`
+            ? '<th>Quantité accordée(RD)</th> <th>Quantité accordée(D)</th>'
             : ''
         }
         ${
