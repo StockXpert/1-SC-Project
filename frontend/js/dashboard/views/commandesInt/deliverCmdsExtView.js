@@ -11,6 +11,7 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
   _numDecharge = document.querySelector('.input-num-bdd');
   _form = document.querySelector('.bdd-cart');
   _refrences;
+  _suggestions = [];
   _generateMarkup() {
     if (this._data.length == 0) {
       return `<td colspan="2" class="empty-table--products">
@@ -40,7 +41,18 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
     </tr>
     `;
   }
-  resetPointers(inputHandler) {
+  changeWhatsSuggested(handler) {
+    this._refrences.forEach((input, index) => {
+      input.addEventListener('input', e => {
+        this._suggestions[index] = handler(
+          input.value,
+          this._refrences[index].parentElement.previousElementSibling
+            .firstElementChild.firstElementChild.innerHTML
+        );
+      });
+    });
+  }
+  resetPointers(suggestionChangeHandler) {
     document.addEventListener('click', event => {
       if (!event.target.matches('.green-ref')) {
         document.querySelectorAll('.suggestions-box').forEach(box => {
@@ -49,8 +61,12 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
       }
     });
     this._refrences = document.querySelectorAll('.reference .green-ref');
-    this._refrences.forEach(input =>
+    this.changeWhatsSuggested(suggestionChangeHandler);
+    this._suggestions = [];
+    this._refrences.forEach((input, index) => {
+      this._suggestions.push(['']);
       input.addEventListener('input', e => {
+        console.log(this._suggestions);
         console.log(e.target.value);
         const suggestionBox = input.nextElementSibling.nextElementSibling;
         const filter = input.value.toLowerCase();
@@ -59,9 +75,43 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
           suggestionBox.style.display = 'none';
           return;
         }
-      })
-    );
+        if (this._suggestions[index].length == 0) {
+          const suggestionItem = document.createElement('p');
+          suggestionItem.textContent = 'Aucun Résultat';
+          suggestionItem.onclick = () => {
+            input.value = '';
+            suggestionBox.style.display = 'none';
+          };
+          suggestionBox.appendChild(suggestionItem);
+        } else {
+          this._suggestions[index].forEach(suggestion => {
+            const suggestionItem = document.createElement('p');
+            suggestionItem.textContent = suggestion.reference;
+            suggestionItem.onclick = () => {
+              input.value = suggestion.reference;
+              suggestionBox.style.display = 'none';
+            };
+            suggestionBox.appendChild(suggestionItem);
+          });
+        }
+        suggestionBox.style.display =
+          suggestionBox.childElementCount > 0 ? 'block' : 'none';
+        adjustPosition(suggestionBox);
+      });
+    });
+
+    function adjustPosition(box) {
+      const rect = box.getBoundingClientRect();
+      console.log(rect);
+      // console.log(box.getBoundingClientRect());
+      if (rect.bottom > window.innerHeight) {
+        box.style.top = `-${rect.height}px`;
+      } else {
+        box.style.top = '100%';
+      }
+    }
   }
+
   addHandlerDeliver(ctrl) {
     // console.log(this._save);
     this._form.addEventListener('submit', async e => {
