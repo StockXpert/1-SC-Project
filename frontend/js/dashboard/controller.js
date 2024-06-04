@@ -2497,6 +2497,7 @@ const controlValidatingInv = async (e, view = false) => {
 const controlValidateInv = async () => {
   // let appObject = validateCmdsIntView.extractObject();
   // let returnValue;
+  console.log(validateInvView._btnClose);
   validateInvView._btnClose.click();
   invView.renderSpinner(`Validation de l'état de l'inventaire ...`);
   console.log('LIFE', validateInvView._InvNum);

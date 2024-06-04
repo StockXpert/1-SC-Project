@@ -1202,8 +1202,8 @@ export const confirmInv = async function (numInv) {
     }
     return responseArray;
   } catch (err) {
-    console.err(err);
-    helpers.renderError('FATAL ERROR!', `${err}`);
+    console.error(err);
+    helpers.renderError('FATAL ERROR!', `${err.message}`);
   }
   // return postObj;
   // return;

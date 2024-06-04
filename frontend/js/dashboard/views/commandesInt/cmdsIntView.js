@@ -198,6 +198,7 @@ export class CmdsIntView extends CmdsView {
 
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
+        console.log(this._btnUpdateInv);
         disableBtns([
           this._btnDeleteBdci,
           this._btnCancelBdc,
@@ -239,6 +240,7 @@ export class CmdsIntView extends CmdsView {
             this._btnContinueInv,
           ]);
         } else if (this._checkedCheckboxes.length === 1) {
+          console.log(etat);
           switch (etat) {
             case 'demandee':
               enableBtns([
@@ -270,6 +272,9 @@ export class CmdsIntView extends CmdsView {
                 this._btnDeleteInv,
                 this._btnModifyInv,
               ]);
+              break;
+            case 'confirme':
+              enableBtns([this._btnUpdateInv]);
               break;
             default:
               disableBtns([

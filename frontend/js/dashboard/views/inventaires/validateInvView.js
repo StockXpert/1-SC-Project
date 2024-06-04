@@ -16,17 +16,27 @@ export class ValidateInvView extends ValidateCmdsIntView {
   _trueParentElement = this._form;
   _btnOpen = document.querySelectorAll('.verif-inv');
   _role;
-  _btnClose = document.querySelector('.btn-cancel-inv-verif');
+  _btnClose = this._window.querySelector('.btn-cancel-inv-verif');
   _parentElement = document.querySelector('.results-produits-inv-verif');
   _raisonContainer = document.querySelector('#justify-verif');
   _raisons;
   // TODO:
   _btnLivrerBdci = document.querySelector('.btn-maj-inv');
   // _checkboxes;
-  addHandlerHideWindow(CloserClassName, windowClassName) {
+  addHandlerHideWindow(
+    CloserClassName,
+    windowClassName,
+    cancelBtnExists = true
+  ) {
     this._window = document.querySelector(windowClassName);
-    // this._btnClose = this._window.querySelector(CloserClassName);
-    // this._btnClose.addEventListener('click', this._boundToggleWindow);
+    console.log(this._window);
+    if (cancelBtnExists) {
+      this._btnClose = this._window.querySelector(CloserClassName);
+      this._btnClose.addEventListener('click', e => {
+        e.preventDefault();
+        this._boundToggleWindow(e);
+      });
+    }
     this._overlay.addEventListener('click', this._boundToggleWindow);
   }
 
@@ -35,7 +45,8 @@ export class ValidateInvView extends ValidateCmdsIntView {
     if (!nerfed) {
       this.addHandlerHideWindow(
         '.btn-cancel-inv-verif',
-        '.big-container-inv-verif'
+        '.big-container-inv-verif',
+        false
       );
     }
   }
