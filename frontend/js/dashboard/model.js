@@ -1481,3 +1481,16 @@ export async function crushInv(numInventaire) {
     helpers.renderError('FATAL ERROR!', `${err}`);
   }
 }
+
+export const updateFournisseur = async function (newFournisseur) {
+  try {
+    const uploadData = newFournisseur;
+    const data = await helpers.putJSON(
+      `${API_URL}/Nomenclatures/updateFournisseur`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};

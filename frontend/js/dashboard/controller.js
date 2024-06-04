@@ -59,6 +59,8 @@ import deleteArticleView from './views/nomenclatures/articles/deleteArticleView.
 import numberArticlesView from './views/nomenclatures/articles/numberArticlesView.js';
 import addProductsView from './views/nomenclatures/produits/addProductsView.js';
 import profileView from './views/profile/profileView.js';
+import editFournisseurView from './views/nomenclatures/fournisseur/editFournisseurView.js';
+import detailFournisseurView from './views/nomenclatures/fournisseur/detailFournisseurView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2914,9 +2916,12 @@ const controlLoadFournisseurs = async function () {
     // numberChaptersView.addHandlerNumber(controleSelectChapters);
     // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
     fournisseurView.addSearchController(controlSearchFournisseurs);
-    // editArticleView.addHandlerShowWindow();
-    // editArticleView.addHandlerHideWindow();
-    // editChapterView.addHandlerEdit(controlEditArticle);
+    editFournisseurView.addHandlerShowWindow();
+    editFournisseurView.addHandlerHideWindow();
+    editFournisseurView.addHandlerEdit(controlEditFournisseur);
+    detailFournisseurView.addHandlerShowWindow();
+    detailFournisseurView.addHandlerHideWindow();
+    detailFournisseurView.addHandlerEdit(controlDetailFournisseur);
     // deleteChapterView.addDeleteController(controlDeleteStructure);
   } catch (error) {
     console.error(error);
@@ -2930,6 +2935,41 @@ const controlSearchFournisseurs = function () {
   model.state.fournisseur.searched.all = results;
 
   chaptersView.render(model.state.fournisseur.searched.all);
+};
+
+const controlEditFournisseur = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.edit-fournisseur-btn'),
+    target
+  );
+  console.log('targetIndex', targetIndex);
+  console.log(model.state.fournisseur.all[targetIndex]);
+  editFournisseurView.changeInputs(model.state.fournisseur.all[targetIndex]);
+  editFournisseurView.addHandlerUpdate(controlUpdateFournisseur);
+};
+const controlDetailFournisseur = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.details-btn-fournisseur'),
+    target
+  );
+  // console.log(model.state.fournisseur.all[targetIndex]);
+  detailFournisseurView.changeInputs(model.state.fournisseur.all[targetIndex]);
+};
+
+const controlUpdateFournisseur = async function (
+  oldFournisseur,
+  newFournisseur
+) {
+  try {
+    if (helpers.areValuesEqual(oldFournisseur, newFournisseur)) return;
+    fournisseurView.renderSpinner('Modification de la structure...');
+    await model.updateFournisseur(newFournisseur);
+    await controlLoadFournisseurs();
+  } catch (error) {
+    console.error(error);
+  }
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////

@@ -1336,7 +1336,7 @@
                     <td>lamacta</td>
                     <td>192612626</td>
                     <td class="td-view-fournisseur">
-                      <button class="details-btn-fournisseur">
+                      <button class="d">
                         <span class="material-icons-sharp info-icon">
                           info
                         </span>
@@ -3112,7 +3112,7 @@
                 <input
                   name="adresse"
                   type="text"
-                  class="input input-add-name"
+                  class="input input-add-name adresse"
                   placeholder="Entrez l'Adresse"
                 />
                 <ion-icon class="input-icon" name="home-outline"></ion-icon>
@@ -3120,7 +3120,7 @@
               <div class="input-groupe-add">
                 <input
                   name="telephone"
-                  type="number"
+                  type="text"
                   class="input Telephone"
                   autocomplete="Numéro Telephone"
                   placeholder="Entrez Numéro Telephone"
@@ -3132,8 +3132,8 @@
               <div class="input-groupe-add">
                 <input
                   name="fax"
-                  type="number"
-                  class="input"
+                  type="text"
+                  class="input fax"
                   placeholder="Entrez le Fax"
                   autocomplete="Fax"
                 />
@@ -3145,7 +3145,7 @@
                 <input
                   name="nif"
                   type="number"
-                  class="input"
+                  class="input nif"
                   placeholder="Entrez le Nif"
                   autocomplete="new-nifs"
                   required
@@ -3156,7 +3156,7 @@
                 <input
                   name="nis"
                   type="number"
-                  class="input"
+                  class="input nis"
                   placeholder="Entrez le Nis"
                   autocomplete="new-nifs"
                   required
@@ -3167,8 +3167,8 @@
               <div class="input-groupe-add">
                 <input
                   name="numRegistre"
-                  type="number"
-                  class="input"
+                  type="text"
+                  class="input numRegistre"
                   placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
@@ -3179,9 +3179,20 @@
                 <input
                   name="rib"
                   type="text"
-                  class="input"
+                  class="input rib"
                   placeholder="Entrez le Rib"
                   autocomplete="new-rib"
+                  required
+                />
+                <ion-icon class="input-icon" name="card-outline"></ion-icon>
+              </div>
+              <div class="input-groupe-add">
+                <input
+                  name="rip"
+                  type="text"
+                  class="input rip"
+                  placeholder="Entrez le RIP"
+                  autocomplete="new-rip"
                   required
                 />
                 <ion-icon class="input-icon" name="card-outline"></ion-icon>
@@ -3223,7 +3234,7 @@
                   disabled
                   name="adresse"
                   type="text"
-                  class="input input-add-name"
+                  class="input adresse input-add-name"
                   placeholder="Entrez l'Adresse"
                 />
                 <ion-icon class="input-icon" name="home-outline"></ion-icon>
@@ -3232,7 +3243,7 @@
                 <input
                   disabled
                   name="telephone"
-                  type="number"
+                  type="text"
                   class="input Telephone"
                   autocomplete="Numéro Telephone"
                   placeholder="Entrez Numéro Telephone"
@@ -3245,8 +3256,8 @@
                 <input
                   disabled
                   name="fax"
-                  type="number"
-                  class="input"
+                  type="text"
+                  class="input fax"
                   placeholder="Entrez le Fax"
                   autocomplete="Fax"
                 />
@@ -3258,8 +3269,8 @@
                 <input
                   disabled
                   name="nif"
-                  type="number"
-                  class="input"
+                  type="text"
+                  class="input nif"
                   placeholder="Entrez le Nif"
                   autocomplete="new-nifs"
                   required
@@ -3270,8 +3281,8 @@
                 <input
                   disabled
                   name="nis"
-                  type="number"
-                  class="input"
+                  type="text"
+                  class="input nis"
                   placeholder="Entrez le Nis"
                   autocomplete="new-nifs"
                   required
@@ -3283,8 +3294,8 @@
                 <input
                   disabled
                   name="numRegistre"
-                  type="number"
-                  class="input"
+                  type="text"
+                  class="input numRegistre"
                   placeholder="Entrez Numéro du Registre"
                   autocomplete="new-num-registre"
                   required
@@ -3296,7 +3307,7 @@
                   disabled
                   name="rib"
                   type="text"
-                  class="input"
+                  class="input rib"
                   placeholder="Entrez le Rib"
                   autocomplete="new-rib"
                   required

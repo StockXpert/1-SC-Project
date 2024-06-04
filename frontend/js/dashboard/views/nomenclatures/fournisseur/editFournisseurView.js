@@ -3,12 +3,12 @@ import View from '../../view.js';
 class EditFournisseurView extends View {
   _window = document.querySelector('.edit-fournisseur-container');
   _overlay = document.querySelector('.overlayEdit');
-  _btnOpen = document.querySelectorAll('.details-btn-fournisseur');
+  _btnOpen = document.querySelectorAll('.edit-fournisseur-btn');
   _parentElement = document.querySelector('.edit-fournisseur-cart');
   _form = document.querySelector('.edit-fournisseur-inputs');
   _btnClose = this._parentElement.querySelector('.close-btn');
   currTarget;
-  currChapter;
+  currFournisseur;
 
   constructor() {
     super();
@@ -21,7 +21,7 @@ class EditFournisseurView extends View {
 
   addHandlerShowWindow() {
     const btnOpenArray = Array.from(
-      document.querySelectorAll('.details-btn-chapitres')
+      document.querySelectorAll('.edit-fournisseur-btn')
     );
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', e => {
@@ -43,7 +43,7 @@ class EditFournisseurView extends View {
 
   addHandlerEdit(controller) {
     const btnOpenArray = Array.from(
-      document.querySelectorAll('.details-btn-chapitres')
+      document.querySelectorAll('.edit-fournisseur-btn')
     );
     btnOpenArray.forEach(btn => {
       btn.addEventListener('click', controller);
@@ -51,25 +51,43 @@ class EditFournisseurView extends View {
   }
 
   changeInputs(inputValuesObj) {
-    this.currChapter = inputValuesObj;
+    this.currFournisseur = inputValuesObj;
     // Get the form element
-    const formElement = document.querySelector('.edit-chapitre-inputs');
+    const formElement = document.querySelector('.edit-fournisseur-inputs');
+    console.log(inputValuesObj);
     // Create a new FormData object from the form
     // console.log('🚀 ~ EditStructureView ~ changeInputs ~ formData:', formData);
     formElement.querySelector('.raison-social').value =
-      inputValuesObj.raison_social;
+      inputValuesObj.raison_sociale;
+    formElement.querySelector('.adresse').value = inputValuesObj.adresse;
+    formElement.querySelector('.Telephone').value = inputValuesObj.telephone;
+    formElement.querySelector('.fax').value = inputValuesObj.fax;
+    formElement.querySelector('.nif').value = +inputValuesObj.nif;
+    formElement.querySelector('.nis').value = +inputValuesObj.nis;
+    formElement.querySelector('.rib').value = inputValuesObj.rib_ou_rip;
+    formElement.querySelector('.rip').value = inputValuesObj.rib_ou_rip;
+    formElement.querySelector('.numRegistre').value =
+      inputValuesObj.num_registre;
   }
 
   addHandlerUpdate(controller) {
-    const formElement = document.querySelector('.edit-chapitre-inputs');
+    const formElement = document.querySelector('.edit-fournisseur-inputs');
 
     this._form.addEventListener('submit', e => {
       e.preventDefault();
-      const newChapter = {
-        designation: formElement.querySelector('.raison-social').value,
+      const newFournisseur = {
+        raisonSociale: formElement.querySelector('.raison-social').value,
+        nis: formElement.querySelector('.nis').value,
+        nif: formElement.querySelector('.nif').value,
+        rip: formElement.querySelector('.rip').value,
+        rib: formElement.querySelector('.rib').value,
+        numRegistre: formElement.querySelector('.numRegistre').value,
+        fax: formElement.querySelector('.fax').value,
+        telephone: formElement.querySelector('.Telephone').value,
+        adresse: formElement.querySelector('.adresse').value,
       };
-      console.log(this.currChapter, newChapter);
-      controller(this.currChapter, newChapter);
+      console.log(this.currFournisseur, newFournisseur);
+      controller(this.currFournisseur, newFournisseur);
       this.toggleWindow();
     });
   }
