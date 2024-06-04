@@ -1,41 +1,6 @@
 import { UsersView } from '../usersView.js';
 import * as helpers from '../../helpers.js';
-function enableBtns(btnsArray) {
-  btnsArray.forEach(btn => {
-    if (btn) {
-      btn.disabled = false;
-      switch (btn.dataset.type) {
-        case 'red':
-          btn.classList.remove('disabled-delete-button');
-          break;
-        case 'blue':
-          btn.classList.remove('disabled-save-button');
-          break;
-        default:
-          btn.classList.remove('disabled-button');
-          break;
-      }
-    }
-  });
-}
-function disableBtns(btnsArray) {
-  btnsArray.forEach(btn => {
-    if (btn) {
-      btn.disabled = true;
-      switch (btn.dataset.type) {
-        case 'red':
-          btn.classList.add('disabled-delete-button');
-          break;
-        case 'blue':
-          btn.classList.add('disabled-save-button');
-          break;
-        default:
-          btn.classList.add('disabled-button');
-          break;
-      }
-    }
-  });
-}
+
 export class CmdsView extends UsersView {
   constructor() {
     super();

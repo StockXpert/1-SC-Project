@@ -483,6 +483,7 @@ const userViewAdders = function () {
   //Updates the state of the masterCheeck box to match the searchResults
   numberView.updateMasterCheckbox();
   controlNumberRoles();
+  usersView.resetPointers();
 };
 
 // addUserView.addHandlerUpdateSelects(controlAddUserUpdateSelects);

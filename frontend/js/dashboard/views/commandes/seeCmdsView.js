@@ -4,18 +4,13 @@ export class SeeCmdsView extends DeleteUserView {
   _window = document.querySelector('.see-bdc-container');
   _parentElement = document.querySelector('.view-bdc-produits');
   _overlay = document.querySelector('.overlaySeeBdc');
-  _btnOpen;
+  _btnOpen = document.querySelectorAll('.view-btc-btn');
   _btnClose = document.querySelector('.see-bdc-close');
   _trueParentElement = document.querySelector('.see-bdc-container');
   // _confirm = document.querySelector('.cancel-bdc-confirmer');
-  toggleWindow() {
-    console.log(this._overlay);
-    this._overlay.classList.toggle('hidden');
-    this._window.classList.toggle('hidden');
-  }
 
   constructor(nerfed = false) {
-    super();
+    super(true);
     if (!nerfed) {
       this._btnClose.addEventListener('click', e => {
         e.preventDefault();
