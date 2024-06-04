@@ -172,7 +172,10 @@ function deleteFournisseur(req, res) {
             .json({ response: 'prohibited to delete fournisseur' });
         });
     })
-    .catch(() => res.status(403).json({ response: 'forbidden' }));
+    .catch(err => {
+      console.log(err);
+      res.status(403).json({ response: 'forbidden' });
+    });
 }
 function showFournisseurs(req, res) {
   NomenclatureModel.getFournisseurs()
@@ -234,7 +237,8 @@ function updateFournisseur(req, res) {
     .then(() => {
       res.status(200).json({ response: 'fournisseur updated' });
     })
-    .catch(() => {
+    .catch(err => {
+      console.log(err);
       res.status(500).json({ response: 'internal error' });
     });
 }

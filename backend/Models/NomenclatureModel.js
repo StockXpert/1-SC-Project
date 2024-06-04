@@ -102,7 +102,7 @@ function isUsedFournisseur(fournisseur) {
     const query = `select id_fournisseur from fournisseur where raison_sociale=?
     and id_fournisseur in
       (select id_fournisseur from bon_de_commande)`;
-    const values = [article];
+    const values = [fournisseur];
 
     connection.connect(err => {
       if (err) {
@@ -117,6 +117,7 @@ function isUsedFournisseur(fournisseur) {
           reject('request error');
           return;
         }
+        console.log({ length: results.length });
         if (results.length == 0) resolve('');
         else reject('prohibited');
       });
@@ -163,7 +164,7 @@ function updateFournisseur(
     if (telephone) values.push(telephone);
     if (fax) values.push(fax);
     if (numRegistre) values.push(numRegistre);
-    if (rib) values.push(ribRip);
+    if (ribRip) values.push(ribRip);
     if (nif) values.push(nif);
     if (nis) values.push(nis);
     values.push(raisonSociale);
