@@ -33,5 +33,9 @@ router.delete(
   inventaireController.deleteInventaire
 );
 router.put('/update', authMiddleware('update'), inventaireController.update);
-router.put('/confirmInventaire', inventaireController.confirmInventaire);
+router.put(
+  '/confirmInventaire',
+  authMiddleware('confirm inventaire'),
+  inventaireController.confirmInventaire
+);
 module.exports = router;

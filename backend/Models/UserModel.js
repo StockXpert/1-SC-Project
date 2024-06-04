@@ -719,7 +719,7 @@ function getPermissions() {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
 
-    const query = 'select designation from droit_acces';
+    const query = 'select designation from droit_acces where privilegie=false';
     connection.connect(err => {
       if (err) {
         console.error('Erreur de connexion :', err);
