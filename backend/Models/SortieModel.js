@@ -487,6 +487,7 @@ function getAllDemandes(etat,statement,email,role){
         (select email from utilisateur where id_structure=
          (select id_structure from structure where id_resp=?))`:''}`;
          values =[]
+        console.log({query}) 
         if(etat==='en attente'&&role!='Magasinier') values.push(email)
         }
         if(role==='Magasinier') values.push(email)
