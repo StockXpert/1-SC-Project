@@ -14,11 +14,12 @@ function addArticle(chapitre,designation,numArt,tva)
       })
    });
 }
-function addProduct(article,designation,description,quantite,seuil)
+function addProduct(article,designation,description,quantite,seuil,consommable)
 {
     return new Promise((resolve,reject)=>
    {
-    NomenclatureModel.getArticleIdTva(article).then((article)=>{
+   if(article)
+    {NomenclatureModel.getArticleIdTva(article).then((article)=>{
        NomenclatureModel.addProduct(quantite,designation,description,seuil).then(()=>{
         NomenclatureModel.getProductId(designation).then((productId)=>{
            console.log({article})
@@ -34,6 +35,15 @@ function addProduct(article,designation,description,quantite,seuil)
     }).catch(()=>{
         reject("internal error4")
     })
+   }
+   else
+   {
+      NomenclatureModel.addProduct(quantite,designation,description,seuil,consommable).then(()=>{
+         resolve("product added");
+      }).catch(()=>{
+         reject("internal error4")
+     })
+   }
    });
 }
 function deleteArticle(designation)
