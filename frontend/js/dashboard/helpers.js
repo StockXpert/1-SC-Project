@@ -209,7 +209,7 @@ export const putJSON = async function (url, uploadData) {
       throw new Error(
         `${data.message ? data.message : ''} ${data.error} (${res.status})`
       );
-    return data;
+    return [res, data];
   } catch (err) {
     renderError('FATAL ERROR!', `${err.message}`);
     throw err;
