@@ -1496,3 +1496,15 @@ export const updateFournisseur = async function (newFournisseur) {
     console.error(error);
   }
 };
+
+export const addFournisseur = async function (newFournisseur) {
+  try {
+    const res = await helpers.sendJSON(
+      `${API_URL}/Nomenclatures/addFournisseur`,
+      newFournisseur
+    );
+    console.log(res);
+  } catch (error) {
+    console.error('Error addFournisseur :' + error);
+  }
+};

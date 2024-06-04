@@ -61,6 +61,7 @@ import addProductsView from './views/nomenclatures/produits/addProductsView.js';
 import profileView from './views/profile/profileView.js';
 import editFournisseurView from './views/nomenclatures/fournisseur/editFournisseurView.js';
 import detailFournisseurView from './views/nomenclatures/fournisseur/detailFournisseurView.js';
+import addFournisseurView from './views/nomenclatures/fournisseur/addFournisseurView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2930,6 +2931,19 @@ const controlLoadFournisseurs = async function () {
   }
 };
 
+const controlAddFournisseur = async function (newFournisseur) {
+  try {
+    await model.addFournisseur(newFournisseur);
+    await controlLoadFournisseurs();
+    console.log(model.state.fournisseur.all);
+    addFournisseurView.clearForm();
+    //Close Window
+    addFournisseurView.toggleWindow();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const controlSearchFournisseurs = function () {
   const results = model.state.fournisseur.all.filter(product =>
     product.designation.toLowerCase().includes(query.toLowerCase())
@@ -3143,6 +3157,7 @@ deleteRoleView.addDeleteController(controlDeleteRoles);
 addChapterView.addHandlerUpload(controlAddChapter);
 addArticleView.addHandlerUpload(controlAddArticle);
 addProductsView.addHandlerUpload(controlAddProduct);
+addFournisseurView.addHandlerUpload(controlAddFournisseur);
 
 addCmdsView.addHandlerFournisseurSearch(
   controlSearchFournisseursCmds,
