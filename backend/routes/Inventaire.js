@@ -9,5 +9,5 @@ router.post('/showInventaire',authMiddleware('show inventaire'),inventaireContro
 router.put('/updateInventaire',authMiddleware('update inventaire'),inventaireController.updateInventaire);
 router.delete('/deleteInventaire',authMiddleware('delete inventaire'),inventaireController.deleteInventaire);
 router.put('/update',authMiddleware('update'),inventaireController.update);
-router.put('/confirmInventaire',inventaireController.confirmInventaire)
+router.put('/confirmInventaire',authMiddleware('confirm inventaire'),inventaireController.confirmInventaire)
 module.exports=router;
