@@ -98,6 +98,7 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
                     )}`
                   : `${product.quantite - product.seuil}`
               }
+                autocomplete="off"
                 name="quantite"
                 required>
                 <span class="material-icons-sharp">
