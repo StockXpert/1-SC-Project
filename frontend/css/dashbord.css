@@ -1050,13 +1050,15 @@ aside .sidebar a:hover span {
 .table-container-inv-verif,
 .table-container-see-bdci,
 .table-container-bdd {
-  /* width: 65rem; */
   max-height: 49.6vh;
   overflow-y: auto;
   /* border-radius: 20px;
   box-shadow: 0px 2px 4px 0px #00000066; */
 
   transition: all 0.3s ease;
+}
+.table-container-bdd {
+  width: 65rem;
 }
 .table-container-ref {
   width: 65rem;
@@ -3660,7 +3662,7 @@ select.filters-add-inv option {
 
 .suggestions-box {
   display: none;
-  position: absolute;
+  /* position: absolute; */
   top: 100%;
   left: 0;
   right: 0;
@@ -3680,4 +3682,7 @@ select.filters-add-inv option {
 
 .suggestions-box p:hover {
   background-color: #f0f0f0;
+}
+.table-container-bdd table tr {
+  overflow: hidden;
 }
