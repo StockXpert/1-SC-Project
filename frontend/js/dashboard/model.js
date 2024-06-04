@@ -1310,6 +1310,23 @@ export const deleteFournisseur = async function (fournisseur) {
   }
 };
 
+export const deleteProduct = async function (product) {
+  try {
+    const uploadData = { designation: product.designation };
+    const data = await helpers.delJSON(
+      `${API_URL}/Nomenclatures/deleteProduct`,
+      uploadData
+    );
+    if (data.response === 'prohibited to delete product')
+      helpers.renderError(
+        'Erreur de permission',
+        'prohibited to delete product'
+      );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const addArticle = async function (newArticle) {
   try {
     const res = await helpers.sendJSON(
@@ -1345,6 +1362,23 @@ export const updateArticle = async function (oldArticle, newArticle) {
     };
     const data = await helpers.putJSON(
       `${API_URL}/Nomenclatures/updateArticle`,
+      uploadData
+    );
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateProduct = async function (oldProduct, newProduct) {
+  try {
+    const uploadData = {
+      oldDesignation: oldProduct.designation,
+      newDesignation: newProduct.designation,
+      seuil: newProduct.seuil,
+    };
+    const data = await helpers.putJSON(
+      `${API_URL}/Nomenclatures/updateProduct`,
       uploadData
     );
     console.log(data);

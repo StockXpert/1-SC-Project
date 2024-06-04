@@ -2,7 +2,7 @@ import View from '../../view.js';
 
 class DetailFournisseurView extends View {
   _window = document.querySelector('.view-fournisseur-container');
-  _overlay = document.querySelector('.overlayEdit');
+  _overlay = document.querySelector('.overlayDetailFournisseur');
   _btnOpen = document.querySelectorAll('.details-btn-fournisseur');
   _parentElement = document.querySelector('.view-fournisseur-cart');
   _form = document.querySelector('.view-fournisseur-inputs');

@@ -2,7 +2,7 @@ import View from '../../view.js';
 
 class EditFournisseurView extends View {
   _window = document.querySelector('.edit-fournisseur-container');
-  _overlay = document.querySelector('.overlayEdit');
+  _overlay = document.querySelector('.overlayEditFournisseur');
   _btnOpen = document.querySelectorAll('.edit-fournisseur-btn');
   _parentElement = document.querySelector('.edit-fournisseur-cart');
   _form = document.querySelector('.edit-fournisseur-inputs');
