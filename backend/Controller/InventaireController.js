@@ -55,7 +55,7 @@ function update(req,res)
             InventaireModel.updateQuantite(produits).then(()=>{
                 res.status(200).json({response:'updated'})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
-        }).catch(()=>{res.status(500).json({response:'internal error'})})
+        }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
     })
 }
 function showInventaires(req,res)
