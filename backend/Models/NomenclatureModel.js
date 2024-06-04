@@ -330,7 +330,7 @@ function updateArticle(oldDesignation,newDesignation,chapitre,tva)
         ${newDesignation ? 'designation=?' : ''} 
         ${(newDesignation && chapitre) ? ',' : ''} 
         ${chapitre ? 'num_chap=(SELECT num_chap FROM chapitre WHERE designation=?)' : ''} 
-        ${(newTva ? (newDesignation || chapitre ? ',' : '') + 'tva=?' : '')}
+        ${(tva ? (newDesignation || chapitre ? ',' : '') + 'tva=?' : '')}
     WHERE 
         designation=?;`
     let values=[];

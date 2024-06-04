@@ -72,10 +72,11 @@ function deleteArticle(req,res)
             NomenclatureService.deleteArticle(designation).then((response)=>{
                 res.status(200).json({response})
             }).catch((response)=>{
+                console.log(response)
                 res.status(500).json({response})
             })
-        }).catch(()=>{res.status(500).json({response:"prohibited to delete article"})})
-    }).catch(()=>res.status(403).json({response:'forbidden'}))
+        }).catch((err)=>{console.log(err);res.status(500).json({response:"prohibited to delete article"})})
+    }).catch((err)=>{console.log(err);res.status(403).json({response:'forbidden'})})
 }
 function addProduct(req,res)
 {
