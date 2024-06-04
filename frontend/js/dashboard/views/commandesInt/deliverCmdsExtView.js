@@ -100,14 +100,30 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
       });
     });
 
+    //   function adjustPosition(box) {
+    //     const tbodyRect = document
+    //       .querySelector('.results-bdd-produits')
+    //       .getBoundingClientRect();
+    //     const boxRect = box.getBoundingClientRect();
+    //     if (boxRect.bottom > tbodyRect.bottom) {
+    //       box.style.top = `-${boxRect.height}px`;
+    //     } else {
+    //       box.style.top = '70%';
+    //     }
+    //   }
     function adjustPosition(box) {
-      const rect = box.getBoundingClientRect();
-      console.log(rect);
-      // console.log(box.getBoundingClientRect());
-      if (rect.bottom > window.innerHeight) {
-        box.style.top = `-${rect.height}px`;
+      const tdRect = box.parentElement.getBoundingClientRect(); // Get the bounding rectangle of the parent td element
+      const tableRect =
+        box.parentElement.parentElement.parentElement.getBoundingClientRect(); // Get the bounding rectangle of the parent td element
+      const boxRect = box.getBoundingClientRect();
+      console.log(boxRect, tdRect, tableRect);
+      const spaceBelow = tableRect.bottom - tdRect.bottom; // Calculate the space available below the td element
+
+      if (boxRect.height > spaceBelow) {
+        // If the suggestion box height exceeds the available space below the td
+        box.style.top = `-${boxRect.height}px`; // Position it above the input
       } else {
-        box.style.top = '100%';
+        box.style.top = '70%'; // Otherwise, position it below the input
       }
     }
   }
