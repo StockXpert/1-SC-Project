@@ -8,8 +8,6 @@ const btns = document.querySelector('.btns-container');
 const passwordIcon = document.querySelector('.password-icon');
 paragraphElement.className = 'text-err';
 
-import * as model from './dashboard/model.js';
-
 passwordIcon.addEventListener('click', function (e) {
   e.preventDefault();
   if (!password.value) return;

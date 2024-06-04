@@ -56,7 +56,7 @@ class EditArticleView extends View {
   }
 
   changeInputs(inputValuesObj) {
-    this.currChapter = inputValuesObj;
+    this.currArticle = inputValuesObj;
     // Get the form element
     const formElement = document.querySelector('.edit-article-inputs');
     // Create a new FormData object from the form

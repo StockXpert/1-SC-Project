@@ -1338,8 +1338,10 @@ export const deleteArticle = async function (article) {
 export const updateArticle = async function (oldArticle, newArticle) {
   try {
     const uploadData = {
-      oldArticle: oldArticle,
-      newArticle: newArticle,
+      oldDesignation: oldArticle.designation,
+      newDesignation: newArticle.designation,
+      chapitre: newArticle.chapitre,
+      tva: newArticle.tva,
     };
     const data = await helpers.putJSON(
       `${API_URL}/Nomenclatures/updateArticle`,

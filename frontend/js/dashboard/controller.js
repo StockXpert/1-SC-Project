@@ -2927,7 +2927,7 @@ const controlUpdateArticle = async function (oldArticle, newArticle) {
     // ) return;
     // console.log(oldStructure.designation, newStructure.designation);
     // if (oldArticle.designation === newArticle.designation) return;
-    articlesView.renderSpinner("Modification de l'article...");
+    editArticleView.renderSpinner("Modification de l'article...");
     await model.updateArticle(oldArticle, newArticle);
     await controlLoadArticles();
   } catch (error) {
@@ -2987,13 +2987,13 @@ const controlAddFournisseur = async function (newFournisseur) {
   }
 };
 
-const controlSearchFournisseurs = function () {
-  const results = model.state.fournisseur.all.filter(product =>
-    product.designation.toLowerCase().includes(query.toLowerCase())
+const controlSearchFournisseurs = function (query) {
+  const results = model.state.fournisseur.all.filter(fournisseur =>
+    fournisseur.raison_sociale.toLowerCase().includes(query.toLowerCase())
   );
   model.state.fournisseur.searched.all = results;
 
-  chaptersView.render(model.state.fournisseur.searched.all);
+  fournisseurView.render(model.state.fournisseur.searched.all);
 };
 
 const controlEditFournisseur = function () {
@@ -3051,6 +3051,7 @@ const controlDeleteFournisseur = async function () {
     await controlLoadFournisseurs();
   });
 };
+
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////////////// S T A T I S T I Q U E S #fff//////////////////////
