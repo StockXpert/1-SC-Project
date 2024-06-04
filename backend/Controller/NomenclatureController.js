@@ -1,3 +1,4 @@
+const { response } = require('express');
 const NomenclatureModel = require('../Models/NomenclatureModel');
 const NomenclatureService = require('../Services/NomenclatureService');
 function addChapter(req, res) {
@@ -135,7 +136,10 @@ function deleteProduct(req, res) {
           res.status(500).json({ response });
         });
     })
-    .catch(() => res.status(403).json({ response: 'forbidden' }));
+    .catch(err => {
+      console.log(err);
+      res.status(403).json({ response: 'forbidden' });
+    });
 }
 function addFournisseur(req, res) {
   const { raisonSociale, adresse, tel, fax, numRegistre, ribRip, nif, nis } =
@@ -277,6 +281,16 @@ function updateInventaire(req, res) {
       res.status(500).json({ response: 'internal error' });
     });
 }
+function updateProduct(req, res) {
+  const { oldDesignation, newDesignation, seuil } = req.body;
+  NomenclatureModel.updateProduct(oldDesignation, newDesignation, seuil)
+    .then(() => {
+      res.status(200).json({ response: 'updated' });
+    })
+    .catch(() => {
+      res.status(500).json({ response: 'internal error' });
+    });
+}
 module.exports = {
   addArticle,
   addProduct,
@@ -296,4 +310,5 @@ module.exports = {
   updateFournisseur,
   showRefs,
   updateInventaire,
+  updateProduct,
 };
