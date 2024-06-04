@@ -77,11 +77,22 @@ const controlUpdateMyPerms = async function () {
   sideView.reselectBtns();
   // sideView.unrenderSpinner();
 };
+const controlCommandeExterne = newState => {
+  model.state.commandesInt.selected.ext = newState;
+};
 // console.log(model.state);
 // };
+const init = async () => {
+  await controlUpdateMyPerms();
+  addCmdsIntView.addHandlerCheckboxedBtn(
+    '.check-bdd',
+    controlCommandeExterne,
+    model.state.me.role == 'Magasinier'
+  );
+};
+await init();
 
-await controlUpdateMyPerms();
-
+// await controlUpdateMyPerms();
 //controller is the mastermind behind the applciation
 //it orchestrates the entire thing, even the rendering (calls a function from the views that's responsible of rendering and gives it some data fetched by the model's functions to render it (the data as an argument))
 // let editUserView = new EditUserView();
@@ -1881,10 +1892,6 @@ const controlDeleteAddedProductsInt = (view = editCmdsIntView) => {
   // numberRoleView.selectionUpdater('.table-container-bdc-produits');
 };
 
-const controlCommandeExterne = newState => {
-  model.state.commandesInt.selected.ext = newState;
-};
-
 const controlSavingBDCI = async function () {
   if (model.state.bdci_products.added.length == 0) {
     helpers.renderError(
@@ -3202,7 +3209,7 @@ addCmdsIntView.addHandlerAddProduct(
   controlAddProductBdcInt,
   model.state.bdci_products
 );
-addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
+// addCmdsIntView.addHandlerCheckboxedBtn('.check-bdd', controlCommandeExterne);
 editCmdsIntView.addHandlerAddProduct(
   controlAddProductBdcIntEdit,
   model.state.bdci_products

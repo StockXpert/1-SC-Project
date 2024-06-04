@@ -87,7 +87,7 @@ export class CmdsView extends UsersView {
   // }
 
   addEventListenerCheckboxesChange(handler = '') {
-    disableBtns([
+    this.disableBtns([
       this._btnDeleteBdc,
       this._btnCancelBdc,
       // this._btnDeleteInv,
@@ -100,7 +100,7 @@ export class CmdsView extends UsersView {
 
     this._checkboxes.forEach(cbx =>
       cbx.addEventListener('change', e => {
-        disableBtns([
+        this.disableBtns([
           this._btnDeleteBdc,
           this._btnCancelBdc,
           // this._btnDeleteInv,
@@ -130,7 +130,7 @@ export class CmdsView extends UsersView {
           'input[type="checkbox"]:checked'
         );
         if (this._checkedCheckboxes.length === 0) {
-          disableBtns([
+          this.disableBtns([
             this._btnCancelBdc,
             this._btnDeleteBdc,
             // this._btnModifyBdci,
@@ -143,8 +143,7 @@ export class CmdsView extends UsersView {
         } else if (this._checkedCheckboxes.length === 1) {
           switch (etat) {
             case 'en cours':
-              console.log(this._btnCancelBdc, this._btnDeleteBdc);
-              enableBtns([
+              this.enableBtns([
                 this._btnCancelBdc,
                 this._btnDeleteBdc,
                 // this._btnModifyBdc,
@@ -175,7 +174,7 @@ export class CmdsView extends UsersView {
             //   ]);
             //   break;
             default:
-              disableBtns([
+              this.disableBtns([
                 this._btnCancelBdc,
                 this._btnDeleteBdc,
                 // this._btnModifyBdci,
@@ -265,6 +264,5 @@ export class CmdsView extends UsersView {
         </tr>
       `;
   }
-  _restricted = [, 'none'];
 }
 export default new CmdsView();

@@ -215,15 +215,21 @@ export const state = {
   },
 };
 export const getMyPerms = async function () {
-  const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
-  state.me = { ...result.response[0] };
-  const myPerms = JSON.parse(localStorage.getItem('permissions'));
-  state.me.permissions = {
-    all: myPerms,
-    wellFormed: organizePermissionsByGroup(myPerms, false, false),
-  };
-  console.log(state.me);
-  return state.me;
+  try {
+    const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
+    state.me = { ...result.response[0] };
+    const myPerms = JSON.parse(localStorage.getItem('permissions'));
+    state.me.permissions = {
+      all: myPerms,
+      wellFormed: organizePermissionsByGroup(myPerms, false, false),
+    };
+    console.log(state.me);
+    return state.me;
+  } catch (error) {
+    renderError('API Error', error.message); // More specific error handling possible
+    console.error('Error in sendJSON:', error); // Optional for logging detailed errors
+    throw error; // Re-throw for potential global error handling (optional)
+  }
 };
 
 export const updateFilters = function (filterValues, isFilterring) {

@@ -46,7 +46,7 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
     console.log(this._role.includes('Directeur'));
     if (cmd != '') {
       const heading = this._window.querySelector('.verif-bdci-title');
-      heading.innerHTML = `Commande N°${cmd}`;
+      heading.innerHTML = `Commande N°${cmd.num_demande}`;
     }
     console.log("validateCmdsintView's change inputs got called");
     let productsHTML =

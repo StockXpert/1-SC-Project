@@ -119,13 +119,16 @@ export const getJSON = async function (url) {
     //     'content-Type': 'application/json',
     //   },
     // });
+
     const data = await res.json();
     // console.log(data);
     // console.log(res);
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
     return data;
-  } catch (err) {
-    throw err;
+  } catch (error) {
+    renderError('API Error', error.message); // More specific error handling possible
+    console.error('Error in getJSON:', error); // Optional for logging detailed errors
+    throw error; // Re-throw for potential global error handling (optional)
   }
 };
 export const getJSONBody = async function (url, uploadData) {
