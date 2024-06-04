@@ -94,11 +94,6 @@ export class AddCmdsIntView extends AddCmdsView {
       document.querySelector(btnClass).addEventListener('click', toggleButton);
     }
   }
-  checkboxedBtnforceState(btnClass = '.check-bdd', state = true) {
-    document
-      .querySelector(btnClass)
-      .querySelector('input[type="checkbox"]').checked = state;
-  }
 
   // addHandlerCommandeExterne2(handler) {
   //   this._commandeExterne.addEventListener('change', e => {

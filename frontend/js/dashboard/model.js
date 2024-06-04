@@ -226,8 +226,8 @@ export const getMyPerms = async function () {
     console.log(state.me);
     return state.me;
   } catch (error) {
-    renderError('API Error', error.message); // More specific error handling possible
-    console.error('Error in sendJSON:', error); // Optional for logging detailed errors
+    helpers.renderError('API Error in getMyPerms', error.message); // More specific error handling possible
+    // console.error('Error in sendJSON:', error); // Optional for logging detailed errors
     throw error; // Re-throw for potential global error handling (optional)
   }
 };

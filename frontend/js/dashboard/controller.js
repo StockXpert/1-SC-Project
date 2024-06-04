@@ -65,17 +65,25 @@ import addFournisseurView from './views/nomenclatures/fournisseur/addFournisseur
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
-  // document.addEventListener('DOMContentLoaded', () => {
-  sideView.renderSpinner();
-  profileView.renderSpinner('', true);
-  // profileView.renderMini(false);
-  await model.getMyPerms();
-  sideView.render(model.state.me.permissions.wellFormed);
-  profileView.unrenderSpinner(true);
-  profileView.render(model.state.me);
-  profileView.renderMini();
-  sideView.reselectBtns();
-  // sideView.unrenderSpinner();
+  try {
+    // document.addEventListener('DOMContentLoaded', () => {
+    sideView.renderSpinner();
+    profileView.renderSpinner('', true);
+    // profileView.renderMini(false);
+    await model.getMyPerms();
+    sideView.render(model.state.me.permissions.wellFormed);
+    profileView.unrenderSpinner(true);
+    profileView.render(model.state.me);
+    profileView.renderMini();
+    sideView.reselectBtns();
+    // sideView.unrenderSpinner();
+  } catch (error) {
+    sideView.unrenderSpinner();
+    profileView.unrenderSpinner(true);
+    helpers.renderError('ERREUR SERVEUR', error.message); // More specific error handling possible
+    // helpers.renderConfirmWindow()
+    console.error(error); // Optional for logging detailed errors
+  }
 };
 const controlCommandeExterne = newState => {
   model.state.commandesInt.selected.ext = newState;

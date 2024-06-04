@@ -72,7 +72,7 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
                   ? `<td>${
                       product.quantite_accorde
                         ? product.quantite_accorde
-                        : product.quantite_accorde
+                        : `(c'est vous le responsable directe)`
                     }</td>`
                   : ``
               }

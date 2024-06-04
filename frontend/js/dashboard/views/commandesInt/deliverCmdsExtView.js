@@ -35,12 +35,32 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
         <span class="material-icons-sharp">
           drive_file_rename_outline
         </span>
+        <div class="suggestions-box"></div>
       </td>
     </tr>
     `;
   }
-  resetPointers() {
+  resetPointers(inputHandler) {
+    document.addEventListener('click', event => {
+      if (!event.target.matches('.green-ref')) {
+        document.querySelectorAll('.suggestions-box').forEach(box => {
+          box.style.display = 'none';
+        });
+      }
+    });
     this._refrences = document.querySelectorAll('.reference .green-ref');
+    this._refrences.forEach(input =>
+      input.addEventListener('input', e => {
+        console.log(e.target.value);
+        const suggestionBox = input.nextElementSibling.nextElementSibling;
+        const filter = input.value.toLowerCase();
+        suggestionBox.innerHTML = '';
+        if (!filter) {
+          suggestionBox.style.display = 'none';
+          return;
+        }
+      })
+    );
   }
   addHandlerDeliver(ctrl) {
     // console.log(this._save);
@@ -57,6 +77,7 @@ class DeliverCmdsExtView extends ValidateCmdsIntView {
       });
     });
   }
+
   // _header = document.querySelector('.verif-bdci-header');
   // _btnOpen;
   // _role;
