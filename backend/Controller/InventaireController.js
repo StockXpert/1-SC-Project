@@ -81,7 +81,8 @@ function update(req, res) {
             res.status(500).json({ response: 'internal error' });
           });
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err);
         res.status(500).json({ response: 'internal error' });
       });
   });

@@ -639,15 +639,15 @@ function updateQuantite(produits) {
     });
   });
 }
-function countQuantitePhys(year) {
+function countQuantitePhys() {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
 
-    const query = `select p.id_produit , p.designation ,count(r.reference) as quantite_phys
+    const query = `select p.id_produit , p.designation ,count(r.designation) as quantite_phys
     from produit p,reference r where
-    p.id_produit=r.id_produit 
+    p.id_produit=r.id_produit and r.existe=true
     group by p.id_produit , p.designation`;
-    const values = [numInventaire];
+    const values = [];
     connection.connect(err => {
       if (err) {
         console.error('Erreur de connexion :', err);
@@ -668,68 +668,29 @@ function countQuantitePhys(year) {
     });
   });
 }
+
 function deleteRefs(numInventaire) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
+
+    const query = `update reference set existe=false where designation in (select reference from compter where num_inventaire=? and present=false)`;
+    const values = [numInventaire];
     connection.connect(err => {
       if (err) {
-        console.error('Erreur de connexion à la base de données : ', err);
-        reject(err);
+        console.error('Erreur de connexion :', err);
+        reject('connexion erreur');
         return;
       }
-      console.log('Connecté à la base de données MySQL');
 
-      // Commencer la transaction
-      connection.beginTransaction(err => {
-        if (err) {
-          console.error('Erreur lors du démarrage de la transaction : ', err);
-          reject(err);
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Erreur lors de l'exécution de la requête :", error);
+          reject('request error');
           return;
         }
-        console.log('Début de la transaction');
-
-        // Utiliser une boucle asynchrone pour traiter chaque produit
-        async.eachSeries(
-          produits,
-          (produit, callback) => {
-            // Insérer les données dans ma_table avec l'ID produit fourni
-            connection.query(
-              'update reference set existe=? where designation in (select reference from compter where num_inventaire=? and present=false)',
-              [numInventaire],
-              (err, result) => {
-                if (err) {
-                  return callback(err);
-                }
-                callback();
-              }
-            );
-          },
-          err => {
-            if (err) {
-              return connection.rollback(() => {
-                console.error('Erreur lors du traitement des produits : ', err);
-                reject(err);
-              });
-            }
-
-            // Valider la transaction
-            connection.commit(err => {
-              if (err) {
-                return connection.rollback(() => {
-                  console.error(
-                    'Erreur lors de la validation de la transaction : ',
-                    err
-                  );
-                  reject(err);
-                });
-              }
-              console.log('Transaction validée avec succès');
-              resolve('success');
-              connection.end();
-            });
-          }
-        );
+        resolve('success');
       });
+      connection.end(); // Fermer la connexion après l'exécution de la requête
     });
   });
 }
