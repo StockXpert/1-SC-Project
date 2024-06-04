@@ -165,6 +165,8 @@ export const GROUP_DEFINITIONS = {
     'show inventaire',
     'delete inventaire',
     'update inventaire',
+    'confirm invetnaire',
+    'update num inventaire',
   ],
   Statistiques: [
     'articleDemandePerYear',
