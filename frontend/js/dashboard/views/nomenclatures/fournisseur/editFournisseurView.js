@@ -64,8 +64,7 @@ class EditFournisseurView extends View {
     formElement.querySelector('.fax').value = inputValuesObj.fax;
     formElement.querySelector('.nif').value = +inputValuesObj.nif;
     formElement.querySelector('.nis').value = +inputValuesObj.nis;
-    formElement.querySelector('.rib').value = inputValuesObj.rib_ou_rip;
-    formElement.querySelector('.rip').value = inputValuesObj.rib_ou_rip;
+    formElement.querySelector('.ribRip').value = inputValuesObj.rib_ou_rip;
     formElement.querySelector('.numRegistre').value =
       inputValuesObj.num_registre;
   }
@@ -79,8 +78,7 @@ class EditFournisseurView extends View {
         raisonSociale: formElement.querySelector('.raison-social').value,
         nis: formElement.querySelector('.nis').value,
         nif: formElement.querySelector('.nif').value,
-        rip: formElement.querySelector('.rip').value,
-        rib: formElement.querySelector('.rib').value,
+        ribRip: formElement.querySelector('.ribRip').value,
         numRegistre: formElement.querySelector('.numRegistre').value,
         fax: formElement.querySelector('.fax').value,
         telephone: formElement.querySelector('.Telephone').value,
@@ -88,7 +86,7 @@ class EditFournisseurView extends View {
       };
       console.log(this.currFournisseur, newFournisseur);
       controller(this.currFournisseur, newFournisseur);
-      this.toggleWindow();
+      // this.toggleWindow();
     });
   }
 }

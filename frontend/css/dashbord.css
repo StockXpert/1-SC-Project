@@ -1301,7 +1301,7 @@ table tbody tr:last-child td {
   display: block;
   position: fixed;
   z-index: 1000;
-  left: calc(50% + 51.5rem);
+  left: calc(50% + 47.5rem);
   /* left: 89.5%; */
   top: 50%;
   transform: translate(-50%, -50%);
@@ -1881,7 +1881,6 @@ table tbody tr:last-child td {
 .add-bdr-container,
 .show-bdr-container,
 .verif-bdci-container,
-.add-inv-container,
 .see-bdci-container,
 .bdd-container,
 .ref-container {
@@ -1892,6 +1891,15 @@ table tbody tr:last-child td {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+.add-inv-container {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  max-width: 76rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-55%, -50%);
 }
 .add-inv-container-verif {
   display: block;

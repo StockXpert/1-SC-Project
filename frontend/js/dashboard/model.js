@@ -1293,6 +1293,23 @@ export const deleteChapter = async function (chapter) {
   }
 };
 
+export const deleteFournisseur = async function (fournisseur) {
+  try {
+    const uploadData = { raisonSociale: fournisseur.raison_sociale };
+    const data = await helpers.delJSON(
+      `${API_URL}/Nomenclatures/deleteFournisseur`,
+      uploadData
+    );
+    if (data.response === 'prohibited to delete fournisseur')
+      helpers.renderError(
+        'Erreur de permission',
+        'prohibited to delete fournisseur'
+      );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const addArticle = async function (newArticle) {
   try {
     const res = await helpers.sendJSON(
