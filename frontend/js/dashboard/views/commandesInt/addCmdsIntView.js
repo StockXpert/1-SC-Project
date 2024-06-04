@@ -19,7 +19,7 @@ export class AddCmdsIntView extends AddCmdsView {
   // _btnsOpenAddProduct;
   // _btnCloseAddProduct;
   // _windowAddProduct;
-  // _restricted = [[this._btnOpen, 'bon commande'], 'none'];
+  _restricted = [['.add-bdci-btn', 'bon commande'], 'none'];
   _resultsContainerProduct = document.querySelector(
     '.bdci-product-search-results-container'
   );
@@ -114,6 +114,5 @@ export class AddCmdsIntView extends AddCmdsView {
   </tr>
     `;
   }
-  // _restricted = [['.view-btc-btn', 'delete user'], 'none'];
 }
 export default new AddCmdsIntView();

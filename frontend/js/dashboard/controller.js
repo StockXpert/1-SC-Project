@@ -1596,6 +1596,7 @@ const controlLoadCmdsInt = async function () {
 
   // }
   // const searchFilterObject = { $and: [filter1Obj, filter2Obj] };
+  addCmdsIntView.restrict(model.state.me.permissions.all);
 };
 
 const controlAddProductBdcInt = newProduct => {
