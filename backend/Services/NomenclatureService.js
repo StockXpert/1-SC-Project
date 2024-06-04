@@ -49,9 +49,9 @@ function addProduct(article,designation,description,quantite,seuil,consommable)
 function deleteArticle(designation)
 {
     return new Promise((resolve,reject)=>{
-     NomenclatureModel.getArticleId(designation).then((articleId)=>{
-       NomenclatureModel.deleteArticle(articleId).then(()=>{
-         NomenclatureModel.deleteArticleFromC(articleId).then(()=>{
+     NomenclatureModel.getArticleIdTva(designation).then((articleId)=>{
+       NomenclatureModel.deleteArticle(articleId.num_article).then(()=>{
+         NomenclatureModel.deleteArticleFromC(articleId.num_article).then(()=>{
             resolve("article deleted");
          }).catch(()=>{reject("internal error")});
        }).catch(()=>{reject("internal error")});

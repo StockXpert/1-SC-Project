@@ -120,6 +120,9 @@ function isUsedFournisseur(fournisseur) {
         console.log({ length: results.length });
         if (results.length == 0) resolve('');
         else reject('prohibited');
+        console.log({ length: results.length });
+        if (results.length == 0) resolve('');
+        else reject('prohibited');
       });
 
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -338,7 +341,7 @@ function updateArticle(oldDesignation, newDesignation, chapitre, tva) {
             ? 'num_chap=(SELECT num_chap FROM chapitre WHERE designation=?)'
             : ''
         } 
-        ${newTva ? (newDesignation || chapitre ? ',' : '') + 'tva=?' : ''}
+        ${tva ? (newDesignation || chapitre ? ',' : '') + 'tva=?' : ''}
     WHERE 
         designation=?;`;
     let values = [];
