@@ -380,7 +380,9 @@ export const uploadRole = async function (data) {
 
     console.log(resp);
   } catch (err) {
-    console.error(err);
+    // console.error(err);
+    helpers.renderError('ERREUR !', 'Nom du role déja utilisé');
+    // throw err;
   }
 };
 

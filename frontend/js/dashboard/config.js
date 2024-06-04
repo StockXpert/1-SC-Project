@@ -183,6 +183,8 @@ export const GROUP_DEFINITIONS = {
     'consumerMostdemmandedProduct',
     'bciStat',
     'bciStructureStat',
+    'bciConsommateurStat',
+    'respBciStat',
   ],
   Notifications: ['read notif', 'read all notif', 'save token'],
 };

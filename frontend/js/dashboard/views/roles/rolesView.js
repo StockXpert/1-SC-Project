@@ -27,7 +27,7 @@ class RolesView extends UsersView {
     };
     const next2 = function (permission) {
       return `
-      <p>${permission.name}</p>
+      <p>${permission.name ? permission.name : permission.code}</p>
       `;
     };
     return `

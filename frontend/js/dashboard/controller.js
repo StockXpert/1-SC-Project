@@ -485,6 +485,7 @@ const userViewAdders = function () {
   //Updates the state of the masterCheeck box to match the searchResults
   numberView.updateMasterCheckbox();
   controlNumberRoles();
+  usersView.resetPointers();
 };
 
 // addUserView.addHandlerUpdateSelects(controlAddUserUpdateSelects);
@@ -717,6 +718,7 @@ const controlAddRole = async function (newRole) {
     controlLoadRoles();
   } catch (err) {
     console.error(err);
+    helpers.renderError('ERREUR', `Nom du Role déja utilisé, (${err.message})`);
   }
 };
 

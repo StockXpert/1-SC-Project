@@ -49,7 +49,11 @@ class EditPermsView extends EditUserView {
         <div class="checkbox-colomn-permissions">
           <input type="checkbox" class="checkbox-table-permissions" name="${permCode}">
           <p class="colomn-tags-name-permissions">
-            ${permission.name} (${permission.code})
+            ${
+              permission.name
+                ? `${permission.name} (${permission.code})`
+                : `${permission.code}`
+            }
           </p>
         </div>
       `;

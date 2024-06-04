@@ -161,7 +161,6 @@ export const getJSONBody = async function (url, uploadData) {
 
 export const sendJSON = async function (url, uploadData) {
   try {
-    console.log('sendJSON');
     const res = await Promise.race([
       fetch(url, {
         method: 'POST',
@@ -171,15 +170,22 @@ export const sendJSON = async function (url, uploadData) {
         },
         body: JSON.stringify(uploadData),
       }),
-      timeout(TIMEOUT_SEC),
+      timeout(TIMEOUT_SEC), // Assuming timeout function is defined elsewhere
     ]);
+
+    if (!res.ok) {
+      throw new Error(`API request failed with status: ${res.status}`);
+    }
+
     const data = await res.json();
-    debugger;
     return data;
-  } catch (err) {
-    throw err;
+  } catch (error) {
+    renderError('API Error', error.message); // More specific error handling possible
+    console.error('Error in sendJSON:', error); // Optional for logging detailed errors
+    throw error; // Re-throw for potential global error handling (optional)
   }
 };
+
 export const putJSON = async function (url, uploadData) {
   try {
     console.log('putJSON');

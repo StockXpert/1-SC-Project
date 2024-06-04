@@ -67,6 +67,12 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
                   : product.quantite_demande
               }</td>
 
+              ${
+                this._role.includes('Directeur')
+                  ? `<td>${product.quantite_accorde}</td>`
+                  : ``
+              }
+
               <td class="quantity-verif-${
                 this._role.includes('Responsable directe')
                   ? 'RD'
@@ -121,13 +127,14 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
           this._role.includes('Magasinier') ? 'Accodrée' : 'Demandée'
         }</th>
         ${
-          this._role.includes('Responsable directe')
+          this._role.includes('Responsable directe') ||
+          this._role.includes('Directeur')
             ? '<th>Quantité accordée(RD)</th>'
             : ''
         }
         ${
           this._role.includes('Directeur')
-            ? '<th>Quantité accordée(D)</th>'
+            ? `<th>Quantité accordée(D)</th>`
             : ''
         }
         ${

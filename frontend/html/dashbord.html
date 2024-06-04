@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <script defer type="module" src="../js/dashboard/controller.js"></script>
+    <script defer type="module" src="../js/modification.js"></script>
     <!-- <link
       rel="stylesheet"
       href="../../node_modules/flowbite/dist/flowbite.css"
@@ -421,7 +422,7 @@
                 </div>
                 <div class="heading-table-btns">
                   <button
-                    class="heading-table-btn btn-delete btn-delete-user hidden"
+                    class="heading-table-btn btn-delete btn-delete-user hidden" data-type="red"
                   >
                     Supprimer
                   </button>
@@ -2967,8 +2968,67 @@
             </div>
           </div>
         </div>
-
         <!-------------------------- IV- END Statistiques table ---------------------------------->
+        <!-------------------------- IV- BEGIN modifications table ---------------------------------->
+        <div
+          class="main-table-modifications hidden"
+          id="main-table-modificaions"
+        >
+          <div class="heading">
+            <h1>Modifications</h1>
+            <hr class="line-style" />
+          </div>
+
+          <!-- Statistiques principale -->
+          <div class="container-modifications">
+            <div class="modif-logo">
+              <div class="head-modif">
+                <p>Déposer votre nouveau logo :</p>
+              </div>
+              <label class="input-logo" id="drop-area">
+                <input type="file" accept="image/*" id="input-logo" hidden />
+                <div id="img-modif-view">
+                  <span class="material-icons-sharp icon-upload">
+                    upload_file
+                  </span>
+                  <p>
+                    Faire glisser ou cliquez ici <br />pour telecharger votre
+                    image
+                  </p>
+                  <span class="last-span"
+                    >Telecharger n'importe quelle image de votre pc</span
+                  >
+                </div>
+              </label>
+            </div>
+            <div class="modif-preambule">
+              <div class="head-modif">
+                <p>Déposer votre nouveau préambule :</p>
+              </div>
+              <label class="input-preambule" id="drop-area-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="input-preambule"
+                  hidden
+                />
+                <div id="img-modif-view-2">
+                  <span class="material-icons-sharp icon-upload-2">
+                    upload_file
+                  </span>
+                  <p>
+                    Faire glisser ou cliquez ici <br />pour telecharger votre
+                    image
+                  </p>
+                  <span class="last-span-2"
+                    >Telecharger n'importe quelle image de votre pc</span
+                  >
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-------------------------- IV- BEGIN modifications table ---------------------------------->
       </main>
       <!----------- fin du main content for Admin Table----------------------------------------->
       <!--------------------------------- I- BEGIN ADMIN FONCTIONS --------------------------------------->

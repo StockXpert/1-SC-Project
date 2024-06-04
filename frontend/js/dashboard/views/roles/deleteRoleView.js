@@ -8,7 +8,7 @@ class DeleteRoleView extends DeleteUserView {
   _confirm = document.querySelector('.supp-role-confirmer');
 
   constructor() {
-    super();
+    super(true);
     this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
     this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
     this._overlay.addEventListener('click', this.toggleWindow.bind(this));
