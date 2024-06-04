@@ -62,6 +62,7 @@ import profileView from './views/profile/profileView.js';
 import editFournisseurView from './views/nomenclatures/fournisseur/editFournisseurView.js';
 import detailFournisseurView from './views/nomenclatures/fournisseur/detailFournisseurView.js';
 import addFournisseurView from './views/nomenclatures/fournisseur/addFournisseurView.js';
+import deleteFournisseurView from './views/nomenclatures/fournisseur/deleteFournisseurView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2925,7 +2926,7 @@ const controlLoadFournisseurs = async function () {
     detailFournisseurView.addHandlerShowWindow();
     detailFournisseurView.addHandlerHideWindow();
     detailFournisseurView.addHandlerEdit(controlDetailFournisseur);
-    // deleteChapterView.addDeleteController(controlDeleteStructure);
+    deleteFournisseurView.addDeleteController(controlDeleteFournisseur);
   } catch (error) {
     console.error(error);
   }
@@ -2980,12 +2981,33 @@ const controlUpdateFournisseur = async function (
 ) {
   try {
     if (helpers.areValuesEqual(oldFournisseur, newFournisseur)) return;
-    fournisseurView.renderSpinner('Modification de la structure...');
+    editFournisseurView.renderSpinner('Modification du Fournisseur...');
     await model.updateFournisseur(newFournisseur);
+    editFournisseurView.toggleWindow();
     await controlLoadFournisseurs();
   } catch (error) {
     console.error(error);
+    editFournisseurView.unrenderSpinner();
   }
+};
+
+const controlDeleteFournisseur = async function () {
+  filterArrayByBooleans(
+    model.state.fournisseur.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-fournisseur')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    fournisseurView.renderSpinner(
+      'Suppression du Fournisseur ' + el.raison_sociale + '...'
+    );
+    await model.deleteFournisseur(el);
+    // back to main menu
+    await controlLoadFournisseurs();
+  });
 };
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
