@@ -2146,9 +2146,7 @@ const controlGetRefrenceSearchResults = (inputValue, productName) => {
   // const fuze = model.fuseMakerInv(beforeSearch);
   console.log(model.state.allProducts);
   const fuze = model.fuseMakerRef(
-    model.state.allProducts.filter(
-      product => product.produit == 'Duplicopieur - Monochrome - A3'
-    )
+    model.state.allProducts.filter(product => product.produit == productName)
   );
   const results = fuze.search(inputValue);
   function extractItems(data) {
