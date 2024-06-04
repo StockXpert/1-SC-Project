@@ -716,6 +716,7 @@ const controlAddRole = async function (newRole) {
     controlLoadRoles();
   } catch (err) {
     console.error(err);
+    helpers.renderError('ERREUR', `Nom du Role déja utilisé, (${err.message})`);
   }
 };
 
