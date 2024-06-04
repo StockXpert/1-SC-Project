@@ -45,6 +45,7 @@ function checkPermission(permission,role)
       const estInclus = permissions.some(objet => objet.designation === permission);
       console.log({permissions})
       console.log({permission})
+      console.log({estInclus})
       if(estInclus)
          resolve('est inclus')
       else reject('denied')  

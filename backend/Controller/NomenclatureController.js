@@ -97,7 +97,7 @@ function deleteProduct(req,res)
         }).catch((response)=>{
             res.status(500).json({response})
         })
-    }).catch(()=>res.status(403).json({response:'forbidden'}))
+    }).catch((err)=>{console.log(err);res.status(403).json({response:'forbidden'})})
 }
 function addFournisseur(req,res)
 {
