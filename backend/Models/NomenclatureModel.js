@@ -78,7 +78,7 @@ function isUsedProduct(produit)
     and (id_produit in
       (select id_produit from commande) or id_produit in
       (select id_produit from livre) )`;
-    const values = [article];
+    const values = [produit];
 
     connection.connect((err) => {
       if (err) {
@@ -96,6 +96,37 @@ function isUsedProduct(produit)
         if(results.length==0)
            resolve('')
         else reject('prohibited')  
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
+function updateProduct(oldDesignation,newDesignation,seuil)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `update produit set ${seuil?"seuil=?":""} ${seuil&&newDesignation?',':''} ${newDesignation?"designation=?":""} where designation=?`;
+    const values = [];
+    if(seuil) values.push(seuil);
+    if(newDesignation) values.push(newDesignation)
+    values.push(oldDesignation)  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+           resolve('')
+        
       });
 
       connection.end(); // Fermer la connexion après l'exécution de la requête
@@ -966,4 +997,4 @@ module.exports={getChapterId,addArticle,addProduct,getArticleIdTva,getProductId,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
                 ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
               ,deleteChapter,updateArticle,canDeletefourn,updateFournisseur,updateRaisonSociale,
-               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter,getRefs,updateInventaire}
+               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter,getRefs,updateInventaire,updateProduct}
