@@ -67,6 +67,12 @@ export class ValidateCmdsIntView extends EditCmdsIntView {
                   : product.quantite_demande
               }</td>
 
+              ${
+                this._role.includes('Directeur')
+                  ? `<td>${product.quantite_accorde}</td>`
+                  : ``
+              }
+
               <td class="quantity-verif-${
                 this._role.includes('Responsable directe')
                   ? 'RD'
