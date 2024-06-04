@@ -102,13 +102,15 @@ function isUsedProduct(produit)
     });
   });
 }
-function updateSeuil(produit,seuil)
+function updateProduct(oldDesignation,newDesignation,seuil)
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `update produit set seuil=? where designation=?`;
-    const values = [seuil,produit];
-
+    const query = `update produit set ${seuil?"seuil=?":""} ${seuil&&newDesignation?',':''} ${newDesignation?"designation=?":""} where designation=?`;
+    const values = [];
+    if(seuil) values.push(seuil);
+    if(newDesignation) values.push(newDesignation)
+    values.push(oldDesignation)  
     connection.connect((err) => {
       if (err) {
         console.error('Erreur de connexion :', err);
@@ -995,4 +997,4 @@ module.exports={getChapterId,addArticle,addProduct,getArticleIdTva,getProductId,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
                 ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
               ,deleteChapter,updateArticle,canDeletefourn,updateFournisseur,updateRaisonSociale,
-               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter,getRefs,updateInventaire,updateSeuil}
+               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter,getRefs,updateInventaire,updateProduct}
