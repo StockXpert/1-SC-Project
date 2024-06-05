@@ -113,8 +113,9 @@ function mostCommandedProducts(req,res)
 }
 function productDemandePerYear(req,res)
 {
-    const {product,year}=req.body;
-    StatistiqueModel.productDemandePerYear(year,product).then((data)=>{
+    const {produit,year}=req.body;
+    StatistiqueModel.productDemandePerYear(year,produit).then((data)=>{
+        console.log({data})
         if(data.length)
             {data=StatistiqueService.changeDataFormat(data);
             res.status(200).json({response:data})}

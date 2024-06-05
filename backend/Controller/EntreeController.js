@@ -218,9 +218,11 @@ function showBonReception(req, res) {
   const { numCommande } = req.body;
   EntreeModel.getBonReception(numCommande)
     .then(response => {
+      console.log('no err');
       res.status(200).json({ response });
     })
-    .catch(() => {
+    .catch(err => {
+      console.log(err);
       res.status(500).json({ response: 'internal error' });
     });
 }
@@ -238,6 +240,7 @@ function showCommandeProducts(req, res) {
   const { numCommande } = req.body;
   EntreeModel.getCommandeProducts(numCommande)
     .then(response => {
+      console.log('termine');
       res.status(200).json({ response });
     })
     .catch(() => {

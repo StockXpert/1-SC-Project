@@ -3118,11 +3118,6 @@ const controlDeleteFournisseur = async function () {
 /////////////// S T A T I S T I Q U E S #fff//////////////////////
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
-console.log(
-  model.state.me.permissions.wellFormed.filter(
-    e => e.groupName == 'Statistiques'
-  )[0]?.permissions
-);
 
 const setupGraphContainers = async function (statLinks) {
   document.querySelector('.container-mini-carts').innerHTML = '';
@@ -3136,48 +3131,74 @@ const setupGraphContainers = async function (statLinks) {
       let parentElement;
       let options = [];
       let dropdownOptions = '';
+
       //TODO: SPINNER HERE
       statsView.renderSpinner('');
+
       // Fetch dynamic options if required
       if (optionsLink) {
         switch (optionsName) {
-          case 'Article':
-            if (model.state.articles.all.length == 0) {
-              let response = await model.fetchDynamicOptions(optionsLink);
+          case 'article':
+            if (model.state.articles.all.length === 0) {
+              const response = await model.fetchDynamicOptions(optionsLink);
               model.state.articles.all = response;
             }
             options = model.state.articles.all;
             break;
-          case 'Structure':
-            if (model.state.structures.all.length == 0) {
-              let { response } = await model.fetchDynamicOptions(optionsLink);
+          case 'structure':
+            if (model.state.structures.all.length === 0) {
+              const response = await model.fetchDynamicOptions(optionsLink);
               model.state.structures.all = response;
             }
             options = model.state.structures.all;
             break;
-          case 'Fournisseur':
-            if (model.state.fournisseurs.all.length == 0) {
-              let { response } = await model.fetchDynamicOptions(optionsLink);
+          case 'fournisseur':
+            if (model.state.fournisseurs.all.length === 0) {
+              const response = await model.fetchDynamicOptions(optionsLink);
               model.state.fournisseurs.all = response;
             }
             options = model.state.fournisseurs.all;
             break;
-          case 'Produit':
-            model.state.products.all;
-            if (model.state.products.all.length == 0) {
-              let response = await model.fetchDynamicOptions(optionsLink);
+          case 'produit':
+            if (model.state.products.all.length === 0) {
+              const response = await model.fetchDynamicOptions(optionsLink);
               model.state.products.all = response;
             }
             options = model.state.products.all;
             break;
         }
-
         dropdownOptions = options
           .map(
             option =>
               `<option value="${option.designation}">${option.designation}</option>`
           )
           .join('');
+      }
+
+      const currentYear = new Date().getFullYear();
+      const yearOptions = Array.from(
+        { length: currentYear - 2013 + 1 },
+        (_, i) => currentYear - i
+      )
+        .map(year => `<option value="${year}">${year}</option>`)
+        .join('');
+
+      const minDateDebut = '2014-09-14';
+      const maxDateFin = new Date().toISOString().split('T')[0];
+
+      let extraInputsHtml = '';
+      if (optionsPostObj) {
+        optionsPostObj.forEach(option => {
+          if (option === 'year') {
+            extraInputsHtml += `<select class="stat-${option}-input stat-dropdown" data-title="${title}" data-option="${option}">
+                            ${yearOptions}
+                          </select>`;
+          } else if (option === 'dateDebut') {
+            extraInputsHtml += `<input type="date" class="stat-${option}-input stat-dropdown" placeholder="${option}" data-title="${title}" data-option="${option}" min="${minDateDebut}" max="${maxDateFin}" value="${minDateDebut}"/>`;
+          } else if (option === 'dateFin') {
+            extraInputsHtml += `<input type="date" class="stat-${option}-input stat-dropdown" placeholder="${option}" data-title="${title}" data-option="${option}" min="${minDateDebut}" max="${maxDateFin}" value="${maxDateFin}"/>`;
+          }
+        });
       }
 
       switch (size) {
@@ -3187,14 +3208,11 @@ const setupGraphContainers = async function (statLinks) {
               <div class="top-statistiques-cart">
                 <p class="cart-description-statistiques">${title}</p>
               </div>
-              <div
-                class="spinner-parent graph-statistiques spinner-parent ${title.replace(
-                  /\s/g,
-                  ''
-                )}"
-                style="height: 100%; width: 100%; position: static"
-              >
-                
+              <div class="extra-inputs">${extraInputsHtml}</div>
+              <div class="graph-statistiques spinner-parent ${title.replace(
+                /\s/g,
+                ''
+              )} style="height: 100%; width: 100%; position: static">
                 <div class="spinner"></div>
               </div>
             </div>`;
@@ -3206,19 +3224,17 @@ const setupGraphContainers = async function (statLinks) {
               <p class="cart-description-statistiques">${title}</p>
               ${
                 dropdownOptions
-                  ? `<select class="stat-dropdown" data-title="${title}">
-              ${dropdownOptions}
-              </select>`
+                  ? `<select class="stat-dropdown stat-${optionsName}-input" data-title="${title}" data-option="${optionsName}">
+                  ${dropdownOptions}
+                </select>`
                   : ''
               }
-              <div
-                class="spinner-parent graph-statistiques spinner-parent ${title.replace(
-                  /\s/g,
-                  ''
-                )}"
-                style="height: 100%; width: 100%; position: static"
-              >
-                <div class="spinner "></div>
+              <div class="extra-inputs">${extraInputsHtml}</div>
+              <div class="graph-statistiques spinner-parent ${title.replace(
+                /\s/g,
+                ''
+              )}" style="height: 100%; width: 100%; position: static">
+                <div class="spinner"></div>
               </div>
             </div>`;
           parentElement = '.grid-statistiques';
@@ -3231,6 +3247,7 @@ const setupGraphContainers = async function (statLinks) {
                   <p class="cart-description">${title}</p>
                   <ion-icon name="arrow-up-outline" class="statistiques-icons md hydrated" role="img"></ion-icon>
                 </div>
+                <div class="extra-inputs">${extraInputsHtml}</div>
                 <div class="cart-info">
                   <p class="cart-number ${title.replace(/\s/g, '')}">140</p>
                 </div>
@@ -3251,16 +3268,89 @@ const setupGraphContainers = async function (statLinks) {
   }
 };
 
+const setupEventListeners = statLinks => {
+  document
+    .querySelectorAll(
+      '.stat-dropdown, .extra-inputs select, .extra-inputs input'
+    )
+    .forEach(element => {
+      element.addEventListener('change', async event => {
+        const container = event.target.closest('.grid-2, .grid-1, .mini-carts');
+        const { title } = container.querySelector('.stat-dropdown').dataset;
+        console.log(title);
+        const statLink = statLinks.find(
+          link => STAT_LINK_CONFIG[link.code].title === title
+        );
+        const selectedOption = container.querySelector(
+          `.stat-dropdown[data-title="${title}"]`
+        ).value;
+
+        const postObject = {};
+        postObject[STAT_LINK_CONFIG[statLink.code].optionsName] =
+          selectedOption;
+        STAT_LINK_CONFIG[statLink.code].optionsPostObj.forEach(option => {
+          postObject[option] = container.querySelector(
+            `.stat-${option}-input[data-title="${title}"]`
+          ).value;
+        });
+        console.log(postObject);
+        // Validate dateDebut < dateFin
+        const dateDebutInput = container.querySelector('.stat-dateDebut-input');
+        const dateFinInput = container.querySelector('.stat-dateFin-input');
+
+        if (dateDebutInput && dateFinInput) {
+          const dateDebutValue = new Date(dateDebutInput.value);
+          const dateFinValue = new Date(dateFinInput.value);
+
+          if (dateDebutValue >= dateFinValue) {
+            // Force user to input acceptable values
+            dateDebutInput.value = ''; // Clear invalid value
+            dateFinInput.value = ''; // Clear invalid value
+            // alert('Please ensure Date Début is earlier than Date Fin.');
+            return;
+          }
+        }
+        await fetchAndRenderGraphData(statLink.code, postObject);
+      });
+    });
+};
+
+const controlLoadStatistiques = async () => {
+  const statLinks =
+    model.state.me.permissions.wellFormed.filter(
+      e => e.groupName === 'Statistiques'
+    )[0]?.permissions || [];
+
+  // Setup graph containers first
+  await setupGraphContainers(statLinks);
+  setupEventListeners(statLinks);
+
+  // Render data as promises resolve
+  await renderGraphData(statLinks);
+};
+
 const renderGraphData = async function (statLinks) {
   for (const statLink of statLinks) {
     const config = STAT_LINK_CONFIG[statLink.code];
     if (config) {
       const { title, dataName, old, style } = config;
-      const promise = model.getGraphPromise(statLink.code);
+
       const parentElement = '.grid-statistiques';
       const graphElement = document
         .querySelector(parentElement)
         .querySelector(`.${title.replace(/\s/g, '')}`);
+      let postObject = {};
+      const container = graphElement.closest('.grid-2, .grid-1, .mini-carts');
+      config?.optionsPostObj?.forEach(option => {
+        console.log(`.stat-${option}-input[data-title="${title}"]`);
+        postObject[option] = container.querySelector(
+          `.stat-${option}-input[data-title="${title}"]`
+        ).value;
+      });
+      const promise = model.getGraphPromise(
+        statLink.code,
+        postObject ? postObject : null
+      );
       graphElement.innerHTML = `<div class="spinner-parent">
       <div class="spinner small-spinner"></div>
      </div>`;
@@ -3279,7 +3369,6 @@ const renderGraphData = async function (statLinks) {
               dataName
             );
           } else {
-            console.log(style);
             helpers.createChart(
               graphElement.querySelector(`#${title.replace(/\s/g, '')}`),
               results.response,
@@ -3293,7 +3382,6 @@ const renderGraphData = async function (statLinks) {
             dataName
           );
         } else if (style == 'monthly') {
-          console.log(style);
           helpers.createMonthlyChart(
             document
               .querySelector(parentElement)
@@ -3341,6 +3429,7 @@ const fetchAndRenderGraphData = async (statLinkCode, selectedOption) => {
       /\s/g,
       ''
     )}"></canvas>`;
+    console.log(selectedOption, results.response);
     if (style === 'bar') {
       if (old) {
         helpers.createChartOld(
@@ -3349,7 +3438,6 @@ const fetchAndRenderGraphData = async (statLinkCode, selectedOption) => {
           dataName
         );
       } else {
-        console.log(style);
         helpers.createChart(
           graphContainer.querySelector(`#${title.replace(/\s/g, '')}`),
           results.response,
@@ -3363,7 +3451,7 @@ const fetchAndRenderGraphData = async (statLinkCode, selectedOption) => {
         dataName
       );
     } else if (style == 'monthly') {
-      console.log(style);
+      console.log(graphContainer.querySelector(`#${title.replace(/\s/g, '')}`));
       helpers.createMonthlyChart(
         document
           .querySelector(parentElement)
@@ -3379,45 +3467,6 @@ const fetchAndRenderGraphData = async (statLinkCode, selectedOption) => {
       `Configuration for statLink "${statLinkCode}" not found in statLinkConfig.`
     );
   }
-};
-
-const controlLoadStatistiques = async () => {
-  const statLinks =
-    model.state.me.permissions.wellFormed.filter(
-      e => e.groupName === 'Statistiques'
-    )[0]?.permissions || [];
-
-  // Setup graph containers first
-  await setupGraphContainers(statLinks);
-
-  let selectedValues = [];
-  console.log(document.querySelectorAll('.stat-dropdown'));
-  document.querySelectorAll('.stat-dropdown').forEach((dropdown, index) => {
-    selectedValues.push('');
-    dropdown.addEventListener('change', async event => {
-      const targetTitle = event.target.dataset.title;
-
-      const matchedLink = statLinks.find(
-        link => STAT_LINK_CONFIG[link.code].title === targetTitle
-      );
-
-      if (!matchedLink) {
-        console.error(`No stat link found for title: ${targetTitle}`);
-        return;
-      }
-      const statLinkCode = matchedLink.code;
-      selectedValues[index] = event.target.value;
-      let postObj = helpers.arrayToObject(
-        STAT_LINK_CONFIG[matchedLink.code].optionsPostObj,
-        selectedValues
-      );
-      console.log(postObj);
-      await fetchAndRenderGraphData(statLinkCode, postObj);
-    });
-  });
-
-  // Render data as promises resolve
-  await renderGraphData(statLinks);
 };
 
 //////////////////////////////////////////////////////////////////

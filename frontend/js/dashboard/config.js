@@ -1,5 +1,5 @@
 export const API_URL = 'http://localhost:3000';
-export const TIMEOUT_SEC = 30;
+export const TIMEOUT_SEC = 600;
 export const MODAL_CLOSE_SEC = 2.5;
 export const FUSE_OPTIONS = {
   isCaseSensitive: false,
@@ -386,7 +386,7 @@ export const STAT_LINK_CONFIG = {
     dataName: 'Articles',
     old: false,
     style: 'monthly',
-    optionsName: 'Article',
+    optionsName: 'article',
     optionsLink: '/Nomenclatures/showArticles',
     optionsPostObj: ['article', 'year'],
     input: 'date',
@@ -394,7 +394,7 @@ export const STAT_LINK_CONFIG = {
   rapidFournisseur: {
     title: 'Fournisseurs Rapides',
     size: 'g2',
-    dataName: 'Fournisseurs',
+    dataName: 'fournisseur',
     old: false,
     style: 'bar',
   },
@@ -418,7 +418,7 @@ export const STAT_LINK_CONFIG = {
     dataName: 'Demandes',
     old: false,
     style: 'bar',
-    optionsName: 'Produit',
+    optionsName: 'produit',
     optionsLink: '/Nomenclatures/showProducts',
     optionsPostObj: ['produit'],
     input: 'date',
@@ -428,7 +428,11 @@ export const STAT_LINK_CONFIG = {
     size: 'g2',
     dataName: 'Produits',
     old: false,
-    style: 'bar',
+    optionsName: 'produit',
+    optionsLink: '/Nomenclatures/showProducts',
+    optionsPostObj: ['produit', 'year'],
+    style: 'monthly',
+    input: 'date',
   },
   structureMostdemmandedProduct: {
     title: 'Produits les Plus Demandés par Structure',
@@ -436,6 +440,10 @@ export const STAT_LINK_CONFIG = {
     dataName: 'Produits',
     old: false,
     style: 'bar',
+    optionsName: 'structure',
+    optionsLink: '/Users/showStructure',
+    optionsPostObj: ['structure', 'dateDebut', 'dateFin'],
+    input: 'date',
   },
   structureTopDemandeurs: {
     title: 'Structures Top Demandeurs',
@@ -443,6 +451,9 @@ export const STAT_LINK_CONFIG = {
     dataName: 'Demandes',
     old: false,
     style: 'bar',
+    optionsName: 'structure',
+    optionsLink: '/Users/showStructure',
+    optionsPostObj: ['structure'],
   },
   mostCommandedProducts: {
     title: 'Les Produits Les Plus Commandés',
@@ -500,6 +511,10 @@ export const STAT_LINK_CONFIG = {
     old: false,
     style: 'pie',
     options: 'structures',
+    optionsName: 'structure',
+    optionsLink: '/Users/showStructure',
+    optionsPostObj: ['structure'],
+    input: 'date',
   },
   respBciStat: {
     title: 'Statistiques BCI par Responsable',

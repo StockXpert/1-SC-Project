@@ -911,9 +911,42 @@ export const createChartOld = (ctx, dataFromBack, dataName) => {
 // helpers.js
 
 export function createChart(ctx, response, dataName) {
+  // Check if ctx is defined and has the required properties
+  ctx = ctx.getContext('2d');
+  if (!ctx || !ctx.canvas) {
+    console.error('Canvas context is not properly defined.');
+    return;
+  }
+
   const data = response.dataSet;
-  const shortLabels = response.id; // Assuming these are the shorter labels
+  const shortLabels =
+    response?.id?.length != 0
+      ? response.id
+      : response.labels.map((label, ind) => ind + 1); // Assuming these are the shorter labels
   const fullLabels = response.labels; // Assuming these are the full labels
+
+  if (!data || data.length === 0) {
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // ctx.font = "16px normal 'Helvetica Nueue'";
+    // ctx.textAlign = 'center';
+    // ctx.textBaseline = 'middle';
+    // ctx.fillText(
+    //   'Pas de données disponibles',
+    //   ctx.canvas.width / 2,
+    //   ctx.canvas.height / 2
+    // );
+    ctx.save();
+    console.log(ctx.canvas.width / 2);
+    console.log(ctx.canvas.height / 2);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '30px Arial';
+    ctx.textRendering = 'geometricPrecision';
+    ctx.fillText('Pas de données', ctx.canvas.width / 2, ctx.canvas.height / 2);
+    ctx.restore();
+    return;
+  }
+
   new Chart(ctx, {
     type: 'bar', // or 'line', 'pie', etc.
     data: {
@@ -954,11 +987,10 @@ export function createChart(ctx, response, dataName) {
 }
 
 export function createMonthlyChart(ctx, response, dataName) {
-  // const data = response.dataSet;
-  const data = [739, 271, 38];
-  // const labels = response.labels; // Use these labels for x-axis and tooltips
-  const labels = ['April', 'May', 'June']; // Use these labels for x-axis and tooltips
-  console.log(dataName);
+  const data = response.dataSet;
+  // const data = [739, 271, 38];
+  const labels = response.labels; // Use these labels for x-axis and tooltips
+  // const labels = ['April', 'May', 'June']; // Use these labels for x-axis and tooltips
 
   new Chart(ctx, {
     type: 'bar', // or 'line', 'pie', etc.
@@ -1068,7 +1100,6 @@ export function createPieChart(ctx, response, dataName) {
   // Check if labels and data are populated correctly
   // console.log(labels); // Debug: Print labels to console
   // console.log(data); // Debug: Print data to console
-  console.log(data);
   new Chart(ctx, {
     type: 'pie',
     data: {
