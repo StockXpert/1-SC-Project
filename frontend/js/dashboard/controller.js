@@ -2848,8 +2848,11 @@ const controlUpdateProduit = async function (oldProduct, newProduct) {
     // if (oldProduct.designation === newProduct.designation) return;
     editProductView.renderSpinner('Modification du produit...');
     await model.updateProduct(oldProduct, newProduct);
+    editProductView.unrenderSpinner();
+    editProductView.toggleWindow();
     await controlLoadProducts();
   } catch (error) {
+    editProductView.unrenderSpinner();
     console.error(error);
   }
 };
