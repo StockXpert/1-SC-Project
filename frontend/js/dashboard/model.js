@@ -146,6 +146,7 @@ export const state = {
   structures: {
     results: [],
     selected: 0,
+    all: [],
   },
   inventaires: {
     all: {},

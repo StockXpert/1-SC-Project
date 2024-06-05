@@ -3120,24 +3120,54 @@ console.log(
   )[0]?.permissions
 );
 
-const setupGraphContainers = function (statLinks) {
+const setupGraphContainers = async function (statLinks) {
   document.querySelector('.container-mini-carts').innerHTML = '';
   document.querySelector('.grid-statistiques').innerHTML = '';
-  statLinks.forEach(async statLink => {
+
+  for (const statLink of statLinks) {
     const config = STAT_LINK_CONFIG[statLink.code];
     if (config) {
-      const { title, size, optionsName, optionsLink, input } = config;
+      const { title, size, optionsName, optionsLink } = config;
       let html;
       let parentElement;
-      let options;
-      let dropdownOptions;
+      let options = [];
+      let dropdownOptions = '';
+
       // Fetch dynamic options if required
       if (optionsLink) {
-        config.options = await model.fetchDynamicOptions(optionsLink);
-        options = config.options || [];
-        console.log(options);
+        switch (optionsName) {
+          case 'Article':
+            if (model.state.articles.all.length == 0) {
+              let { response } = await model.fetchDynamicOptions(optionsLink);
+              model.state.articles.all = response;
+            }
+            break;
+          case 'Structure':
+            if (model.state.structures.all.length == 0) {
+              let { response } = await model.fetchDynamicOptions(optionsLink);
+              model.state.structures.all = response;
+            }
+            break;
+          case 'Fournisseur':
+            if (model.state.fournisseurs.all.length == 0) {
+              let { response } = await model.fetchDynamicOptions(optionsLink);
+              model.state.fournisseurs.all = response;
+            }
+            break;
+          case 'Produit':
+            model.state.products.all;
+            if (model.state.products.all.length == 0) {
+              let { response } = await model.fetchDynamicOptions(optionsLink);
+              model.state.products.all = response;
+            }
+            break;
+        }
+        options = model.state.products.all;
         dropdownOptions = options
-          .map(option => `<option value="${option}">${option}</option>`)
+          .map(
+            option =>
+              `<option value="${option.designation}">${option.designation}</option>`
+          )
           .join('');
       }
 
@@ -3149,39 +3179,39 @@ const setupGraphContainers = function (statLinks) {
                 <p class="cart-description-statistiques">${title}</p>
               </div>
               <div
-              class="graph-statistiques spinner-parent ${title.replace(
-                /\s/g,
-                ''
-              )}"
-              style="height: 100%; width: 100%; position: static"
-            >
-              <div class="spinner"></div>
-            </div>
+                class="graph-statistiques spinner-parent ${title.replace(
+                  /\s/g,
+                  ''
+                )}"
+                style="height: 100%; width: 100%; position: static"
+              >
+                <div class="spinner"></div>
+              </div>
             </div>`;
           parentElement = '.grid-statistiques';
           break;
         case 'g2':
           html = `
-            <div class="grid-2" style="min-height: 317px;"> <!-- Set the min-height here -->
-            <p class="cart-description-statistiques">${title}</p>
-            <select class="stat-dropdown" data-title="${optionsName}">
-            ${dropdownOptions}
-            </select> 
-            <div
-            class="graph-statistiques spinner-parent ${title.replace(
-              /\s/g,
-              ''
-            )}"
-            style="height: 100%; width: 100%; position: static" 
-          >
-            <div class="spinner"></div>
-            </div>
+            <div class="grid-2" style="min-height: 317px;">
+              <p class="cart-description-statistiques">${title}</p>
+              <select class="stat-dropdown" data-title="${optionsName}">
+                ${dropdownOptions}
+              </select>
+              <div
+                class="graph-statistiques spinner-parent ${title.replace(
+                  /\s/g,
+                  ''
+                )}"
+                style="height: 100%; width: 100%; position: static"
+              >
+                <div class="spinner"></div>
+              </div>
             </div>`;
           parentElement = '.grid-statistiques';
           break;
         case 'mini':
           html = `
-            <div class="mini-carts ">
+            <div class="mini-carts">
               <div class="cart">
                 <div class="cart-title">
                   <p class="cart-description">${title}</p>
@@ -3203,61 +3233,61 @@ const setupGraphContainers = function (statLinks) {
         `Configuration for statLink "${statLink.code}" not found in statLinkConfig.`
       );
     }
-  });
+  }
 };
 
 const renderGraphData = async function (statLinks) {
   for (const statLink of statLinks) {
     const config = STAT_LINK_CONFIG[statLink.code];
     if (config) {
-      const { title, size, dataName, old, style } = config;
+      const { title, dataName, old, style } = config;
       const promise = model.getGraphPromise(statLink.code);
       const results = await promise;
       const parentElement = '.grid-statistiques';
-      document
+      const graphElement = document
         .querySelector(parentElement)
-        .querySelector(
-          `.${title.replace(/\s/g, '')}`
-        ).innerHTML = `<canvas id="${title.replace(/\s/g, '')}"></canvas>`;
-      if (style === 'bar') {
-        if (old) {
-          helpers.createChartOld(
-            document
-              .querySelector(parentElement)
-              .querySelector(`.${title.replace(/\s/g, '')}`)
-              .querySelector(`#${title.replace(/\s/g, '')}`),
-            results.response,
-            dataName
-          );
-        } else {
-          helpers.createChart(
-            document
-              .querySelector(parentElement)
-              .querySelector(`.${title.replace(/\s/g, '')}`)
-              .querySelector(`#${title.replace(/\s/g, '')}`),
+        .querySelector(`.${title.replace(/\s/g, '')}`);
+
+      if (graphElement) {
+        graphElement.innerHTML = `<canvas id="${title.replace(
+          /\s/g,
+          ''
+        )}"></canvas>`;
+
+        if (style === 'bar') {
+          if (old) {
+            helpers.createChartOld(
+              graphElement.querySelector(`#${title.replace(/\s/g, '')}`),
+              results.response,
+              dataName
+            );
+          } else {
+            helpers.createChart(
+              graphElement.querySelector(`#${title.replace(/\s/g, '')}`),
+              results.response,
+              dataName
+            );
+          }
+        } else if (style === 'pie') {
+          helpers.createPieChart(
+            graphElement.querySelector(`#${title.replace(/\s/g, '')}`),
             results.response,
             dataName
           );
         }
-      } else if (style === 'pie') {
-        helpers.createPieChart(
-          document
-            .querySelector(parentElement)
-            .querySelector(`.${title.replace(/\s/g, '')}`)
-            .querySelector(`#${title.replace(/\s/g, '')}`),
-          results.response,
-          dataName
-        );
-      }
-      document
-        .querySelector(parentElement)
-        .querySelectorAll('.grid-2')
-        .forEach(elem => (elem.style.height = 'auto'));
 
-      // Add loaded class for animation
-      document
-        .querySelector(`.${title.replace(/\s/g, '')}`)
-        .classList.add('loaded');
+        document
+          .querySelector(parentElement)
+          .querySelectorAll('.grid-2')
+          .forEach(elem => {
+            elem.style.height = 'auto';
+          });
+
+        // Add loaded class for animation
+        graphElement.classList.add('loaded');
+      } else {
+        console.error(`Graph element for ${title} not found.`);
+      }
     } else {
       console.error(
         `Configuration for statLink "${statLink.code}" not found in statLinkConfig.`
@@ -3267,14 +3297,16 @@ const renderGraphData = async function (statLinks) {
 };
 
 const controlLoadStatistiques = async () => {
-  let statLinks = model.state.me.permissions.wellFormed.filter(
-    e => e.groupName == 'Statistiques'
-  )[0]?.permissions;
+  const statLinks =
+    model.state.me.permissions.wellFormed.filter(
+      e => e.groupName === 'Statistiques'
+    )[0]?.permissions || [];
+
   // Setup graph containers first
-  setupGraphContainers(statLinks);
+  await setupGraphContainers(statLinks);
 
   // Render data as promises resolve
-  renderGraphData(statLinks);
+  await renderGraphData(statLinks);
 };
 
 //////////////////////////////////////////////////////////////////
