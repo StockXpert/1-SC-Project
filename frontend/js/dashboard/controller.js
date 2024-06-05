@@ -465,18 +465,15 @@ const controlDeleteUsers = function (containerClass = '.results') {
         .querySelectorAll('input[type="checkbox"]')
     )
   ).forEach(async el => {
-    console.log(el);
     usersView.renderSpinner(
       "Suppression de l'utilisateur " + el.nom + ' ' + el.prenom + '...'
     );
-    console.log({
-      email: el.email,
-    });
     await helpers.delJSON(`${API_URL}/Users/deleteUser`, {
       email: el.email,
     });
+    usersView.unrenderSpinner();
     // back to main menu
-    controlSearchResults();
+    await controlSearchResults();
   });
 
   // console.log(model.state.search.queryResults);
@@ -517,15 +514,23 @@ const userViewAdders = function () {
 // addUserView.addHandlerUpdateSelects(controlAddUserUpdateSelects);
 const controlAddUserUpdateSelects = async function () {
   addUserView.renderSpinner('Veuillez attendre un moment...');
+  editUserView.renderSpinner('Veuillez attendre un moment...');
   const roles = await model.getRoles();
-  addUserView.addToSelection(roles, 'role-options', 'role');
+  addUserView.addToSelection(roles, '#role-options', 'role');
+  editUserView.addToSelection(roles, '#role-options-edit', 'role');
   const structures = await model.getStructures();
   addUserView.addToSelection(
     structures,
-    'structure-add-user-options',
+    '#structure-add-user-options',
+    'structure'
+  );
+  editUserView.addToSelection(
+    structures,
+    '#structure-options-edit',
     'structure'
   );
   addUserView.unrenderSpinner();
+  editUserView.unrenderSpinner();
 };
 const controlEditRoleUpdateSelects = async function () {
   editPermsView.renderSpinner('Chargement des permissions...', true);

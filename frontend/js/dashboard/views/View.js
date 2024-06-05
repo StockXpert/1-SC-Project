@@ -102,7 +102,10 @@ export default class View {
   }
   // ["DJEZIRI Oussama", "KAZI Kamil"]
   addToSelection(options, selectClassName, type = 'responsable') {
-    helpers.removeChildrenFromSecond(document.getElementById(selectClassName));
+    console.log(this._window.querySelector(selectClassName), selectClassName);
+    helpers.removeChildrenFromSecond(
+      this._window.querySelector(selectClassName)
+    );
     options.forEach((option, index) => {
       const optionElement = document.createElement('option');
       switch (type) {
@@ -121,7 +124,7 @@ export default class View {
           optionElement.textContent = `${index + 1} : ${option}`;
           break;
       }
-      document.getElementById(selectClassName).appendChild(optionElement);
+      this._window.querySelector(selectClassName).appendChild(optionElement);
     });
   }
 
