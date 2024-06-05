@@ -47,6 +47,7 @@ export class UsersView extends View {
   }
 
   _generateMarkup() {
+    console.log(this._data);
     return this._data
       .map(result => this._generateMarkupPreview(result, this._perms))
       .join('');
@@ -67,7 +68,9 @@ export class UsersView extends View {
       <td><p class="admin-role">${
         result.role ? helpers.roleTranslator(result.role) : 'Aucun'
       }</p></td>
-      <td class="table-structure">${result.structure}</td>
+      <td class="table-structure">${
+        result.structure ? result.structure : 'Aucune'
+      }</td>
       <td>
         ${
           helpers.includesDesignation(perms, 'update user') ||

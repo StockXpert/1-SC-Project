@@ -9,7 +9,7 @@ export class AddUserView extends View {
   _btnClose = this._window.querySelector('.edit-btn-save');
   _parentElement = document.querySelector('.add-user-container');
   _form = document.querySelector('.add-user-inputs');
-  _inputsContainer = document.querySelector('.groupe-2-add');
+  _inputsContainer = this._window.querySelector('.groupe-2-add');
   _passwordIcons = this._inputsContainer.querySelectorAll('.password-icon');
   _password = this._inputsContainer.querySelector('.password');
   _confirmPassword = this._inputsContainer.querySelector('.password-confirm');
@@ -25,11 +25,24 @@ export class AddUserView extends View {
     this.toggleWindow.bind(this)();
   };
   addpasswordIconsEL() {
+    console.log(this._inputsContainer);
     this._passwordIcons.forEach(icon => {
       icon.addEventListener('click', e => {
+        console.log('clicking');
         e.preventDefault();
         this.togglePasswordVisibility();
       });
+    });
+    const confirmPasswordInput = this._confirmPassword;
+    const newPasswordInput = this._password;
+    confirmPasswordInput.addEventListener('input', e => {
+      if (confirmPasswordInput.value !== newPasswordInput.value) {
+        confirmPasswordInput.setCustomValidity(
+          'Les mots de passe saisis ne sont pas identiques.'
+        );
+      } else {
+        confirmPasswordInput.setCustomValidity('');
+      }
     });
   }
   //in boundToggleWindow : THIS in toggleWindow logic points to the addUserView object
@@ -111,17 +124,6 @@ export class AddUserView extends View {
         child.classList.toggle('hidden');
       })
     );
-    const confirmPasswordInput = this._confirmPassword;
-    const newPasswordInput = this._password;
-    confirmPasswordInput.addEventListener('input', function () {
-      if (confirmPasswordInput.value !== newPasswordInput.value) {
-        confirmPasswordInput.setCustomValidity(
-          'Les mots de passe saisis ne sont pas identiques.'
-        );
-      } else {
-        confirmPasswordInput.setCustomValidity('');
-      }
-    });
   };
 
   //THIS ===> the addUserView object

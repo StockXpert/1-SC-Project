@@ -309,8 +309,7 @@ export const loadSearchResults = async function (query) {
           ? helpers.capitalizeWord(usr.nom)
           : helpers.truncateEmail(usr.email),
         role: usr.role,
-        // TODO: structure: usr.structure,
-        structure: 'Cycle Supérieure',
+        structure: usr.structure,
         active: usr.active ? 'Activé' : 'Désactivé',
         date_naissance: helpers.formatDate(usr.date_naissance),
       };

@@ -3476,7 +3476,6 @@ const fetchAndRenderGraphData = async (statLinkCode, selectedOption) => {
 //////////////////////////////////////////////////////////////////
 
 const controlLoadMod = async () => {
-  console.log('HI');
   const dropArea = document.getElementById('drop-area');
   const inputFile = document.getElementById('input-logo');
   const imageView = document.getElementById('img-modif-view');
