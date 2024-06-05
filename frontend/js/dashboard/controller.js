@@ -65,6 +65,7 @@ import addFournisseurView from './views/nomenclatures/fournisseur/addFournisseur
 import deleteFournisseurView from './views/nomenclatures/fournisseur/deleteFournisseurView.js';
 import deleteProductView from './views/nomenclatures/produits/deleteProductView.js';
 import editProductView from './views/nomenclatures/produits/editProductView.js';
+import { STAT_LINK_CONFIG } from './config.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -3118,94 +3119,149 @@ console.log(
     e => e.groupName == 'Statistiques'
   )[0]?.permissions
 );
+
+const setupGraphContainers = function (statLinks) {
+  document.querySelector('.container-mini-carts').innerHTML = '';
+  document.querySelector('.grid-statistiques').innerHTML = '';
+  statLinks.forEach(statLink => {
+    const config = STAT_LINK_CONFIG[statLink.code];
+    if (config) {
+      const { title, size } = config;
+      let html;
+      let parentElement;
+      switch (size) {
+        case 'g1':
+          html = `
+            <div class="grid-1">
+              <div class="top-statistiques-cart">
+                <p class="cart-description-statistiques">${title}</p>
+              </div>
+              <div
+              class="graph-statistiques spinner-parent ${title.replace(
+                /\s/g,
+                ''
+              )}"
+              style="height: 100%; width: 100%; position: static"
+            >
+              <div class="spinner"></div>
+            </div>
+            </div>`;
+          parentElement = '.grid-statistiques';
+          break;
+        case 'g2':
+          html = `
+            <div class="grid-2" style="min-height: 317px;"> <!-- Set the min-height here -->
+            <p class="cart-description-statistiques">${title}</p>
+            <div
+            class="graph-statistiques spinner-parent ${title.replace(
+              /\s/g,
+              ''
+            )}"
+            style="height: 100%; width: 100%; position: static" 
+          >
+            <div class="spinner"></div>
+            </div>
+            </div>`;
+          parentElement = '.grid-statistiques';
+          break;
+        case 'mini':
+          html = `
+            <div class="mini-carts ">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">${title}</p>
+                  <ion-icon name="arrow-up-outline" class="statistiques-icons md hydrated" role="img"></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number ${title.replace(/\s/g, '')}">140</p>
+                </div>
+              </div>
+            </div>`;
+          parentElement = '.container-mini-carts';
+          break;
+      }
+      document
+        .querySelector(parentElement)
+        .insertAdjacentHTML('beforeend', html);
+    } else {
+      console.error(
+        `Configuration for statLink "${statLink.code}" not found in statLinkConfig.`
+      );
+    }
+  });
+};
+
+const renderGraphData = async function (statLinks) {
+  for (const statLink of statLinks) {
+    const config = STAT_LINK_CONFIG[statLink.code];
+    if (config) {
+      const { title, size, dataName, old, style } = config;
+      const promise = model.getGraphPromise(statLink.code);
+      const results = await promise;
+      const parentElement = '.grid-statistiques';
+      document
+        .querySelector(parentElement)
+        .querySelector(
+          `.${title.replace(/\s/g, '')}`
+        ).innerHTML = `<canvas id="${title.replace(/\s/g, '')}"></canvas>`;
+      if (style === 'bar') {
+        if (old) {
+          helpers.createChartOld(
+            document
+              .querySelector(parentElement)
+              .querySelector(`.${title.replace(/\s/g, '')}`)
+              .querySelector(`#${title.replace(/\s/g, '')}`),
+            results.response,
+            dataName
+          );
+        } else {
+          helpers.createChart(
+            document
+              .querySelector(parentElement)
+              .querySelector(`.${title.replace(/\s/g, '')}`)
+              .querySelector(`#${title.replace(/\s/g, '')}`),
+            results.response,
+            dataName
+          );
+        }
+      } else if (style === 'pie') {
+        helpers.createPieChart(
+          document
+            .querySelector(parentElement)
+            .querySelector(`.${title.replace(/\s/g, '')}`)
+            .querySelector(`#${title.replace(/\s/g, '')}`),
+          results.response,
+          dataName
+        );
+      }
+      document
+        .querySelector(parentElement)
+        .querySelectorAll('.grid-2')
+        .forEach(elem => (elem.style.height = 'auto'));
+
+      // Add loaded class for animation
+      document
+        .querySelector(`.${title.replace(/\s/g, '')}`)
+        .classList.add('loaded');
+    } else {
+      console.error(
+        `Configuration for statLink "${statLink.code}" not found in statLinkConfig.`
+      );
+    }
+  }
+};
+
 const controlLoadStatistiques = async () => {
-  // const labels = helpers.generateMonthLabels();
-  // const data = {
-  //   labels: labels,
-  //   datasets: [
-  //     {
-  //       label: 'My First Dataset',
-  //       data: [65, 59, 80, 81, 56, 55, 40],
-  //       backgroundColor: ['477ce2'],
-  //       borderColor: ['477ce2'],
-  //       borderWidth: 1,
-  //     },
-  //   ],
-  // };
+  let statLinks = model.state.me.permissions.wellFormed.filter(
+    e => e.groupName == 'Statistiques'
+  )[0]?.permissions;
+  // Setup graph containers first
+  setupGraphContainers(statLinks);
 
-  // const ctx = document.getElementById('myChart').getContext('2d');
-  // new Chart(ctx, {
-  //   type: 'bar',
-  //   data: data,
-  //   options: {
-  //     scales: {
-  //       y: {
-  //         beginAtZero: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // console.log(model.getGraphPromise('topDemandeurs'));
-
-  //TODO: CLEAR GRAPHS
-
-  statsView._clearParentElement('mini');
-  statsView._clearParentElement('g1');
-  statsView._clearParentElement('g2');
-  const postObj = {
-    produit: 'Duplicopieur - Monochrome - A3',
-  };
-
-  statsView.renderGraphSpin(
-    'Top Demandeurs',
-    'g2',
-    model.getGraphPromise('topDemandeurs', {
-      produit: 'Duplicopieur - Monochrome - A3',
-    }),
-    'Les Demandes',
-    true
-  );
-  statsView.renderGraphSpin(
-    'Les Produits Les Plus Commandés',
-    'g2',
-    model.getGraphPromise('mostCommandedProducts'),
-    'Les Commandes',
-    false
-  );
-  statsView.renderGraphSpin(
-    'Les Produits Les Plus Demandés',
-    'g2',
-    model.getGraphPromise('mostDemmandedProduct'),
-    'Les Demandes',
-    true
-  );
-  statsView.renderGraphSpin(
-    'Statuts Des Demandes',
-    'g2',
-    model.getGraphPromise('bciStat'),
-    'Categories',
-    false,
-    'pie'
-  );
-  //TODO: make a config for both typename=>chart.js_options and StatsPermissions=>renderGraphSpin args and default to bar graphs
-  //TODO: add recherche to chapitre/products
-  //TODO: add detail functionality
-  //TODO: calculate header's ammount of cells to render "no results" line correctly (i think you already did smth similar fi ch3al)
+  // Render data as promises resolve
+  renderGraphData(statLinks);
 };
 
-// TODO:
-const renderGraph = async (
-  title,
-  dataRoute,
-  type,
-  size = 'g1',
-  filters = '',
-  totalRoute = ''
-) => {
-  //render the graph element but render a spinner where the graph goes in accordance to the $title and $size
-  //fetch data using $dataRoute
-  //render the graph replacing the spinner in accordance to the $type
-};
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 /////// F I N #fff

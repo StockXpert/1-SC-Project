@@ -3407,7 +3407,7 @@ a.password-icon:active {
   display: flex;
   flex-direction: column;
   /* gap: 2rem; */
-  height: 30rem;
+  /* height: 30rem; */
   background-color: white;
   padding: 0.8rem;
   border-radius: 1rem;
@@ -3693,4 +3693,19 @@ select.filters-add-inv option {
 }
 .table-container-bdd table tr {
   overflow: hidden;
+}
+.grid-2 {
+  min-height: 317px; /* Adjust the value as needed */
+  transition: min-height 0.5s ease; /* Smooth transition for height changes */
+}
+
+.graph-statistiques {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.graph-statistiques.loaded {
+  opacity: 1;
+  transform: translateY(0);
 }

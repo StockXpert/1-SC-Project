@@ -1,4 +1,4 @@
-import { TIMEOUT_SEC, FUSE_OPTIONS } from './config.js';
+import { TIMEOUT_SEC, FUSE_OPTIONS, STAT_LINK_CONFIG } from './config.js';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.5.3/dist/fuse.esm.js';
 
 export const timeout = function (s) {
@@ -914,7 +914,6 @@ export function createChart(ctx, response, dataName) {
   const data = response.dataSet;
   const shortLabels = response.id; // Assuming these are the shorter labels
   const fullLabels = response.labels; // Assuming these are the full labels
-
   new Chart(ctx, {
     type: 'bar', // or 'line', 'pie', etc.
     data: {
@@ -1023,7 +1022,7 @@ export function createPieChart(ctx, response, dataName) {
   // Check if labels and data are populated correctly
   // console.log(labels); // Debug: Print labels to console
   // console.log(data); // Debug: Print data to console
-
+  console.log(data);
   new Chart(ctx, {
     type: 'pie',
     data: {
@@ -1168,3 +1167,73 @@ export function areValuesEqual(obj1, obj2) {
   }
   return true;
 }
+
+export const setupGraphContainers = function (statLinks) {
+  statLinks.forEach(statLink => {
+    const config = STAT_LINK_CONFIG[statLink.code];
+    if (config) {
+      const { title, size } = config;
+      let html;
+      let parentElement;
+      switch (size) {
+        case 'g1':
+          html = `
+            <div class="grid-1">
+              <div class="top-statistiques-cart">
+                <p class="cart-description-statistiques">${title}</p>
+              </div>
+              <div
+              class="graph-statistiques spinner-parent ${title.replace(
+                /\s/g,
+                ''
+              )}"
+              style="height: 371px width: 219px position: static"
+            >
+              <div class="spinner"></div>
+            </div>
+            </div>`;
+          parentElement = '.grid-statistiques';
+          break;
+        case 'g2':
+          html = `
+            <div class="grid-2" style="height: 371px width: 219px">
+            <p class="cart-description-statistiques">${title}</p>
+            <div
+            class="graph-statistiques spinner-parent ${title.replace(
+              /\s/g,
+              ''
+            )}"
+            style="height: 371px width: 219px position: static" 
+          >
+            <div class="spinner"></div>
+            </div>
+            </div>`;
+          parentElement = '.grid-statistiques';
+          break;
+        case 'mini':
+          html = `
+            <div class="mini-carts ">
+              <div class="cart">
+                <div class="cart-title">
+                  <p class="cart-description">${title}</p>
+                  <ion-icon name="arrow-up-outline" class="statistiques-icons md hydrated" role="img"></ion-icon>
+                </div>
+                <div class="cart-info">
+                  <p class="cart-number ${title.replace(/\s/g, '')}">140</p>
+
+                </div>
+              </div>
+            </div>`;
+          parentElement = '.container-mini-carts';
+          break;
+      }
+      document
+        .querySelector(parentElement)
+        .insertAdjacentHTML('beforeend', html);
+    } else {
+      console.error(
+        `Configuration for statLink "${statLink.code}" not found in statLinkConfig.`
+      );
+    }
+  });
+};

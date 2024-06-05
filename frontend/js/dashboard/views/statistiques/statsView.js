@@ -1,6 +1,5 @@
 import View from '../view.js';
 import * as helpers from '../../helpers.js';
-
 class StatsView extends View {
   async renderGraphSpin(
     title,
@@ -62,9 +61,7 @@ class StatsView extends View {
         parentElement = '.container-mini-carts';
         break;
     }
-    document
-      .querySelector(parentElement)
-      .insertAdjacentHTML('afterbegin', html);
+    document.querySelector(parentElement).insertAdjacentHTML('beforeend', html); // Changed to append at the bottom
     const results = await promise;
     document
       .querySelector(parentElement)
@@ -105,6 +102,7 @@ class StatsView extends View {
       .querySelectorAll('.grid-2')
       .forEach(elem => (elem.style.height = 'auto'));
   }
+
   _clearParentElement(sizeType) {
     let parentElement;
     switch (sizeType) {

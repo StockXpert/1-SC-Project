@@ -43,6 +43,7 @@ class EditPermsView extends EditUserView {
   }
   // _generateMarkupPreviewPreview
   _generateMarkupPreview(group) {
+    console.log(group.permissions);
     const next = function (permission) {
       let permCode = permission.code + '';
       return `
