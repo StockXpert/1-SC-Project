@@ -1403,13 +1403,12 @@ const controlDeleteBonRec = async function () {
         .querySelectorAll('input[type="checkbox"]')
     )
   ).forEach(async el => {
-    console.log(el);
     bonReceptionView.renderSpinner(
       'Suppression du bon de reception  N°' + el.num_bon + '...',
       true
     );
     // await helpers.timeoutRes(1500);
-    await model.deleteBonRec(el.num_bon, el.numCommande);
+    await model.deleteBonRec(el.num_bon, model.state.bdc.selected);
     bonReceptionView.unrenderSpinner(true);
     bonReceptionView.toggleWindow();
   });

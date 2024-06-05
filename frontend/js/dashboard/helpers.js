@@ -258,6 +258,7 @@ export const delJSON = async function (url, uploadData) {
     if (!res.ok) throw new Error(`${data.message} (${res.status}`);
     return data;
   } catch (err) {
+    renderError(err);
     throw err;
   }
 };
