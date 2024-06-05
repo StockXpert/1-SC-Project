@@ -953,6 +953,52 @@ export function createChart(ctx, response, dataName) {
   });
 }
 
+export function createMonthlyChart(ctx, response, dataName) {
+  // const data = response.dataSet;
+  const data = [739, 271, 38];
+  // const labels = response.labels; // Use these labels for x-axis and tooltips
+  const labels = ['April', 'May', 'June']; // Use these labels for x-axis and tooltips
+  console.log(dataName);
+
+  new Chart(ctx, {
+    type: 'bar', // or 'line', 'pie', etc.
+    data: {
+      labels: labels, // Use labels directly for x-axis
+      datasets: [
+        {
+          label: dataName,
+          data: data,
+          backgroundColor: ['#477ce2'],
+          borderColor: ['#477ce2'],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            title: function (tooltipItems) {
+              const index = tooltipItems[0].dataIndex;
+              return labels[index]; // Use labels for tooltips
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            callback: function (value, index) {
+              return labels[index]; // Use labels for x-axis ticks
+            },
+          },
+        },
+      },
+      barThickness: 40, // Set the width of the bars
+    },
+  });
+}
+
 // export function createPieChart(ctx, response, dataName) {
 //   // Convert the response object to arrays for labels and data
 //   const labels = Object.keys(response[0]);
@@ -1237,3 +1283,10 @@ export const setupGraphContainers = function (statLinks) {
     }
   });
 };
+export function arrayToObject(arrayOfKeys, arrayOfValues) {
+  const result = {};
+  arrayOfKeys.forEach((key, index) => {
+    result[key] = arrayOfValues[index] || ''; // Assign value from arrayOfValues or an empty string if not provided
+  });
+  return result;
+}

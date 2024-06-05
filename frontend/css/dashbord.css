@@ -3134,6 +3134,12 @@ a.password-icon:active {
   border-top-color: var(--color-primary);
   animation: spin 0.7s infinite linear;
 }
+.small-spinner {
+  width: 20px;
+  height: 20px;
+  scale: 100%;
+  border: 3px solid #ccc;
+}
 .spinner-parent {
   overflow: hidden;
   z-index: 99999;
@@ -3159,6 +3165,11 @@ a.password-icon:active {
 .spinner-parent div {
   scale: 200%;
   border: 5px solid #ccc;
+  border-top-color: var(--color-primary);
+}
+.spinner-parent .small-spinner {
+  scale: 200%;
+  border: 3px solid #ccc;
   border-top-color: var(--color-primary);
 }
 
@@ -3700,7 +3711,7 @@ select.filters-add-inv option {
 }
 
 .graph-statistiques {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }

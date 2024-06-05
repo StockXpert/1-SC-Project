@@ -1,6 +1,8 @@
 import View from '../view.js';
 import * as helpers from '../../helpers.js';
 class StatsView extends View {
+  _trueParentElement = document.querySelector('.container-statistiques');
+  _parentElement = document.querySelector('.container-statistiques');
   async renderGraphSpin(
     title,
     size,
@@ -89,6 +91,16 @@ class StatsView extends View {
         );
     else if (style == 'pie') {
       helpers.createPieChart(
+        document
+          .querySelector(parentElement)
+          .querySelector(`.${title.replace(/\s/g, '')}`)
+          .querySelector(`#${title.replace(/\s/g, '')}`),
+        results.response,
+        dataName
+      );
+    } else if (style == 'monthly') {
+      console.log(style);
+      helpers.createMonthlyChart(
         document
           .querySelector(parentElement)
           .querySelector(`.${title.replace(/\s/g, '')}`)
