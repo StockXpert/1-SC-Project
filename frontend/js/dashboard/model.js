@@ -1079,7 +1079,7 @@ export const loadAllInvProducts = async function () {
       );
       return false;
     }
-    console.log(responseArray);
+    console.log(responseArray[1]);
     return responseArray;
   } catch (err) {
     helpers.renderError('FATAL ERROR!', `${err}`);
@@ -1210,23 +1210,26 @@ export const confirmInv = async function (numInv) {
 };
 
 export const prepareNewInventaire = async function (productsArr = []) {
-  const newInv = productsArr.map(product => {
-    return {
-      raison: '',
-      designation: product.produit,
-      reference: product.reference,
-      num_inventaire: product.num_inventaire,
-      chapitre: product.chapitre,
-      article: product.article,
-      present: false,
-      remote: product.num_inventaire ? true : false,
-      /*    "produit": "Photocopieur LEX MARK MX510",
+  const newInv = productsArr
+    .filter(prod => prod.consommable == 0)
+    .map(product => {
+      return {
+        raison: '',
+        designation: product.produit,
+        reference: product.reference,
+        num_inventaire: product.num_inventaire,
+        chapitre: product.chapitre,
+        article: product.article,
+        present: false,
+        remote: product.num_inventaire ? true : false,
+        consommable: product.consommable ? true : false,
+        /*    "produit": "Photocopieur LEX MARK MX510",
             "reference": "a1",
             "num_inventaire": 55,
             "date_inventaire": "2024-05-13T23:00:00.000Z"
              */
-    };
-  });
+      };
+    });
   console.log(newInv);
   state.inventaires.new.isNew = true;
   state.inventaires.new.numInventaire = '';
