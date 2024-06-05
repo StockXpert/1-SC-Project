@@ -28,16 +28,24 @@ class AddProductsView extends View {
   }
   addHandlerUpload(handler) {
     // console.log(this._parentElement);
+    const formElement = document.querySelector('.add-produits-inputs');
+    const checkbox = document.querySelector('#consommable');
+    const valueDisplay = document.getElementById('value-display');
+    checkbox.addEventListener('change', () => {
+      const value = checkbox.checked;
+      valueDisplay.textContent = `${value ? ' ' : 'Non'} consommable`;
+    });
     this._parentElement.addEventListener('submit', function (e) {
       e.preventDefault();
       // this = document.querySelector('.inputs');
-      const dataArr = [...new FormData(this)];
-      const data = Object.fromEntries(dataArr);
-      for (const key in data) {
-        if (!data[key]) return console.log('data is empty');
-      }
-      console.log(data);
-      handler(data);
+      const newProduct = {
+        designation: formElement.querySelector('#Designation').value,
+        article: formElement.querySelector('#Article').value,
+        seuil: formElement.querySelector('#Seuil').value,
+        consommable: checkbox.checked,
+      };
+      console.log(newProduct);
+      handler(newProduct);
       console.log(this);
     });
   }

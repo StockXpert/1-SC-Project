@@ -5,7 +5,6 @@ class AddArticleView extends View {
   _btnOpen = document.querySelector('.add-articles-btn');
   _btnClose = this._window.querySelector('.close-btn');
   _parentElement = document.querySelector('.add-article-inputs');
-
   constructor() {
     super();
     this._addHandlerHideWindow();

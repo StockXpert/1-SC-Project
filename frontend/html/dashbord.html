@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <script defer type="module" src="../js/dashboard/controller.js"></script>
-    <script defer type="module" src="../js/modification.js"></script>
+    <!-- <script defer type="module" src="../js/modification.js"></script> -->
     <!-- <link
       rel="stylesheet"
       href="../../node_modules/flowbite/dist/flowbite.css"
@@ -35,7 +35,7 @@
         <div class="toggle">
           <div class="logo">
             <img
-              src="../img/logo.png"
+              src="../../backend/parametre/logo.png"
               alt="image du logo de lentreprise codexpert"
             />
           </div>
@@ -3403,7 +3403,7 @@
                 name="article"
                 type="text"
                 class="input"
-                id="Quantité"
+                id="Article"
                 placeholder="article"
               />
             </div>
@@ -3412,18 +3412,13 @@
                 name="seuil"
                 type="number"
                 class="input"
-                id="Quantité"
+                id="Seuil"
                 placeholder="seuil"
               />
             </div>
-            <div class="input-groupe">
-              <input
-                name="consommable"
-                type="number"
-                class="input"
-                id="consommable"
-                placeholder="consommable"
-              />
+            <div class="checkbox-groupe">
+              <input name="consommable" type="checkbox" id="consommable" />
+              <label id="value-display">Non consommable</label>
             </div>
             <div class="create-btn">
               <button>Crée le Produit</button>

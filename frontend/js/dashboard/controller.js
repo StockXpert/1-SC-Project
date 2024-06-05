@@ -66,6 +66,8 @@ import deleteFournisseurView from './views/nomenclatures/fournisseur/deleteFourn
 import deleteProductView from './views/nomenclatures/produits/deleteProductView.js';
 import editProductView from './views/nomenclatures/produits/editProductView.js';
 import { STAT_LINK_CONFIG } from './config.js';
+import uploadHeaderView from './views/Parametre/uploadHeaderView.js';
+import uploadLogoView from './views/Parametre/uploadLogoView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -3475,6 +3477,90 @@ const fetchAndRenderGraphData = async (statLinkCode, selectedOption) => {
 
 const controlLoadMod = async () => {
   console.log('HI');
+  const dropArea = document.getElementById('drop-area');
+  const inputFile = document.getElementById('input-logo');
+  const imageView = document.getElementById('img-modif-view');
+  const dropArea2 = document.getElementById('drop-area-2');
+  const inputFile2 = document.getElementById('input-preambule');
+  const imageView2 = document.getElementById('img-modif-view-2');
+
+  inputFile.addEventListener('change', uploadImage);
+
+  async function uploadImage() {
+    let imgLink = URL.createObjectURL(inputFile.files[0]);
+    imageView.style.backgroundImage = `url(${imgLink})`;
+    imageView.textContent = '';
+    console.log(inputFile.files[0]);
+
+    const formData = new FormData();
+    formData.append('logo', inputFile.files[0]);
+
+    try {
+      uploadLogoView.renderSpinner('Modifier Logo...');
+      const res = await fetch('http://localhost:3000/Parametre/uploadLogo', {
+        method: 'POST',
+        headers: {
+          Authorization: localStorage.getItem('JWT'),
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      console.log(`upload successful`, data);
+    } catch (error) {
+      console.error(`upload failed`, error);
+    } finally {
+      uploadLogoView.unrenderSpinner();
+    }
+  }
+
+  dropArea.addEventListener('dragover', function (e) {
+    e.preventDefault();
+  });
+  dropArea.addEventListener('drop', async function (e) {
+    e.preventDefault();
+    inputFile.files = e.dataTransfer.files;
+    await uploadImage();
+  });
+
+  inputFile2.addEventListener('change', uploadImage2);
+
+  async function uploadImage2() {
+    let imgLink = URL.createObjectURL(inputFile2.files[0]);
+    imageView2.style.backgroundImage = `url(${imgLink})`;
+    imageView2.textContent = '';
+    console.log(imgLink);
+
+    const formData = new FormData();
+    formData.append('header', inputFile2.files[0]);
+
+    try {
+      uploadHeaderView.renderSpinner('Modifier Header...');
+      const res = await fetch('http://localhost:3000/Parametre/uploadHeader', {
+        method: 'POST',
+        headers: {
+          Authorization: localStorage.getItem('JWT'),
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      console.log(`upload successful`, data);
+    } catch (error) {
+      console.error(`upload failed`, error);
+    } finally {
+      uploadHeaderView.unrenderSpinner();
+    }
+  }
+
+  dropArea2.addEventListener('dragover', function (e) {
+    e.preventDefault();
+  });
+  dropArea2.addEventListener('drop', async function (e) {
+    e.preventDefault();
+    inputFile2.files = e.dataTransfer.files;
+    await uploadImage2();
+  });
 };
 
 //////////////////////////////////////////////////////////////////
@@ -3528,6 +3614,7 @@ addRoleView.addHandlerUpload(controlAddRole);
 editPermsView.addHandlerUpload(controlUpdateRole);
 editPermsView.addHandlerSwitch(controlRoleSwitch);
 sideView.addHandlerBtns(controllers, '', model.state.me.permissions.all);
+console.log(model.state.me.permissions.all);
 numberView.addHandlerMasterCheckbox(controlNumber);
 searchView.addHandlerSearch(controlSearchResults);
 searchView.addHandlerFilter(controlFilterring);

@@ -3720,3 +3720,10 @@ select.filters-add-inv option {
   opacity: 1;
   transform: translateY(0);
 }
+
+.checkbox-groupe {
+  font-size: large;
+
+  display: flex;
+  gap: 3px;
+}
