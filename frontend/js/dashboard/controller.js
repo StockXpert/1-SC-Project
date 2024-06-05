@@ -756,7 +756,10 @@ function filterArrayByBooleans(dataArray, booleanArray) {
   return filteredArray;
 }
 const controlProfile = async function () {
-  sideView.divs.forEach(div => div.classList.add('hidden'));
+  sideView.divs.forEach(div => {
+    console.log(div);
+    div.classList.add('hidden');
+  });
   sideView.divs[0].classList.remove('hidden');
   productsView.renderSpinner();
   profileView.render(model.state.me);
@@ -3311,6 +3314,16 @@ const controlLoadStatistiques = async () => {
 
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
+/////// M O D I F I C A T I O N S  #fff
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+const controlLoadMod = async () => {
+  console.log('HI');
+};
+
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 /////// F I N #fff
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -3327,7 +3340,7 @@ const controllers = [
   controlLoadStructures,
   controlLoadRoles,
   controlLoadPerms,
-  ,
+  controlLoadMod,
   controlLoadStatistiques,
   ,
   controlLoadArticles,

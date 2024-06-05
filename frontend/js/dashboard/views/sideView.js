@@ -27,7 +27,7 @@ class SideView extends View {
     document.getElementById('main-table-structures'),
     document.getElementById('main-table-roles'),
     document.getElementById('main-table-permissions'),
-    ,
+    document.getElementById('main-table-modifications'),
     document.getElementById('main-table-statistiques'),
     ,
     document.getElementById('main-table-articles'),
@@ -37,6 +37,7 @@ class SideView extends View {
     document.getElementById('main-table-bdci'),
     document.getElementById('main-table-inv'),
     document.getElementById('main-table-fournisseur'),
+    ,
   ];
 
   hideAllDivs() {
@@ -70,7 +71,7 @@ class SideView extends View {
       document.getElementById('main-table-structures'),
       document.getElementById('main-table-roles'),
       document.getElementById('main-table-permissions'),
-      ,
+      document.getElementById('main-table-modifications'),
       document.getElementById('main-table-statistiques'),
       ,
       document.getElementById('main-table-articles'),

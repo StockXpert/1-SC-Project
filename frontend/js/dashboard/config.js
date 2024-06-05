@@ -198,6 +198,7 @@ export const GROUP_DEFINITIONS = {
     'respBciStat',
   ],
   Notifications: ['read notif', 'read all notif', 'save token'],
+  Modification: ['upload logo', 'upload header'],
 };
 export const PERM_NAMES = {
   register: 'Inscrire un nouvel utilisateur',
@@ -343,6 +344,11 @@ export const GROUP_BTNS = {
   <h3>Statistiques</h3>
 </a>
   `,
+  Modification: `<a class="sidebar-btns modification-btn" href="">
+  <span class="material-icons-sharp"> app_registration </span>
+  <h3>Modification</h3>
+</a>
+  `,
   Notifications: ``,
 };
 export const ORDER_OF_GROUPS = [
@@ -360,6 +366,7 @@ export const ORDER_OF_GROUPS = [
   'Inventaire',
   'Statistiques',
   'Notifications',
+  'Modification',
   'Autre',
 ];
 // export const STATS_STYLINGS = {
