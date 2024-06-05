@@ -385,9 +385,10 @@ export const STAT_LINK_CONFIG = {
     size: 'g2',
     dataName: 'Articles',
     old: false,
-    style: 'bar',
+    style: 'monthly',
     optionsName: 'Article',
     optionsLink: '/Nomenclatures/showArticles',
+    optionsPostObj: ['article', 'year'],
     input: 'date',
   },
   rapidFournisseur: {
@@ -417,6 +418,10 @@ export const STAT_LINK_CONFIG = {
     dataName: 'Demandes',
     old: false,
     style: 'bar',
+    optionsName: 'Produit',
+    optionsLink: '/Nomenclatures/showProducts',
+    optionsPostObj: ['produit'],
+    input: 'date',
   },
   productDemandePerYear: {
     title: 'Produits Demandés Par Année',

@@ -1578,7 +1578,7 @@ export const fetchDynamicOptions = async optionsLink => {
   try {
     // Dummy options for illustration
     const options = await helpers.getJSON(`${API_URL}${optionsLink}`);
-    console.log(options);
+    console.log(options.response);
     return options.response;
   } catch (error) {
     console.error(error);

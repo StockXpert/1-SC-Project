@@ -757,7 +757,6 @@ function filterArrayByBooleans(dataArray, booleanArray) {
 }
 const controlProfile = async function () {
   sideView.divs.forEach(div => {
-    console.log(div);
     div.classList.add('hidden');
   });
   sideView.divs[0].classList.remove('hidden');
@@ -3130,42 +3129,47 @@ const setupGraphContainers = async function (statLinks) {
   for (const statLink of statLinks) {
     const config = STAT_LINK_CONFIG[statLink.code];
     if (config) {
-      const { title, size, optionsName, optionsLink } = config;
+      const { title, size, optionsName, optionsLink, optionsPostObj } = config;
       let html;
       let parentElement;
       let options = [];
       let dropdownOptions = '';
-
+      //TODO: SPINNER HERE
+      statsView.renderSpinner('');
       // Fetch dynamic options if required
       if (optionsLink) {
         switch (optionsName) {
           case 'Article':
             if (model.state.articles.all.length == 0) {
-              let { response } = await model.fetchDynamicOptions(optionsLink);
+              let response = await model.fetchDynamicOptions(optionsLink);
               model.state.articles.all = response;
             }
+            options = model.state.articles.all;
             break;
           case 'Structure':
             if (model.state.structures.all.length == 0) {
               let { response } = await model.fetchDynamicOptions(optionsLink);
               model.state.structures.all = response;
             }
+            options = model.state.structures.all;
             break;
           case 'Fournisseur':
             if (model.state.fournisseurs.all.length == 0) {
               let { response } = await model.fetchDynamicOptions(optionsLink);
               model.state.fournisseurs.all = response;
             }
+            options = model.state.fournisseurs.all;
             break;
           case 'Produit':
             model.state.products.all;
             if (model.state.products.all.length == 0) {
-              let { response } = await model.fetchDynamicOptions(optionsLink);
+              let response = await model.fetchDynamicOptions(optionsLink);
               model.state.products.all = response;
             }
+            options = model.state.products.all;
             break;
         }
-        options = model.state.products.all;
+
         dropdownOptions = options
           .map(
             option =>
@@ -3182,12 +3186,13 @@ const setupGraphContainers = async function (statLinks) {
                 <p class="cart-description-statistiques">${title}</p>
               </div>
               <div
-                class="graph-statistiques spinner-parent ${title.replace(
+                class="spinner-parent graph-statistiques spinner-parent ${title.replace(
                   /\s/g,
                   ''
                 )}"
                 style="height: 100%; width: 100%; position: static"
               >
+                
                 <div class="spinner"></div>
               </div>
             </div>`;
@@ -3197,17 +3202,21 @@ const setupGraphContainers = async function (statLinks) {
           html = `
             <div class="grid-2" style="min-height: 317px;">
               <p class="cart-description-statistiques">${title}</p>
-              <select class="stat-dropdown" data-title="${optionsName}">
-                ${dropdownOptions}
-              </select>
+              ${
+                dropdownOptions
+                  ? `<select class="stat-dropdown" data-title="${title}">
+              ${dropdownOptions}
+              </select>`
+                  : ''
+              }
               <div
-                class="graph-statistiques spinner-parent ${title.replace(
+                class="spinner-parent graph-statistiques spinner-parent ${title.replace(
                   /\s/g,
                   ''
                 )}"
                 style="height: 100%; width: 100%; position: static"
               >
-                <div class="spinner"></div>
+                <div class="spinner "></div>
               </div>
             </div>`;
           parentElement = '.grid-statistiques';
@@ -3228,6 +3237,7 @@ const setupGraphContainers = async function (statLinks) {
           parentElement = '.container-mini-carts';
           break;
       }
+      statsView.unrenderSpinner();
       document
         .querySelector(parentElement)
         .insertAdjacentHTML('beforeend', html);
@@ -3245,12 +3255,14 @@ const renderGraphData = async function (statLinks) {
     if (config) {
       const { title, dataName, old, style } = config;
       const promise = model.getGraphPromise(statLink.code);
-      const results = await promise;
       const parentElement = '.grid-statistiques';
       const graphElement = document
         .querySelector(parentElement)
         .querySelector(`.${title.replace(/\s/g, '')}`);
-
+      graphElement.innerHTML = `<div class="spinner-parent">
+      <div class="spinner small-spinner"></div>
+     </div>`;
+      const results = await promise;
       if (graphElement) {
         graphElement.innerHTML = `<canvas id="${title.replace(
           /\s/g,
@@ -3265,6 +3277,7 @@ const renderGraphData = async function (statLinks) {
               dataName
             );
           } else {
+            console.log(style);
             helpers.createChart(
               graphElement.querySelector(`#${title.replace(/\s/g, '')}`),
               results.response,
@@ -3274,6 +3287,16 @@ const renderGraphData = async function (statLinks) {
         } else if (style === 'pie') {
           helpers.createPieChart(
             graphElement.querySelector(`#${title.replace(/\s/g, '')}`),
+            results.response,
+            dataName
+          );
+        } else if (style == 'monthly') {
+          console.log(style);
+          helpers.createMonthlyChart(
+            document
+              .querySelector(parentElement)
+              .querySelector(`.${title.replace(/\s/g, '')}`)
+              .querySelector(`#${title.replace(/\s/g, '')}`),
             results.response,
             dataName
           );
@@ -3299,6 +3322,63 @@ const renderGraphData = async function (statLinks) {
   }
 };
 
+const fetchAndRenderGraphData = async (statLinkCode, selectedOption) => {
+  const config = STAT_LINK_CONFIG[statLinkCode];
+  if (config) {
+    const { title, size, dataName, old, style } = config;
+    const promise = model.getGraphPromise(statLinkCode, selectedOption); // Pass the selected option
+    const parentElement = '.grid-statistiques';
+    const graphContainer = document
+      .querySelector(parentElement)
+      .querySelector(`.${title.replace(/\s/g, '')}`);
+    graphContainer.innerHTML = `<div class="spinner-parent">
+     <div class="spinner small-spinner"></div>
+    </div>`;
+    const results = await promise;
+    graphContainer.innerHTML = `<canvas id="${title.replace(
+      /\s/g,
+      ''
+    )}"></canvas>`;
+    if (style === 'bar') {
+      if (old) {
+        helpers.createChartOld(
+          graphContainer.querySelector(`#${title.replace(/\s/g, '')}`),
+          results.response,
+          dataName
+        );
+      } else {
+        console.log(style);
+        helpers.createChart(
+          graphContainer.querySelector(`#${title.replace(/\s/g, '')}`),
+          results.response,
+          dataName
+        );
+      }
+    } else if (style === 'pie') {
+      helpers.createPieChart(
+        graphContainer.querySelector(`#${title.replace(/\s/g, '')}`),
+        results.response,
+        dataName
+      );
+    } else if (style == 'monthly') {
+      console.log(style);
+      helpers.createMonthlyChart(
+        document
+          .querySelector(parentElement)
+          .querySelector(`.${title.replace(/\s/g, '')}`)
+          .querySelector(`#${title.replace(/\s/g, '')}`),
+        results.response,
+        dataName
+      );
+    }
+    graphContainer.classList.add('loaded');
+  } else {
+    console.error(
+      `Configuration for statLink "${statLinkCode}" not found in statLinkConfig.`
+    );
+  }
+};
+
 const controlLoadStatistiques = async () => {
   const statLinks =
     model.state.me.permissions.wellFormed.filter(
@@ -3307,6 +3387,32 @@ const controlLoadStatistiques = async () => {
 
   // Setup graph containers first
   await setupGraphContainers(statLinks);
+
+  let selectedValues = [];
+  console.log(document.querySelectorAll('.stat-dropdown'));
+  document.querySelectorAll('.stat-dropdown').forEach((dropdown, index) => {
+    selectedValues.push('');
+    dropdown.addEventListener('change', async event => {
+      const targetTitle = event.target.dataset.title;
+
+      const matchedLink = statLinks.find(
+        link => STAT_LINK_CONFIG[link.code].title === targetTitle
+      );
+
+      if (!matchedLink) {
+        console.error(`No stat link found for title: ${targetTitle}`);
+        return;
+      }
+      const statLinkCode = matchedLink.code;
+      selectedValues[index] = event.target.value;
+      let postObj = helpers.arrayToObject(
+        STAT_LINK_CONFIG[matchedLink.code].optionsPostObj,
+        selectedValues
+      );
+      console.log(postObj);
+      await fetchAndRenderGraphData(statLinkCode, postObj);
+    });
+  });
 
   // Render data as promises resolve
   await renderGraphData(statLinks);
