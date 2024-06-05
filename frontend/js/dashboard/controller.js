@@ -3123,12 +3123,24 @@ console.log(
 const setupGraphContainers = function (statLinks) {
   document.querySelector('.container-mini-carts').innerHTML = '';
   document.querySelector('.grid-statistiques').innerHTML = '';
-  statLinks.forEach(statLink => {
+  statLinks.forEach(async statLink => {
     const config = STAT_LINK_CONFIG[statLink.code];
     if (config) {
-      const { title, size } = config;
+      const { title, size, optionsName, optionsLink, input } = config;
       let html;
       let parentElement;
+      let options;
+      let dropdownOptions;
+      // Fetch dynamic options if required
+      if (optionsLink) {
+        config.options = await model.fetchDynamicOptions(optionsLink);
+        options = config.options || [];
+        console.log(options);
+        dropdownOptions = options
+          .map(option => `<option value="${option}">${option}</option>`)
+          .join('');
+      }
+
       switch (size) {
         case 'g1':
           html = `
@@ -3152,6 +3164,9 @@ const setupGraphContainers = function (statLinks) {
           html = `
             <div class="grid-2" style="min-height: 317px;"> <!-- Set the min-height here -->
             <p class="cart-description-statistiques">${title}</p>
+            <select class="stat-dropdown" data-title="${optionsName}">
+            ${dropdownOptions}
+            </select> 
             <div
             class="graph-statistiques spinner-parent ${title.replace(
               /\s/g,

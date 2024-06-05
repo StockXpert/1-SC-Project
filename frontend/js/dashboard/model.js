@@ -1570,3 +1570,17 @@ export const addFournisseur = async function (newFournisseur) {
     console.error('Error addFournisseur :' + error);
   }
 };
+export const fetchDynamicOptions = async optionsLink => {
+  // Replace this with your actual fetch logic
+  // Example: const response = await fetch(`/api/options/${statLinkCode}`);
+  // const options = await response.json();
+  try {
+    // Dummy options for illustration
+    const options = await helpers.getJSON(`${API_URL}${optionsLink}`);
+    console.log(options);
+    return options.response;
+  } catch (error) {
+    console.error(error);
+    helpers.renderError(error);
+  }
+};

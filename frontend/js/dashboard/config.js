@@ -379,6 +379,9 @@ export const STAT_LINK_CONFIG = {
     dataName: 'Articles',
     old: false,
     style: 'bar',
+    optionsName: 'Article',
+    optionsLink: '/Nomenclatures/showArticles',
+    input: 'date',
   },
   rapidFournisseur: {
     title: 'Fournisseurs Rapides',
@@ -455,7 +458,7 @@ export const STAT_LINK_CONFIG = {
     size: 'g2',
     dataName: 'Commandes',
     old: false,
-    style: 'bar',
+    style: 'pie',
   },
   consumerMostdemmandedProduct: {
     title: 'Produits les Plus Demandés par Consommateur',
@@ -476,14 +479,15 @@ export const STAT_LINK_CONFIG = {
     size: 'g2',
     dataName: 'BCI',
     old: false,
-    style: 'bar',
+    style: 'pie',
   },
   bciStructureStat: {
     title: 'Statistiques BCI par Structure',
     size: 'g2',
     dataName: 'BCI',
     old: false,
-    style: 'bar',
+    style: 'pie',
+    options: 'structures',
   },
   respBciStat: {
     title: 'Statistiques BCI par Responsable',
