@@ -109,7 +109,7 @@ function updateLogo(link)
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
           
-        const query ='update parametre set logo_link=? ';
+        const query ='update parametre set logo_application=? ';
         const values=[link]
         connection.connect((err) => {
           if (err) {
@@ -134,7 +134,7 @@ function updateHeader(link)
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
           
-        const query ='update parametre set header_link=? ';
+        const query ='update parametre set en_tete_document=? ';
         const values=[link]
         connection.connect((err) => {
           if (err) {
