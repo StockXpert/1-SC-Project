@@ -3194,9 +3194,9 @@ const setupGraphContainers = async function (statLinks) {
                             ${yearOptions}
                           </select>`;
           } else if (option === 'dateDebut') {
-            extraInputsHtml += `<input type="date" class="stat-${option}-input stat-dropdown" placeholder="${option}" data-title="${title}" data-option="${option}" min="${minDateDebut}" max="${maxDateFin}"/>`;
+            extraInputsHtml += `<input type="date" class="stat-${option}-input stat-dropdown" placeholder="${option}" data-title="${title}" data-option="${option}" min="${minDateDebut}" max="${maxDateFin}" value="${minDateDebut}"/>`;
           } else if (option === 'dateFin') {
-            extraInputsHtml += `<input type="date" class="stat-${option}-input stat-dropdown" placeholder="${option}" data-title="${title}" data-option="${option}" min="${minDateDebut}" max="${maxDateFin}"/>`;
+            extraInputsHtml += `<input type="date" class="stat-${option}-input stat-dropdown" placeholder="${option}" data-title="${title}" data-option="${option}" min="${minDateDebut}" max="${maxDateFin}" value="${maxDateFin}"/>`;
           }
         });
       }

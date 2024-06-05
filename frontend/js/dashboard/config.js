@@ -1,5 +1,5 @@
 export const API_URL = 'http://localhost:3000';
-export const TIMEOUT_SEC = 30;
+export const TIMEOUT_SEC = 600;
 export const MODAL_CLOSE_SEC = 2.5;
 export const FUSE_OPTIONS = {
   isCaseSensitive: false,
@@ -511,6 +511,10 @@ export const STAT_LINK_CONFIG = {
     old: false,
     style: 'pie',
     options: 'structures',
+    optionsName: 'structure',
+    optionsLink: '/Users/showStructure',
+    optionsPostObj: ['structure'],
+    input: 'date',
   },
   respBciStat: {
     title: 'Statistiques BCI par Responsable',
