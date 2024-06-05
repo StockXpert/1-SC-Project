@@ -570,7 +570,17 @@ async function addBorder(rowIndex, idCopy, sc, ec) {
   }
 }
 async function uploadImageToDrive(filePath, fileName) {
-  const drive = google.drive({ version: 'v3', auth: oAuth2Client });
+  const auth = new google.auth.GoogleAuth({
+    keyFile: credentialsPath,
+    scopes: [
+      'https://www.googleapis.com/auth/drive',
+      'https://www.googleapis.com/auth/drive.file',
+    ],
+  });
+  console.log('auth');
+
+  // Créer une instance de l'API Google Sheets
+  let drive = await google.drive({ version: 'v3', auth });
 
   const fileMetadata = {
     name: fileName,
@@ -608,19 +618,48 @@ async function uploadImageToDrive(filePath, fileName) {
   return file.data.webViewLink;
 }
 async function insertImageURLInSheet(spreadsheetId, imageURL) {
-  const sheets = google.sheets({ version: 'v4', auth: oAuth2Client });
+  const auth = new google.auth.GoogleAuth({
+    keyFile: credentialsPath,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
 
+  console.log('connected');
+
+  // Créer une instance de l'API Google Sheets
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  // Fonction pour extraire l'ID de fichier de l'URL Google Drive
+  function extractFileId(driveUrl) {
+    const match = driveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : null;
+  }
+
+  // Extraire l'ID du fichier de l'URL
+  const fileId = extractFileId(imageURL);
+  if (!fileId) {
+    console.error('Invalid Google Drive URL');
+    return;
+  }
+
+  // Créer l'URL de visualisation directe
+  const directImageURL = `https://drive.google.com/uc?export=view&id=${fileId}`;
+
+  // Créer la requête pour insérer l'URL de l'image
   const request = {
     spreadsheetId: spreadsheetId,
-    range: 'A1',
+    range: 'A2',
     valueInputOption: 'USER_ENTERED',
     resource: {
-      values: [[`=IMAGE("${imageURL}")`]],
+      values: [[`=IMAGE("${directImageURL}"; 1)`]],
     },
   };
 
-  const response = await sheets.spreadsheets.values.update(request);
-  console.log('Cell updated:', response.data);
+  try {
+    const response = await sheets.spreadsheets.values.update(request);
+    console.log('Cell updated:', response.data);
+  } catch (err) {
+    console.error('Error updating cell:', err);
+  }
 }
 module.exports = {
   generatePDF,

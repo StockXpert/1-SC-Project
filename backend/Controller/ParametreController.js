@@ -11,7 +11,7 @@ function changeCompletName(req,res)
 function uploadLogo(req,res)
 {
     const logoLink = 'parametre/'+req.files['logo'][0].filename
-    ParametreModel.updateHeader(logoLink).then(()=>{
+    ParametreModel.updateLogo(logoLink).then(()=>{
         res.status(200).json({response:'updated'})
     }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
@@ -41,11 +41,11 @@ function changeAbstractName(req,res)
 }
 function uploadHeader(req,res)
 {
-    const headerLink = 'parametre/'+req.files['header'][0].filename
+    const headerLink = 'backend/parametre/'+req.files['header'][0].filename
     ParametreModel.updateHeader(headerLink).then(async()=>{
         await ParametreService.changeHeader(headerLink)
         res.status(200).json({response:'updated'})
-    }).catch(()=>{res.status(500).json({response:'internal error'})})
+    }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function showInformations(req,res)
 {
