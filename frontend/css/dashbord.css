@@ -2541,9 +2541,9 @@ table tbody tr:last-child td {
   padding: 1rem;
 }
 /* pour enlever icon de base du type date */
-input[type='date']::-webkit-calendar-picker-indicator {
+/* input[type='date']::-webkit-calendar-picker-indicator {
   display: none;
-}
+} */
 .input-icon {
   font-size: 2rem;
   padding: 0.4rem;

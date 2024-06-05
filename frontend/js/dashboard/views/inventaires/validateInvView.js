@@ -29,7 +29,6 @@ export class ValidateInvView extends ValidateCmdsIntView {
     cancelBtnExists = true
   ) {
     this._window = document.querySelector(windowClassName);
-    console.log(this._window);
     if (cancelBtnExists) {
       this._btnClose = this._window.querySelector(CloserClassName);
       this._btnClose.addEventListener('click', e => {

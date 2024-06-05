@@ -131,7 +131,6 @@ class SideView extends View {
 
   // TODO: MAKE A CONFIG ARRAY THAT HAS: KEY(PERM GROUP) VALUE(HTML)
   _generateMarkup() {
-    console.log(this._data);
     return `
     ${this._data
       // .filter(
