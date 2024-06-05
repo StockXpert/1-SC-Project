@@ -1614,7 +1614,8 @@ table tbody tr:last-child td {
   font-weight: 500;
   background-color: #e01313;
 }
-.served-status-bdci {
+.served-status-bdci,
+.termine-status {
   /* color: #313131; */
   font-weight: 500;
   background-color: #0084ff;

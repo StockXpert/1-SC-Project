@@ -36,7 +36,11 @@ export class InvView extends CmdsIntView {
     <td>${helpers.formatDate(result.date_inventaire)}</td>
     <td>
       <p class="status-inv ${
-        result.etat == 'valid' ? 'valide-status' : 'novalide-status'
+        result.etat == 'valid'
+          ? 'valide-status'
+          : result.etat == 'termine'
+          ? 'termine-status'
+          : 'novalide-status'
       }">${result.etat}</p>
     </td>
 
@@ -75,7 +79,7 @@ export class InvView extends CmdsIntView {
     <td class="td-print-inv">
 
     ${
-      result.etat == 'valid'
+      result.etat == 'valid' || result.etat == 'termine'
         ? `
       <a class="details-btn print-inv-btn" href="/backend/${result.zip}" target="_blank">
         <span class="material-icons-sharp info-icon">
