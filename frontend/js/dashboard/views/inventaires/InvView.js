@@ -61,9 +61,8 @@ export class InvView extends CmdsIntView {
         .map(({ designation }) => designation)
         .includes('valid inventaire')
         ? `<td class="td-verif-inv">
-
               <button class="verif-inv ${
-                result.etat == 'no valid' ? `` : `hidden`
+                result.etat == 'confirme' ? `` : `hidden`
               }">
                 <span class="material-icons-sharp verif-icon">
                   check_circle

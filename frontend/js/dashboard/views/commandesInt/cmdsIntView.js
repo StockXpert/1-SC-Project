@@ -273,7 +273,7 @@ export class CmdsIntView extends CmdsView {
                 this._btnModifyInv,
               ]);
               break;
-            case 'confirme':
+            case 'valid':
               enableBtns([this._btnUpdateInv]);
               break;
             default:
