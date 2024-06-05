@@ -8,6 +8,7 @@ function addRegistre(numInventaire)
 {
   return new Promise((resolve,reject)=>{
     InventaireModel.getInventaireProducts(numInventaire).then((produits)=>{
+         
         genererRegistre(produits,numInventaire,'1asTIrZrT9BYmoUXjRaNxh_ej_1YgwCp5mWJAJWdmXDs').then(()=>{
          resolve('');
         }).catch(()=>{reject('')})
@@ -17,11 +18,13 @@ function addRegistre(numInventaire)
 function genererRegistre(produits,numInventaire,Id)
 {
     return new Promise(async(resolve,reject)=>{
+        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         let i=12;
         for(let produit of produits)
         {
             await googleMiddleware.addRow(i,produit,Id,"registre")
             i++;
+            await delay(5000)
         }
         await googleMiddleware.generatePDF(Id,`registre`,`registre${numInventaire}`);
         await googleMiddleware.deleteRows(12,i-1,Id);
