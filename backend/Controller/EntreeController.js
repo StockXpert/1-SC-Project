@@ -108,8 +108,9 @@ function showBonReception(req,res)
 {
    const {numCommande}=req.body
    EntreeModel.getBonReception(numCommande).then((response)=>{
-      res.status(500).json({response})
-   }).catch(()=>{res.status(500).json({response:'internal error'})})
+      console.log("no err")
+      res.status(200).json({response})
+   }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function showBonReceptionProducts(req,res)
 {
@@ -122,6 +123,7 @@ function showCommandeProducts(req,res)
 {
    const {numCommande}=req.body;
    EntreeModel.getCommandeProducts(numCommande).then((response)=>{
+      console.log("termine")
       res.status(200).json({response})
    }).catch(()=>{res.status(500).json({response:'internal error'})})
 }

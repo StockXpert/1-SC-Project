@@ -760,7 +760,7 @@ function getProducts()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select p.designation,p.quantite,p.seuil,p.description,a.designation as article from produit p ,contient c,article a
+    const query = `select p.designation,p.quantite,p.seuil,p.description,p.consommable,a.designation as article from produit p ,contient c,article a
                   where p.id_produit=c.id_produit and a.num_article=c.id_article
                    `;
     

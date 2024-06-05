@@ -116,7 +116,7 @@ function topDemandeurs(dateD,dateF,structure,produit)
         let query
         if (structure)
             query=`select d.id_demandeur as consommateur ,count(f.quantite_demande) as  nombre from demande_fourniture d ,fournir f,produit p where
-           p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit
+           p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit and
            d.id_demandeur in
            (
             SELECT email
@@ -194,6 +194,7 @@ function productDemandePerYear(year,product)
         const query=`select date_format(d.date_demande,'%M') as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f,produit p where
         d.num_demande=f.id_demande and p.id_produit=f.id_produit and year(d.date_demande)=? and p.designation=?
         group by date_format(d.date_demande,'%M')`
+        console.log({year,product})
         let values=[year,product]   
         connection.connect((err) => {
           if (err) {
