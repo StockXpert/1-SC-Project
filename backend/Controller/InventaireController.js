@@ -53,7 +53,9 @@ function update(req,res)
         InventaireModel.countQuantitePhys().then((produits)=>{
             console.log({produits});
             InventaireModel.updateQuantite(produits).then(()=>{
+               InventaireModel.changeInvetaireStatus(numInventaire,'termine').then(()=>{
                 res.status(200).json({response:'updated'})
+               }).catch(()=>{res.status(500).json({response:'internal error'})})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
         }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
     })

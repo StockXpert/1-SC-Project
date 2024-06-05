@@ -24,7 +24,7 @@ function genererRegistre(produits,numInventaire,Id)
             i++;
         }
         await googleMiddleware.generatePDF(Id,`registre`,`registre${numInventaire}`);
-        await googleMiddleware.deleteRows(2,i-1,Id);
+        await googleMiddleware.deleteRows(12,i-1,Id);
         const link=`registre/registre${numInventaire}.`
         InventaireModel.insertLink(numInventaire,link+'pdf',link+'xlsx').then(()=>{
             resolve(link)
