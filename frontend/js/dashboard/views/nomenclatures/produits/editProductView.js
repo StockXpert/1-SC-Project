@@ -60,16 +60,27 @@ class EditProductView extends View {
     formElement.querySelector('#Designation').value =
       inputValuesObj.designation;
     formElement.querySelector('#seuil').value = inputValuesObj.seuil;
+    formElement.querySelector('#consommable-edit').checked =
+      inputValuesObj.consommable == 1;
+    document.getElementById('value-display-edit').textContent =
+      inputValuesObj.consommable == 1 ? 'consommable ' : 'Non consommable';
   }
 
   addHandlerUpdate(controller) {
     const formElement = document.querySelector('.edit-produits-inputs');
+    const checkbox = document.querySelector('#consommable-edit');
+    const valueDisplay = document.getElementById('value-display-edit');
+    checkbox.addEventListener('change', () => {
+      const value = checkbox.checked;
+      valueDisplay.textContent = `${value ? ' ' : 'Non'} consommable`;
+    });
 
     formElement.addEventListener('submit', e => {
       e.preventDefault();
       const newProduit = {
         designation: formElement.querySelector('#Designation').value,
         seuil: formElement.querySelector('#seuil').value,
+        consommable: checkbox.checked,
       };
       console.log(this.currProduit, newProduit);
       controller(this.currProduit, newProduit);
