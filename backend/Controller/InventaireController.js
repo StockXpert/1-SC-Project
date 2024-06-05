@@ -75,7 +75,13 @@ function update(req, res) {
         console.log({ produits });
         InventaireModel.updateQuantite(produits)
           .then(() => {
-            res.status(200).json({ response: 'updated' });
+            InventaireModel.changeInvetaireStatus(numInventaire, 'termine')
+              .then(() => {
+                res.status(200).json({ response: 'updated' });
+              })
+              .catch(() => {
+                res.status(500).json({ response: 'internal error' });
+              });
           })
           .catch(() => {
             res.status(500).json({ response: 'internal error' });
