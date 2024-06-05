@@ -3528,7 +3528,7 @@ a.password-icon:active {
   border-width: 0;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
   .grid-statistiques {
     grid-template-columns: 1fr 1fr;
   }
@@ -3536,7 +3536,7 @@ a.password-icon:active {
     max-width: 80vw;
   }
   .container-statistiques {
-    max-height: 60vh;
+    max-height: 75vh;
   }
 }
 .dropbtn-type {
