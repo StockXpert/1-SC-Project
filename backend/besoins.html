@@ -3,63 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Line Chart Example</title>
-    <!-- Inclure Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Upload Images</title>
   </head>
   <body>
-    <canvas id="myChart" width="100" height="100"></canvas>
-    <script>
-      // Données pour le diagramme
-      var data = {
-        labels: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ],
-        datasets: [
-          {
-            label: 'Improvement',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
-            data: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110],
-            fill: false,
-          },
-        ],
-      };
+    <h1>Upload Images</h1>
+    <form
+      id="form1"
+      action="http://localhost:3000/Parametre/uploadHeader"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <label for="file1">Choose Header for route 1:</label>
+      <input type="file" id="file1" name="header" accept="image/*" />
+      <button type="submit">Upload to Route 1</button>
+    </form>
 
-      // Configuration du diagramme
-      var options = {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-            },
-          ],
-        },
-      };
-
-      // Création du diagramme
-      var ctx = document.getElementById('myChart').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: options,
-      });
-    </script>
+    <form
+      id="form2"
+      action="http://localhost:3000/Parametre/uploadLogo"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <label for="file2">Choose Logo for route 2:</label>
+      <input type="file" id="file2" name="logo" accept="image/*" />
+      <button type="submit">Upload to Route 2</button>
+    </form>
   </body>
 </html>
