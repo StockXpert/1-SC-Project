@@ -20,5 +20,5 @@ router.put('/updateFournisseur',authMiddleware('update fournisseur'),Nomenclatur
 router.post('/showRefs',authMiddleware('show refs'),NomenclatureController.showRefs);
 router.put('/updateInventaire',authMiddleware('update num inventaire'),NomenclatureController.updateInventaire);
 router.put('/updateRaisonSociale',authMiddleware('update raison sociale'),NomenclatureController.updateRaisonSociale)
-router.put('/updateProduct',NomenclatureController.updateProduct)
+router.put('/updateProduct',authMiddleware('update product'),NomenclatureController.updateProduct)
 module.exports=router;
