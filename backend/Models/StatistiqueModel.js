@@ -116,7 +116,7 @@ function topDemandeurs(dateD,dateF,structure,produit)
         let query
         if (structure)
             query=`select d.id_demandeur as consommateur ,count(f.quantite_demande) as  nombre from demande_fourniture d ,fournir f,produit p where
-           p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit
+           p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit and
            d.id_demandeur in
            (
             SELECT email
