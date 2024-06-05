@@ -3723,7 +3723,33 @@ select.filters-add-inv option {
 
 .checkbox-groupe {
   font-size: large;
+}
+.stat-dateDebut-input,
+.stat-dateFin-input {
+  border: 2px solid #477ce2;
+  border-radius: 100px;
+  padding: 5px;
+  max-width: 130px;
+  font-weight: 700;
+  color: #434343;
+}
 
+.extra-inputs {
   display: flex;
-  gap: 3px;
+  gap: 5px;
+  max-width: 500;
+  display: flex;
+  flex-direction: row;
+}
+.stat-dateDebut-input::-webkit-calendar-picker-indicator,
+.stat-dateFin-input::-webkit-calendar-picker-indicator {
+  font-size: 20px;
+  color: #0084ff;
+}
+.stat-dropdown {
+  border: 2px solid #477ce2;
+  font-weight: 600;
+  border-radius: 100px;
+  margin-top: 7px;
+  padding: 3px;
 }

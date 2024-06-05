@@ -3190,6 +3190,7 @@ const setupGraphContainers = async function (statLinks) {
 
       const minDateDebut = '2014-09-14';
       const maxDateFin = new Date().toISOString().split('T')[0];
+      console.log(maxDateFin);
 
       let extraInputsHtml = '';
       if (optionsPostObj) {

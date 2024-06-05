@@ -77,7 +77,7 @@ export class InvView extends CmdsIntView {
     ${
       result.etat == 'valid'
         ? `
-      <a class="details-btn print-inv-btn" href="/backend/registre/registre${result.num_inventaire}.pdf" target="_blank">
+      <a class="details-btn print-inv-btn" href="/backend/${result.zip}" target="_blank">
         <span class="material-icons-sharp info-icon">
           print
         </span>

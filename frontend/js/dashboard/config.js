@@ -105,6 +105,7 @@ export const GROUP_DEFINITIONS = {
     'show products',
     'add product',
     'delete product',
+    'update product',
   ],
   Fournisseurs: [
     'add fournisseur',
@@ -395,8 +396,10 @@ export const STAT_LINK_CONFIG = {
     title: 'Fournisseurs Rapides',
     size: 'g2',
     dataName: 'fournisseur',
+    optionsPostObj: ['dateDebut', 'dateFin'],
     old: false,
     style: 'bar',
+    input: 'date',
   },
   respStructureTopDemandeurs: {
     title: 'Responsables Structures Top Demandeurs',
