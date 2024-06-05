@@ -3441,10 +3441,10 @@ const controlLoadMod = async () => {
     let imgLink = URL.createObjectURL(inputFile.files[0]);
     imageView.style.backgroundImage = `url(${imgLink})`;
     imageView.textContent = '';
-    console.log(imgLink);
+    console.log(inputFile.files[0]);
 
     const formData = new FormData();
-    formData.append('logo', inputFile);
+    formData.append('logo', inputFile.files[0]);
 
     try {
       uploadLogoView.renderSpinner('Modifier Logo...');
@@ -3483,7 +3483,7 @@ const controlLoadMod = async () => {
     console.log(imgLink);
 
     const formData = new FormData();
-    formData.append('header', inputFile);
+    formData.append('header', inputFile2.files[0]);
 
     try {
       uploadHeaderView.renderSpinner('Modifier Header...');
