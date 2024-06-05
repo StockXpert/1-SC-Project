@@ -2,7 +2,7 @@ import * as helpers from '../../../helpers.js';
 import View from '../../view.js';
 class AddFournisseurView extends View {
   _window = document.querySelector('.add-fournisseur-container');
-  _overlay = document.querySelector('.overlayAddChapter');
+  _overlay = document.querySelector('.overlayAddFournisseur');
   _btnOpen = document.querySelector('.add-fournisseur-btn');
   _btnClose = this._window.querySelector('.close-btn');
   _parentElement = document.querySelector('.add-fournisseur-inputs');

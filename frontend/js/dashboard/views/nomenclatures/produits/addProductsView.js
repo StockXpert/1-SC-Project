@@ -2,7 +2,7 @@ import View from '../../view.js';
 
 class AddProductsView extends View {
   _window = document.querySelector('.add-produits-container');
-  _overlay = document.querySelector('.overlayAddPoducts');
+  _overlay = document.querySelector('.overlayAddProducts');
   _btnOpen = document.querySelector('.add-produits-btn');
   _btnClose = this._window.querySelector('.close-btn');
   _parentElement = document.querySelector('.add-produits-inputs');

@@ -1,12 +1,12 @@
 import View from '../../view.js';
 
-class DeleteFournisseurView extends View {
-  _window = document.querySelector('.container-supp-fournisseur');
-  _overlay = document.querySelector('.overlayDelFournisseur');
-  _btnOpen = document.querySelector('.btn-delete-fournisseur');
-  _parentElement = document.querySelector('.supp-fournisseur-cart');
-  _annuler = document.querySelector('.supp-fournisseur-annuler');
-  _confirm = document.querySelector('.supp-fournisseur-confirmer');
+class DeleteProductView extends View {
+  _window = document.querySelector('.container-supp-produits');
+  _overlay = document.querySelector('.overlayDelProducts');
+  _btnOpen = document.querySelector('.btn-delete-produits');
+  _parentElement = document.querySelector('.supp-produits-cart');
+  _annuler = document.querySelector('.supp-produits-annuler');
+  _confirm = document.querySelector('.supp-produits-confirmer');
 
   constructor() {
     super();
@@ -37,7 +37,7 @@ class DeleteFournisseurView extends View {
       ctrler();
     });
   }
-  _restricted = [['.btn-delete-fournisseur', 'delete fournisseur'], 'none'];
+  _restricted = [['.btn-delete-produits', 'delete product'], 'none'];
 }
 
-export default new DeleteFournisseurView();
+export default new DeleteProductView();

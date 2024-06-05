@@ -63,6 +63,8 @@ import editFournisseurView from './views/nomenclatures/fournisseur/editFournisse
 import detailFournisseurView from './views/nomenclatures/fournisseur/detailFournisseurView.js';
 import addFournisseurView from './views/nomenclatures/fournisseur/addFournisseurView.js';
 import deleteFournisseurView from './views/nomenclatures/fournisseur/deleteFournisseurView.js';
+import deleteProductView from './views/nomenclatures/produits/deleteProductView.js';
+import editProductView from './views/nomenclatures/produits/editProductView.js';
 // import numberAddProductsView from './views/commandes/numberAddProductsView.js';
 
 const controlUpdateMyPerms = async function () {
@@ -2749,12 +2751,15 @@ const controlLoadProducts = async function () {
     }
     productsView.restrict(model.state.me.permissions.all);
     addProductsView.restrict(model.state.me.permissions.all);
-    // deleteStructureView.restrict(model.state.me.permissions.all);
     productsView.renderSpinner('Chargement des produits...');
     await model.loadAllProducts();
     productsView.render(model.state.products.all);
     // console.log(model.state.products.all);
-    // deleteStructureView.addDeleteController(controlDeleteStructure);
+    deleteProductView.addDeleteController(controlDeleteProduct);
+    productsView.addSearchController(controlSearchProduct);
+    editProductView.addHandlerShowWindow();
+    editProductView.addHandlerHideWindow();
+    editProductView.addHandlerEdit(controlEditProduct);
 
     // numberChaptersView.render(model.state.chapters);
     // numberChaptersView.updateMasterCheckbox();
@@ -2766,18 +2771,18 @@ const controlLoadProducts = async function () {
   }
 };
 
-// const controlSearchProduct = async function (query) {
-//   const results = model.state.products.all.filter(product =>
-//     product.designation.toLowerCase().includes(query.toLowerCase())
-//   );
-//   model.state.products.searched.all = results;
+const controlSearchProduct = async function (query) {
+  const results = model.state.products.all.filter(product =>
+    product.designation.toLowerCase().includes(query.toLowerCase())
+  );
+  model.state.products.searched.all = results;
 
-//   productsView.render(model.state.products.searched.all);
-//   // numberChaptersView.render(model.state.chapters.searched);
-//   // numberChaptersView.updateMasterCheckbox();
-//   // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
-//   // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
-// };
+  productsView.render(model.state.products.searched.all);
+  // numberChaptersView.render(model.state.chapters.searched);
+  // numberChaptersView.updateMasterCheckbox();
+  // numberChaptersView.addHandlerNumber(controleSelectChapters, true);
+  // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters, true);
+};
 
 const controlAddProduct = async function (newProduct) {
   try {
@@ -2798,6 +2803,56 @@ const controlAddProduct = async function (newProduct) {
     addProductsView.clearForm();
     //Close Window
   } catch (error) {
+    console.error(error);
+  }
+};
+
+const controlDeleteProduct = async function () {
+  filterArrayByBooleans(
+    model.state.products.all,
+    helpers.getCheckboxStates(
+      document
+        .querySelector('.results-produits')
+        .querySelectorAll('input[type="checkbox"]')
+    )
+  ).forEach(async el => {
+    console.log(el);
+    productsView.renderSpinner(
+      'Suppression du Produit ' + el.designation + '...'
+    );
+    await model.deleteProduct(el);
+    // back to main menu
+    await controlLoadProducts();
+  });
+};
+
+const controlEditProduct = function () {
+  const target = this;
+  const targetIndex = helpers.findNodeIndex(
+    document.querySelectorAll('.details-btn-produits'),
+    target
+  );
+  // console.log(targetIndex);
+  console.log(model.state.products.all[targetIndex]);
+  editProductView.changeInputs(model.state.products.all[targetIndex]);
+  editProductView.addHandlerUpdate(controlUpdateProduit);
+};
+
+const controlUpdateProduit = async function (oldProduct, newProduct) {
+  try {
+    // if (
+    //   Object.entries(helpers.getUpdateObject(oldStructure, newStructure))
+    //     .length === 0
+    // ) return;
+    // console.log(oldStructure.designation, newStructure.designation);
+    // if (oldProduct.designation === newProduct.designation) return;
+    editProductView.renderSpinner('Modification du produit...');
+    await model.updateProduct(oldProduct, newProduct);
+    editProductView.unrenderSpinner();
+    editProductView.toggleWindow();
+    await controlLoadProducts();
+  } catch (error) {
+    editProductView.unrenderSpinner();
     console.error(error);
   }
 };
