@@ -16,7 +16,7 @@ export class CmdsIntHeaderView extends CmdsIntView {
           ${this._data.includes('Consommateur') ? '' : '<th>Email</th>'}
           <th>Date</th>
           <th>Statut</th>
-
+          <th class="">Exterieur</th> 
           <!-- btns pour consommateur -->
           ${
             this._data.includes('Consommateur')
@@ -35,11 +35,12 @@ export class CmdsIntHeaderView extends CmdsIntView {
               ? '<th class="verif-Directeur">Vérifier</th>'
               : ''
           }
+          
           <!-- btns pour Magasinier -->
           ${
             this._data.includes('Magasinier')
               ? `
-              <th class=""></th> 
+              
               <th class="verif-Magasinier">Vérifier</th> 
               <th class="print-bdci">Imprimer</th>
               <th class="view-bdc">Détails</th>`
