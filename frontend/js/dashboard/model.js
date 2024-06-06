@@ -223,7 +223,9 @@ export const getMyPerms = async function () {
       fetch(`${API_URL}/Users/showUser`, {
         method: 'GET',
         headers: {
-          Authorization: localStorage.getItem('JWT'),
+          Authorization: localStorage.getItem('JWT')
+            ? localStorage.getItem('JWT')
+            : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRnQGVzaS1zYmEuZHoiLCJyb2xlIjoiRGlyZWN0ZXVyIiwiaWF0IjoxNzE1Njg0NjkwLCJleHAiOjE3MTU3NzEwOTB9.xJlb9WGqvn2H4w54lTsAV2I7zNJxNbdT4wBQsP2UcfQ',
           // Authorization:
           //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRnQGVzaS1zYmEuZHoiLCJyb2xlIjoiRGlyZWN0ZXVyIiwiaWF0IjoxNzE1Njg0NjkwLCJleHAiOjE3MTU3NzEwOTB9.xJlb9WGqvn2H4w54lTsAV2I7zNJxNbdT4wBQsP2UcfQ',
           'content-Type': 'application/json',
