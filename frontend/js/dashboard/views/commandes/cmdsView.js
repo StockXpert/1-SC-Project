@@ -10,9 +10,14 @@ export class CmdsView extends UsersView {
     .querySelector('#main-table-bdc')
     .querySelector('.results');
   _searchBox = document.querySelector('.searchbar-text-bdc');
-  addHandlerCmdsSearch(handler, filterState) {
+  addHandlerCmdsSearch(handler, filterHandler) {
     this._searchBox.addEventListener('input', e => {
-      handler(this._searchBox.value, filterState);
+      handler(this._searchBox.value);
+      filterHandler(
+        Array.from(this._filters.querySelectorAll('select')).map(
+          select => select.value
+        )
+      );
     });
   }
   addChangeFiltersHandler(handler) {

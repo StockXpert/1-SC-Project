@@ -764,6 +764,7 @@ export const loadCmds = async function () {
     (a, b) => b.num_commande - a.num_commande
   );
   state.bdc.afterSearch = commandes.map(item => ({ ...item }));
+  state.bdc.afterFilters = commandes.map(item => ({ ...item }));
   return commandes;
 };
 export const loadCmdsInt = async function () {
