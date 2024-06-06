@@ -19,6 +19,7 @@ try {
 async function login(req, res) {
   const { email, password } = req.body;
   const SecretKey = process.env.KEY;
+  console.log("hi")
   userService
     .verifyUser(email)
     .then(response => {
@@ -320,7 +321,7 @@ function updateStructure(req,res)
 function saveToken(req,res)
 {
   const email=req.email;
-  const token=req.body.email;
+  const token=req.body.token
   userModel.updateToken(token,email).then(()=>{
     res.status(200).json({response:'token added'})
   }).catch(()=>{res.status(500).json({response:'internal error'})})

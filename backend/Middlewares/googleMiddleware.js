@@ -69,7 +69,7 @@ async function addRow(ligne, Content, idCopy, type) {
     switch (type) {
       case 'commande':
         valuesToInsert = [
-          rowIndex - 21,
+          rowIndex - 27,
           '',
           Content.designation,
           Content.quantite,
@@ -87,7 +87,7 @@ async function addRow(ligne, Content, idCopy, type) {
       case 'reception':
         console.log(Content.quantite);
         valuesToInsert = [
-          rowIndex - 10,
+          rowIndex - 15,
           Content.designation,
           '',
           '',
@@ -100,7 +100,7 @@ async function addRow(ligne, Content, idCopy, type) {
         break;
       case 'sortie':
         valuesToInsert = [
-          rowIndex - 4,
+          rowIndex - 12,
           Content.designation,
           Content.quantite_demande,
           Content.quantite_servie,
@@ -112,22 +112,40 @@ async function addRow(ligne, Content, idCopy, type) {
       case 'decharge':
         valuesToInsert = [
           Content.designation,
-          Content.reference,
+          'N° serie:' +
+            Content.reference +
+            `\n` +
+            'N° inventaire:' +
+            Content.num_inventaire,
           Content.observation,
         ];
         ec = 3;
         break;
       case 'registre':
         valuesToInsert = [
-          Content.id_produit,
-          Content.dateI,
-          Content.date,
+          Content.num_inventaire,
+          Content.date_inscription,
+          Content.date_inventaire,
           Content.designation,
           Content.fournisseur,
-          Content.value,
+          Content.prix_unitaire,
         ];
         ec = 6;
         break;
+      case 'fiche':
+        valuesToInsert = [
+          ligne - 21,
+          Content.designation,
+          Content.num_inventaires,
+          Content.reste,
+          Content.entree,
+          Content.sortie,
+          Content.quantite,
+          Content.quantite_phys,
+          parseInt(Content.quantite) - parseInt(Content.quantite_phys),
+          Content.raison,
+        ];
+        ec = 10;
       default:
         break;
     }
@@ -150,7 +168,12 @@ async function addRow(ligne, Content, idCopy, type) {
       'with values',
       valuesToInsert
     );
-    if (type != 'sortie' && type != 'decharge' && type != 'registre') {
+    if (
+      type != 'sortie' &&
+      type != 'decharge' &&
+      type != 'registre' &&
+      type != 'fiche'
+    ) {
       const res = await sheets.spreadsheets.batchUpdate({
         spreadsheetId: idCopy,
         requestBody: {
@@ -546,6 +569,98 @@ async function addBorder(rowIndex, idCopy, sc, ec) {
     console.error('Error inserting row:', error);
   }
 }
+async function uploadImageToDrive(filePath, fileName) {
+  const auth = new google.auth.GoogleAuth({
+    keyFile: credentialsPath,
+    scopes: [
+      'https://www.googleapis.com/auth/drive',
+      'https://www.googleapis.com/auth/drive.file',
+    ],
+  });
+  console.log('auth');
+
+  // Créer une instance de l'API Google Sheets
+  let drive = await google.drive({ version: 'v3', auth });
+
+  const fileMetadata = {
+    name: fileName,
+    mimeType: 'image/jpeg',
+  };
+
+  const media = {
+    mimeType: 'image/jpeg',
+    body: fs.createReadStream(filePath),
+  };
+
+  const res = await drive.files.create({
+    resource: fileMetadata,
+    media: media,
+    fields: 'id',
+  });
+
+  const fileId = res.data.id;
+
+  // Rendre le fichier public
+  await drive.permissions.create({
+    fileId: fileId,
+    requestBody: {
+      role: 'reader',
+      type: 'anyone',
+    },
+  });
+
+  // Obtenir l'URL du fichier
+  const file = await drive.files.get({
+    fileId: fileId,
+    fields: 'webViewLink',
+  });
+
+  return file.data.webViewLink;
+}
+async function insertImageURLInSheet(spreadsheetId, imageURL) {
+  const auth = new google.auth.GoogleAuth({
+    keyFile: credentialsPath,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+
+  console.log('connected');
+
+  // Créer une instance de l'API Google Sheets
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  // Fonction pour extraire l'ID de fichier de l'URL Google Drive
+  function extractFileId(driveUrl) {
+    const match = driveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : null;
+  }
+
+  // Extraire l'ID du fichier de l'URL
+  const fileId = extractFileId(imageURL);
+  if (!fileId) {
+    console.error('Invalid Google Drive URL');
+    return;
+  }
+
+  // Créer l'URL de visualisation directe
+  const directImageURL = `https://drive.google.com/uc?export=view&id=${fileId}`;
+
+  // Créer la requête pour insérer l'URL de l'image
+  const request = {
+    spreadsheetId: spreadsheetId,
+    range: 'A2',
+    valueInputOption: 'USER_ENTERED',
+    resource: {
+      values: [[`=IMAGE("${directImageURL}"; 1)`]],
+    },
+  };
+
+  try {
+    const response = await sheets.spreadsheets.values.update(request);
+    console.log('Cell updated:', response.data);
+  } catch (err) {
+    console.error('Error updating cell:', err);
+  }
+}
 module.exports = {
   generatePDF,
   getCopy,
@@ -554,4 +669,6 @@ module.exports = {
   deleteRows,
   addBorder,
   generateCSV,
+  uploadImageToDrive,
+  insertImageURLInSheet,
 };

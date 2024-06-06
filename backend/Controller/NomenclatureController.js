@@ -1,3 +1,4 @@
+const { response } = require('express');
 const NomenclatureModel = require('../Models/NomenclatureModel');
 const NomenclatureService=require('../Services/NomenclatureService');
 function addChapter(req,res)
@@ -72,15 +73,17 @@ function deleteArticle(req,res)
             NomenclatureService.deleteArticle(designation).then((response)=>{
                 res.status(200).json({response})
             }).catch((response)=>{
+                console.log(response)
                 res.status(500).json({response})
             })
-        }).catch(()=>{res.status(500).json({response:"prohibited to delete article"})})
-    }).catch(()=>res.status(403).json({response:'forbidden'}))
+        }).catch((err)=>{console.log(err);res.status(500).json({response:"prohibited to delete article"})})
+    }).catch((err)=>{console.log(err);res.status(403).json({response:'forbidden'})})
 }
 function addProduct(req,res)
 {
-    const {article,designation,quantite,description,seuil}=req.body;
-    NomenclatureService.addProduct(article,designation,description,quantite,seuil).then((response)=>{
+    const {article,designation,quantite,description,seuil,consommable}=req.body;
+    console.log({consommable})
+    NomenclatureService.addProduct(article,designation,description,quantite,seuil,consommable).then((response)=>{
         res.status(200).json({response})
     }).catch((response)=>{
         console.log(response)
@@ -96,7 +99,7 @@ function deleteProduct(req,res)
         }).catch((response)=>{
             res.status(500).json({response})
         })
-    }).catch(()=>res.status(403).json({response:'forbidden'}))
+    }).catch((err)=>{console.log(err);res.status(403).json({response:'forbidden'})})
 }
 function addFournisseur(req,res)
 {
@@ -118,7 +121,7 @@ function deleteFournisseur(req,res)
                 res.status(500).json({response:"internal error"});
             })
         }).catch(()=>{res.status(500).json({response:"prohibited to delete fournisseur"});})
-    }).catch(()=>res.status(403).json({response:'forbidden'}))
+    }).catch((err)=>{console.log(err);res.status(403).json({response:'forbidden'})})
 }
 function showFournisseurs(req,res)
 {
@@ -158,7 +161,8 @@ function updateFournisseur(req,res)
     const {adresse,telephone,fax,numRegistre,ribRip,nif,nis,raisonSociale}=req.body
     NomenclatureModel.updateFournisseur(adresse,telephone,fax,numRegistre,ribRip,nif,nis,raisonSociale).then(()=>{
         res.status(200).json({response:"fournisseur updated"});
-    }).catch(()=>{
+    }).catch((err)=>{
+        console.log(err)
         res.status(500).json({response:"internal error"})
     })
 }
@@ -171,6 +175,34 @@ function updateRaisonSociale(req,res)
         res.status(500).json({response:"internal error"})
     })
 }
+function showRefs(req,res)
+{
+    const {produit}=req.body;
+    NomenclatureModel.getRefs(produit).then((refs)=>{
+        res.status(200).json({response:refs});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
+function updateInventaire(req,res)
+{
+    const {produits,datePrise}=req.body;
+    NomenclatureModel.updateInventaire(produits,datePrise).then(()=>{
+        res.status(200).json({response:'updated'});
+    }).catch(()=>{
+        res.status(500).json({response:"internal error"})
+    })
+}
+function updateProduct(req,res)
+{
+    const {oldDesignation,newDesignation,seuil}=req.body;
+    NomenclatureModel.updateProduct(oldDesignation,newDesignation,seuil).then(()=>{
+        res.status(200).json({response:"updated"})
+    }).catch(()=>{
+        res.status(500).json({response:'internal error'})
+    })
+}
 module.exports={addArticle,addProduct,addFournisseur,deleteArticle,
     deleteProduct,deleteFournisseur,showFournisseurs,showProducts,showChapters,showArticles,
-    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur};
+    addChapter,updateChapter,deleteChapter,updateArticle,updateRaisonSociale,updateFournisseur,showRefs,
+updateInventaire,updateProduct};

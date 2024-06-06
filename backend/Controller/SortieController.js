@@ -24,7 +24,7 @@ function fournitureRespApp(req,res){
 function fournitureDirApp(req,res){
     const {produits,numDemande}=req.body;
     SortieModel.updateAccordedQuantite(numDemande,produits).then(()=>{
-        if(SortieService.allZero)
+        if(SortieService.allZero(produits))
             {
                 SortieModel.changeDemandeStatNotif(numDemande,'refusee','other_notif').then(()=>{
                     res.status(200).json({response:'Dir refused'})
@@ -36,14 +36,22 @@ function fournitureDirApp(req,res){
             res.status(200).json({response:'Dir approuved'})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
         }
-    }).catch(()=>{res.status(500).json({response:'internal error'})})
+    }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function fournitureMagApp(req,res){
     const {produits,numDemande}=req.body;
     SortieModel.updateLivredQuantite(numDemande,produits).then(()=>{
+        if(SortieService.allZero(produits))
+            {
+                SortieModel.changeDemandeStatNotif(numDemande,'refusee','other_notif').then(()=>{
+                    res.status(200).json({response:'Dir refused'})
+                    }).catch(()=>{res.status(500).json({response:'internal error'})})
+            }
+        else{
         SortieModel.changeDemandeStatNotif(numDemande,'prete','other_notif').then(()=>{
             res.status(200).json({response:'Mag approuved'})
         }).catch(()=>{res.status(500).json({response:'internal error'})})
+    }   
     }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
 function livrer(req,res)
@@ -61,8 +69,10 @@ function livrer(req,res)
                     }
                     else
                     {
-                        SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E').then((link)=>{
-                            res.status(200).json({response:link})
+                        SortieModel.getDemandeurStructure(numDemande).then((structure)=>{
+                            SortieService.genererBonSortie(numDemande,dateSortie,produits,'13xYjLr6AL7tSYzr-weRHfH6JnWqLspYZv-HgfAGT8_E',structure).then((link)=>{
+                                res.status(200).json({response:link})
+                            }).catch(()=>{res.status(500).json({response:'internal error'})})
                         }).catch(()=>{res.status(500).json({response:'internal error'})})
                     }
                 }).catch(()=>{res.status(500).json({response:'internal error'})})

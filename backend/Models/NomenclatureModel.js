@@ -1,4 +1,5 @@
 const mysql=require('mysql');
+const async=require('async')
 const connectionConfig = {
   host: 'bibznsnq8nf1q3j7r74o-mysql.services.clever-cloud.com',
   user: 'ucvk6cpbqavmyqnb',
@@ -77,7 +78,7 @@ function isUsedProduct(produit)
     and (id_produit in
       (select id_produit from commande) or id_produit in
       (select id_produit from livre) )`;
-    const values = [article];
+    const values = [produit];
 
     connection.connect((err) => {
       if (err) {
@@ -101,6 +102,37 @@ function isUsedProduct(produit)
     });
   });
 }
+function updateProduct(oldDesignation,newDesignation,seuil)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `update produit set ${seuil?"seuil=?":""} ${seuil&&newDesignation?',':''} ${newDesignation?"designation=?":""} where designation=?`;
+    const values = [];
+    if(seuil) values.push(seuil);
+    if(newDesignation) values.push(newDesignation)
+    values.push(oldDesignation)  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+
+      connection.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+           resolve('')
+        
+      });
+
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 function isUsedFournisseur(fournisseur)
 {
   return new Promise((resolve, reject) => {
@@ -108,7 +140,7 @@ function isUsedFournisseur(fournisseur)
     const query = `select id_fournisseur from fournisseur where raison_sociale=?
     and id_fournisseur in
       (select id_fournisseur from bon_de_commande)`;
-    const values = [article];
+    const values = [fournisseur];
 
     connection.connect((err) => {
       if (err) {
@@ -123,6 +155,7 @@ function isUsedFournisseur(fournisseur)
           reject("request error");
           return;
         }
+        console.log({length:results.length})
         if(results.length==0)
            resolve('')
         else reject('prohibited')  
@@ -151,7 +184,7 @@ function updateFournisseur(adresse, telephone, fax, numRegistre, ribRip, nif, ni
     if (telephone) values.push(telephone);
     if (fax) values.push(fax);
     if (numRegistre) values.push(numRegistre);
-    if (rib) values.push(ribRip);
+    if (ribRip) values.push(ribRip);
     if (nif) values.push(nif);
     if (nis) values.push(nis);
     values.push(raisonSociale);
@@ -328,7 +361,7 @@ function updateArticle(oldDesignation,newDesignation,chapitre,tva)
         ${newDesignation ? 'designation=?' : ''} 
         ${(newDesignation && chapitre) ? ',' : ''} 
         ${chapitre ? 'num_chap=(SELECT num_chap FROM chapitre WHERE designation=?)' : ''} 
-        ${(newTva ? (newDesignation || chapitre ? ',' : '') + 'tva=?' : '')}
+        ${(tva ? (newDesignation || chapitre ? ',' : '') + 'tva=?' : '')}
     WHERE 
         designation=?;`
     let values=[];
@@ -386,13 +419,13 @@ function addArticle(numArt,chapitreId,designation,tva)
         });
       });
 }
-function addProduct(quantite,designation,description,seuil)
+function addProduct(quantite,designation,description,seuil,consommable)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
-        const query = 'insert into produit (designation,description,quantite,date_ajout,seuil) values (?,?,?,now(),?)';
-        const values = [designation,description,quantite,seuil];
-        if(quantite===null) quantite=0;
+        const query = 'insert into produit (designation,description,quantite,date_ajout,seuil,consommable) values (?,?,?,now(),?,?)';
+        const values = [designation,description,0,seuil,consommable];
+        console.log({consommable})
         connection.connect((err) => {
           if (err) {
             console.error('Erreur de connexion :', err);
@@ -727,8 +760,9 @@ function getProducts()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select p.designation,p.quantite,p.seuil,p.description,a.designation as article from produit p , contient c ,article a 
-                   where p.id_produit=c.id_produit and c.id_article=a.num_article`;
+    const query = `select p.designation,p.quantite,p.seuil,p.description,p.consommable,a.designation as article from produit p ,contient c,article a
+                  where p.id_produit=c.id_produit and a.num_article=c.id_article
+                   `;
     
   
     connection.connect((err) => {
@@ -784,7 +818,7 @@ function getArticles()
 {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
-    const query = `select a.designation,a.tva,a.num_article,c.designation as chapitre from article a ,chapitre c
+    const query = `select a.designation,a.tva,a.num_article,c.designation as chapitre,c.num_chap from article a ,chapitre c
     where c.num_chap=a.num_chap`;
     
   
@@ -869,9 +903,98 @@ function updateRaisonSociale(newR,oldR)
     });
   });
 }
+function updateInventaire(produits) {
+  return new Promise((resolve, reject) => {
+      const connection = mysql.createConnection(connectionConfig);
+      connection.connect((err) => {
+          if (err) {
+              console.error('Erreur de connexion à la base de données : ', err);
+              reject(err);
+              return;
+          }
+          console.log('Connecté à la base de données MySQL');
+
+          // Commencer la transaction
+          connection.beginTransaction((err) => {
+              if (err) {
+                  console.error('Erreur lors du démarrage de la transaction : ', err);
+                  reject(err);
+                  return;
+              }
+              console.log("Début de la transaction");
+
+              // Utiliser une boucle asynchrone pour traiter chaque produit
+              async.eachSeries(produits, (produit, callback) => {
+                
+                  // Insérer les données dans ma_table avec l'ID produit fourni
+                  
+                  connection.query(`update reference set num_inventaire=?, date_inventaire=? where designation=?`, [produit.numInventaire, produit.datePrise, produit.reference], (err, result) => {
+                      if (err) {
+                          return callback(err);
+                      }
+                      console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', produit.id_produit);
+                      callback();
+                  });
+              }, (err) => {
+                  if (err) {
+                      return connection.rollback(() => {
+                          console.error('Erreur lors du traitement des produits : ', err);
+                          reject(err);
+                      });
+                  }
+
+                  // Valider la transaction
+                  connection.commit((err) => {
+                      if (err) {
+                          return connection.rollback(() => {
+                              console.error('Erreur lors de la validation de la transaction : ', err);
+                              reject(err);
+                          });
+                      }
+                      console.log("Transaction validée avec succès");
+                      resolve("success");
+                      connection.end();
+                  });
+              });
+          });
+      });
+  });
+}
+function getRefs(produit)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    const query = `select p.designation as produit,r.designation as reference ,r.num_inventaire,r.date_inventaire,p.consommable ,a.designation as article, c.designation as chapitre
+    from reference r ,produit p ,chapitre c,article a,contient n
+    where p.id_produit=r.id_produit and r.existe=true ${produit?'and p.designation=?':''} 
+    and a.num_article=n.id_article and a.num_chap=c.num_chap and n.id_produit=p.id_produit `;
+    let values=[];
+    if(produit)values.push(produit)
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        
+        resolve(results);
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });
+  });
+}
 module.exports={getChapterId,addArticle,addProduct,getArticleIdTva,getProductId,addArticleProduct,
                 deleteArticle,deleteArticleFromC,deleteProduct,deleteProductFromC,
                 insertFournisseur,deleteFournisseur,getFournisseurs,getProducts
                 ,getArticles,getChapters,getFournisseur,insertChapter,updateChapter,canDelete
               ,deleteChapter,updateArticle,canDeletefourn,updateFournisseur,updateRaisonSociale,
-               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter}
+               isUsedArticle,isUsedFournisseur,isUsedProduct,isUsedchapter,getRefs,updateInventaire,updateProduct}

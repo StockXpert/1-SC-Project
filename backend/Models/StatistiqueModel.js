@@ -16,7 +16,7 @@ function MostDemandedProduct(dateD,dateF,consommateur,structure)
         ${dateD?"and d.date_demande between ? and ?":""}
         group by p.designation,p.id_produit order by nombre desc limit 10`
         else if (structure)
-            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
+            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre,p.id_produit from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit and d.id_demandeur in
         (select email from utilisateur where id_structure=
             (select id_structure from structure where designation=?)
@@ -24,7 +24,7 @@ function MostDemandedProduct(dateD,dateF,consommateur,structure)
         ${dateD?"and d.date_demande between ? and ?":""}
         group by p.designation order by nombre desc limit 10`
         else
-            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre from demande_fourniture d,fournir f ,produit p where
+            query=`select p.designation as produit,sum(f.quantite_demande) as  nombre ,p.id_produit from demande_fourniture d,fournir f ,produit p where
         f.id_demande=d.num_demande and p.id_produit=f.id_produit ${dateD?"and d.date_demande between ? and ?":""}
         group by p.designation order by nombre desc limit 10`
         let values=[];
@@ -109,13 +109,14 @@ function RapidFournisseur(dateD,dateF)
         });
       });
 }
-function topDemandeurs(dateD,dateF,structure)
+function topDemandeurs(dateD,dateF,structure,produit)
 {
     return new Promise((resolve, reject) => {
         const connection = mysql.createConnection(connectionConfig);
         let query
         if (structure)
-            query=`select d.id_demandeur as consommateur ,count(d.num_demande) as  nombre from demande_fourniture d where
+            query=`select d.id_demandeur as consommateur ,count(f.quantite_demande) as  nombre from demande_fourniture d ,fournir f,produit p where
+           p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit and
            d.id_demandeur in
            (
             SELECT email
@@ -129,10 +130,11 @@ function topDemandeurs(dateD,dateF,structure)
         ${dateD?"and d.date_demande between ? and ?":""}
         group by d.id_demandeur order by count(d.num_demande) desc limit 10`
         else
-            query=`select d.id_demandeur as consommateur ,count(d.num_demande) as  nombre from demande_fourniture d 
-            ${dateD?"where d.date_demande between ? and ?":""}
+            query=`select d.id_demandeur as consommateur ,count(d.num_demande) as  nombre from demande_fourniture d ,fournir f,produit p where
+            p.designation=? and d.num_demande=f.id_demande and p.id_produit=f.id_produit
+            ${dateD?"and d.date_demande between ? and ?":""}
             group by d.id_demandeur order by count(d.num_demande) desc limit 10`
-        let values=[]
+        let values=[produit]
         if(structure) values.push(structure)
         if(dateD) values.push(dateD,dateF)    
         connection.connect((err) => {
@@ -192,6 +194,7 @@ function productDemandePerYear(year,product)
         const query=`select date_format(d.date_demande,'%M') as month ,sum(f.quantite_demande) as quantite from demande_fourniture d ,fournir f,produit p where
         d.num_demande=f.id_demande and p.id_produit=f.id_produit and year(d.date_demande)=? and p.designation=?
         group by date_format(d.date_demande,'%M')`
+        console.log({year,product})
         let values=[year,product]   
         connection.connect((err) => {
           if (err) {

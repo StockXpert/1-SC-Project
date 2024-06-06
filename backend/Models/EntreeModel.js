@@ -391,6 +391,32 @@ function deleteCommande(numCommande)
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });})  
 }
+function deleteRefs(numReception)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+      
+    const query = `delete from reference where num_reception=?`;
+    const values=[numReception]
+    connection.connect((err) => {
+      if (err) {
+        console.error('Erreur de connexion :', err);
+        reject("connexion erreur");
+        return;
+      }
+      
+      connection.query(query,values,(error, results, fields) => {
+        if (error) {
+          console.error('Erreur lors de l\'exécution de la requête :', error);
+          reject("request error");
+          return;
+        }
+        resolve("success");
+      });
+      
+      connection.end(); // Fermer la connexion après l'exécution de la requête
+    });})  
+}
 function deleteBonCommande(numCommande)
 {
   return new Promise((resolve, reject) => {
@@ -612,6 +638,7 @@ function updateQuantite(quantite,idProduit)
     const connection = mysql.createConnection(connectionConfig);
     quantite=parseInt(quantite)
     const query = `update produit set quantite=quantite+? where id_produit=?`;
+    console.log({quantite})
     const values=[quantite,idProduit]
     connection.connect((err) => {
       if (err) {
@@ -895,6 +922,75 @@ function updateReception(numReception,numLivraison,numFacture,dateReception)
       connection.end(); // Fermer la connexion après l'exécution de la requête
     });})  
 }
+function addRefs(produits,dateReception,numCommande,numReception)
+{
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(connectionConfig);
+    connection.connect((err) => {
+        if (err) {
+            console.error('Erreur de connexion à la base de données : ', err);
+            reject(err);
+            return;
+        }
+        console.log('Connecté à la base de données MySQL');
+        
+        // Commencer la transaction
+        connection.beginTransaction((err) => {
+            if (err) {
+                console.error('Erreur lors du démarrage de la transaction : ', err);
+                reject(err);
+                return;
+            }
+            console.log("Début de la transaction");
+
+            // Utiliser une boucle asynchrone pour traiter chaque produit
+            async.eachSeries(produits, (produit, callback) => {
+                // Exécuter la requête pour récupérer l'ID produit à partir de la désignation
+                console.log({produit})
+                connection.query('SELECT id_produit FROM produit WHERE designation = ?', [produit.designation], (err, rows) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    if (rows.length === 0) {
+                        return callback("Produit non trouvé  " + produit.designation);
+                    }
+                    const id_produit = rows[0].id_produit;
+
+                    // Insérer les données dans ma_table avec l'ID produit récupéré
+                    connection.query('INSERT INTO reference (id_produit, designation,date_inscription,num_commande,num_reception) VALUES (?, ?, ?,?,?)', [id_produit, produit.ref,dateReception,numCommande,numReception], (err, result) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        console.log('Produit inséré avec succès dans ma_table avec l\'ID produit : ', id_produit);
+                        callback();
+                    });
+                });
+            }, (err) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.error('Erreur lors du traitement des produits : ', err);
+                        reject(err);
+                    });
+                }
+
+                // Valider la transaction
+                connection.commit((err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error('Erreur lors de la validation de la transaction : ', err);
+                            reject(err);
+                        });
+                    }
+                    console.log("Transaction validée avec succès");
+                    resolve("success");
+                    connection.end();
+                });
+            });
+        });
+    });
+});
+}
+
 module.exports={insertBonCommande,insertLink,getLink,insertCommander,canDeleteCommande,
                 deleteBonCommande,deleteCommande,cancelCommande,getCommandes
                 ,updateQuantiteCommande,updateQuantite,checkValidity,changeStatus,updateBonCommande,
@@ -902,4 +998,4 @@ module.exports={insertBonCommande,insertLink,getLink,insertCommander,canDeleteCo
                 insertBonReception,getCommande,
                 getBonReception,getBonReceptionProducts,getCommandeProducts,
                 deleteLivre,deleteReception,updateReception,deleteProduitLivre,insertReceptionLink,
-                getBonCommandeFournisseur,getBonCommande}
+                getBonCommandeFournisseur,getBonCommande,addRefs,deleteRefs}

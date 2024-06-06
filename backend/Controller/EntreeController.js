@@ -72,9 +72,13 @@ function updateQuantite(req,res)
    console.log({bonLivraisonLink,factureLink});
    EntreeService.changeQuantite(numCommande,produits).then((response)=>{
       EntreeService.uploadvalidity(numCommande).then((response)=>{
-          EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink).then((response)=>{
+        let products=EntreeService.changeTabFormat(produits);
+        console.log(products)
+        
+         EntreeService.createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink,products).then((response)=>{
             res.status(200).json({response})
           }).catch((response)=>res.status(500).json({response}))
+
       })
    }).catch((response)=>res.status(500).json({response}))
 }
@@ -104,8 +108,9 @@ function showBonReception(req,res)
 {
    const {numCommande}=req.body
    EntreeModel.getBonReception(numCommande).then((response)=>{
-      res.status(500).json({response})
-   }).catch(()=>{res.status(500).json({response:'internal error'})})
+      console.log("no err")
+      res.status(200).json({response})
+   }).catch((err)=>{console.log(err);res.status(500).json({response:'internal error'})})
 }
 function showBonReceptionProducts(req,res)
 {
@@ -118,6 +123,7 @@ function showCommandeProducts(req,res)
 {
    const {numCommande}=req.body;
    EntreeModel.getCommandeProducts(numCommande).then((response)=>{
+      console.log("termine")
       res.status(200).json({response})
    }).catch(()=>{res.status(500).json({response:'internal error'})})
 }
@@ -145,10 +151,12 @@ function updateReception(req,res)
 function deleteReception(req,res)
 {
    const {numReception,numCommande}=req.body;
+   console.log({numCommande})
    EntreeService.restoreQuantite(numReception,numCommande,null).then(()=>{
        EntreeService.uploadvalidity(numCommande).then(()=>{
          EntreeModel.deleteReception(numReception).then(()=>{
-            EntreeModel.deleteLivre(numReception).then((response)=>{
+            EntreeModel.deleteLivre(numReception).then(async(response)=>{
+               await EntreeModel.deleteRefs(numReception)
                res.status(200).json({response})
             }).catch(()=>{res.status(500).json({response:'internal error'})})
          }).catch(()=>{res.status(500).json({response:'internal error'})})

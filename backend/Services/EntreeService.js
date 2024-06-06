@@ -30,49 +30,59 @@ function TVA(montantHT,tva)
 async function genererBondeCommande(num_commande,produits,fourn,objet,type,Id,tva,date)
 {
     return new Promise(async(resolve,reject)=>{
-        await googleMiddleware.updateCel('C1',`République Algerienne démoctatique et populaire
-        Bon de commande
-        N° ${num_commande} ${date}`,Id);
+        await googleMiddleware.updateCel('C8',`N° ${num_commande} ${date}`,Id);
+        let year=date.split('/')[0];
+        await googleMiddleware.updateCel('A36',`-La source de financement : le budget de fonctionnement de l'école 2023 ${year}`,Id);
         nomencaltureModel.getFournisseur(fourn).then(async(fournisseur)=>{
-            await googleMiddleware.updateCel('C11',"Adresse "+fournisseur.adresse,Id)
-            await googleMiddleware.updateCel('C8',"Nom et prénom "+fournisseur.raison_sociale,Id)
-            await googleMiddleware.updateCel('C9',"Ou Raison Sociale: "+fournisseur.raison_sociale,Id)
-            await googleMiddleware.updateCel('C12',"Telephone et fax:"+fournisseur.telephone+"/"+fournisseur.fax,Id)
-            await googleMiddleware.updateCel('C13',"N° R.C : "+fournisseur.num_registre,Id)
-            await googleMiddleware.updateCel('F13',`N.I.F : ${fournisseur.nif?fournisseur.nif:''}`,Id)
-            await googleMiddleware.updateCel('F14',`N.I.S : ${+fournisseur.nis?fournisseur.nis:''}`,Id)
-            await googleMiddleware.updateCel('F22',montantHT(produits)+'.00',Id)
-            await googleMiddleware.updateCel('C15',`RIB (ou RIP) :${fournisseur.rib_ou_rip}`,Id)
-            await googleMiddleware.updateCel('F18',`Objet de la commande: ${objet}`,Id);
+            await Promise.all([
+             googleMiddleware.updateCel('C18',"Adresse "+fournisseur.adresse,Id),
+             googleMiddleware.updateCel('C15',"Nom et prénom "+fournisseur.raison_sociale,Id),
+             googleMiddleware.updateCel('C16',"Ou Raison Sociale: "+fournisseur.raison_sociale,Id),
+             googleMiddleware.updateCel('C18',"Telephone et fax:"+fournisseur.telephone+"/"+fournisseur.fax,Id),
+             googleMiddleware.updateCel('C20',"N° R.C : "+fournisseur.num_registre,Id),
+             googleMiddleware.updateCel('F20',`N.I.F : ${fournisseur.nif?fournisseur.nif:''}`,Id),
+             googleMiddleware.updateCel('F21',`N.I.S : ${+fournisseur.nis?fournisseur.nis:''}`,Id),
+             googleMiddleware.updateCel('F29',montantHT(produits)+'.00',Id),
+             googleMiddleware.updateCel('C22',`RIB (ou RIP) :${fournisseur.rib_ou_rip}`,Id),
+             googleMiddleware.updateCel('F25',`Objet de la commande: ${objet}`,Id),
+            ])
             let range
             switch (type) {
                 case "materiel":
-                    range='A18'
+                    range='A25'
                     break;
                 case "fourniture":
-                    range='A19'
+                    range='A26'
                     break;
                 case "service":
-                    range='A20'
+                    range='A27'
                     break;
                 default:
                     break;
             }
-            await googleMiddleware.updateCel('D23',`TVA ${tva}%`,Id);
-            await googleMiddleware.updateCel('F23',TVA(montantHT(produits),tva)+'.00',Id);
-            await googleMiddleware.updateCel('F24',TVA(montantHT(produits),tva)+montantHT(produits)+'.00',Id);
-            const myNumber=new numberWord(TVA(montantHT(produits),tva)+montantHT(produits),'fr').result.fullText
-            await googleMiddleware.updateCel('A27',`${myNumber} dinars algérien`,Id);
-            await googleMiddleware.updateCel(range,true,Id);
-            let i = 22;
+            await Promise.all([
+             googleMiddleware.updateCel('D30',`TVA ${tva}%`,Id),
+            googleMiddleware.updateCel('F31',TVA(montantHT(produits),tva)+'.00',Id),
+            googleMiddleware.updateCel('F31',TVA(montantHT(produits),tva)+montantHT(produits)+'.00',Id),
+            ])
+            const myNumber=nombreEnLettres(TVA(montantHT(produits),tva)+montantHT(produits))
+            await Promise.all([
+             googleMiddleware.updateCel('A34',`${myNumber} dinars algérien`,Id),
+             googleMiddleware.updateCel(range,true,Id),
+            ])
+            let i = 29;
             for (const produit of produits) {
                 await googleMiddleware.addRow(i, produit,Id,'commande');
                 i++;
             }
-            await googleMiddleware.generatePDF(Id,`bonCommande`,`commande${num_commande}`);
-            await googleMiddleware.generateCSV(Id,`bonCommande`,`commande${num_commande}`)
-            await googleMiddleware.updateCel(range,false,Id);
-            await googleMiddleware.deleteRows(22,i-1,Id);
+            await Promise.all([
+             googleMiddleware.generatePDF(Id,`bonCommande`,`commande${num_commande}`),
+            googleMiddleware.generateCSV(Id,`bonCommande`,`commande${num_commande}`),
+            ])
+            await Promise.all([
+             googleMiddleware.updateCel(range,false,Id),
+             googleMiddleware.deleteRows(29,i-1,Id),
+            ]) 
             const link=`BonCommande/commande${num_commande}.`
             EntreeModel.insertLink(link+'pdf',link+'xlsx',num_commande).then(()=>{
                 resolve(link)
@@ -152,18 +162,20 @@ function changeBonCommande(objet,fournisseur,deletedProducts,addedProducts,date,
     }
    })
 }
-function createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink)
+function createReception(numCommande,produits,numFacture,numLivraison,dateReception,bonLivraisonLink,factureLink,products)
 {
   return new Promise ((resolve,reject)=>{
     EntreeModel.insertBonReception(numCommande, dateReception,bonLivraisonLink,factureLink,numFacture,numLivraison)
     .then((numReception)=>{
         EntreeModel.insertLivre(numReception,produits).then(()=>{
-            EntreeModel.getCommande(numCommande).then((commande)=>{
-                console.log(numCommande)
-                genererBonReception(produits,numCommande,commande.fournisseur,commande.date_commande,
-                    dateReception,numReception,'1CkIm8C3xJloKITIqfm-LsfqMpiZSSrGk1TVG6tzI1_w').then(()=>{
-                        resolve('bon reception created');
-                    }).catch((err)=>{console.log(err);reject(err)})
+            EntreeModel.addRefs(products,dateReception,numCommande,numReception).then(()=>{
+                EntreeModel.getCommande(numCommande).then((commande)=>{
+                    console.log(numCommande)
+                    genererBonReception(produits,numCommande,commande.fournisseur,commande.date_commande,
+                        dateReception,numReception,'1CkIm8C3xJloKITIqfm-LsfqMpiZSSrGk1TVG6tzI1_w').then(()=>{
+                            resolve('bon reception created');
+                        }).catch((err)=>{console.log(err);reject(err)})
+                }).catch((err)=>{console.log(err);reject(err)})
             }).catch((err)=>{console.log(err);reject(err)})
         }).catch((err)=>{console.log(err);reject(err)})
     }).catch((err)=>{console.log(err);reject(err)})
@@ -172,11 +184,11 @@ function createReception(numCommande,produits,numFacture,numLivraison,dateRecept
 async function genererBonReception(produits,numCommande,fournisseur,dateCommande,dateReception,numReception,Id)
 {
     return new Promise(async(resolve,reject)=>{
-    await googleMiddleware.updateCel('A6',`Fournisseur: ${fournisseur}`,Id)
-    await googleMiddleware.updateCel('C4',`N° ${numReception} Date ${dateReception}`,Id)
-    await googleMiddleware.updateCel('A7',`N° du Bon de commande : ${numCommande}`,Id)
-    await googleMiddleware.updateCel('D7',`Date du Bon de Commande : ${dateCommande}`,Id)
-    let i = 11;
+    await googleMiddleware.updateCel('A10',`Fournisseur: ${fournisseur}`,Id)
+    await googleMiddleware.updateCel('C8',`              N° ${numReception} Date ${dateReception}`,Id)
+    await googleMiddleware.updateCel('A11',`N° du Bon de commande : ${numCommande}`,Id)
+    await googleMiddleware.updateCel('D11',`Date du Bon de Commande : ${dateCommande}`,Id)
+    let i = 15;
     console.log(produits)
     for (const produit of produits) {
         console.log(produit)
@@ -188,7 +200,7 @@ async function genererBonReception(produits,numCommande,fournisseur,dateCommande
     }
     await googleMiddleware.generatePDF(Id,`BonReception`,`reception${numReception}`);
     await googleMiddleware.generateCSV(Id,`BonReception`,`reception${numReception}`);
-    await googleMiddleware.deleteRows(11,i-1,Id);
+    await googleMiddleware.deleteRows(15,i-1,Id);
     const link=`BonReception/reception${numReception}.`
     EntreeModel.insertReceptionLink(link+'pdf',link+'xlsx',numReception).then(()=>{
                 resolve(link)
@@ -210,7 +222,7 @@ function restoreQuantite(numReception,numCommande,products)
             await nomencaltureModel.getProductId(product.designation).then(async(productId)=>{
                 response=await EntreeModel.updateQuantiteCommande('-'+product.quantite,numCommande,productId)
                 if(response!='success'){console.log('erreur');  reject('internal error')}
-                response=await EntreeModel.updateQuantite(-parseInt('-'+product.quantite),productId)
+                response=await EntreeModel.updateQuantite('-'+product.quantite,productId)
                 if(response!='success'){console.log('erreur');  reject('internal error')}
             })
         }
@@ -235,5 +247,84 @@ function restoreQuantite(numReception,numCommande,products)
     }
   })
 }
+function changeTabFormat(produits)
+{
+    let products=[];
+    for(let produit of produits)
+        {
+            for(let ref of produit.refs)
+                {
+                   products.push(
+                    {
+                        designation:produit.designation,
+                        ref
+                    }
+                   )
+                }
+        }
+        return products
+}
+function nombreEnLettres(nombre) {
+    const unités = ["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf"];
+    const dizaines = ["", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante-dix", "quatre-vingt", "quatre-vingt-dix"];
+    const dizaines_spéciales = ["dix", "onze", "douze", "treize", "quatorze", "quinze", "seize"];
+    
+    if (nombre === 0) return "zéro";
+    
+    function enLettres(nombre) {
+        if (nombre < 10) {
+            return unités[nombre];
+        } else if (nombre < 17) {
+            return dizaines_spéciales[nombre - 10];
+        } else if (nombre < 20) {
+            return "dix-" + unités[nombre - 10];
+        } else if (nombre < 70) {
+            if (nombre % 10 === 1 && nombre > 20) {
+                return dizaines[Math.floor(nombre / 10)] + "-et-un";
+            } else {
+                return dizaines[Math.floor(nombre / 10)] + (nombre % 10 > 0 ? "-" + unités[nombre % 10] : "");
+            }
+        } else if (nombre < 80) {
+            return "soixante-" + enLettres(nombre - 60);
+        } else if (nombre < 100) {
+            return "quatre-vingt" + (nombre % 10 > 0 ? "-" + unités[nombre % 10] : "");
+        } else if (nombre < 1000) {
+            if (nombre === 100) {
+                return "cent";
+            } else if (nombre < 200) {
+                return "cent " + enLettres(nombre - 100);
+            } else {
+                return unités[Math.floor(nombre / 100)] + "-cent" + (nombre % 100 > 0 ? "-" + enLettres(nombre % 100) : "");
+            }
+        } else if (nombre < 1000000) {
+            if (nombre === 1000) {
+                return "mille";
+            } else if (nombre < 2000) {
+                return "mille " + enLettres(nombre % 1000);
+            } else {
+                return enLettres(Math.floor(nombre / 1000)) + "-mille" + (nombre % 1000 > 0 ? "-" + enLettres(nombre % 1000) : "");
+            }
+        } else if (nombre < 1000000000) {
+            if (nombre === 1000000) {
+                return "un million";
+            } else if (nombre < 2000000) {
+                return "un million " + enLettres(nombre % 1000000);
+            } else {
+                return enLettres(Math.floor(nombre / 1000000)) + "-millions" + (nombre % 1000000 > 0 ? "-" + enLettres(nombre % 1000000) : "");
+            }
+        } else if (nombre < 1000000000000) {
+            if (nombre === 1000000000) {
+                return "un milliard";
+            } else if (nombre < 2000000000) {
+                return "un milliard " + enLettres(nombre % 1000000000);
+            } else {
+                return enLettres(Math.floor(nombre / 1000000000)) + "-milliards" + (nombre % 1000000000 > 0 ? "-" + enLettres(nombre % 1000000000) : "");
+            }
+        }
+        return "";
+    }
+
+    return enLettres(nombre).replace(/-$/, '').trim();
+}
 module.exports={getDate,genererBondeCommande,montantHT,TVA,
-    changeQuantite,changeBonCommande,uploadvalidity,createReception,restoreQuantite}
+    changeQuantite,changeBonCommande,uploadvalidity,createReception,restoreQuantite,changeTabFormat}

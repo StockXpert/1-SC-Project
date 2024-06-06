@@ -14,12 +14,13 @@ function addArticle(chapitre,designation,numArt,tva)
       })
    });
 }
-function addProduct(article,designation,description,quantite,seuil)
+function addProduct(article,designation,description,quantite,seuil,consommable)
 {
     return new Promise((resolve,reject)=>
    {
-    NomenclatureModel.getArticleIdTva(article).then((article)=>{
-       NomenclatureModel.addProduct(quantite,designation,description,seuil).then(()=>{
+   if(article)
+    {NomenclatureModel.getArticleIdTva(article).then((article)=>{
+       NomenclatureModel.addProduct(quantite,designation,description,seuil,consommable).then(()=>{
         NomenclatureModel.getProductId(designation).then((productId)=>{
            console.log({article})
            NomenclatureModel.addArticleProduct(article.num_article,productId).then(()=>{
@@ -34,14 +35,23 @@ function addProduct(article,designation,description,quantite,seuil)
     }).catch(()=>{
         reject("internal error4")
     })
+   }
+   else
+   {
+      NomenclatureModel.addProduct(quantite,designation,description,seuil,consommable).then(()=>{
+         resolve("product added");
+      }).catch(()=>{
+         reject("internal error4")
+     })
+   }
    });
 }
 function deleteArticle(designation)
 {
     return new Promise((resolve,reject)=>{
-     NomenclatureModel.getArticleId(designation).then((articleId)=>{
-       NomenclatureModel.deleteArticle(articleId).then(()=>{
-         NomenclatureModel.deleteArticleFromC(articleId).then(()=>{
+     NomenclatureModel.getArticleIdTva(designation).then((articleId)=>{
+       NomenclatureModel.deleteArticle(articleId.num_article).then(()=>{
+         NomenclatureModel.deleteArticleFromC(articleId.num_article).then(()=>{
             resolve("article deleted");
          }).catch(()=>{reject("internal error")});
        }).catch(()=>{reject("internal error")});

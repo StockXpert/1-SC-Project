@@ -312,7 +312,7 @@ function getUser(email)
     const query=`SELECT u.email, u.nom, u.prenom, u.active, u.date_naissance, r.designation as role, s.designation as structure, u.type
     FROM utilisateur u
     LEFT JOIN role r ON u.id_role = r.id_role
-    LEFT JOIN structure s ON s.id_resp = u.email
+    LEFT JOIN structure s ON s.id_structure = u.id_structure
     WHERE u.email = ?;`
     const values=[email]
     connection.connect((err) => {
@@ -696,7 +696,7 @@ function getPermissions()
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
       
-    const query ='select designation from droit_acces';
+    const query ='select designation from droit_acces where privilegie=false';
     connection.connect((err) => {
       if (err) {
         console.error('Erreur de connexion :', err);
