@@ -219,8 +219,31 @@ export const state = {
 };
 export const getMyPerms = async function () {
   try {
-    const result = await helpers.getJSON(`${API_URL}/Users/showUser`);
-    state.me = { ...result.response[0] };
+    const result = await Promise.race([
+      fetch(`${API_URL}/Users/showUser`, {
+        method: 'GET',
+        headers: {
+          Authorization: localStorage.getItem('JWT'),
+          // Authorization:
+          //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRnQGVzaS1zYmEuZHoiLCJyb2xlIjoiRGlyZWN0ZXVyIiwiaWF0IjoxNzE1Njg0NjkwLCJleHAiOjE3MTU3NzEwOTB9.xJlb9WGqvn2H4w54lTsAV2I7zNJxNbdT4wBQsP2UcfQ',
+          'content-Type': 'application/json',
+        },
+      }),
+      helpers.timeout(TIMEOUT_SEC),
+    ]);
+    const data = await result.json();
+    console.log(result, data);
+    if (!result.ok) {
+      if (result.status == 401) {
+        window.location.href = '/frontend/html/login.html';
+      } else {
+        throw new Error(
+          data.error + ' ' + `(${result.statusText} - ${result.status})`
+        );
+      }
+      return;
+    }
+    state.me = { ...data.response[0] };
     const myPerms = JSON.parse(localStorage.getItem('permissions'));
     state.me.permissions = {
       all: myPerms,
@@ -230,7 +253,7 @@ export const getMyPerms = async function () {
     return state.me;
   } catch (error) {
     helpers.renderError('API Error in getMyPerms', error.message); // More specific error handling possible
-    // console.error('Error in sendJSON:', error); // Optional for logging detailed errors
+    console.error('Error in getMyPerms:', error); // Optional for logging detailed errors
     throw error; // Re-throw for potential global error handling (optional)
   }
 };
