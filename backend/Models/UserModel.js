@@ -282,7 +282,7 @@ function getUsers()
     const query = `SELECT u.email, u.nom, u.prenom, u.active, u.date_naissance, r.designation as role, s.designation as structure, u.type
     FROM utilisateur u
     LEFT JOIN role r ON u.id_role = r.id_role
-    LEFT JOIN structure s ON s.id_strucure = u.id_structure
+    LEFT JOIN structure s ON s.id_structure = u.id_structure
     `
     
     connection.connect((err) => {
