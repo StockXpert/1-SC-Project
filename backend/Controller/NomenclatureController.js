@@ -108,6 +108,7 @@ function deleteArticle(req, res) {
 function addProduct(req, res) {
   const { article, designation, quantite, description, seuil, consommable } =
     req.body;
+  console.log({ consommable });
   NomenclatureService.addProduct(
     article,
     designation,

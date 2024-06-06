@@ -432,8 +432,8 @@ function addProduct(quantite, designation, description, seuil, consommable) {
     const connection = mysql.createConnection(connectionConfig);
     const query =
       'insert into produit (designation,description,quantite,date_ajout,seuil,consommable) values (?,?,?,now(),?,?)';
-    const values = [designation, description, quantite, seuil, consommable];
-    if (quantite === null) quantite = 0;
+    const values = [designation, description, 0, seuil, consommable];
+    console.log({ consommable });
     connection.connect(err => {
       if (err) {
         console.error('Erreur de connexion :', err);

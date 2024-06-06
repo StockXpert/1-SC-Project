@@ -502,7 +502,7 @@ function getInventaireProducts(numInventaire) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
 
-    const query = `select  p.designation,f.raison_sociale as fournisseur, Date_format(r.date_inscription,'%Y/%m/%d) as date_inscription, Date_format(r.date_inventaire,'%Y,%m,%d') as date_inventaire,m.prix_unitaire,r.num_inventaire
+    const query = `select  p.designation,f.raison_sociale as fournisseur, Date_format(r.date_inscription,'%Y/%m/%d') as date_inscription, Date_format(r.date_inventaire,'%Y/%m/%d') as date_inventaire,m.prix_unitaire,r.num_inventaire
      from compter c,produit p,reference r,bon_de_commande b,commande m,fournisseur f
      where c.num_inventaire=? and c.present=true and c.reference=r.designation and p.id_produit=r.id_produit
      and b.num_commande=r.num_commande and f.id_fournisseur=b.id_fournisseur and b.num_commande=m.id_commande

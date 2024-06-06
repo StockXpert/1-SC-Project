@@ -32,7 +32,8 @@ function addProduct(
             quantite,
             designation,
             description,
-            seuil
+            seuil,
+            consommable
           )
             .then(() => {
               NomenclatureModel.getProductId(designation)
