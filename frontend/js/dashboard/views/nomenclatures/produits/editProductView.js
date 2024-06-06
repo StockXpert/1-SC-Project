@@ -39,6 +39,10 @@ class EditProductView extends View {
       e.preventDefault();
       this.toggleWindow();
     });
+    this._overlay.addEventListener('click', e => {
+      e.preventDefault();
+      this.toggleWindow();
+    });
   }
 
   addHandlerEdit(controller) {

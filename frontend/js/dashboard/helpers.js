@@ -105,9 +105,7 @@ export const getJSON = async function (url) {
       fetch(url, {
         method: 'GET',
         headers: {
-          // Authorization: localStorage.getItem('JWT'),
-          Authorization:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRnQGVzaS1zYmEuZHoiLCJyb2xlIjoiRGlyZWN0ZXVyIiwiaWF0IjoxNzE1Njg0NjkwLCJleHAiOjE3MTU3NzEwOTB9.xJlb9WGqvn2H4w54lTsAV2I7zNJxNbdT4wBQsP2UcfQ',
+          Authorization: localStorage.getItem('JWT'),
           'content-Type': 'application/json',
         },
       }),
@@ -129,9 +127,8 @@ export const getJSON = async function (url) {
     return data;
   } catch (error) {
     renderError('API Error', error.message); // More specific error handling possible
-    // console.error('Error in getJSON:', error); // Optional for logging detailed errors
-    return res;
-    // throw error; // Re-throw for potential global error handling (optional)
+    console.error('Error in getJSON:', error); // Optional for logging detailed errors
+    throw error; // Re-throw for potential global error handling (optional)
   }
 };
 export const getJSONBody = async function (url, uploadData) {

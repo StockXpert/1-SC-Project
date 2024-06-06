@@ -2803,7 +2803,6 @@ const controlLoadProducts = async function () {
     deleteProductView.addDeleteController(controlDeleteProduct);
     productsView.addSearchController(controlSearchProduct);
     editProductView.addHandlerShowWindow();
-    editProductView.addHandlerHideWindow();
     editProductView.addHandlerEdit(controlEditProduct);
 
     // numberChaptersView.render(model.state.chapters);
@@ -2812,10 +2811,12 @@ const controlLoadProducts = async function () {
     // numberChaptersView.addHandlerMasterCheckbox(controleSelectChapters);
     // productsView.addSearchController(controlSearchProduct);
   } catch (error) {
+    productsView.unrenderSpinner();
     console.error(error);
   }
 };
 
+editProductView.addHandlerHideWindow();
 const controlSearchProduct = async function (query) {
   const results = model.state.products.all.filter(product =>
     product.designation.toLowerCase().includes(query.toLowerCase())
