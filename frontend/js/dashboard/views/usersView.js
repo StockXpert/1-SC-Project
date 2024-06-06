@@ -68,9 +68,15 @@ export class UsersView extends View {
       <td><p class="admin-role">${
         result.role ? helpers.roleTranslator(result.role) : 'Aucun'
       }</p></td>
-      <td class="table-structure">${
-        result.structure ? result.structure : 'Aucune'
-      }</td>
+      <td class="table-structure">
+        ${
+          result.role == 'Directeur' || result.role == 'Responsable directe'
+            ? result.structure_resp
+            : result.structure
+            ? result.structure
+            : 'Aucune'
+        }
+    </td>
       <td>
         ${
           helpers.includesDesignation(perms, 'update user') ||

@@ -288,10 +288,11 @@ function getUsers() {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(connectionConfig);
 
-    const query = `SELECT u.email, u.nom, u.prenom, u.active, u.date_naissance, r.designation as role, s.designation as structure, u.type
+    const query = `SELECT u.email, u.nom, u.prenom, u.active, u.date_naissance, r.designation as role, s.designation as structure, u.type,t.designation as structure_resp
     FROM utilisateur u
     LEFT JOIN role r ON u.id_role = r.id_role
-    LEFT JOIN structure s ON s.id_strucure = u.id_structure
+    LEFT JOIN structure s ON s.id_structure = u.id_structure
+    Left join structure t On u.email=t.id_resp
     `;
 
     connection.connect(err => {
@@ -321,7 +322,7 @@ function getUser(email) {
     FROM utilisateur u
     LEFT JOIN role r ON u.id_role = r.id_role
     LEFT JOIN structure s ON s.id_structure = u.id_structure
-    Left join structure t On u.email=s.id_resp
+    Left join structure t On u.email=t.id_resp
     WHERE u.email = ?;`;
     const values = [email];
     connection.connect(err => {

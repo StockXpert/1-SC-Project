@@ -134,11 +134,21 @@ class ProfileView extends View {
                     // ?
                     `              <div class="main-input-groupe-profile input-changeble2">
                   <div class="input-text-profile">
-                    <p>Structure:</p>
+                    <p>${
+                      this._data.role == 'Directeur' ||
+                      this._data.role == 'Responsable directe'
+                        ? 'Responsable de'
+                        : 'Structure'
+                    }:</p>
                   </div>
                   <div class="input-groupe-profile">
                     <input name="structure" type="text" class="input input-profile-structure" id="profile-structure" placeholder="Entrez la date de naissance" value="${
-                      this._data.structure ? this._data.structure : 'Aucune'
+                      this._data.role == 'Directeur' ||
+                      this._data.role == 'Responsable directe'
+                        ? this._data.structure_resp
+                        : this._data.structure
+                        ? this._data.structure
+                        : 'Aucune'
                     }">
                     <ion-icon class="input-icon md hydrated" name="school-outline" role="img"></ion-icon>
                   </div>

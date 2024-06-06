@@ -337,6 +337,7 @@ export const loadSearchResults = async function (query) {
           : helpers.truncateEmail(usr.email),
         role: usr.role,
         structure: usr.structure,
+        structure_resp: usr.structure_resp,
         active: usr.active ? 'Activé' : 'Désactivé',
         date_naissance: helpers.formatDate(usr.date_naissance, '-', true),
       };
