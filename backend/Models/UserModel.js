@@ -313,7 +313,7 @@ function getUser(email)
     FROM utilisateur u
     LEFT JOIN role r ON u.id_role = r.id_role
     LEFT JOIN structure s ON s.id_structure = u.id_structure
-    Left join structure t On u.email=s.id_resp
+    Left join structure t On u.email=t.id_resp
     WHERE u.email = ?;`
     const values=[email]
     connection.connect((err) => {
