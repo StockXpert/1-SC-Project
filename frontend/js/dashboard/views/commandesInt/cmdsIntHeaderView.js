@@ -39,6 +39,7 @@ export class CmdsIntHeaderView extends CmdsIntView {
           ${
             this._data.includes('Magasinier')
               ? `
+              <th class=""></th> 
               <th class="verif-Magasinier">Vérifier</th> 
               <th class="print-bdci">Imprimer</th>
               <th class="view-bdc">Détails</th>`

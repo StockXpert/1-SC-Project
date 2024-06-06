@@ -3754,3 +3754,9 @@ select.filters-add-inv option {
   margin-top: 7px;
   padding: 3px;
 }
+.exterieur-td {
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* gap: 5px; */
+  font-size: 1.15rem;
+}

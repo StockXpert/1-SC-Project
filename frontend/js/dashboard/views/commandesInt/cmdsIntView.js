@@ -90,9 +90,10 @@ export class CmdsIntView extends CmdsView {
     }
 
     <td>${helpers.formatDate(result.date_demande)}</td>
-    <td><p class="status ${helpers.getStatusClass(result.etat)}">${
+    <td ><p class="status ${helpers.getStatusClass(result.etat)}">${
       result.etat
-    }</p></td>
+    }</p> </td>
+    <td class="exterieur-td">${result.exterieur ? '<b>exterieure</b>' : ''}</td>
 
     ${
       this._role.includes('Consommateur')
