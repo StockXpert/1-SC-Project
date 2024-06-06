@@ -98,7 +98,14 @@ class AddInvView extends AddCmdsIntView {
     this._numInventaire = this._window?.querySelector('.input-num-inv');
     if (this._numInventaire)
       this._numInventaire.addEventListener('input', e => {
-        controlInvNum(e.currentTarget.value);
+        let bool = controlInvNum(e.currentTarget.value);
+        if (bool) {
+          this._numInventaire.setCustomValidity(
+            `Ce num d'inventaire est deja utilisé`
+          );
+        } else {
+          this._numInventaire.setCustomValidity(``);
+        }
       });
     this._inputs.forEach(input => {
       // helpers.validateIntegerInput(input);

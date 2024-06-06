@@ -2442,7 +2442,13 @@ const controlContinueInv = async function () {
 //ON INPUT OF NUMERO INVENTAIRE NUMBER:
 const controlNumInv = value => {
   model.state.inventaires.selected.numInventaire = value;
-  console.log(model.state.inventaires.selected);
+
+  console.log(
+    model.state.inventaires.all.map(inv => inv.num_inventaire).includes(+value)
+  );
+  return model.state.inventaires.all
+    .map(inv => inv.num_inventaire)
+    .includes(+value);
 };
 //ON INPUT OF
 const controlInput = (value, index) => {
@@ -2476,7 +2482,17 @@ const controlSaveInv = async function (validityState) {
     );
     return;
   } else {
-    console.log(validityState);
+    if (
+      model.state.inventaires.all
+        .map(inv => inv.num_inventaire)
+        .includes(+model.state.inventaires.selected.numInventaire)
+    ) {
+      helpers.renderError(
+        'ERREUR INPUT',
+        "Num d'inventaire que vous avez introduit est deja utilisé"
+      );
+      return;
+    }
     addInvView._btnClose.click();
     invView.renderSpinner('Sauvegarde en cours... ');
     await model.createInv();
