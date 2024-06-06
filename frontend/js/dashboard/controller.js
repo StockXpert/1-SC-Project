@@ -1414,7 +1414,7 @@ const controlDeleteBonRec = async function () {
     bonReceptionView.toggleWindow();
   });
   // back to main menu
-  // controlLoadCmds();
+  await controlLoadCmds();
   // window.location.reload();
 };
 /*
