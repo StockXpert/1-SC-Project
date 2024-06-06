@@ -2409,6 +2409,7 @@ const controlAddInv = async function () {
     model.state.inventaires.new.produits;
   model.state.inventaires.selected.afterSearch =
     model.state.inventaires.new.produits;
+  model.state.inventaires.continue = false;
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
   controlUpdateAddInvFilters();
@@ -2433,6 +2434,7 @@ const controlContinueInv = async function () {
   addInvView.render(model.state.inventaires.selected);
   model.state.inventaires.selected.renderedProducts =
     model.state.inventaires.selected.produits;
+  model.state.inventaires.continue = true;
   console.log(model.state.inventaires.selected.renderedProducts);
   addInvView.resetPointers(controlInput, controlRefInput, controlNumInv);
   addInvView.addHandlerEditProductBtns(controlEditProductBtnsInt);
@@ -2486,7 +2488,8 @@ const controlSaveInv = async function (validityState) {
     if (
       model.state.inventaires.all
         .map(inv => inv.num_inventaire)
-        .includes(+model.state.inventaires.selected.numInventaire)
+        .includes(+model.state.inventaires.selected.numInventaire) &&
+      !model.state.inventaires.continue
     ) {
       helpers.renderError(
         'ERREUR INPUT',

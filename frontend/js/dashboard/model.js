@@ -158,6 +158,7 @@ export const state = {
       selectedProduct: '',
       isNew: true,
     },
+    continue: false,
 
     selected: {
       chapitres: [],
