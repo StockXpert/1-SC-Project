@@ -103,9 +103,7 @@ export default class View {
   // ["DJEZIRI Oussama", "KAZI Kamil"]
   addToSelection(options, selectClassName, type = 'responsable') {
     console.log(this._window.querySelector(selectClassName), selectClassName);
-    helpers.removeChildrenFromSecond(
-      this._window.querySelector(selectClassName)
-    );
+    helpers.removeChildrenFromSecond(document.querySelector(selectClassName));
     options.forEach((option, index) => {
       const optionElement = document.createElement('option');
       switch (type) {
