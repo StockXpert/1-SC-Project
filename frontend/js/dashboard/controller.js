@@ -272,8 +272,8 @@ const controlLoadStructures = async function () {
     structuresView.renderSpinner('');
     await model.loadStructures();
     const emails = await model.getResponsiblesEmail();
-    addStructureView.addToSelection(emails, 'search-responsable');
-    editStructureView.addToSelection(emails, 'search-structure-edit');
+    addStructureView.addToSelection(emails, '#search-responsable');
+    editStructureView.addToSelection(emails, '#search-structure-edit');
     structuresView.render(
       model.state.structures.results,
       true,
@@ -369,8 +369,8 @@ editStructureView.addHandlerUpdate(controlUpdateStructure);
 const controlShowUsersEmail = async function () {
   try {
     const emails = await model.getResponsiblesEmail();
-    addStructureView.addToSelection(emails, 'search-responsable');
-    editStructureView.addToSelection(emails, 'search-structure-edit');
+    addStructureView.addToSelection(emails, '#search-responsable');
+    editStructureView.addToSelection(emails, '#search-structure-edit');
   } catch (error) {
     console.error('🤔 ' + error);
   }
@@ -536,7 +536,7 @@ const controlEditRoleUpdateSelects = async function () {
   editPermsView.renderSpinner('Chargement des permissions...', true);
   const roles = await model.getRoles();
   editPermsView.unrenderSpinner(true);
-  editPermsView.addToSelection(roles, 'pick-role-options', 'role');
+  editPermsView.addToSelection(roles, '#pick-role-options', 'role');
 };
 
 const controlLoadRoles = async function () {
