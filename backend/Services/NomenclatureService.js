@@ -20,7 +20,7 @@ function addProduct(article,designation,description,quantite,seuil,consommable)
    {
    if(article)
     {NomenclatureModel.getArticleIdTva(article).then((article)=>{
-       NomenclatureModel.addProduct(quantite,designation,description,seuil).then(()=>{
+       NomenclatureModel.addProduct(quantite,designation,description,seuil,consommable).then(()=>{
         NomenclatureModel.getProductId(designation).then((productId)=>{
            console.log({article})
            NomenclatureModel.addArticleProduct(article.num_article,productId).then(()=>{
