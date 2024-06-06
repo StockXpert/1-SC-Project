@@ -2191,12 +2191,48 @@ const controlDechargerCmdsInt = async dataObj => {
         ].num_demande
       } ...`
     );
-    if (!(await model.dechargerCmdsInt(postObj))) {
-      sideView.btns[0].click();
+
+    console.log(postObj);
+    const uniqueElements = new Set(
+      postObj.products.map(prod => prod.reference)
+    );
+    console.log(
+      postObj.products.every(prod =>
+        model.state.allProducts
+          .filter(product => product.produit == prod.designation)
+          .map(el => el.reference)
+          .includes(prod.reference)
+      ),
+      uniqueElements.size ===
+        postObj.products.map(prod => prod.reference).length
+    );
+    let theBoolean =
+      postObj.products.every(prod =>
+        model.state.allProducts
+          .filter(product => product.produit == prod.designation)
+          .map(el => el.reference)
+          .includes(prod.reference)
+      ) &&
+      uniqueElements.size ===
+        postObj.products.map(prod => prod.reference).length;
+    if (theBoolean) {
+      if (!(await model.dechargerCmdsInt(postObj))) {
+        sideView.btns[0].click();
+        return;
+      }
+      cmdsIntView.unrenderSpinner('');
+      await controlLoadCmdsInt();
+      return;
+    } else {
+      cmdsIntView.unrenderSpinner('');
+      helpers.renderError(
+        'références incorrectes',
+        'veuillez vérifier que toutes les références sont uniques et appartiennent chacunes au bon produit'
+      );
       return;
     }
-    cmdsIntView.unrenderSpinner('');
-    await controlLoadCmdsInt();
+
+    return;
   } catch (error) {
     helpers.renderError('ERREUR', error.message);
     console.error(error);
