@@ -29,17 +29,24 @@ class ProfileView extends View {
   _parentElement = document.querySelector('.inputs-profile');
   _trueParentElement = document.querySelector('#main-profile-table');
   _generateMarkup() {
+    console.log(this._data);
     return `
             <div class="groupe-5-profile">
               <p>Vos Informations</p>
             </div>
             <div class="groupe-4-profile">
-              <div class="main-input-groupe-profile type-consumer-profile hidden">
+              <div class="main-input-groupe-profile type-consumer-profile ${
+                this._data.role == 'Consommateur' && this._data?.type
+                  ? ''
+                  : 'hidden'
+              }">
                 <div class="input-text-profile">
                   <p>Type:</p>
                 </div>
                 <div class="input-groupe-profile input-profile-type">
-                  <input name="type" type="text" class="input name input-profile-type" autocomplete="name" placeholder="Nom" value="Enseignant">
+                  <input name="type" type="text" class="input name input-profile-type" autocomplete="name" placeholder="Nom" value="${
+                    this._data?.type ? this._data?.type : 'Aucun'
+                  }">
                   <ion-icon class="input-icon md hydrated" name="person-outline" role="img"></ion-icon>
                 </div>
               </div>
