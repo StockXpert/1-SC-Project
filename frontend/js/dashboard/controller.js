@@ -535,6 +535,7 @@ const controlAddUserUpdateSelects = async function () {
 const controlEditRoleUpdateSelects = async function () {
   editPermsView.renderSpinner('Chargement des permissions...', true);
   const roles = await model.getRoles();
+  console.log(roles);
   editPermsView.unrenderSpinner(true);
   editPermsView.addToSelection(roles, '#pick-role-options', 'role');
 };
