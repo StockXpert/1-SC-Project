@@ -318,6 +318,7 @@ export const updateUser = async function (newUser) {
 export const loadSearchResults = async function (query) {
   try {
     const data = await helpers.getJSON(`${API_URL}/Users/showUsers`);
+    console.log(data);
     state.search.results = data.response.map(usr => {
       // usr:
       // "email": "o.djeziri@esi-sba.dz",
@@ -336,7 +337,7 @@ export const loadSearchResults = async function (query) {
         role: usr.role,
         structure: usr.structure,
         active: usr.active ? 'Activé' : 'Désactivé',
-        date_naissance: helpers.formatDate(usr.date_naissance),
+        date_naissance: helpers.formatDate(usr.date_naissance, '-', true),
       };
     });
     state.search.queryResults = state.search.results;

@@ -19,7 +19,7 @@ export const isNodeList = function (obj) {
   return NodeList.prototype.isPrototypeOf(obj);
 };
 
-export const formatDate = inputDate => {
+export const formatDate = (inputDate, seperator = '/', forInput = false) => {
   // Parse input date string into a Date object
   const date = new Date(inputDate);
 
@@ -30,7 +30,9 @@ export const formatDate = inputDate => {
   const day = String(date.getDate()).padStart(2, '0');
 
   // Format the date in the desired format
-  const formattedDate = `${day}/${month}/${year}`;
+  const formattedDate = forInput
+    ? `${year}${seperator}${month}${seperator}${day}`
+    : `${day}${seperator}${month}${seperator}${year}`;
 
   return formattedDate;
 };
@@ -1321,4 +1323,11 @@ export function arrayToObject(arrayOfKeys, arrayOfValues) {
     result[key] = arrayOfValues[index] || ''; // Assign value from arrayOfValues or an empty string if not provided
   });
   return result;
+}
+export function convertDateFormat(dateStr) {
+  // Split the date string into day, month, and year
+  const [day, month, year] = dateStr.split('/');
+
+  // Return the new date string in yyyy-mm-dd format
+  return `${year}-${month}-${day}`;
 }

@@ -6,7 +6,7 @@ export class AddUserView extends View {
   _window = document.querySelector('.add-user-container');
   _overlay = document.querySelector('.overlayAdd');
   _btnOpen = document.querySelector('.add-users-btn');
-  _btnClose = this._window.querySelector('.edit-btn-save');
+  _btnClose;
   _parentElement = document.querySelector('.add-user-container');
   _form = document.querySelector('.add-user-inputs');
   _inputsContainer = this._window.querySelector('.groupe-2-add');
@@ -84,9 +84,10 @@ export class AddUserView extends View {
     }
   };
   addHandlerUpload(handler, hasConsumer = true) {
-    const closeBtn = this._btnClose;
     if (hasConsumer)
       this._role.addEventListener('change', this.handleConsumerChange);
+    console.log(this._btnClose);
+    let btnClose = this._btnClose;
     this._form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const form = this;
@@ -103,8 +104,8 @@ export class AddUserView extends View {
       if (allFilled) {
         const dataArr = [...new FormData(form)];
         const data = Object.fromEntries(dataArr);
-        console.log(closeBtn);
-        closeBtn.click();
+
+        btnClose.click();
         await handler(data);
       } else {
         alert('Please fill in all fields before submitting.');

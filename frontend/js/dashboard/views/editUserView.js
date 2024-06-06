@@ -9,7 +9,7 @@ export class EditUserView extends AddUserView {
   _window = document.querySelector('.edit-user-container');
   _overlay = document.querySelector('.overlayEdit');
   _btnOpen;
-  _btnClose;
+  _btnClose = this._window.querySelector('.edit-btn-decline');
   _parentElement = document.querySelector('.edit-user-cart');
   _form = document.querySelector('.inputs-edit');
 
