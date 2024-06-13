@@ -147,13 +147,6 @@ export default class View {
     isSuccessive = false
   ) {
     this._perms = perms;
-    //TODO: RenderError()
-    // console.log('rendering', this._data);
-    // console.log(data);
-    // if (!data || (Array.isArray(data) && data.length === 0))
-    //   return console.log('something went wrong while trying to render this...');
-    // this.renderError();
-
     //this here is pointing towards an instance of the viewclass (or subclasses)
     this._data = data; // updating the _data field that child classes use in their _generateMarkup functions
     const markup = this._generateMarkup(); // to each child class its _generateMarkup
